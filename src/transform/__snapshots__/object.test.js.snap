@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compiles object 1`] = `
+"const obj1 = {};
+const obj2 = {
+  a
+};
+const obj3 = {
+  a,
+  b
+};
+const obj4 = {
+  a,
+  b,
+  ...c
+};
+const obj5 = {
+  a: 1,
+  b: 123
+};
+const obj6 = {
+  a: 123,
+  b: 123 && 123 && 1345,
+  c: (a, b) => 134
+};
+const obj7 = {
+  a: 123,
+  b: 123 && 123 && 1345,
+  c: (a, b) => 134
+};"
+`;

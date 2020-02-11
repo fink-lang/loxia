@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compiles call 1`] = `
+"const call1 = a(ni, x = 123, ...x);
+const call2 = a(ni);
+const call3 = a();
+const call4 = a(x => x * 2);"
+`;

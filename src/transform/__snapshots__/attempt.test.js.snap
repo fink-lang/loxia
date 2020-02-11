@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compiles attempt 1`] = `
+"const foo1 = () => {
+  let _do_result;
+
+  try {
+    const bar = shrub();
+    _do_result = [null, bar + ni()];
+  } catch ($error1) {
+    _do_result = [$error1, null];
+  }
+
+  const [item, err] = _do_result;
+  _do_result = undefined;
+  return [item, err];
+};
+
+const foo2 = () => try {
+  return [null, 1 / 0];
+} catch ($error2) {
+  return [$error2, null];
+};"
+`;
