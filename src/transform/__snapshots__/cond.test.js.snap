@@ -25,5 +25,12 @@ if (foo === true) {
 }
 
 const no_else = _do_result2;
-_do_result2 = undefined;"
+_do_result2 = undefined;
+{
+  if (foo) {
+    shrub;
+  } else {
+    null;
+  }
+}"
 `;

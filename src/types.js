@@ -3,7 +3,7 @@ import {
   objectPattern, assignmentPattern, forOfStatement, yieldExpression,
   expressionStatement, callExpression, functionExpression,
   blockStatement, identifier, arrowFunctionExpression,
-  returnStatement, logicalExpression, binaryExpression, unaryExpression,
+  logicalExpression, binaryExpression, unaryExpression,
   stringLiteral, memberExpression, ifStatement, doExpression,
   assignmentExpression, isAssignmentExpression, isObjectExpression,
   isArrayExpression, isIdentifier
@@ -96,9 +96,6 @@ export const assign = (left, right)=> (
 );
 
 
-export const returns = (expr)=> returnStatement(expr);
-
-
 export const yields = (expr, delegate)=> (
   expressionStatement(yieldExpression(expr, delegate))
 );
@@ -107,17 +104,21 @@ export const yields = (expr, delegate)=> (
 export const iff = (test)=> (consequent)=> ifStatement(test, consequent);
 
 
+// export const returns = (expr)=> returnStatement(expr);
+
+
 export const yield_or_stop = (expr, unique_ident, delegate)=> {
   const result = unique_ident('result');
 
   return [
     consts(result, expr),
-    iff(eq(result, ident('stop')))(
-      returns()
-    ),
-    iff(neq(result, ident('skip')))(
-      yields(result, delegate)
-    )
+    // iff(eq(result, ident('stop')))(
+    //   returns()
+    // ),
+    // iff(neq(result, ident('skip')))(
+    //   yields(result, delegate)
+    // )
+    yields(result, delegate)
   ];
 };
 

@@ -176,6 +176,7 @@ export const generate = (ast, filename, code)=> {
     filename,
     sourceMaps: true,
     sourceFileName: filename
+    // shouldPrintComment: ()=> true,
   };
 
   const output = babel_gen(new_ast, options, code);

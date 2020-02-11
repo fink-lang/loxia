@@ -101,14 +101,15 @@ const transform_do_expr = (path)=> {
     parent.node.body = simple(path.get('body'), true);
     replace_with_return(path);
 
+  } else if (parent.isExpressionStatement()) {
+    // this is used e.g. for conditional at the module level
+    parent.replaceWith(path.get('body').node);
+
   } else {
     throw parent.buildCodeFrameError(`Can't convert do-expression`);
   }
 
-  // else if (parent.isExpressionStatement()) {
-  //   parent.replaceWith(path.get('body').node);
-
-  // } else if (parent.isReturnStatement()) {
+  // else if (parent.isReturnStatement()) {
   //   parent.replaceWith(simple(path.get('body'), true));
   //   replace_with_return(path);
 

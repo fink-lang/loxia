@@ -4,8 +4,7 @@ exports[`compiles unfold 1`] = `
 "(function* unfold(curr = start) {
   while (true) {
     const $result1 = curr + inc;
-    if ($result1 === stop) return;
-    if ($result1 !== skip) yield $result1;
+    yield $result1;
     curr = curr * 2;
   }
 })();
@@ -13,8 +12,8 @@ exports[`compiles unfold 1`] = `
 const count = (start = 0, inc = 1) => function* unfold(curr = start) {
   while (true) {
     const $result2 = curr + inc;
-    if ($result2 === stop) return;
-    if ($result2 !== skip) yield $result2;
+    yield $result2;
+    curr = $result2;
   }
 }();"
 `;
