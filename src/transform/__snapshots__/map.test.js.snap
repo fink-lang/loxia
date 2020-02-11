@@ -4,16 +4,14 @@ exports[`compiles map 1`] = `
 "(function* map($items1) {
   for (const item of $items1) {
     const $result2 = item * 2;
-    if ($result2 === stop) return;
-    if ($result2 !== skip) yield $result2;
+    yield $result2;
   }
 });
 
 (function* map($items3) {
   for (const item = 123 of $items3) {
     const $result4 = item * 2;
-    if ($result4 === stop) return;
-    if ($result4 !== skip) yield $result4;
+    yield $result4;
   }
 });
 
@@ -22,32 +20,28 @@ exports[`compiles map 1`] = `
     item
   } of $items5) {
     const $result6 = item * 2;
-    if ($result6 === stop) return;
-    if ($result6 !== skip) yield $result6;
+    yield $result6;
   }
 });
 
 (function* map($items7) {
   for (const [x, y] of $items7) {
     const $result8 = x + y;
-    if ($result8 === stop) return;
-    if ($result8 !== skip) yield $result8;
+    yield $result8;
   }
 });
 
 (function* map($items9) {
   for (const item of $items9) {
     const $result10 = [spam + item];
-    if ($result10 === stop) return;
-    if ($result10 !== skip) yield* $result10;
+    yield* $result10;
   }
 });
 
 (function* map($items11) {
   for (const item of $items11) {
     const $result12 = [spam];
-    if ($result12 === stop) return;
-    if ($result12 !== skip) yield* $result12;
+    yield* $result12;
   }
 });"
 `;

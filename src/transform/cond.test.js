@@ -12,6 +12,8 @@ test('compiles conditional', ()=> {
       no_else = if:
         foo == true: spam
         shrub == 134: ni
+
+      if: foo: shrub
     `)
   ).toMatchSnapshot();
 });

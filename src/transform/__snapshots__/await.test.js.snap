@@ -22,8 +22,8 @@ const a_gen = async function* unfold(curr = 0) {
 
     const $result1 = _do_result;
     _do_result = undefined;
-    if ($result1 === stop) return;
-    if ($result1 !== skip) yield $result1;
+    yield $result1;
+    curr = $result1;
   }
 }();
 
