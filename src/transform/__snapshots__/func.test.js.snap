@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compiles func 1`] = `
+"const fun1 = (a, b = 12, ...d) => a + b + c;
+
+const fun2 = b => b * 2;
+
+const fun3 = () => \`shrub\`;
+
+const fun4 = () => \`shrub\`;
+
+const fun5 = c => (d, e) => a + b + c;
+
+const fun6 = (a, b = 12, c) => {
+  shrub(...a);
+  foo();
+  return bar();
+};"
+`;

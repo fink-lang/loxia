@@ -1,0 +1,5 @@
+{
+  "branches": "master",
+  "debug": true,
+  "pkgRoot": "build/pkg"
+}

@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compiles array 1`] = `
+"const array1 = [];
+const array2 = [1];
+const array3 = [1, 2, 4, a(), ...b];
+const array4 = [a + 1 + 45 + b + c, [1, 2], (3 + 3) * 2];"
+`;

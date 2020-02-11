@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compiles regex 1`] = `
+"const str1 = \`line 1
+line 2 with leading space
+line 3\`;
+const str2 = \`ab\`;"
+`;

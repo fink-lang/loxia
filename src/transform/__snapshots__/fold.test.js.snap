@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compiles fold 1`] = `
+"$items1 => {
+  let $acc2 = 0;
+
+  for (const item of $items1) {
+    const acc = $acc2;
+    const ni = item + acc;
+    $acc2 = item * acc;
+  }
+
+  return $acc2;
+};"
+`;

@@ -1,0 +1,6 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compiles member 1`] = `
+"const foo = spam.shrub;
+const computed_member = item[bar + 123];"
+`;
