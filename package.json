@@ -6,6 +6,9 @@
     "node": ">=13.0.0"
   },
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:fink-lang/loxia"
