@@ -72,7 +72,6 @@ export const nul = ()=> identifier('null');
 // eslint-disable-next-line no-underscore-dangle
 export const true_ = ()=> identifier('true');
 
-// eslint-disable-next-line no-underscore-dangle
 // export const false_ = ()=> identifier('false');
 
 export const not_nullish = (value)=> and(
