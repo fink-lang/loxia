@@ -1,10 +1,11 @@
 import babel_gen from '@babel/generator';
 import traverse from '@babel/traverse';
-import {identifier, numericLiteral} from '@babel/types';
+
+import convert_source_map from 'convert-source-map';
 
 import {other_token} from '@fink/prattler/symbols';
 
-import {ident, expr_block} from './types';
+import {ident, expr_block, wrap} from './types';
 import {code_frame_err} from './errors';
 
 import {transform_assign} from './transform/assign';
@@ -14,6 +15,8 @@ import {transform_attempt} from './transform/attempt';
 import {transform_match} from './transform/match';
 import {transform_map} from './transform/map';
 import {transform_flat_map} from './transform/map';
+import {transform_filter} from './transform/filter';
+import {transform_while} from './transform/while';
 import {transform_fold} from './transform/fold';
 import {transform_unfold} from './transform/unfold';
 import {transform_call} from './transform/call';
@@ -31,6 +34,9 @@ import {transform_group} from './transform/group';
 import {transform_module} from './transform/module';
 import {transform_unary} from './transform/unary';
 import {transform_member} from './transform/member';
+import {transform_inifx} from './transform/infix';
+import {transform_other, escape_ident, var_prefix} from './transform/other';
+
 import {
   transform_jsx_elem, transform_jsx_attr, transform_jsx_str,
   transform_jsx_expr_container, transform_jsx_text
@@ -38,14 +44,6 @@ import {
 
 import transform_do_expr from './transform/js/do-expression';
 import {transform_async} from './transform/js/async';
-
-
-const transform_other = (node)=> {
-  if (node.value.match(/^[0-9].*/)) {
-    return numericLiteral(parseInt(node.value));
-  }
-  return identifier(node.value);
-};
 
 
 const jsx = {
@@ -73,7 +71,8 @@ const literals = {
 const unary_ops = {
   arithm_prefix: transform_unary,
   await: transform_await,
-  '...': transform_spread
+  '...': transform_spread,
+  '!': transform_unary
 };
 
 const binary_ops = {
@@ -89,27 +88,29 @@ const binary_ops = {
 
   '.': transform_member,
 
-  call: transform_call,
-  '|': transform_pipe
+  call: transform_call
 };
 
 const block_like = {
   block: transform_block,
-  func: transform_func,
+  fn: transform_func,
   module: transform_module
 };
 
 const control_flow = {
   if: transform_cond,
   match: transform_match,
-  attempt: transform_attempt
+  attempt: transform_attempt,
+  pipe: transform_pipe
 };
 
 const iterables = {
   fold: transform_fold,
   unfold: transform_unfold,
   map: transform_map,
-  flat_map: transform_flat_map
+  flat_map: transform_flat_map,
+  filter: transform_filter,
+  while: transform_while
 };
 
 
@@ -120,7 +121,8 @@ const transformers = {
   ...block_like,
   ...control_flow,
   ...iterables,
-  ...jsx
+  ...jsx,
+  infix: transform_inifx
 };
 
 
@@ -134,17 +136,34 @@ const get_ctx = (transform, ctx)=> {
 };
 
 
+// eslint-disable-next-line prefer-reflect
+const obj_has = (obj, key)=> Object.prototype.hasOwnProperty.call(obj, key);
+
+
+const get_transformer = (op, type)=> {
+  if (obj_has(transformers, op)) {
+    return transformers[op];
+  }
+
+  if (obj_has(transformers, type)) {
+    return transformers[type];
+  }
+};
+
+
 const transform_expr = (node, ctx)=> {
-  const transform = transformers[node.op] || transformers[node.type];
+  const transform = get_transformer(node.op, node.type);
 
   if (transform === undefined) {
     throw code_frame_err(new Error('Unknown expression'), node, ctx.code);
-  } else {
-    try {
-      return transform(node, get_ctx(transform_expr, ctx));
-    } catch (err) {
-      throw code_frame_err(err, node, ctx.code);
-    }
+  }
+
+  try {
+    const foo = transform(node, get_ctx(transform_expr, ctx));
+    // TODO: some nodes have location data
+    return wrap(node, foo);
+  } catch (err) {
+    throw code_frame_err(err, node, ctx.code);
   }
 };
 
@@ -155,7 +174,7 @@ const transform = (node, code)=> {
     code,
     unique_ident: (name)=> {
       id_ctr += 1;
-      return ident(`$${name}${id_ctr}`);
+      return ident(`${var_prefix}${name}_${id_ctr}`);
     }
   });
 
@@ -174,12 +193,21 @@ export const generate = (ast, filename, code)=> {
   const options = {
     // retainLines: true,
     filename,
-    sourceMaps: true,
+    sourceMaps: 'both',
     sourceFileName: filename
     // shouldPrintComment: ()=> true,
   };
 
-  const output = babel_gen(new_ast, options, code);
-  return {...output, ast: new_ast};
+  const generated = babel_gen(new_ast, options, code);
+
+  const source_map = convert_source_map
+    .fromObject(generated.map)
+    .toComment();
+
+  // TODO: embedd source-map?
+  // const final_code = `${generated.code}\n\n${source_map}\n`;
+  const final_code = generated.code;
+
+  return {...generated, code: final_code, ast: new_ast};
 };
 

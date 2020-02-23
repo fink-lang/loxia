@@ -1,47 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`compiles map 1`] = `
-"(function* map($items1) {
-  for (const item of $items1) {
-    const $result2 = item * 2;
-    yield $result2;
+"(function* map(ˆitems_1) {
+  for (const item of ˆitems_1) {
+    const ˆresult_2 = item * 2;
+    yield ˆresult_2;
   }
 });
 
-(function* map($items3) {
-  for (const item = 123 of $items3) {
-    const $result4 = item * 2;
-    yield $result4;
+(function* map(ˆitems_3) {
+  for (const item = 123 of ˆitems_3) {
+    const ˆresult_4 = item * 2;
+    yield ˆresult_4;
   }
 });
 
-(function* map($items5) {
+(function* map(ˆitems_5) {
   for (const {
-    item
-  } of $items5) {
-    const $result6 = item * 2;
-    yield $result6;
+    \\"item\\": item
+  } of ˆitems_5) {
+    const ˆresult_6 = item * 2;
+    yield ˆresult_6;
   }
 });
 
-(function* map($items7) {
-  for (const [x, y] of $items7) {
-    const $result8 = x + y;
-    yield $result8;
+(function* map(ˆitems_7) {
+  for (const [x, y] of ˆitems_7) {
+    const ˆresult_8 = x + y;
+    yield ˆresult_8;
   }
 });
 
-(function* map($items9) {
-  for (const item of $items9) {
-    const $result10 = [spam + item];
-    yield* $result10;
+(function* map(ˆitems_9) {
+  for (const item of ˆitems_9) {
+    const ˆresult_10 = [spam + item];
+    yield* ˆresult_10;
   }
 });
 
-(function* map($items11) {
-  for (const item of $items11) {
-    const $result12 = [spam];
-    yield* $result12;
+(function* map(ˆitems_11) {
+  for (const item of ˆitems_11) {
+    const ˆresult_12 = [spam];
+    yield* ˆresult_12;
   }
-});"
+});
+
+Object.assign(module.exports, {});"
 `;

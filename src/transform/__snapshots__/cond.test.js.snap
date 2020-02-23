@@ -32,5 +32,9 @@ _do_result2 = undefined;
   } else {
     null;
   }
-}"
+}
+Object.assign(module.exports, {
+  with_else,
+  no_else
+});"
 `;

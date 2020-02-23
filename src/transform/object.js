@@ -1,4 +1,6 @@
-import {isSpreadElement, objectExpression, objectProperty} from '@babel/types';
+import {
+  isSpreadElement, objectExpression, objectProperty, stringLiteral
+} from '@babel/types';
 
 
 export const transform_object = (node, ctx)=> {
@@ -8,10 +10,15 @@ export const transform_object = (node, ctx)=> {
 
 
 export const transform_prop = (node, ctx)=> {
-  const computed = false;
+  const is_str_key = node.key.type === 'string';
+  const computed = is_str_key;
   const shorthand = node.key === node.value;
 
-  const key = ctx.transform(node.key);
+
+  const key = (is_str_key || node.key.type === 'spread')
+    ? ctx.transform(node.key)
+    : {...stringLiteral(node.key.value), loc: node.key.loc};
+
   if (isSpreadElement(key)) {
     return key;
   }

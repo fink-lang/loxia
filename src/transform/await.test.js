@@ -4,11 +4,11 @@ import {fink2js} from '../testing';
 test('compiles await', ()=> {
   expect(
     fink2js(`
-      task1 = (foo): - await foo
+      task1 = fn foo: - await foo
 
-      task2 = (foo): await (foo + 4)
+      task2 = fn foo: await (foo + 4)
 
-      task3 = (foo):
+      task3 = fn foo:
         bar = await foo()
         bar + 123
 

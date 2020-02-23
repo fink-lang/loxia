@@ -3,17 +3,36 @@
 exports[`compiles unfold 1`] = `
 "(function* unfold(curr = start) {
   while (true) {
-    const $result1 = curr + inc;
-    yield $result1;
+    const ˆresult_1 = curr + inc;
+    yield ˆresult_1;
     curr = curr * 2;
   }
-})();
+});
+
+(function* unfold(curr) {
+  while (true) {
+    const ˆresult_2 = curr + inc;
+    yield ˆresult_2;
+    curr = curr * 2;
+  }
+});
+
+(function* unfold() {
+  while (true) {
+    const ˆresult_3 = 1234;
+    yield ˆresult_3;
+  }
+});
 
 const count = (start = 0, inc = 1) => function* unfold(curr = start) {
   while (true) {
-    const $result2 = curr + inc;
-    yield $result2;
-    curr = $result2;
+    const ˆresult_4 = curr + inc;
+    yield ˆresult_4;
+    curr = ˆresult_4;
   }
-}();"
+};
+
+Object.assign(module.exports, {
+  count
+});"
 `;
