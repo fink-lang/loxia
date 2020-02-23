@@ -20,12 +20,18 @@ const a_gen = async function* unfold(curr = 0) {
       _do_result = curr + 1;
     }
 
-    const $result1 = _do_result;
+    const ˆresult_1 = _do_result;
     _do_result = undefined;
-    yield $result1;
-    curr = $result1;
+    yield ˆresult_1;
+    curr = ˆresult_1;
   }
-}();
+};
 
-await ni;"
+await ni;
+Object.assign(module.exports, {
+  task1,
+  task2,
+  task3,
+  a_gen
+});"
 `;

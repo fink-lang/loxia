@@ -5,13 +5,20 @@ import {
   blockStatement, identifier, arrowFunctionExpression,
   logicalExpression, binaryExpression, unaryExpression,
   stringLiteral, memberExpression, ifStatement, doExpression,
-  assignmentExpression, isAssignmentExpression, isObjectExpression,
+  assignmentExpression, returnStatement,
+  isAssignmentExpression, isObjectExpression,
   isArrayExpression, isIdentifier
 } from '@babel/types';
+
+import {escape_ident} from './transform/other';
 
 
 export const map = (mapper)=> ([...items])=> items.map(mapper);
 
+
+export const wrap = (larix_node, js_node)=> (
+  {...js_node, loc: larix_node.loc}
+);
 
 export const expr_block = (...expr)=> (
   doExpression(
@@ -62,6 +69,11 @@ export const undef = ()=> identifier('undefined');
 
 export const nul = ()=> identifier('null');
 
+// eslint-disable-next-line no-underscore-dangle
+export const true_ = ()=> identifier('true');
+
+// eslint-disable-next-line no-underscore-dangle
+// export const false_ = ()=> identifier('false');
 
 export const not_nullish = (value)=> and(
   neq(value, undef()),
@@ -71,7 +83,7 @@ export const not_nullish = (value)=> and(
 
 export const ident = (name)=> (
   typeof name === 'string'
-    ? identifier(name)
+    ? identifier(escape_ident(name))
     : name
 );
 
@@ -104,7 +116,7 @@ export const yields = (expr, delegate)=> (
 export const iff = (test)=> (consequent)=> ifStatement(test, consequent);
 
 
-// export const returns = (expr)=> returnStatement(expr);
+export const returns = (expr)=> returnStatement(expr);
 
 
 export const yield_or_stop = (expr, unique_ident, delegate)=> {
@@ -127,10 +139,6 @@ export const func = (...args)=> (expr, ...expressions)=> (
   arrowFunctionExpression(
     args,
     expr_block(expr, ...expressions)
-    // TODO: check needed?
-    // expressions.length > 0
-    //   ? expr_block(expr, ...expressions)
-    //   : expr
   )
 );
 

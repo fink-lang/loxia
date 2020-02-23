@@ -1,11 +1,11 @@
 import {fink2js} from '../testing';
 
 
-test('compiles member', ()=> {
+test('while', ()=> {
   expect(
     fink2js(`
-      foo = spam.shrub
-      computed_member = item.\`bar spam\`
+      while item:
+        item < 10
     `)
   ).toMatchSnapshot();
 });

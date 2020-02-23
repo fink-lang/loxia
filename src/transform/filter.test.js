@@ -1,11 +1,11 @@
 import {fink2js} from '../testing';
 
 
-test('compiles member', ()=> {
+test('filter', ()=> {
   expect(
     fink2js(`
-      foo = spam.shrub
-      computed_member = item.\`bar spam\`
+      filter item:
+        item % 2 == 0
     `)
   ).toMatchSnapshot();
 });

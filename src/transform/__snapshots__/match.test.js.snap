@@ -1,119 +1,109 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`compiles logical 1`] = `
-"let _do_result;
+"{
+  ˆmatch_2: {
+    const ˆvalue_1 = shrub;
 
-$match2: {
-  const $value1 = shrub;
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        \\"foo\\": ˆp_3,
+        \\"ni\\": ˆp_4
+      } = ˆvalue_1;
 
-  if ($value1 !== undefined && $value1 !== null) {
-    const {
-      foo: $p3,
-      ni: $p4
-    } = $value1;
-
-    if ($p3 === 4 && $p4 === ni) {
-      _do_result = spam + ni;
-      break $match2;
+      if (ˆp_3 === 4 && ˆp_4 === ni) {
+        spam + ni;
+        break ˆmatch_2;
+      }
     }
-  }
 
-  if ($value1 === 123) {
-    _do_result = spam;
-    break $match2;
-  }
-
-  if ($value1 !== undefined && $value1 !== null && typeof $value1[Symbol.iterator] === \\"function\\") {
-    const [$a5, $a6, $a7] = $value1;
-
-    if ($a5 === 1 && $a6 === 2 && $a7 === ni) {
-      _do_result = ni;
-      break $match2;
+    if (ˆvalue_1 === 123) {
+      spam;
+      break ˆmatch_2;
     }
-  }
 
-  {
-    _do_result = shrub;
-    break $match2;
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_5, ˆa_6, ˆa_7] = ˆvalue_1;
+
+      if (ˆa_5 === 1 && ˆa_6 === 2 && ˆa_7 === ni) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    {
+      shrub;
+      break ˆmatch_2;
+    }
   }
 }
+{
+  ˆmatch_9: {
+    const ˆvalue_8 = shrub;
 
-const with_else = _do_result;
-_do_result = undefined;
+    if (ˆvalue_8 !== undefined && ˆvalue_8 !== null) {
+      const {
+        \\"foo\\": ˆp_10,
+        \\"ni\\": ˆp_11
+      } = ˆvalue_8;
 
-let _do_result2;
+      if (ˆp_10 === 4 && ˆp_11 === ni) {
+        spam + ni;
+        break ˆmatch_9;
+      }
+    }
 
-$match9: {
-  const $value8 = shrub;
-
-  if ($value8 !== undefined && $value8 !== null) {
-    const {
-      foo: $p10,
-      ni: $p11
-    } = $value8;
-
-    if ($p10 === 4 && $p11 === ni) {
-      _do_result2 = spam + ni;
-      break $match9;
+    if (ˆvalue_8 === 123) {
+      spam;
+      break ˆmatch_9;
     }
   }
-
-  if ($value8 === 123) {
-    _do_result2 = spam;
-    break $match9;
-  }
 }
+{
+  ˆmatch_13: {
+    const ˆvalue_12 = shrub;
 
-const no_else = _do_result2;
-_do_result2 = undefined;
+    if (ˆvalue_12 !== undefined && ˆvalue_12 !== null) {
+      const {
+        \\"foo\\": ˆp_14,
+        \\"ni\\": ˆp_15
+      } = ˆvalue_12;
 
-let _do_result3;
+      if (ˆp_14 === 4) {
+        if (ˆp_15 !== undefined && ˆp_15 !== null) {
+          const {
+            \\"na\\": ˆp_16,
+            \\"nu\\": ˆp_17
+          } = ˆp_15;
 
-$match13: {
-  const $value12 = shrub;
-
-  if ($value12 !== undefined && $value12 !== null) {
-    const {
-      foo: $p14,
-      ni: $p15
-    } = $value12;
-
-    if ($p14 === 4) {
-      if ($p15 !== undefined && $p15 !== null) {
-        const {
-          na: $p16,
-          nu: $p17
-        } = $p15;
-
-        if ($p16 === na && $p17 === nu) {
-          _do_result3 = spam + ni;
-          break $match13;
+          if (ˆp_16 === na && ˆp_17 === nu) {
+            spam + ni;
+            break ˆmatch_13;
+          }
         }
       }
     }
-  }
 
-  if ($value12 !== undefined && $value12 !== null && typeof $value12[Symbol.iterator] === \\"function\\") {
-    const [$a18, $a19, $a20] = $value12;
+    if (ˆvalue_12 !== undefined && ˆvalue_12 !== null && typeof ˆvalue_12[Symbol.iterator] === \\"function\\") {
+      const [ˆa_18, ˆa_19, ˆa_20] = ˆvalue_12;
 
-    if ($a18 === 1 && $a19 === 2) {
-      if ($a20 !== undefined && $a20 !== null && typeof $a20[Symbol.iterator] === \\"function\\") {
-        const [$a21] = $a20;
+      if (ˆa_18 === 1 && ˆa_19 === 2) {
+        if (ˆa_20 !== undefined && ˆa_20 !== null && typeof ˆa_20[Symbol.iterator] === \\"function\\") {
+          const [ˆa_21] = ˆa_20;
 
-        if ($a21 === ni) {
-          _do_result3 = ni;
-          break $match13;
+          if (ˆa_21 === ni) {
+            ni;
+            break ˆmatch_13;
+          }
         }
       }
     }
-  }
 
-  if ($value12 === 123) {
-    _do_result3 = spam;
-    break $match13;
+    if (ˆvalue_12 === 123) {
+      spam;
+      break ˆmatch_13;
+    }
   }
 }
-
-const nested = _do_result3;
-_do_result3 = undefined;"
+Object.assign(module.exports, {});"
 `;

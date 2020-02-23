@@ -7,7 +7,13 @@ test('compiles unfold', ()=> {
       unfold curr=start:
         (curr + inc, curr * 2)
 
-      count = (start=0, inc=1):
+      unfold curr:
+        (curr + inc, curr * 2)
+
+      unfold:
+        1234
+
+      count = fn start=0, inc=1:
         unfold curr=start:
           curr + inc
     `)

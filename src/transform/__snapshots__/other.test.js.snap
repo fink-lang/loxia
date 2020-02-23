@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`identifiers does not escape true, false, null 1`] = `
+"const foo = [true, false, null];
+Object.assign(module.exports, {
+  foo
+});"
+`;
+
+exports[`identifiers escapes identifiers incompatible with JS 1`] = `
+"const ˆ1s = spam;
+const ˆ6pu = shrub;
+Object.assign(module.exports, {
+  ˆ1s,
+  ˆ6pu
+});"
+`;
+
+exports[`identifiers escapes reserved JS identifiers 1`] = `
+"const {
+  \\"do\\": ˆdo,
+  \\"if\\": ˆif,
+  \\"in\\": ˆin,
+  \\"for\\": ˆfor,
+  \\"let\\": ˆlet,
+  \\"new\\": ˆnew,
+  \\"try\\": ˆtry,
+  \\"var\\": ˆvar,
+  \\"case\\": ˆcase,
+  \\"enum\\": ˆenum,
+  \\"void\\": ˆvoid
+} = foobar;
+const {
+  \\"with\\": ˆwith,
+  \\"break\\": ˆbreak,
+  \\"catch\\": ˆcatch,
+  \\"class\\": ˆclass,
+  \\"const\\": ˆconst,
+  \\"super\\": ˆsuper,
+  \\"while\\": ˆwhile,
+  \\"yield\\": ˆyield,
+  \\"delete\\": ˆdelete
+} = spam;
+const {
+  \\"export\\": ˆexport,
+  \\"import\\": ˆimport,
+  \\"public\\": ˆpublic,
+  \\"return\\": ˆreturn,
+  \\"static\\": ˆstatic,
+  \\"switch\\": ˆswitch,
+  \\"typeof\\": ˆtypeof,
+  \\"default\\": ˆdefault
+} = ham;
+const {
+  \\"extends\\": ˆextends,
+  \\"finally\\": ˆfinally,
+  \\"package\\": ˆpackage,
+  \\"private\\": ˆprivate,
+  \\"continue\\": ˆcontinue,
+  \\"debugger\\": ˆdebugger,
+  \\"function\\": ˆfunction
+} = ni;
+const {
+  \\"arguments\\": ˆarguments,
+  \\"interface\\": ˆinterface,
+  \\"protected\\": ˆprotected,
+  \\"implements\\": ˆimplements,
+  \\"instanceof\\": ˆinstanceof
+} = nu;
+Object.assign(module.exports, {});"
+`;
+
+exports[`numbers transforms integers 1`] = `
+"const x = 1234578;
+const y = 123;
+Object.assign(module.exports, {
+  x,
+  y
+});"
+`;

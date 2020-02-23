@@ -2,5 +2,9 @@
 
 exports[`compiles member 1`] = `
 "const foo = spam.shrub;
-const computed_member = item[bar + 123];"
+const computed_member = item[\`bar spam\`];
+Object.assign(module.exports, {
+  foo,
+  computed_member
+});"
 `;

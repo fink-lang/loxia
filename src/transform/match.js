@@ -1,18 +1,19 @@
 import {
   arrayPattern, blockStatement, breakStatement, labeledStatement, objectPattern,
-  objectProperty, isObjectExpression, isArrayExpression, expressionStatement
+  objectProperty, isObjectExpression, isArrayExpression, expressionStatement,
+  identifier
 } from '@babel/types';
 
 import {
   member, str, for_of, split_last, and, eq, not_nullish, typof,
-  ident, expr_block, consts, iff
+  expr_block, consts, iff
 } from '../types';
 import {is_call, is_calling} from './call';
 import {is_array} from './array';
 
 
 const iter = (value)=> (
-  member(value)(member(ident('Symbol'))(ident('iterator')), true)
+  member(value)(member(identifier('Symbol'))(identifier('iterator')), true)
 );
 
 

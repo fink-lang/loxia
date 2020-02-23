@@ -7,4 +7,5 @@ export const transform_assign = (node, ctx)=> {
   const right = ctx.transform(node.right);
 
   return assignmentExpression('=', left, right);
+  // return wrap(node, assignmentExpression('=', left, right));
 };
