@@ -6,6 +6,7 @@ test('compiles member', ()=> {
     fink2js(`
       foo = spam.shrub
       computed_member = item.\`bar spam\`
+      computed_member2 = item.(Symbol.iterator)
     `)
   ).toMatchSnapshot();
 });

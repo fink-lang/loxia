@@ -17,6 +17,7 @@ export const transform_prop = (node, ctx)=> {
 
   const key = (is_str_key || node.key.type === 'spread')
     ? ctx.transform(node.key)
+    // TODO: use wrap()?
     : {...stringLiteral(node.key.value), loc: node.key.loc};
 
   if (isSpreadElement(key)) {
