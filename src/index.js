@@ -1,8 +1,6 @@
 import babel_gen from '@babel/generator';
 import traverse from '@babel/traverse';
 
-import convert_source_map from 'convert-source-map';
-
 import {other_token} from '@fink/prattler/symbols';
 
 import {ident, expr_block, wrap} from './types';
@@ -193,19 +191,12 @@ export const generate = (ast, filename, code)=> {
   const options = {
     // retainLines: true,
     filename,
-    sourceMaps: 'both',
+    sourceMaps: true,
     sourceFileName: filename
     // shouldPrintComment: ()=> true,
   };
 
   const generated = babel_gen(new_ast, options, code);
-
-  const source_map = convert_source_map
-    .fromObject(generated.map)
-    .toComment();
-
-  // TODO: embedd source-map?
-  // const final_code = `${generated.code}\n\n${source_map}\n`;
   const final_code = generated.code;
 
   return {...generated, code: final_code, ast: new_ast};
