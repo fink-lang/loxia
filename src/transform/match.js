@@ -104,6 +104,7 @@ const match_array = (value, expr, emit_result, ctx)=> (
 
 
 const match_simple = (value, expr, emit_result)=> (
+  // TODO: make wrapping more clear
   {
     ...expr,
     ...iff(eq(value, expr))(

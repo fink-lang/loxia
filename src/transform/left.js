@@ -13,6 +13,7 @@ export const transform_left = (val)=> {
 
   } else if (isArrayExpression(val)) {
     return arrayPattern(val.elements.map(transform_left));
+
   } else if (isObjectExpression(val)) {
     return objectPattern(val.properties.map(transform_left));
   }

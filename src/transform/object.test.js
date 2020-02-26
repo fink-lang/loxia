@@ -1,7 +1,7 @@
 import {fink2js} from '../testing';
 
 
-test('compiles object', ()=> {
+test('object', ()=> {
   expect(
     fink2js(`
       obj1 = {}
@@ -21,6 +21,20 @@ test('compiles object', ()=> {
           n = a+3
           foo(n)
       }
+
+      {a, b, c}
+    `)
+  ).toMatchSnapshot();
+});
+
+
+test('destructuring object', ()=> {
+  expect(
+    fink2js(`
+      {a, b, c} = ni
+      {e, ...f} = {e: 0, foo: 12, bar: 34}
+      {x=1, ni: {y, z}} = {ni: {y: 1, z: 2}}
+      {\`n i\`: ni} = foo
     `)
   ).toMatchSnapshot();
 });
