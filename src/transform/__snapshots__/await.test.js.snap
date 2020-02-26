@@ -14,10 +14,18 @@ const a_gen = async function* unfold(curr = 0) {
   while (true) {
     let _do_result;
 
-    if (spam) {
-      _do_result = await ni(curr);
-    } else {
-      _do_result = curr + 1;
+    ˆmatch_3: {
+      const ˆvalue_2 = shrub;
+
+      if (ˆvalue_2 === spam) {
+        _do_result = await ni(curr);
+        break ˆmatch_3;
+      }
+
+      {
+        _do_result = curr + 1;
+        break ˆmatch_3;
+      }
     }
 
     const ˆresult_1 = _do_result;

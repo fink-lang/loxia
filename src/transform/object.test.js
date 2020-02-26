@@ -8,9 +8,10 @@ test('compiles object', ()=> {
       obj2 = {a}
       obj3 = {a, delete, true, false}
       obj4 = {a, b, ...c}
-      obj5 = {a: 1, b: 123}
-      obj6 = {a: 123, b: 123 && 123 && 1345, c: fn a, b: 134}
-      obj7 = {
+      obj5 = {a: 1, b: 123, \`c-d-e\`: cde }
+      obj6 = {a=123, b: c=456}
+      obj7 = {a: 123, b: 123 && 123 && 1345, c: fn a, b: 134}
+      obj8 = {
         a: 123,
         b: 123
           && 123

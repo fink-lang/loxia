@@ -1,10 +1,12 @@
 import {code_frame_err} from '../errors';
 
 
-export const transform_group = (node, ctx)=> (
-  ctx.transform(node.exprs[0])
-  // TODO: if (node.exprs.length === 1) {
-  //   return ctx.transform(node.exprs[0]);
+export const transform_group = (node, {transform})=> (
+  transform(node.exprs[0])
+
+  // if (node.exprs.length === 1) {
+  //   return transform(node.exprs[0]);
   // }
-  // throw code_frame_err('Expected only one expression.', node);
+
+  // throw new Error('Expected only one expression.');
 );

@@ -1,5 +1,5 @@
 import {
-  isSpreadElement, objectExpression, objectProperty, stringLiteral
+  objectExpression, objectProperty, stringLiteral, assignmentPattern
 } from '@babel/types';
 
 
@@ -9,22 +9,34 @@ export const transform_object = (node, ctx)=> {
 };
 
 
+const str_key = ({value, loc})=> (
+  {...stringLiteral(value), loc}
+);
+
+
 export const transform_prop = (node, ctx)=> {
-  const is_str_key = node.key.type === 'string';
-  const computed = is_str_key;
-  const shorthand = node.key === node.value;
-
-
-  const key = (is_str_key || node.key.type === 'spread')
-    ? ctx.transform(node.key)
-    // TODO: use wrap()?
-    : {...stringLiteral(node.key.value), loc: node.key.loc};
-
-  if (isSpreadElement(key)) {
-    return key;
+  if (node.key.type === 'spread') {
+    return ctx.transform(node.key);
   }
 
+  const is_str_key = node.key.type === 'string';
+  const is_default_assignment = node.value.type === 'assign';
+
+  const key = (is_str_key)
+    ? ctx.transform(node.key)
+    : str_key(node.key);
+
   const value = ctx.transform(node.value);
-  return objectProperty(key, value, computed, shorthand);
+
+  const computed = is_str_key;
+  const shorthand = (node.key === node.value);
+
+  return objectProperty(
+    key,
+    is_default_assignment
+      ? assignmentPattern(value.left, value.right)
+      : value,
+    computed, shorthand
+  );
 };
 

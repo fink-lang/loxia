@@ -13,7 +13,7 @@ test('compiles await', ()=> {
         bar + 123
 
       a_gen = unfold curr=0:
-        if:
+        match shrub:
           spam: await ni(curr)
           else : curr + 1
 

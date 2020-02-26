@@ -18,14 +18,19 @@ const obj4 = {
 };
 const obj5 = {
   \\"a\\": 1,
-  \\"b\\": 123
+  \\"b\\": 123,
+  [\`c-d-e\`]: cde
 };
 const obj6 = {
+  \\"a\\": a = 123,
+  \\"b\\": c = 456
+};
+const obj7 = {
   \\"a\\": 123,
   \\"b\\": 123 && 123 && 1345,
   \\"c\\": (a, b) => 134
 };
-const obj7 = {
+const obj8 = {
   \\"a\\": 123,
   \\"b\\": 123 && 123 && 1345,
   \\"c\\": (a, b) => 134,
@@ -41,6 +46,7 @@ Object.assign(module.exports, {
   obj4,
   obj5,
   obj6,
-  obj7
+  obj7,
+  obj8
 });"
 `;
