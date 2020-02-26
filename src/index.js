@@ -8,7 +8,6 @@ import {code_frame_err} from './errors';
 
 import {transform_assign} from './transform/assign';
 import {transform_func} from './transform/func';
-import {transform_cond} from './transform/cond';
 import {transform_attempt} from './transform/attempt';
 import {transform_match} from './transform/match';
 import {transform_map} from './transform/map';
@@ -96,7 +95,6 @@ const block_like = {
 };
 
 const control_flow = {
-  if: transform_cond,
   match: transform_match,
   attempt: transform_attempt,
   pipe: transform_pipe
@@ -159,7 +157,8 @@ const transform_expr = (node, ctx)=> {
   try {
     const foo = transform(node, get_ctx(transform_expr, ctx));
     // TODO: some nodes have location data
-    return wrap(node, foo);
+    const wrapped = wrap(node, foo);
+    return wrapped;
   } catch (err) {
     throw code_frame_err(err, node, ctx.code);
   }
@@ -193,7 +192,7 @@ export const generate = (ast, filename, code)=> {
     filename,
     sourceMaps: true,
     sourceFileName: filename
-    // shouldPrintComment: ()=> true,
+    // shouldPrintComment: ()=> true
   };
 
   const generated = babel_gen(new_ast, options, code);

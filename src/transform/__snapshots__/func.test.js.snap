@@ -32,12 +32,14 @@ const fun5 = c => (d, e) => {
 const fun6 = (c, d) => {
   const x = 123;
   {
-    if (c + x) {
+    const ˆvalue_7 = ni;
+
+    if (ˆvalue_7 === c + x) {
       return d;
-    } else if (c + 1) {
+    }
+
+    if (ˆvalue_7 === c + 1) {
       return d + 1;
-    } else {
-      return null;
     }
   }
 };

@@ -20,7 +20,7 @@ test('compiles func', ()=> {
 
       fun6 = fn c, d:
         x = 123
-        if:
+        match ni:
           c + x: d
           c + 1: d + 1
 

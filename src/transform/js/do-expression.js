@@ -28,10 +28,6 @@ function* last_expressions(path) {
       }
     });
     yield * items;
-  } else if (path.isIfStatement()) {
-    yield * last_expressions(path.get('consequent'));
-    yield * last_expressions(path.get('alternate'));
-
   } else /* istanbul ignore else */ if (path.isTryStatement()) {
     yield * last_expressions(path.get('block'));
     yield * last_expressions(path.get('handler').get('body'));
@@ -67,9 +63,10 @@ const simple = (body, sl=false)=> {
         return stmnt.node.body;
       }
 
-      if (sl && stmnt.isIfStatement()) {
-        return body.node;
-      }
+      // TODO:
+      // if (sl && stmnt.isIfStatement()) {
+      //   return body.node;
+      // }
 
       return simple(stmnt);
     }
