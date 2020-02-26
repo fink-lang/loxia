@@ -157,7 +157,8 @@ const transform_expr = (node, ctx)=> {
   try {
     const foo = transform(node, get_ctx(transform_expr, ctx));
     // TODO: some nodes have location data
-    return wrap(node, foo);
+    const wrapped = wrap(node, foo);
+    return wrapped;
   } catch (err) {
     throw code_frame_err(err, node, ctx.code);
   }
@@ -191,7 +192,7 @@ export const generate = (ast, filename, code)=> {
     filename,
     sourceMaps: true,
     sourceFileName: filename
-    // shouldPrintComment: ()=> true,
+    // shouldPrintComment: ()=> true
   };
 
   const generated = babel_gen(new_ast, options, code);

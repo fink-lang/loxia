@@ -104,9 +104,12 @@ const match_array = (value, expr, emit_result, ctx)=> (
 
 
 const match_simple = (value, expr, emit_result)=> (
-  iff(eq(value, expr))(
-    emit_result()
-  )
+  {
+    ...expr,
+    ...iff(eq(value, expr))(
+      emit_result()
+    )
+  }
 );
 
 

@@ -16,9 +16,17 @@ import {escape_ident} from './transform/other';
 export const map = (mapper)=> ([...items])=> items.map(mapper);
 
 
-export const wrap = (larix_node, js_node)=> (
-  {...js_node, loc: larix_node.loc}
+export const get_comment = ({comment, loc})=> (
+  comment
+    ? {leadingComments: [{type: 'CommentBlock', value: comment.text, loc}]}
+    : {}
 );
+
+
+export const wrap = (larix_node, js_node)=> (
+  {...js_node, ...get_comment(larix_node), loc: larix_node.loc}
+);
+
 
 export const expr_block = (...expr)=> (
   doExpression(
