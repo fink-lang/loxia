@@ -32,6 +32,7 @@ import {transform_module} from './transform/module';
 import {transform_unary} from './transform/unary';
 import {transform_member} from './transform/member';
 import {transform_inifx} from './transform/infix';
+import {transform_import} from './transform/import';
 import {transform_other, escape_ident, var_prefix} from './transform/other';
 
 import {
@@ -69,7 +70,8 @@ const unary_ops = {
   arithm_prefix: transform_unary,
   await: transform_await,
   '...': transform_spread,
-  '!': transform_unary
+  '!': transform_unary,
+  import: transform_import
 };
 
 const binary_ops = {
@@ -151,7 +153,7 @@ const transform_expr = (node, ctx)=> {
   const transform = get_transformer(node.op, node.type);
 
   if (transform === undefined) {
-    throw code_frame_err(new Error('Unknown expression'), node, ctx.code);
+    throw code_frame_err(new Error('Unknown expression'), node, ctx);
   }
 
   try {
@@ -160,14 +162,15 @@ const transform_expr = (node, ctx)=> {
     const wrapped = wrap(node, foo);
     return wrapped;
   } catch (err) {
-    throw code_frame_err(err, node, ctx.code);
+    throw code_frame_err(err, node, ctx);
   }
 };
 
 
-const transform = (node, code)=> {
+const transform = (node, code, filename)=> {
   let id_ctr = 0;
   const ast = transform_expr(node, {
+    filename,
     code,
     unique_ident: (name)=> {
       id_ctr += 1;
@@ -185,7 +188,7 @@ const transform = (node, code)=> {
 
 
 export const generate = (ast, filename, code)=> {
-  const new_ast = transform(ast, code);
+  const new_ast = transform(ast, code, filename);
 
   const options = {
     // retainLines: true,

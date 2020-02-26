@@ -8,7 +8,7 @@ test('errors', ()=> {
       123 = foo
     `)
   ).toThrow(unindent_text(`
-    Transform Error 'assign =':
+    test.fnk:1:0: Unable to transform 'assign =':
 
     1| 123 = foo
        ^
@@ -18,7 +18,7 @@ test('errors', ()=> {
   expect(
     ()=> generate({
       type: 'test',
-      op: '####',
+      op: null,
       loc: {
         start: {pos: 0, line: 1, column: 0},
         end: {pos: 9, line: 1, column: 9}
@@ -26,7 +26,7 @@ test('errors', ()=> {
     }, 'test.fnk', 'foobar')
 
   ).toThrow(unindent_text(`
-    Transform Error 'test ####':
+    test.fnk:1:0: Unable to transform 'test':
 
     1| foobar
        ^
