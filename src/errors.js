@@ -2,9 +2,16 @@ import {highlight_code_loc} from '@fink/snippet';
 
 
 class TransformError extends Error {
-  constructor(err, node, code) {
+  constructor(err, node, {code, filename}) {
+    const {start: {line, column}} = node.loc;
+    const type_op = (
+      node.op
+        ? `${node.type} ${node.op}`
+        : node.type
+    );
+
     super(
-      `Transform Error '${node.type} ${node.op}':\n\n${
+      `${filename}:${line}:${column}: Unable to transform '${type_op}':\n\n${
         highlight_code_loc(code, node.loc)
       }\n\n${err.stack}`
     );
