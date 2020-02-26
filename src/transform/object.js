@@ -22,9 +22,11 @@ export const transform_prop = (node, ctx)=> {
   const is_str_key = node.key.type === 'string';
   const is_default_assignment = node.value.type === 'assign';
 
-  const key = (is_str_key)
-    ? ctx.transform(node.key)
-    : str_key(node.key);
+  const key = (
+    is_str_key
+      ? ctx.transform(node.key)
+      : str_key(node.key)
+  );
 
   const value = ctx.transform(node.value);
 

@@ -1,7 +1,7 @@
 import {fink2js} from '../testing';
 
 
-test('compiles array', ()=> {
+test('array', ()=> {
   expect(
     fink2js(`
       array1 = []
@@ -13,6 +13,17 @@ test('compiles array', ()=> {
         [1, 2],
         (3 + 3) * 2
       ]
+    `)
+  ).toMatchSnapshot();
+});
+
+
+test('destructuring array', ()=> {
+  expect(
+    fink2js(`
+      [a, b, c] = ni
+      [,, d] = ni
+      [e, ...f] = ni
     `)
   ).toMatchSnapshot();
 });

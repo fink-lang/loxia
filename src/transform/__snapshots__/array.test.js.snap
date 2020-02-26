@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`compiles array 1`] = `
+exports[`array 1`] = `
 "const array1 = [];
 const array2 = [1];
 const array3 = [1, 2, 4, a(), ...b];
@@ -11,4 +11,11 @@ Object.assign(module.exports, {
   array3,
   array4
 });"
+`;
+
+exports[`destructuring array 1`] = `
+"const [a, b, c] = ni;
+const [,, d] = ni;
+const [e, ...f] = ni;
+Object.assign(module.exports, {});"
 `;
