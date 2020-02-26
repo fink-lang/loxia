@@ -1,5 +1,6 @@
 
 module.exports = {
+  testEnvironment: 'node',
   setupFiles: [],
   transform: {'^.+\\.js$': 'babel-jest'},
   transformIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
