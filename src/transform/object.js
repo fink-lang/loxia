@@ -4,7 +4,7 @@ import {
 
 
 export const transform_object = (node, ctx)=> {
-  const props = node.props.map(ctx.transform);
+  const props = node.exprs.map(ctx.transform);
   return objectExpression(props);
 };
 
