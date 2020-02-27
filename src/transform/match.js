@@ -127,7 +127,7 @@ const match_condition = (value, expr, emit_result, ctx)=> {
 };
 
 
-const split_condition = ({test, result})=> [test, result];
+const split_condition = ({left, right})=> [left, right];
 
 
 function* match_all(value, matches, emit_result, ctx) {
