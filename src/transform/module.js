@@ -2,7 +2,6 @@ import {
   file, program, objectExpression, objectProperty, identifier,
   expressionStatement
 } from '@babel/types';
-import {other_token} from '@fink/prattler/symbols';
 
 import {block_statement} from './block';
 import {call, member, ident} from '../types';
@@ -16,7 +15,7 @@ export const transform_module = (node, ctx)=> {
     .map((expr)=> {
       const result = block_statement(ctx)(expr);
 
-      if (expr?.left?.type === other_token) {
+      if (expr?.left?.type === 'ident') {
         // TODO: wrap with loc?
         const id = ident(expr.left.value);
 

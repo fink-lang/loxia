@@ -1,8 +1,6 @@
 import babel_gen from '@babel/generator';
 import traverse from '@babel/traverse';
 
-import {other_token} from '@fink/prattler/symbols';
-
 import {ident, expr_block, wrap} from './types';
 import {code_frame_err} from './errors';
 
@@ -33,7 +31,8 @@ import {transform_unary} from './transform/unary';
 import {transform_member} from './transform/member';
 import {transform_inifx} from './transform/infix';
 import {transform_import} from './transform/import';
-import {transform_other, escape_ident, var_prefix} from './transform/other';
+import {transform_ident, escape_ident, var_prefix} from './transform/other';
+import {transform_number} from './transform/number';
 
 import {
   transform_jsx_elem, transform_jsx_attr, transform_jsx_str,
@@ -53,6 +52,9 @@ const jsx = {
 };
 
 const literals = {
+  ident: transform_ident,
+  number: transform_number,
+
   string: transform_string,
   regex: transform_regex,
 
@@ -61,9 +63,7 @@ const literals = {
   array: transform_array,
 
   object: transform_object,
-  prop: transform_prop,
-
-  [other_token]: transform_other
+  prop: transform_prop
 };
 
 const unary_ops = {

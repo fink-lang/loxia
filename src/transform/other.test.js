@@ -33,36 +33,3 @@ describe('identifiers', ()=> {
     ).toMatchSnapshot();
   });
 });
-
-
-describe('numbers', ()=> {
-  it('transforms integers', ()=> {
-    expect(
-      fink2js(`
-        x = 1234578
-        y = 0123
-      `)
-    ).toMatchSnapshot();
-  });
-
-  // TODO: not yet supported by larix
-  // it('transforms floats', ()=> {
-  //   expect(
-  //     fink2js(`
-  //       x = 1.234578
-  //       y = 1.23e10
-  //       z = 1.23e-10
-  //     `)
-  //   ).toMatchSnapshot();
-  // });
-
-  // it('transforms hex, octet, binary', ()=> {
-  //   expect(
-  //     fink2js(`
-  //       h = 0xABCDEF
-  //       o = 0o1234567
-  //       b = 0b01010
-  //     `)
-  //   ).toMatchSnapshot();
-  // });
-});

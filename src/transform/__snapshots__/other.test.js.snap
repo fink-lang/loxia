@@ -69,12 +69,3 @@ const {
 } = nu;
 Object.assign(module.exports, {});"
 `;
-
-exports[`numbers transforms integers 1`] = `
-"const x = 1234578;
-const y = 123;
-Object.assign(module.exports, {
-  x,
-  y
-});"
-`;

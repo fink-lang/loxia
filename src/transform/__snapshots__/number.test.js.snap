@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`numbers transforms floats 1`] = `
+"const x = 1.234578;
+const y = 1.23e+45;
+const z = 1.23e-45;
+const a = 1.23e+45;
+Object.assign(module.exports, {
+  x,
+  y,
+  z,
+  a
+});"
+`;
+
+exports[`numbers transforms hex, octet, binary 1`] = `
+"const h = 0x123456789ABCDEF0;
+const o = 0o12345670;
+const b = 0b01010;
+Object.assign(module.exports, {
+  h,
+  o,
+  b
+});"
+`;
+
+exports[`numbers transforms integers 1`] = `
+"const x = 1234578;
+const y = 0123;
+Object.assign(module.exports, {
+  x,
+  y
+});"
+`;
