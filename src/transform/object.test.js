@@ -13,16 +13,32 @@ test('object', ()=> {
       obj7 = {a: 123, b: 123 && 123 && 1345, c: fn a, b: 134}
       obj8 = {
         a: 123,
+
         b: 123
           && 123
           && 1345,
         c: fn a, b: 134,
+
         d:
           n = a+3
           foo(n)
       }
 
       {a, b, c}
+    `)
+  ).toMatchSnapshot();
+});
+
+
+test('calculated props', ()=> {
+  expect(
+    fink2js(`
+      foo = {
+        foo,
+        (Symbol('foo')): 123,
+        \`spam\`: 456,
+        ni
+      }
     `)
   ).toMatchSnapshot();
 });
