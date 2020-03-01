@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`calculated props 1`] = `
+"const foo = {
+  \\"foo\\": foo,
+  [Symbol(\`foo\`)]: 123,
+  [\`spam\`]: 456,
+  \\"ni\\": ni
+};
+Object.assign(module.exports, {
+  foo
+});"
+`;
+
 exports[`destructuring object 1`] = `
 "const {
   \\"a\\": a,

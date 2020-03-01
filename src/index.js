@@ -87,7 +87,8 @@ const binary_ops = {
 
   '.': transform_member,
 
-  call: transform_call
+  call: transform_call,
+  infix: transform_inifx
 };
 
 const block_like = {
@@ -119,8 +120,7 @@ const transformers = {
   ...block_like,
   ...control_flow,
   ...iterables,
-  ...jsx,
-  infix: transform_inifx
+  ...jsx
 };
 
 
