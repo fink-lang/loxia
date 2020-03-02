@@ -1,4 +1,6 @@
-import {templateElement, templateLiteral, taggedTemplateExpression} from '@babel/types';
+import {
+  templateElement, templateLiteral, taggedTemplateExpression
+} from '@babel/types';
 
 
 export const transform_string = (node, {transform})=> {
@@ -8,7 +10,6 @@ export const transform_string = (node, {transform})=> {
   );
 
   if (node.tag) {
-
     return taggedTemplateExpression(transform(node.tag), templ_str);
   }
 
