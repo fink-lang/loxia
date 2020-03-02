@@ -10,6 +10,8 @@ test('compiles regex', ()=> {
         line 3\`
 
       str2 = \`ab\`
+
+      str3 = foo\`bar spam \${shrub}\`
     `)
   ).toMatchSnapshot();
 });

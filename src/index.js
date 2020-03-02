@@ -41,6 +41,8 @@ import {
 
 import transform_do_expr from './transform/js/do-expression';
 import {transform_async} from './transform/js/async';
+import {transform_new} from './transform/new';
+import {transform_throw} from './transform/throw';
 
 
 const jsx = {
@@ -71,6 +73,8 @@ const unary_ops = {
   await: transform_await,
   '...': transform_spread,
   '!': transform_unary,
+  new: transform_new,
+  throw: transform_throw,
   import: transform_import
 };
 

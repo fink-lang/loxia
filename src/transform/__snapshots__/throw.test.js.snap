@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`throw transforms throw 1`] = `
+"const foo = bar || throw err(\`spam\`);
+Object.assign(module.exports, {
+  foo
+});"
+`;

@@ -5,8 +5,10 @@ exports[`compiles regex 1`] = `
 line 2 with leading space
 line 3\`;
 const str2 = \`ab\`;
+const str3 = foo\`bar spam \${shrub}\`;
 Object.assign(module.exports, {
   str1,
-  str2
+  str2,
+  str3
 });"
 `;
