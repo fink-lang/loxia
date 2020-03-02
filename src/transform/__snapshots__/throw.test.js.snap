@@ -1,8 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`throw transforms throw 1`] = `
-"const foo = bar || throw err(\`spam\`);
-Object.assign(module.exports, {
-  foo
-});"
+"bar => {
+  const ˆvalue_1 = true;
+
+  if (ˆvalue_1 === has_err(bar)) {
+    throw err(\`spam\`);
+  }
+
+  {
+    return bar;
+  }
+};
+
+Object.assign(module.exports, {});"
 `;
