@@ -5,7 +5,10 @@ describe('throw', ()=> {
   it('transforms throw', ()=> {
     expect(
       fink2js(`
-        foo = bar || throw err('spam')
+        fn bar:
+          match true:
+            has_err(bar): throw err('spam')
+            else: bar
       `)
     ).toMatchSnapshot();
   });

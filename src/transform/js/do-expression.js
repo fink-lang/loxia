@@ -1,6 +1,7 @@
 import {
   assignmentExpression, returnStatement, callExpression,
-  arrowFunctionExpression
+  arrowFunctionExpression,
+  expressionStatement
 } from '@babel/types';
 import {lets, assign, undef} from '../../types';
 
@@ -40,9 +41,16 @@ function* last_expressions(path) {
 
 const replace_with_return = (path)=> {
   for (const expr of last_expressions(path)) {
-    expr.replaceWith(
-      returnStatement(expr.node.expression)
-    );
+    if (expr.node.expression.operator === 'throw') {
+      // no `return throw ...`
+      expr.replaceWith(
+        expressionStatement(expr.node.expression)
+      );
+    } else {
+      expr.replaceWith(
+        returnStatement(expr.node.expression)
+      );
+    }
 
     // TODO: no need for e.g. breaks after a return
     const sibl = expr.getSibling(expr.key+1);
