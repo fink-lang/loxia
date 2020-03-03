@@ -12,6 +12,7 @@ import {transform_map} from './transform/map';
 import {transform_flat_map} from './transform/map';
 import {transform_filter} from './transform/filter';
 import {transform_while} from './transform/while';
+import {transform_find} from './transform/find';
 import {transform_fold} from './transform/fold';
 import {transform_unfold} from './transform/unfold';
 import {transform_call} from './transform/call';
@@ -33,6 +34,8 @@ import {transform_inifx} from './transform/infix';
 import {transform_import} from './transform/import';
 import {transform_ident, escape_ident, var_prefix} from './transform/other';
 import {transform_number} from './transform/number';
+import {transform_new} from './transform/new';
+import {transform_throw} from './transform/throw';
 
 import {
   transform_jsx_elem, transform_jsx_attr, transform_jsx_str,
@@ -41,8 +44,6 @@ import {
 
 import transform_do_expr from './transform/js/do-expression';
 import {transform_async} from './transform/js/async';
-import {transform_new} from './transform/new';
-import {transform_throw} from './transform/throw';
 
 
 const jsx = {
@@ -113,7 +114,8 @@ const iterables = {
   map: transform_map,
   flat_map: transform_flat_map,
   filter: transform_filter,
-  while: transform_while
+  while: transform_while,
+  find: transform_find
 };
 
 
