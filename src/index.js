@@ -2,40 +2,40 @@ import babel_gen from '@babel/generator';
 import traverse from '@babel/traverse';
 
 import {ident, expr_block, wrap} from './types';
-import {code_frame_err} from './errors';
+import {code_frame_err} from './transform/errors';
 
-import {transform_assign} from './transform/assign';
+import {transform_assign} from './transform/assignment';
 import {transform_func} from './transform/func';
-import {transform_attempt} from './transform/attempt';
-import {transform_match} from './transform/match';
-import {transform_map} from './transform/map';
-import {transform_flat_map} from './transform/map';
-import {transform_filter} from './transform/filter';
-import {transform_while} from './transform/while';
-import {transform_find} from './transform/find';
-import {transform_fold} from './transform/fold';
-import {transform_unfold} from './transform/unfold';
-import {transform_call} from './transform/call';
-import {transform_pipe} from './transform/pipe';
-import {transform_binary} from './transform/binary';
-import {transform_array} from './transform/array';
+import {transform_attempt} from './transform/conditionals/attempt';
+import {transform_match} from './transform/conditionals/match';
+import {transform_map} from './transform/iterable/map';
+import {transform_flat_map} from './transform/iterable/map';
+import {transform_filter} from './transform/iterable/filter';
+import {transform_while} from './transform/iterable/while';
+import {transform_find} from './transform/iterable/find';
+import {transform_fold} from './transform/iterable/fold';
+import {transform_unfold} from './transform/iterable/unfold';
+import {transform_call} from './transform/call/call';
+import {transform_pipe} from './transform/call/pipe';
+import {transform_binary} from './transform/generic/binary';
+import {transform_array} from './transform/literals/array';
 import {transform_spread} from './transform/spread';
-import {transform_await} from './transform/await';
-import {transform_string} from './transform/string';
-import {transform_regex} from './transform/regex';
+import {transform_await} from './transform/async';
+import {transform_string} from './transform/literals/string';
+import {transform_regex} from './transform/literals/regex';
 import {transform_logical} from './transform/logical';
-import {transform_object, transform_prop} from './transform/object';
+import {transform_object, transform_prop} from './transform/literals/object';
 import {transform_block, block_statement} from './transform/block';
 import {transform_group} from './transform/group';
 import {transform_module} from './transform/module';
-import {transform_unary} from './transform/unary';
-import {transform_member} from './transform/member';
-import {transform_inifx} from './transform/infix';
-import {transform_import} from './transform/import';
-import {transform_ident, escape_ident, var_prefix} from './transform/other';
-import {transform_number} from './transform/number';
-import {transform_new} from './transform/new';
-import {transform_throw} from './transform/throw';
+import {transform_unary} from './transform/generic/unary';
+import {transform_member} from './transform/prop-access';
+import {transform_inifx} from './transform/generic/infix';
+import {transform_import} from './transform/module/import';
+import {transform_ident, escape_ident, var_prefix} from './transform/identifier';
+import {transform_number} from './transform/literals/number';
+import {transform_new} from './transform/js-compat/new';
+import {transform_throw} from './transform/js-compat/throw';
 
 import {
   transform_jsx_elem, transform_jsx_attr, transform_jsx_str,
@@ -108,7 +108,7 @@ const control_flow = {
   pipe: transform_pipe
 };
 
-const iterables = {
+const iterable = {
   fold: transform_fold,
   unfold: transform_unfold,
   map: transform_map,
@@ -125,7 +125,7 @@ const transformers = {
   ...binary_ops,
   ...block_like,
   ...control_flow,
-  ...iterables,
+  ...iterable,
   ...jsx
 };
 

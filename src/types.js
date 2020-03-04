@@ -10,7 +10,7 @@ import {
   isArrayExpression, isIdentifier
 } from '@babel/types';
 
-import {escape_ident} from './transform/other';
+import {escape_ident} from './transform/identifier';
 
 
 export const map = (mapper)=> ([...items])=> items.map(mapper);
