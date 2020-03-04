@@ -11,7 +11,8 @@ export const unindent_text = (text)=> {
 
 export const fink2js = (source)=> {
   source = unindent_text(source);
-  const ast = parse(source);
-  const gen = generate(ast, 'test.fnk', source);
+  const filename = 'test.fnk';
+  const ast = parse(source, filename);
+  const gen = generate(ast, filename, source);
   return gen.code;
 };
