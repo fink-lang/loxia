@@ -1,4 +1,6 @@
-import {assign, params, for_of, split_last, func, consts, lets} from '../../types';
+import {
+  assign, params, for_of, split_last, func, consts, lets
+} from '../../types';
 import {block_statement} from '../block';
 
 

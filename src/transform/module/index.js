@@ -3,8 +3,11 @@ import {
   expressionStatement
 } from '@babel/types';
 
-import {block_statement} from '../block';
 import {call, member, ident} from '../../types';
+import {add, any} from '../../context';
+
+import {block_statement} from '../block';
+import {transform_import} from './import';
 
 
 export const transform_module = (node, ctx)=> {
@@ -35,3 +38,10 @@ export const transform_module = (node, ctx)=> {
   );
   return file(program([...body, exports], [], 'module'));
 };
+
+
+export const add_module = (ctx)=> (
+  ctx
+    |> add('module', any, transform_module)
+    |> add('import', any, transform_import)
+);

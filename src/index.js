@@ -4,129 +4,67 @@ import traverse from '@babel/traverse';
 import {ident, expr_block, wrap} from './types';
 import {code_frame_err} from './transform/errors';
 
-import {transform_assign} from './transform/assignment';
-import {transform_func} from './transform/func';
-import {transform_attempt} from './transform/conditionals/attempt';
-import {transform_match} from './transform/conditionals/match';
-import {transform_map} from './transform/iterable/map';
-import {transform_flat_map} from './transform/iterable/map';
-import {transform_filter} from './transform/iterable/filter';
-import {transform_while} from './transform/iterable/while';
-import {transform_find} from './transform/iterable/find';
-import {transform_fold} from './transform/iterable/fold';
-import {transform_unfold} from './transform/iterable/unfold';
-import {transform_call} from './transform/call/call';
-import {transform_pipe} from './transform/call/pipe';
-import {transform_binary} from './transform/generic/binary';
-import {transform_array} from './transform/literals/array';
-import {transform_spread} from './transform/spread';
-import {transform_await} from './transform/async';
-import {transform_string} from './transform/literals/string';
-import {transform_regex} from './transform/literals/regex';
-import {transform_logical} from './transform/logical';
-import {transform_object, transform_prop} from './transform/literals/object';
-import {transform_block, block_statement} from './transform/block';
-import {transform_group} from './transform/group';
-import {transform_module} from './transform/module';
-import {transform_unary} from './transform/generic/unary';
-import {transform_member} from './transform/prop-access';
-import {transform_inifx} from './transform/generic/infix';
-import {transform_import} from './transform/module/import';
-import {transform_ident, escape_ident, var_prefix} from './transform/identifier';
-import {transform_number} from './transform/literals/number';
-import {transform_new} from './transform/js-compat/new';
-import {transform_throw} from './transform/js-compat/throw';
-
-import {
-  transform_jsx_elem, transform_jsx_attr, transform_jsx_str,
-  transform_jsx_expr_container, transform_jsx_text
-} from './transform/jsx';
+import {add_assignment} from './transform/assignment';
+import {add_func} from './transform/func';
+import {add_conditionals} from './transform/conditionals';
+import {add_iterables} from './transform/iterable';
+import {add_call} from './transform/call';
+import {add_literals} from './transform/literals';
+import {add_spread} from './transform/spread';
+import {add_async} from './transform/async';
+import {add_logical} from './transform/logical';
+import {transform_prop} from './transform/literals/object';
+import {block_statement} from './transform/block';
+import {add_group} from './transform/group';
+import {add_module} from './transform/module';
+import {add_member} from './transform/prop-access';
+import {add_ident, var_prefix} from './transform/identifier';
+import {add_comparison} from './transform/comparison';
+import {add_jsx} from './transform/jsx';
+import {add_js_compat} from './transform/js-compat';
+import {add_arithmitic} from './transform/arithmitic';
+import {add_generic} from './transform/generic';
 
 import transform_do_expr from './transform/js/do-expression';
 import {transform_async} from './transform/js/async';
 
 
-const jsx = {
-  'jsx-elem': transform_jsx_elem,
-  'jsx-attr': transform_jsx_attr,
-  'jsx-string': transform_jsx_str,
-  'jsx-text': transform_jsx_text,
-  'jsx-expr-container': transform_jsx_expr_container
-};
-
-const literals = {
-  ident: transform_ident,
-  number: transform_number,
-
-  string: transform_string,
-  regex: transform_regex,
-
-  group: transform_group,
-
-  array: transform_array,
-
-  object: transform_object,
-  prop: transform_prop
-};
-
-const unary_ops = {
-  arithm_prefix: transform_unary,
-  await: transform_await,
-  '...': transform_spread,
-  '!': transform_unary,
-  new: transform_new,
-  throw: transform_throw,
-  import: transform_import
-};
-
-const binary_ops = {
-  arithm: transform_binary,
-  arithm_right: transform_binary,
-
-  comp: transform_binary,
-
-  '=': transform_assign,
-
-  '&&': transform_logical,
-  '||': transform_logical,
-
-  '.': transform_member,
-
-  call: transform_call,
-  infix: transform_inifx
-};
-
-const block_like = {
-  block: transform_block,
-  fn: transform_func,
-  module: transform_module
-};
-
-const control_flow = {
-  match: transform_match,
-  attempt: transform_attempt,
-  pipe: transform_pipe
-};
-
-const iterable = {
-  fold: transform_fold,
-  unfold: transform_unfold,
-  map: transform_map,
-  flat_map: transform_flat_map,
-  filter: transform_filter,
-  while: transform_while,
-  find: transform_find
-};
+const add_transformers = (ctx)=> (
+  ctx
+    |> add_module
+    |> add_ident
+    |> add_literals
+    |> add_group
+    |> add_member
+    |> add_logical
+    |> add_comparison
+    |> add_arithmitic
+    |> add_assignment
+    |> add_spread
+    |> add_async
+    |> add_func
+    |> add_conditionals
+    |> add_iterables
+    |> add_call
+    |> add_async
+    |> add_jsx
+    |> add_generic
+    |> add_js_compat
+);
 
 
-const transformers = {
-  ...literals,
-  ...unary_ops,
-  ...binary_ops,
-  ...block_like,
-  ...control_flow,
-  ...iterable,
-  ...jsx
+// eslint-disable-next-line prefer-reflect
+const obj_has = (obj, key)=> Object.prototype.hasOwnProperty.call(obj, key);
+
+
+const get_transformer = (op, type, {transformers})=> {
+  if (obj_has(transformers, op)) {
+    return transformers[op];
+  }
+
+  if (obj_has(transformers, type)) {
+    return transformers[type];
+  }
 };
 
 
@@ -140,23 +78,8 @@ const get_ctx = (transform, ctx)=> {
 };
 
 
-// eslint-disable-next-line prefer-reflect
-const obj_has = (obj, key)=> Object.prototype.hasOwnProperty.call(obj, key);
-
-
-const get_transformer = (op, type)=> {
-  if (obj_has(transformers, op)) {
-    return transformers[op];
-  }
-
-  if (obj_has(transformers, type)) {
-    return transformers[type];
-  }
-};
-
-
 const transform_expr = (node, ctx)=> {
-  const transform = get_transformer(node.op, node.type);
+  const transform = get_transformer(node.op, node.type, ctx);
 
   if (transform === undefined) {
     throw code_frame_err(new Error('Unknown expression'), node, ctx);
@@ -173,16 +96,26 @@ const transform_expr = (node, ctx)=> {
 };
 
 
-const transform = (node, code, filename)=> {
+const init_ctx = (code, filename)=> {
   let id_ctr = 0;
-  const ast = transform_expr(node, {
+
+  const ctx = {
     filename,
     code,
     unique_ident: (name)=> {
       id_ctr += 1;
       return ident(`${var_prefix}${name}_${id_ctr}`);
     }
-  });
+  };
+
+  return ctx
+    |> add_transformers;
+};
+
+
+const transform = (node, code, filename)=> {
+  const ctx = init_ctx(code, filename);
+  const ast = transform_expr(node, ctx);
 
   traverse(ast, {
     DoExpression: transform_do_expr,

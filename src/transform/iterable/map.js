@@ -1,4 +1,6 @@
-import {params, generator, for_of, yield_or_stop, split_last} from '../../types';
+import {
+  params, generator, for_of, yield_or_stop, split_last
+} from '../../types';
 import {is_call, is_calling} from '../call/call';
 import {block_statement} from '../block';
 

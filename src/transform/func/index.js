@@ -1,5 +1,6 @@
 import {arrowFunctionExpression} from '@babel/types';
 
+import {add, any} from '../../context';
 import {transform_left} from '../generic/left';
 import {transform_block} from '../block';
 
@@ -10,3 +11,8 @@ export const transform_func = (node, ctx)=> {
   return arrowFunctionExpression(params, body);
 };
 
+
+export const add_func = (ctx)=> (
+  ctx
+    |> add(any, 'fn', transform_func)
+);

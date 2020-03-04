@@ -1,4 +1,5 @@
 import {spreadElement} from '@babel/types';
+import {add, any} from '../../context';
 
 
 export const transform_spread = (node, ctx)=> {
@@ -7,3 +8,7 @@ export const transform_spread = (node, ctx)=> {
 };
 
 
+export const add_spread = (ctx)=> (
+  ctx
+    |> add(any, '...', transform_spread)
+);

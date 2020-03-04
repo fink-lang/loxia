@@ -1,4 +1,6 @@
 import {assignmentExpression} from '@babel/types';
+
+import {add, any} from '../../context';
 import {transform_left} from '../generic/left';
 
 
@@ -9,3 +11,9 @@ export const transform_assign = (node, ctx)=> {
   return assignmentExpression('=', left, right);
   // return wrap(node, assignmentExpression('=', left, right));
 };
+
+
+export const add_assignment = (ctx)=> (
+  ctx
+    |> add(any, '=', transform_assign)
+);

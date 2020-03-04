@@ -1,4 +1,5 @@
 import {memberExpression} from '@babel/types';
+import {add, any} from '../../context';
 
 
 export const transform_member = (node, ctx)=> {
@@ -12,3 +13,9 @@ export const transform_member = (node, ctx)=> {
 
   return memberExpression(left, right, computed);
 };
+
+
+export const add_member = (ctx)=> (
+  ctx
+    |> add(any, '.', transform_member)
+);

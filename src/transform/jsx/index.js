@@ -2,6 +2,7 @@ import {
   jsxElement, jsxOpeningElement, jsxIdentifier, jsxClosingElement, jsxAttribute,
   stringLiteral, jsxExpressionContainer, jsxText
 } from '@babel/types';
+import {add, any} from '../../context';
 
 
 export const transform_jsx_elem = (node, {transform})=> {
@@ -40,4 +41,14 @@ export const transform_jsx_text = (node)=> (
 
 export const transform_jsx_expr_container = (node, {transform})=> (
   jsxExpressionContainer(transform(node.expr))
+);
+
+
+export const add_jsx = (ctx)=> (
+  ctx
+    |> add('jsx-elem', any, transform_jsx_elem)
+    |> add('jsx-attr', any, transform_jsx_attr)
+    |> add('jsx-string', any, transform_jsx_str)
+    |> add('jsx-text', any, transform_jsx_text)
+    |> add('jsx-expr-container', any, transform_jsx_expr_container)
 );

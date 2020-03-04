@@ -1,3 +1,4 @@
+import {add, any} from '../../context';
 import {code_frame_err} from '../errors';
 
 
@@ -9,4 +10,10 @@ export const transform_group = (node, {transform})=> (
   // }
 
   // throw new Error('Expected only one expression.');
+);
+
+
+export const add_group = (ctx)=> (
+  ctx
+    |> add('group', any, transform_group)
 );
