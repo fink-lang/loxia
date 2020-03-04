@@ -5,15 +5,16 @@ import {unindent_text, fink2js} from './testing';
 test('errors', ()=> {
   expect(
     ()=> fink2js(`
-      123 = foo
-    `)
+      123 = foo`
+    )
   ).toThrow(unindent_text(`
-    test.fnk:1:0: Unable to transform 'assign =':
-
+    test.fnk:1:0
     1| 123 = foo
        ^
-    2|`)
+
+    Unable to transform 'assign ='.`)
   );
+
 
   expect(
     ()=> generate({
@@ -26,10 +27,12 @@ test('errors', ()=> {
     }, 'test.fnk', 'foobar')
 
   ).toThrow(unindent_text(`
-    test.fnk:1:0: Unable to transform 'test':
-
+    test.fnk:1:0
     1| foobar
        ^
-    `)
+
+    Unable to transform 'test'.
+
+    Unknown expression`)
   );
 });

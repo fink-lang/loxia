@@ -11,9 +11,9 @@ class TransformError extends Error {
     );
 
     super(
-      `${filename}:${line}:${column}: Unable to transform '${type_op}':\n\n${
+      `${filename}:${line}:${column}\n${
         highlight_code_loc(code, node.loc)
-      }\n\n${err.stack}`
+      }\n\nUnable to transform '${type_op}'.\n\n${err.message}`
     );
   }
 }
