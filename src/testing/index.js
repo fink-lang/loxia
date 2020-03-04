@@ -1,5 +1,5 @@
 import {parse} from '@fink/larix';
-import {generate} from '.';
+import {generate} from '..';
 
 
 export const unindent_text = (text)=> {
