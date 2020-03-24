@@ -4,10 +4,18 @@ import {
 
 
 export const transform_string = (node, {transform})=> {
-  const templ_str = templateLiteral(
-    node.parts.map((part)=> templateElement({raw: part, cooked: part})),
-    []
-  );
+  const quasies = node.parts
+    .filter((part, idx)=> idx % 2 === 0)
+    .map((part)=> templateElement({
+      raw: part.value,
+      cooked: part.value
+    }));
+
+  const expressions = node.parts
+    .filter((part, idx)=> idx % 2 === 1)
+    .map((part)=> transform(part));
+
+  const templ_str = templateLiteral(quasies, expressions);
 
   if (node.tag) {
     return taggedTemplateExpression(transform(node.tag), templ_str);
