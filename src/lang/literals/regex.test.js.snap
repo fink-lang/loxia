@@ -1,12 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`compiles regex 1`] = `
-"const regex1 = /(?<year>\\\\d{4})-(?<month>\\\\d{2})-(?<day>\\\\d{2})/gm;
-const regex2 = /(?<year>\\\\d{4})-(?<month>\\\\d{2})-(?<day>\\\\d{2})/;
-const regex3 = /.+\\\\/.+/;
+exports[`regex compiles escape char 1`] = `
+"const regex = /.+\\\\/.+\\\\\\\\/;
 Object.assign(module.exports, {
-  regex1,
-  regex2,
-  regex3
+  regex
+});"
+`;
+
+exports[`regex compiles multiline 1`] = `
+"const regex = /(?<year>\\\\d{4})-(?<month>\\\\d{2})-(?<day>\\\\d{2})/gm;
+Object.assign(module.exports, {
+  regex
+});"
+`;
+
+exports[`regex compiles single line 1`] = `
+"const regex = /(?<year>\\\\d{4})-(?<month>\\\\d{2})-(?<day>\\\\d{2})/;
+Object.assign(module.exports, {
+  regex
 });"
 `;

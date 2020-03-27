@@ -7,8 +7,7 @@ export const transform_string = (node, {transform})=> {
   const quasies = node.parts
     .filter((part, idx)=> idx % 2 === 0)
     .map((part)=> templateElement({
-      raw: part.value,
-      cooked: part.value
+      raw: part.value.replace(/\\([\s\S])|(`)/g, '\\$1$2')
     }));
 
   const expressions = node.parts

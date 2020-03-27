@@ -1,19 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`compiles regex 1`] = `
-"const str1 = \`line 1
-line 2 with leading space
-line 3\`;
-const str2 = \`ab\`;
-const str3 = foo\`bar spam \${shrub + ni} na\`;
-const str4 = \`bar
- spam \${shrub + ni}\${foo}
-ni
-\`;
+exports[`string compiles escape chars 1`] = `
+"const str1 = \`foo\\\\\`bar\\\\nspam\\\\\`ni\`;
+const str2 = \`foo\\\\\`bar\`;
+const str3 = \`foo\\\\\\\\\`;
 Object.assign(module.exports, {
   str1,
   str2,
-  str3,
-  str4
+  str3
+});"
+`;
+
+exports[`string compiles multiline 1`] = `
+"const str = \`line 1
+line 2 with leading space
+line 3\`;
+Object.assign(module.exports, {
+  str
+});"
+`;
+
+exports[`string compiles multiline with expressions 1`] = `
+"const str = \`bar
+spam \${shrub + ni}\${foo}
+ni
+\`;
+Object.assign(module.exports, {
+  str
+});"
+`;
+
+exports[`string compiles simple 1`] = `
+"const str = \`ab\`;
+Object.assign(module.exports, {
+  str
+});"
+`;
+
+exports[`string compiles tagged template string 1`] = `
+"const str = foo\`bar \${ni(spam, shrub)} na\`;
+Object.assign(module.exports, {
+  str
 });"
 `;

@@ -1,7 +1,7 @@
 import {fink2js} from '../../testing';
 
 
-describe('compiles fold', ()=> {
+describe('compiles find', ()=> {
   it('compiles simple find', ()=> {
     expect(
       fink2js(`
