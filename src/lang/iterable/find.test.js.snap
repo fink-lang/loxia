@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`compiles fold compiles complex find 1`] = `
+exports[`compiles find compiles complex find 1`] = `
 "ˆitems_2 => {
   for (const ˆitem_1 of ˆitems_2) {
     const {
@@ -40,7 +40,7 @@ exports[`compiles fold compiles complex find 1`] = `
 Object.assign(module.exports, {});"
 `;
 
-exports[`compiles fold compiles simple find 1`] = `
+exports[`compiles find compiles simple find 1`] = `
 "ˆitems_2 => {
   for (const ˆitem_1 of ˆitems_2) {
     const item = ˆitem_1;
