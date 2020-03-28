@@ -11,7 +11,15 @@ export const transform_any = (flatten)=> (node, {transform, unique_ident})=> {
   const [item] = params([item_param]);
   const [expressions, last_expr] = split_last(node.exprs);
 
-  const yield_value = last_expr;
+  const yield_value = (
+    last_expr.type === 'spread'
+      ? last_expr.right
+      : last_expr
+  );
+
+  if (last_expr.type === 'spread') {
+    flatten = true;
+  }
 
   const items = unique_ident('items');
 
