@@ -8,9 +8,11 @@ export const block_statement = ({transform})=> (expr)=> {
   const st = transform(expr);
 
   if (isAssignmentExpression(st)) {
-    return variableDeclaration(
+    const decl = variableDeclaration(
       'const', [variableDeclarator(st.left, st.right)]
     );
+    decl.leadingComments = st.leadingComments;
+    return decl;
   }
 
   // TODO: check if (isExpression(st)) ...
