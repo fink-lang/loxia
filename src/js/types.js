@@ -10,17 +10,11 @@ import {
   isArrayExpression, isIdentifier
 } from '@babel/types';
 
+import {get_comment} from '../lang/comments';
+
 import {escape_ident} from './identifier';
 
-
 export const map = (mapper)=> ([...items])=> items.map(mapper);
-
-
-export const get_comment = ({comment, loc})=> (
-  comment
-    ? {leadingComments: [{type: 'CommentBlock', value: comment.text, loc}]}
-    : {}
-);
 
 
 export const wrap = (larix_node, js_node)=> (
