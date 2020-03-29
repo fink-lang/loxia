@@ -11,22 +11,23 @@ export const transform_any = (flatten)=> (node, {transform, unique_ident})=> {
   const [item] = params([item_param]);
   const [expressions, last_expr] = split_last(node.exprs);
 
+  const last_is_spread = (last_expr.type === 'spread');
+
   const yield_value = (
-    last_expr.type === 'spread'
+    last_is_spread
       ? last_expr.right
       : last_expr
   );
-
-  if (last_expr.type === 'spread') {
-    flatten = true;
-  }
 
   const items = unique_ident('items');
 
   return generator('map')(items)(
     for_of(item, items)(
       ...expressions.map(block_statement({transform})),
-      ...yield_or_stop(transform(yield_value), unique_ident, flatten)
+      ...yield_or_stop(
+        transform(yield_value),
+        unique_ident, flatten || last_is_spread
+      )
     )
   );
 };
