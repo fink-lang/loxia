@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`func compiles 1`] = `
+"const fun1 = (a, b = 12, ...d) => a + b + c;
+
+const fun2 = b => b * 2;
+
+const fun3 = () => \`shrub\`;
+
+const fun4 = () => \`shrub\`;
+
+const fun5 = c => (d, e) => {
+  const ˆvalue_1 = [d, e];
+
+  if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    const [ˆa_3, ˆa_4] = ˆvalue_1;
+
+    if (ˆa_3 === 1 && ˆa_4 === 2) {
+      return c;
+    }
+  }
+
+  if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    const [ˆa_5, ˆa_6] = ˆvalue_1;
+
+    if (ˆa_5 === 2 && ˆa_6 === 1) {
+      return 1 / c;
+    }
+  }
+};
+
+const fun6 = (c, d) => {
+  const x = 123;
+  {
+    const ˆvalue_7 = ni;
+
+    if (ˆvalue_7 === c + x) {
+      return d;
+    }
+
+    if (ˆvalue_7 === c + 1) {
+      return d + 1;
+    }
+  }
+};
+
+const fun7 = (a, b = 12, c) => {
+  shrub(...a);
+  foo();
+  return bar();
+};
+
+Object.assign(module.exports, {
+  fun1,
+  fun2,
+  fun3,
+  fun4,
+  fun5,
+  fun6,
+  fun7
+});"
+`;
+

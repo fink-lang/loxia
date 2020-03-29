@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`new compiles 1`] = `
+"const foo = new Set();
+Object.assign(module.exports, {
+  foo
+});"
+`;

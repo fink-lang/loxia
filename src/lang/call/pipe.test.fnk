@@ -1,0 +1,17 @@
+{fink2js} = import '../../testing'
+{describe, it, eq, snapshot} = import '../../testing/jest'
+
+
+describe:: 'pipe', fn:
+  it:: 'compiles', fn:
+
+    fink2js(`
+      pipe:
+        foo
+        bar
+        spam
+
+      pipe [1, 2, 3]:
+        map item: item * 2
+    `) eq snapshot
+

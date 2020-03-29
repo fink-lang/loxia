@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`find compiles complex find 1`] = `
+"ˆitems_2 => {
+  for (const ˆitem_1 of ˆitems_2) {
+    const {
+      \\"item\\": item
+    } = ˆitem_1;
+
+    let _do_result;
+
+    ˆmatch_5: {
+      const ˆvalue_4 = item;
+
+      if (ˆvalue_4 !== undefined && ˆvalue_4 !== null) {
+        const {
+          \\"spam\\": ˆp_6
+        } = ˆvalue_4;
+
+        if (ˆp_6 === spam) {
+          _do_result = shrub;
+          break ˆmatch_5;
+        }
+      }
+
+      {
+        _do_result = ni;
+        break ˆmatch_5;
+      }
+    }
+
+    const ˆfound_3 = _do_result;
+    _do_result = undefined;
+    if (ˆfound_3) return ˆitem_1;
+  }
+
+  return undefined;
+};
+
+Object.assign(module.exports, {});"
+`;
+
+exports[`find compiles simple find 1`] = `
+"ˆitems_2 => {
+  for (const ˆitem_1 of ˆitems_2) {
+    const item = ˆitem_1;
+    const ˆfound_3 = item > 3;
+    if (ˆfound_3) return ˆitem_1;
+  }
+
+  return undefined;
+};
+
+Object.assign(module.exports, {});"
+`;

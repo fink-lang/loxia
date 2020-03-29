@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`binary compiles 1`] = `
+"const math_precedence1 = -1 + 0 + 1 + 2 * (3 % 1);
+const math_precedence2 = -1 + 0 + (1 + 2) * (3 / 2);
+const multi_line_assign = 123 + 234 + (-567 - 1111);
+const group1 = (1 + 2) * 3;
+const group2 = 34234 ** -34234 + 1;
+Object.assign(module.exports, {
+  math_precedence1,
+  math_precedence2,
+  multi_line_assign,
+  group1,
+  group2
+});"
+`;

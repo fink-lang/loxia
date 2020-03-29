@@ -1,0 +1,29 @@
+{fink2js} = import '../../testing'
+{describe, it, eq, snapshot} = import '../../testing/jest'
+
+
+describe:: 'numbers', fn:
+  it:: 'transforms integers', fn:
+    fink2js(`
+      x = 1234578
+      y = 0123
+    `) eq snapshot
+
+
+  it:: 'transforms floats', fn:
+    fink2js(`
+      x = 1.234578
+      y = 1.23e45
+      z = 1.23e-45
+      a = 1.23e+45
+    `) eq snapshot
+
+
+  it:: 'transforms hex, octet, binary', fn:
+    fink2js(`
+      h = 0x123456789ABCDEF0
+      o = 0o12345670
+      b = 0b01010
+    `) eq snapshot
+
+

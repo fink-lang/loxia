@@ -1,0 +1,30 @@
+anything = Symbol(`anything`)
+
+snapshot = Symbol(`snapshot`)
+
+
+describe = fn descr, tests:
+  global.describe(descr, tests)
+  undefined
+
+
+it = fn descr, test:
+  global.it(descr, test)
+  undefined
+
+
+eq = fn result, expected:
+  match expected:
+    # istanbul ignore else
+    snapshot: expect(result).toMatchSnapshot()
+    else: expect(result).toEqual(expected)
+
+
+# istanbul ignore next
+is = fn result, expected:
+  expect(result).toBe(expected)
+
+
+to_throw = fn func, err:
+  expect(func).toThrow(err)
+

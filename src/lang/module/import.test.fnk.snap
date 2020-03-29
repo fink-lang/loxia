@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`import compiles 1`] = `
+"const {
+  \\"foo\\": foo
+} = require(\`./spam\`);
+
+const {
+  \\"foo\\": bar
+} = require(\`./shrub\`);
+
+Object.assign(module.exports, {});"
+`;

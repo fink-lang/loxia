@@ -1,0 +1,38 @@
+{generate} = import '.'
+{fink2js} = import './testing'
+{describe, it, to_throw} = import './testing/jest'
+
+
+describe:: 'errors', fn:
+  it:: 'throws with code snippet', fn:
+    (
+      fn: fink2js(`
+        123 = foo`
+      )
+    ) to_throw `
+      test.fnk:1:0
+      1| 123 = foo
+         ^
+
+      Unable to transform 'assign ='.`
+
+    (
+      fn: generate({
+        type: 'test',
+        op: null,
+        loc: {
+          start: {pos: 0, line: 1, column: 0},
+          end: {pos: 9, line: 1, column: 9}
+        }
+      }, 'test.fnk', 'foobar')
+
+    ) to_throw `
+      test.fnk:1:0
+      1| foobar
+         ^
+
+      Unable to transform 'test'.
+
+      Unknown expression`
+
+

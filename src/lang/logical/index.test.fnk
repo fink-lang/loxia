@@ -1,0 +1,13 @@
+{fink2js} = import '../../testing'
+{describe, it, eq, snapshot} = import '../../testing/jest'
+
+
+describe:: 'logical', fn:
+  it:: 'compiles operators', fn:
+
+    fink2js(`
+      logical = a || b || c && d < 1 <= s
+    `) eq snapshot
+
+
+
