@@ -1,0 +1,16 @@
+
+assign = Object.assign
+
+transform_async = fn path:
+  # TODO: should avoid mutating nodes
+  match true:
+    path.isArrowFunctionExpression():
+      path.node assign {async: true}
+
+    path.isFunctionExpression():
+      path.node assign {async: true}
+
+    !!path.parentPath:
+      transform_async(path.parentPath)
+
+  null

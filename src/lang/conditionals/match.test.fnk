@@ -21,6 +21,7 @@ describe:: 'logical', fn:
       # nesting
       match shrub:
         {foo: 4, ni: {na, nu}}: spam + ni
+        # TODO: {left: {type: 'ident'}}: foo
         [1, 2, [ni]]: ni
         123: spam
     `) eq snapshot

@@ -1,0 +1,10 @@
+{add, any} = import '../context'
+{transform_call} = import './call'
+{transform_pipe} = import './pipe'
+
+
+add_call = fn ctx:
+  pipe ctx:
+    add('call', any, transform_call)
+    add(any, 'pipe', transform_pipe)
+

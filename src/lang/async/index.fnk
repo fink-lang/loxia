@@ -1,0 +1,13 @@
+{awaitExpression} = import '@babel/types'
+{add, any} = import '../context'
+
+
+transform_await = fn node, ctx:
+  right = ctx.transform(node.right)
+  awaitExpression(right)
+
+
+add_async = fn ctx:
+  pipe ctx:
+    add('await', any, transform_await)
+

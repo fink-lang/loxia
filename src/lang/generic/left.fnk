@@ -1,0 +1,21 @@
+{
+  isAssignmentExpression, assignmentPattern, isSpreadElement, restElement,
+  isArrayExpression, arrayPattern, isObjectExpression, objectPattern
+} = import '@babel/types'
+
+
+transform_left = fn val:
+  match true:
+    isAssignmentExpression(val):
+      assignmentPattern(val.left, val.right)
+
+    isSpreadElement(val):
+      restElement(val.argument)
+
+    isArrayExpression(val):
+      arrayPattern(val.elements.map(transform_left))
+
+    isObjectExpression(val):
+      objectPattern(val.properties.map(transform_left))
+
+    else: val

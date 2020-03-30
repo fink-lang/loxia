@@ -1,0 +1,168 @@
+{
+  arrayPattern, blockStatement, breakStatement, labeledStatement, objectPattern,
+  objectProperty, isObjectExpression, isArrayExpression, expressionStatement,
+  identifier
+} = import '@babel/types'
+
+{
+  member, str, for_of, split_last, and, eq, not_nullish, typof,
+  expr_block, consts, iff
+} = import '../../js/types'
+
+{is_call, is_calling} = import '../call/call'
+{is_array} = import '../literals/array'
+
+
+iter = fn value:
+  member(value)(member(identifier('Symbol'))(identifier('iterator')), true)
+
+
+is_iterable = fn value:
+  and(
+    not_nullish(value),
+    eq(
+      typof(iter(value)), str('function')
+    )
+  )
+
+
+simple_nested = fn identifiers, use_val: fn [simple, nested], item, idx:
+  elem = match true:
+    use_val: item.value
+    else: item
+
+  id = identifiers.(idx)
+  # TODO: foo?!
+  foo = {id, elem, item}
+
+  match true:
+    (isArrayExpression(elem) || isObjectExpression(elem)):
+      [simple, [...nested, foo]]
+    else:
+      [[...simple, foo], nested]
+
+
+match_props = fn value, props, emit_result, ctx:
+  identifiers = props.map(fn: ctx.unique_ident('p'))
+
+  decl = objectPattern(
+    props.map(fn prop, idx: objectProperty(prop.key, identifiers.(idx)))
+  )
+
+  [simple, nested] = props.reduce(
+    simple_nested(identifiers, true), [[], []]
+  )
+
+  blockStatement([
+    consts(decl, value),
+
+    iff(and(...simple.map(fn {elem, id}: eq(id, elem))))(
+      match nested:
+        {length: 0}: emit_result()
+        else:
+          blockStatement(
+          nested.map(fn {elem, id}:
+            match_condition(id, elem, emit_result, ctx)
+          )
+        )
+    )
+  ])
+
+
+match_obj = fn value, expr, emit_result, ctx:
+  iff(not_nullish(value))(
+    match_props(value, expr.properties, emit_result, ctx)
+  )
+
+
+match_elems = fn value, elems, emit_result, ctx:
+  identifiers = elems.map(fn: ctx.unique_ident('a'))
+  decl = arrayPattern(identifiers)
+
+  [simple, nested] = elems.reduce(simple_nested(identifiers), [[], []])
+
+  blockStatement([
+    consts(decl, value),
+
+    iff(and(...simple.map(fn {elem, id}: eq(id, elem))))(
+      match nested:
+        {length: 0}:
+          emit_result()
+        else:
+           blockStatement(
+            # eslint-disable-next-line no-use-before-define
+            nested.map(fn {elem, id}:
+              match_condition(id, elem, emit_result, ctx)
+            )
+          )
+    )
+  ])
+
+
+match_array = fn value, expr, emit_result, ctx:
+  iff(is_iterable(value))(
+    match_elems(value, expr.elements, emit_result, ctx)
+  )
+
+
+match_simple = fn value, expr, emit_result:
+  # TODO: make wrapping more clear
+  {
+    ...expr,
+    ...iff(eq(value, expr))(
+      emit_result()
+    )
+  }
+
+
+match_condition = fn value, expr, emit_result, ctx:
+  match true:
+    isObjectExpression(expr):
+      match_obj(value, expr, emit_result, ctx)
+
+    isArrayExpression(expr):
+      match_array(value, expr, emit_result, ctx)
+
+    else:
+      match_simple(value, expr, emit_result)
+
+
+split_condition = fn {left, right}:
+  [left, right]
+
+
+ match_all = fn value, matches, emit_result, ctx:
+  pipe matches:
+    map expr:
+      [condition, result] = split_condition(expr)
+      test = ctx.transform(condition)
+
+      match condition:
+        {value: 'else'}:
+          emit_result(result)
+        else:
+          match_condition(value, test, fn: emit_result(result), ctx)
+
+
+transform_match = fn node, ctx:
+  {exprs} = node
+  [inputs] = node.args
+
+  value = ctx.unique_ident('value')
+  break_lbl = ctx.unique_ident('match')
+
+  emit_result = fn result:
+    blockStatement([
+      expressionStatement(ctx.transform(result)),
+      breakStatement(break_lbl)
+    ])
+
+  expr_block(
+    labeledStatement(break_lbl,
+      blockStatement([
+        consts(value, ctx.transform(inputs)),
+        ...match_all(value, exprs, emit_result, ctx)
+      ])
+    )
+  )
+

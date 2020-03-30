@@ -1,0 +1,7 @@
+{unaryExpression} = import '@babel/types'
+
+
+transform_unary= fn node, ctx:
+  right = ctx.transform(node.right)
+  unaryExpression(node.op, right)
+

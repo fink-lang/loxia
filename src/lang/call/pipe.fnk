@@ -1,0 +1,22 @@
+{call, assign, lets, expr_block, nul} = import '../../js/types'
+
+
+transform_pipe = fn node, {transform, unique_ident}:
+  {exprs} = node
+
+  start_value = match node.args:
+    {length: 0}:
+      nul()
+    else:
+      [arg] = node.args
+      transform(arg)
+
+  result = unique_ident('pipe_result')
+
+  expr_block::
+    # TODO: first should not be called with anything if there is no start_value
+    lets(result, start_value),
+    ...pipe exprs:
+      map expr:
+        assign(result, call(transform(expr))(result))
+

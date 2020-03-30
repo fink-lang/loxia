@@ -1,0 +1,10 @@
+{parse} = import '@fink/larix'
+{generate} = import '..'
+
+
+fink2js = fn source:
+  filename = 'test.fnk'
+  ast = parse(source, filename)
+  {code} = generate(ast, filename, source)
+  code
+

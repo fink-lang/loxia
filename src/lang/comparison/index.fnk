@@ -1,0 +1,8 @@
+{add, any} = import '../context'
+{transform_binary} = import '../generic/binary'
+
+
+add_comparison = fn ctx:
+  pipe ctx:
+    add('comp', any, transform_binary)
+

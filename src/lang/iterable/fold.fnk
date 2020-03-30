@@ -1,0 +1,29 @@
+{assign, params, for_of, split_last, func, consts, lets} = import '../../js/types'
+{block_statement} = import '../block'
+
+
+transform_fold = fn node, {transform, unique_ident}:
+  [item_param, acc_param] = node.args.map(transform)
+
+  [acc_decl, acc_initial] = [acc_param.left, acc_param.right]
+
+  [item] = params([item_param])
+  items = unique_ident('items')
+  acc = unique_ident('acc')
+
+  [expressions, last_expr] = split_last(node.exprs)
+
+  func(items)(
+    lets(acc, acc_initial),
+
+    for_of(item, items)(
+      consts(acc_decl, acc),
+
+      ...expressions.map(block_statement({transform})),
+
+      assign(acc, transform(last_expr))
+    ),
+    acc
+  )
+
+

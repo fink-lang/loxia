@@ -1,0 +1,94 @@
+{ident, wrap} = import '../js/types'
+{var_prefix} = import '../js/identifier'
+
+{code_frame_err} = import './errors'
+{get_transformer} = import './context'
+
+{add_assignment} = import './assignment'
+{add_func} = import './func'
+{add_conditionals} = import './conditionals'
+{add_iterables} = import './iterable'
+{add_call} = import './call'
+{add_literals} = import './literals'
+{add_spread} = import './spread'
+{add_async} = import './async'
+{add_logical} = import './logical'
+{add_group} = import './group'
+{add_module} = import './module'
+{add_member} = import './prop-access'
+{add_ident} = import './identifier'
+{add_comparison} = import './comparison'
+{add_jsx} = import './jsx'
+{add_js_compat} = import './js-compat'
+{add_arithmitic} = import './arithmitic'
+{add_generic} = import './generic'
+
+
+add_transformers = fn ctx:
+  pipe ctx:
+    add_module
+    add_ident
+    add_literals
+    add_group
+    add_member
+    add_logical
+    add_comparison
+    add_arithmitic
+    add_assignment
+    add_spread
+    add_async
+    add_func
+    add_conditionals
+    add_iterables
+    add_call
+    add_async
+    add_jsx
+    add_generic
+    add_js_compat
+
+
+transform_expr = fn node, ctx:
+  transform = get_transformer(node.op, node.type, ctx) || null
+
+  match transform:
+    null: throw code_frame_err(new Error('Unknown expression'), node, ctx)
+
+  transform_ctx = {
+    ...ctx,
+    transform: fn nde: transform_expr(nde, transform_ctx)
+  }
+
+  [err, ast] = attempt:
+    transformed_node = transform(node, transform_ctx)
+    # TODO: some nodes have location data
+    wrap(node, transformed_node)
+
+  match err:
+    null: ast
+    else: throw code_frame_err(err, node, ctx)
+
+
+init_ctx = fn code, filename:
+  id_cntr = pipe 0:
+    unfold id:
+      id + 1
+
+  ctx = {
+    filename,
+    code,
+    unique_ident: fn name:
+      # TODO: return ident and new ctx to make it not stateful
+      {value} = id_cntr.next()
+      ident(`${var_prefix}${name}_${value}`)
+  }
+
+  pipe ctx:
+    add_transformers
+
+
+transform_ast = fn node, code, filename:
+  ctx = init_ctx(code, filename)
+  js_ast = transform_expr(node, ctx)
+  js_ast
+
+

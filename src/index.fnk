@@ -1,0 +1,33 @@
+{default: babel_gen} = import '@babel/generator'
+{default: traverse} = import '@babel/traverse'
+
+{transform_ast} = import './lang'
+
+{transform_do_expr} = import './js/do-expression'
+{transform_async} = import './js/async'
+
+
+transform = fn node, code, filename:
+  ast = transform_ast(node, code, filename)
+
+  traverse(ast, {
+    DoExpression: transform_do_expr,
+    AwaitExpression: {enter: transform_async}
+  })
+
+  ast
+
+
+generate = fn ast, filename, code:
+  new_ast = transform(ast, code, filename)
+
+  options = {
+    filename,
+    sourceMaps: true,
+    sourceFileName: filename
+  }
+
+  generated = babel_gen(new_ast, options, code)
+  final_code = generated.code
+
+  {...generated, code: final_code, ast: new_ast}

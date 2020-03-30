@@ -1,0 +1,40 @@
+{objectExpression, objectProperty, stringLiteral, assignmentPattern} = import '@babel/types'
+
+
+transform_object = fn node, ctx:
+  props = node.exprs.map(ctx.transform)
+  objectExpression(props)
+
+
+str_key = fn {value, loc}:
+  {...stringLiteral(value), loc}
+
+
+get_key = fn {key}, ctx:
+  match true:
+    (key.type == 'group' || key.type == 'string'):
+      [ctx.transform(key), true]
+    else:
+      [str_key(key), false]
+
+
+transform_prop = fn node, ctx:
+  prop = match true:
+    node.key.type == 'spread':
+      ctx.transform(node.key)
+    else:
+      [key, computed] = get_key(node, ctx)
+      value = ctx.transform(node.value)
+
+      shorthand = (node.key == node.value)
+      is_default_assignment = (node.value.type == 'assign')
+
+      final_value = match true:
+        is_default_assignment:
+          assignmentPattern(value.left, value.right)
+        else:
+          value
+
+      objectProperty(key, final_value, computed, shorthand)
+  prop
+

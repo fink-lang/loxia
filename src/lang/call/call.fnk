@@ -1,0 +1,8 @@
+{callExpression} = import '@babel/types'
+
+
+transform_call = fn node, ctx:
+  callee = ctx.transform(node.callee)
+  args = node.args.map(ctx.transform)
+  callExpression(callee, args)
+

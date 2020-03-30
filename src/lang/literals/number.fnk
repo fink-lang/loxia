@@ -1,0 +1,8 @@
+{numericLiteral, bigIntLiteral} = import '@babel/types'
+
+
+transform_number = fn {value}:
+  match value.match(rx/\./):
+    null: bigIntLiteral(value)
+    else: numericLiteral(Number(value))
+
