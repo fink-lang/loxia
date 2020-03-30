@@ -1,0 +1,27 @@
+{fink2js} = import '../../testing'
+{describe, it, eq, snapshot} = import '../../testing/jest'
+
+
+describe:: 'regex', fn:
+  it:: 'compiles single line', fn:
+    fink2js(`
+      regex = rx/(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})/
+    `) eq snapshot
+
+
+  it:: 'compiles multiline', fn:
+    fink2js(`
+      regex = rx/
+        (?<year>\\d{4})-    # year part of a date
+        (?<month>\\d{2})-   # month part of a date
+        (?<day>\\d{2})      # day part of a date
+      /gm
+    `) eq snapshot
+
+
+  it:: 'compiles escape char', fn:
+    fink2js(`
+      regex = rx/.+\\/.+\\\\/
+    `) eq snapshot
+
+

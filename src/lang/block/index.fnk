@@ -1,0 +1,35 @@
+{
+  doExpression, blockStatement, isAssignmentExpression,
+  expressionStatement, variableDeclaration, variableDeclarator
+} = import '@babel/types'
+
+
+block_statement = fn {transform}: fn expr:
+  st = transform(expr)
+
+  match true:
+    isAssignmentExpression(st):
+      decl = variableDeclaration(
+        'const', [variableDeclarator(st.left, st.right)]
+      )
+      # TODO: do without assign
+      Object.assign(decl, {leadingComments: st.leadingComments})
+      decl
+    else:
+      # TODO: check if (isExpression(st)) ...
+      expressionStatement(st)
+
+
+transform_block = fn node, ctx:
+  {exprs} = node
+
+  match exprs:
+    {length: 1}:
+      [expr] = exprs
+      ctx.transform(expr)
+    else:
+      doExpression(
+        blockStatement(
+          exprs.map(block_statement(ctx))
+        )
+      )

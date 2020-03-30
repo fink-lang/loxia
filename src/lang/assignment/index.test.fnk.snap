@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`assignment compiles 1`] = `
+"const assign = 1;
+const assign2 = assign;
+const no_clash_with_await = 13;
+const assign_lang_const1 = true;
+const assign_lang_const2 = false;
+const multi_line_assign = 123 + 234 + (-567 - 1111);
+Object.assign(module.exports, {
+  assign,
+  assign2,
+  no_clash_with_await,
+  assign_lang_const1,
+  assign_lang_const2,
+  multi_line_assign
+});"
+`;
+

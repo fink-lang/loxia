@@ -1,0 +1,18 @@
+{fink2js} = import '../../testing'
+{describe, it, eq, snapshot} = import '../../testing/jest'
+
+
+describe:: 'comment', fn:
+  it:: 'compiles', fn:
+
+    fink2js(`
+      # foobar spam ham
+      foo = 123
+
+      ---
+      Shrub ni.
+      ---
+      bar = fn:
+        spam
+    `) eq snapshot
+

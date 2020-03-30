@@ -1,0 +1,38 @@
+{
+  tryStatement, blockStatement, catchClause, arrayExpression,
+  expressionStatement, doExpression, nullLiteral, isDoExpression
+} = import '@babel/types'
+
+{split_last} = import '../../js/types'
+{transform_block} = import '../block'
+
+
+transform_attempt = fn node, ctx:
+  block = transform_block(node, ctx)
+  body = match true:
+    isDoExpression(block): block.body.body
+    else: [block]
+
+  [expressions, last_expr] = split_last(body)
+  err = ctx.unique_ident('error')
+
+  doExpression(
+    blockStatement([
+      tryStatement(
+        blockStatement([
+          ...expressions,
+          expressionStatement(
+            arrayExpression([nullLiteral(), last_expr.expression || last_expr])
+          )
+        ]),
+        catchClause(
+          err,
+          blockStatement([
+            expressionStatement(
+              arrayExpression([err, nullLiteral()])
+            )
+          ])
+        )
+      )
+    ])
+  )

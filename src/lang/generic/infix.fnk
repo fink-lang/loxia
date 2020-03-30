@@ -1,0 +1,8 @@
+{call, ident} = import '../../js/types'
+
+
+transform_inifx = fn node, ctx:
+  left = ctx.transform(node.left)
+  right = ctx.transform(node.right)
+  call(ident(node.op))(left, right)
+

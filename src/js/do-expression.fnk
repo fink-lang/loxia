@@ -1,0 +1,157 @@
+{
+  assignmentExpression, returnStatement, callExpression,
+  arrowFunctionExpression, expressionStatement
+} = import '@babel/types'
+
+{lets, assign, undef} = import './types'
+
+
+last_expressions = fn path:
+  match true:
+    path.isDoExpression():
+      body = path.get('body')
+      [...last_expressions(body)]
+
+    path.isBlockStatement():
+      body = path.get('body')
+      last = body.(body.length - 1)
+      match true:
+        last.isExpressionStatement():
+          [last]
+        else:
+          [...last_expressions(last)]
+
+    path.isLabeledStatement():
+      items = []
+      path.traverse(
+        {
+          BreakStatement: fn brk:
+            last = brk.getSibling(brk.key - 1)
+            # TODO: don't use mutation
+            items.push(last)
+            null
+        }
+      )
+      items
+
+    # istanbul ignore else
+    path.isTryStatement():
+      [
+        ...last_expressions(path.get('block')),
+        ...last_expressions(path.get('handler').get('body'))
+      ]
+    else:
+       # istanbul ignore next
+      throw path.buildCodeFrameError(`Can't convert do-expression`)
+
+
+consume_all = fold item, acc=null: null
+
+
+replace_with_return = fn path:
+  pipe last_expressions(path):
+    map expr:
+      TODO = match true:
+        expr.node.expression.operator == 'throw':
+          # no return throw ...
+          expr.replaceWith(
+            expressionStatement(expr.node.expression)
+          )
+        else:
+          expr.replaceWith(
+            returnStatement(expr.node.expression)
+          )
+
+      # TODO: no need for e.g. breaks after a return
+      sibl = expr.getSibling(expr.key+1)
+      match true:
+        # istanbul ignore else
+        !!sibl:
+          sibl.remove()
+
+    consume_all
+
+
+simple = fn body, sl=false:
+  match true:
+    body.isBlockStatement():
+      [stmnt, ...rest] = body.get('body')
+
+      match rest:
+        {length: 0}:
+          # e.g. fn arg: match ...: ...
+          match true:
+            (sl && stmnt.isLabeledStatement()):
+              stmnt.node.body
+            else:
+              # TODO:
+              # if (sl && stmnt.isIfStatement()) {
+              #   return body.node
+              # }
+              simple(stmnt)
+        else:
+          body.node
+    else:
+      body.node
+
+
+replace_with_assign = fn target, path:
+  id = path.parentPath.scope.generateUidIdentifier('do_result')
+  #TODO:
+  Object.assign(target.node, {init: id})
+
+  target.parentPath.insertBefore(lets(id))
+  target.parentPath.insertBefore(simple(path.get('body')))
+  target.parentPath.insertAfter(assign(id, undef()))
+
+  pipe last_expressions(path):
+    map expr:
+      expr.replaceWith(
+        assignmentExpression('=', id, expr.node.expression)
+      )
+
+    consume_all
+
+
+transform_do_expr = fn path:
+  {parentPath: parent} = path
+
+  match true:
+    parent.isVariableDeclarator():
+      replace_with_assign(parent, path)
+
+    parent.isArrowFunctionExpression():
+      # console.log(dbg(parent.node))
+      Object.assign(parent.node, {body: simple(path.get('body'), true)})
+      replace_with_return(path)
+
+    parent.isExpressionStatement():
+      # this is used e.g. for conditional at the module level
+      parent.replaceWith(path.get('body').node)
+
+    parent.isReturnStatement():
+      parent.replaceWith(simple(path.get('body'), true))
+      replace_with_return(path)
+
+    # istanbul ignore else
+    !parent.isProgram():
+      # e.g.
+      # {
+      #   foo:
+      #     x = spam
+      #     x + 3
+      # }
+      path.replaceWith(
+        callExpression(arrowFunctionExpression([], path.node), [])
+      )
+      # parent.insertBefore(expressionStatement(identifier('ret_st')))
+      # throw parent.buildCodeFrameError(`Can't convert do-expression`)
+      null
+    else:
+      # istanbul ignore next
+      throw parent.buildCodeFrameError(`Can't convert do-expression`)
+      # istanbul ignore next
+      null
+
+  null
+

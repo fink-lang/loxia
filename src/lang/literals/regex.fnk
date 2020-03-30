@@ -1,0 +1,7 @@
+{regExpLiteral} = import '@babel/types'
+
+
+transform_regex = fn node:
+  pattern = node.pattern.replace(rx/(\#.*\n)|[\n\s]/gm, '')
+
+  regExpLiteral(pattern, node.flags)

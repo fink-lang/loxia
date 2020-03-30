@@ -1,0 +1,12 @@
+{add, any} = import '../context'
+{code_frame_err} = import '../errors'
+
+
+transform_group = fn node, {transform}:
+  [expr] = node.exprs
+  transform(expr)
+
+
+add_group = fn ctx:
+  pipe ctx:
+    add('group', any, transform_group)

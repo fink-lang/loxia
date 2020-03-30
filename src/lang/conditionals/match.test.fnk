@@ -1,0 +1,28 @@
+{fink2js} = import '../../testing'
+{describe, it, eq, snapshot} = import '../../testing/jest'
+
+
+describe:: 'logical', fn:
+  it:: 'compiles', fn:
+
+    fink2js(`
+      # with else
+      match shrub:
+        {foo: 4, ni}: spam + ni
+        123: spam
+        [1, 2, ni]: ni
+        else: shrub
+
+      # no else
+      match shrub:
+        {foo: 4, ni}: spam + ni
+        123: spam
+
+      # nesting
+      match shrub:
+        {foo: 4, ni: {na, nu}}: spam + ni
+        # TODO: {left: {type: 'ident'}}: foo
+        [1, 2, [ni]]: ni
+        123: spam
+    `) eq snapshot
+

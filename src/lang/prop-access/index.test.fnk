@@ -1,0 +1,13 @@
+{fink2js} = import '../../testing'
+{describe, it, eq, snapshot} = import '../../testing/jest'
+
+
+describe:: 'member', fn:
+  it:: 'compiles', fn:
+
+    fink2js(`
+      foo = spam.shrub
+      computed_member = item.'bar spam'
+      computed_member2 = item.(Symbol.iterator)
+    `) eq snapshot
+

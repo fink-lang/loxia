@@ -1,0 +1,36 @@
+{params, generator, for_of, yield_or_stop, split_last} = import '../../js/types'
+
+{is_call, is_calling} = import '../call/call'
+{block_statement} = import '../block'
+
+
+transform_any = fn flatten: fn node, {transform, unique_ident}:
+  [item_param] = node.args.map(transform)
+
+  [item] = params([item_param])
+  [expressions, last_expr] = split_last(node.exprs)
+
+  last_is_spread = (last_expr.type == 'spread')
+
+  yield_value = match true:
+    last_is_spread: last_expr.right
+    else: last_expr
+
+  items = unique_ident('items')
+
+  generator('map')(items)(
+    for_of(item, items)(
+      ...expressions.map(block_statement({transform})),
+
+      ...yield_or_stop(
+        transform(yield_value),
+        unique_ident, flatten || last_is_spread
+      )
+    )
+  )
+
+
+transform_map = transform_any(false)
+
+
+transform_flat_map = transform_any(true)

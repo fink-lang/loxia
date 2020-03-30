@@ -1,0 +1,55 @@
+{
+  assign, generator, for_of, split_last, yield_or_stop,
+  params, consts, yields, true_
+} = import '../../js/types'
+{whileStatement, blockStatement} = import '@babel/types'
+{block_statement} = import '../block'
+{transform_left} = import '../generic/left'
+
+
+loop = fn ...body:
+  whileStatement(true_(), blockStatement(body))
+
+
+get_acc = fn inputs:
+  [acc_init] = params(inputs)
+  match true:
+    !!acc_init:
+      acc_id = acc_init.left || acc_init
+      [acc_id, [acc_init]]
+    else:
+      [null, []]
+
+
+transform_unfold = fn node, {transform, unique_ident}:
+  [acc_id, acc_init] = get_acc(
+    node.args.map(fn arg: transform_left(transform(arg)))
+  )
+
+  [expressions, last_expr] = split_last(node.exprs)
+
+  [result, next_value] = match last_expr:
+    {type: 'group'}: last_expr.exprs
+    else: [last_expr, false]
+
+  result_id = unique_ident('result')
+
+  acc_assign = acc_id && (
+    match true:
+      !!next_value: assign(acc_id, transform(next_value))
+      else: assign(acc_id, result_id)
+  )
+
+  generator('unfold')(...acc_init)(
+    loop(
+      ...expressions.map(block_statement({transform})),
+
+      consts(result_id, transform(result)),
+
+      yields(result_id),
+
+      ...match true:
+        !!acc_assign: [acc_assign]
+        else: []
+    )
+  )

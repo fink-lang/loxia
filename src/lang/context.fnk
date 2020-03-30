@@ -1,0 +1,21 @@
+any = false
+
+
+add = fn type, op, transformer: fn {transformers, ...ctx}:
+  next_transformers = {
+    ...transformers,
+    (type || op): transformer
+  }
+  {transformers: next_transformers, ...ctx}
+
+
+obj_has = fn obj, key: Object.prototype.hasOwnProperty.call(obj, key)
+
+
+get_transformer = fn op, type, {transformers}:
+  match true:
+    obj_has(transformers, op):
+      transformers.(op)
+
+    obj_has(transformers, type):
+      transformers.(type)

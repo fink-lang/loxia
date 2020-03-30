@@ -1,0 +1,12 @@
+{fink2js} = import '../../testing'
+{describe, it, eq, snapshot} = import '../../testing/jest'
+
+
+describe:: 'infix operators', fn:
+  it:: 'compiles', fn:
+
+    fink2js(`
+      add = fn a, b: a + b
+      foo = 123 add 456
+    `) eq snapshot
+

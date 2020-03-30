@@ -1,0 +1,47 @@
+{
+  file, program, objectExpression, objectProperty, identifier,
+  expressionStatement
+} = import '@babel/types'
+
+{call, member, ident} = import '../../js/types'
+{add, any} = import '../context'
+
+{block_statement} = import '../block'
+{transform_import} = import './import'
+
+
+transform_module = fn node, ctx:
+  # TODO: cleanup
+  exported = node.exprs
+    .filter(fn expr: expr.type != 'comment')
+    .filter(fn expr:
+      match expr.left:
+        {type: 'ident'}: true
+        else: false
+    )
+    .map(fn expr:
+      # TODO: wrap with loc?
+      id = ident(expr.left.value)
+      objectProperty(id, id, false, true)
+    )
+
+  body = node.exprs
+    .filter(fn expr: expr.type != 'comment')
+    .map(fn expr: block_statement(ctx)(expr))
+
+  # TODO: auto export?
+  exports = expressionStatement(
+    call(member(identifier('Object'))(identifier('assign')))(
+      member(identifier('module'))(identifier('exports')),
+      objectExpression(exported)
+    )
+  )
+
+  file(program([...body, exports], [], 'module'))
+
+
+add_module = fn ctx:
+  pipe ctx:
+    add('module', any, transform_module)
+    add('import', any, transform_import)
+

@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`call compiles 1`] = `
+"const call1 = a(ni, x = 123, ...x);
+const call2 = a(ni);
+const call3 = a();
+const call4 = a(x => x * 2);
+Object.assign(module.exports, {
+  call1,
+  call2,
+  call3,
+  call4
+});"
+`;

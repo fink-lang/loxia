@@ -1,0 +1,7 @@
+
+get_comment = fn {comment=null}:
+  match comment:
+    null: {}
+    else:
+      {value, loc} = comment
+      {leadingComments: [{type: 'CommentBlock', value, loc}]}

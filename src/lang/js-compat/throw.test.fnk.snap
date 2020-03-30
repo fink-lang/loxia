@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`throw compiles 1`] = `
+"bar => {
+  const ˆvalue_1 = true;
+
+  if (ˆvalue_1 === has_err(bar)) {
+    throw err(\`spam\`);
+  }
+
+  {
+    return bar;
+  }
+};
+
+Object.assign(module.exports, {});"
+`;

@@ -1,0 +1,22 @@
+{templateElement, templateLiteral, taggedTemplateExpression} = import '@babel/types'
+
+
+transform_string = fn node, {transform}:
+  quasies = node.parts
+    .filter(fn part, idx: idx % 2 == 0)
+    .map(fn part: templateElement({
+      raw: part.value.replace(rx/\\([\s\S])|(`)/g, '\\$1$2')
+    }))
+
+  expressions = node.parts
+    .filter(fn part, idx: idx % 2 == 1)
+    .map(fn part:transform(part))
+
+  templ_str = templateLiteral(quasies, expressions)
+  {tag=null} = node
+
+  match tag:
+    null: templ_str
+    else: taggedTemplateExpression(transform(node.tag), templ_str)
+
+

@@ -1,0 +1,14 @@
+{fink2js} = import '../../testing'
+{describe, it, eq, snapshot} = import '../../testing/jest'
+
+
+describe:: 'fold', fn:
+  it:: 'compiles', fn:
+    fink2js(`
+      fold item, acc=0:
+        ni = item + acc
+        item * acc
+    `) eq snapshot
+
+
+

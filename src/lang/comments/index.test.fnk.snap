@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`comment compiles 1`] = `
+"/* foobar spam ham*/
+const foo = 123;
+
+/*
+Shrub ni.
+*/
+const bar = () => spam;
+
+Object.assign(module.exports, {
+  foo,
+  bar
+});"
+`;

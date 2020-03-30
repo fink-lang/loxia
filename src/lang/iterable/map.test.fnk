@@ -1,0 +1,55 @@
+{fink2js} = import '../../testing'
+{describe, it, eq, snapshot} = import '../../testing/jest'
+
+
+describe:: 'map', fn:
+  it:: 'compiles single line', fn:
+    fink2js(`
+      map item: item * 2
+    `) eq snapshot
+
+
+  it:: 'compiles multi line', fn:
+    fink2js(`
+      map item:
+        item * 2
+    `) eq snapshot
+
+
+  it:: 'compiles single line with default value', fn:
+    fink2js(`
+      map item=123: item * 2
+    `) eq snapshot
+
+
+  it:: 'compiles single line with destructured obj', fn:
+    fink2js(`
+      map {item}: item * 2
+    `) eq snapshot
+
+
+  it:: 'compiles single line with destructured array', fn:
+    fink2js(`
+      map [x, y]: x + y
+    `) eq snapshot
+
+
+  it:: 'compiles as flat map', fn:
+    fink2js(`
+      map [x, y]:
+        ...[x, y]
+    `) eq snapshot
+
+
+describe:: 'flat_map', fn:
+  it:: 'compiles', fn:
+    fink2js(`
+      flat_map item: [spam + item]
+
+      flat_map item: [spam]
+    `) eq snapshot
+
+
+
+
+

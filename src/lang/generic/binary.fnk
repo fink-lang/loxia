@@ -1,0 +1,17 @@
+{binaryExpression} = import '@babel/types'
+
+
+transform_op = {
+  '==': '===',
+  '!=': '!==',
+  '^': '**'
+}
+
+
+transform_binary = fn node, ctx:
+  left = ctx.transform(node.left)
+  right = ctx.transform(node.right)
+
+  op = transform_op.(node.op) || node.op
+
+  binaryExpression(op, left, right)

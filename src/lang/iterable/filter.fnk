@@ -1,0 +1,30 @@
+{params, generator, for_of, yield_or_stop, split_last} = import '../../js/types'
+{iff, yields, consts} = import '../../js/types'
+
+{is_call, is_calling} = import '../call/call'
+{block_statement} = import '../block'
+
+
+transform_filter = fn node, {transform, unique_ident}:
+  [item_param] = params(node.args.map(transform))
+
+  [expressions, last_expr] = split_last(node.exprs)
+
+  item = unique_ident('item')
+  items = unique_ident('items')
+  result = unique_ident('result')
+
+  generator('filter')(items)(
+    for_of(item, items)(
+      consts(item_param, item),
+
+      ...expressions.map(block_statement({transform})),
+
+      consts(result, transform(last_expr)),
+
+      iff(result)(
+        yields(item)
+      )
+    )
+  )
+

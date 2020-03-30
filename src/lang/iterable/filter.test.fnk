@@ -1,0 +1,11 @@
+{fink2js} = import '../../testing'
+{describe, it, eq, snapshot} = import '../../testing/jest'
+
+
+describe:: 'filter', fn:
+  it:: 'compiles', fn:
+    fink2js(`
+      filter item:
+        item % 2 == 0
+    `) eq snapshot
+

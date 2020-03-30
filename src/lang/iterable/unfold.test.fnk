@@ -1,0 +1,21 @@
+{fink2js} = import '../../testing'
+{describe, it, eq, snapshot} = import '../../testing/jest'
+
+
+describe:: 'unfold', fn:
+  it:: 'compiles', fn:
+    fink2js(`
+      unfold curr=start:
+        (curr + inc, curr * 2)
+
+      unfold curr:
+        (curr + inc, curr * 2)
+
+      unfold:
+        1234
+
+      count = fn start=0, inc=1:
+        unfold curr=start:
+          curr + inc
+    `) eq snapshot
+

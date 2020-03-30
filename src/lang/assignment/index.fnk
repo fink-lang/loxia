@@ -1,0 +1,18 @@
+{assignmentExpression} = import '@babel/types'
+
+{add, any} = import '../context'
+{transform_left} = import '../generic/left'
+
+
+transform_assign = fn node, ctx:
+  left = transform_left(ctx.transform(node.left))
+  right = ctx.transform(node.right)
+
+  # wrap(node, assignmentExpression('=', left, right))
+  assignmentExpression('=', left, right)
+
+
+add_assignment = fn ctx:
+  pipe ctx:
+    add(any, '=', transform_assign)
+

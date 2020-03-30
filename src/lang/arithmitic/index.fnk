@@ -1,0 +1,11 @@
+{add, any} = import '../context'
+{transform_binary} = import '../generic/binary'
+{transform_unary} = import '../generic/unary'
+
+
+add_arithmitic = fn ctx:
+  pipe ctx:
+    add('arithm', any, transform_binary)
+    add('arithm_right', any, transform_binary)
+    add('arithm_prefix', any, transform_unary)
+

@@ -1,0 +1,19 @@
+{fink2js} = import '../../testing'
+{describe, it, eq, snapshot} = import '../../testing/jest'
+
+
+describe:: 'attempt', fn:
+  it:: 'compiles', fn:
+
+    fink2js(`
+      foo1 = fn:
+        [item, err] = attempt:
+          bar = shrub()
+          bar + ni()
+        [item, err]
+
+      foo2 = fn: attempt: 1/0
+    `) eq snapshot
+
+
+
