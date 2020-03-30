@@ -37,71 +37,97 @@ exports[`logical compiles 1`] = `
     }
   }
 }
-{
-  ˆmatch_9: {
-    const ˆvalue_8 = shrub;
+Object.assign(module.exports, {});"
+`;
 
-    if (ˆvalue_8 !== undefined && ˆvalue_8 !== null) {
+exports[`logical compiles nested 1`] = `
+"{
+  ˆmatch_2: {
+    const ˆvalue_1 = shrub;
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"foo\\": ˆp_10,
-        \\"ni\\": ˆp_11
-      } = ˆvalue_8;
+        \\"foo\\": ˆp_3,
+        \\"ni\\": ˆp_4
+      } = ˆvalue_1;
 
-      if (ˆp_10 === 4 && ˆp_11 === ni) {
-        spam + ni;
-        break ˆmatch_9;
+      if (ˆp_3 === 4) {
+        if (ˆp_4 !== undefined && ˆp_4 !== null) {
+          const {
+            \\"na\\": ˆp_5,
+            \\"nu\\": ˆp_6
+          } = ˆp_4;
+
+          if (ˆp_5 === na && ˆp_6 === nu) {
+            spam + ni;
+            break ˆmatch_2;
+          }
+        }
       }
     }
 
-    if (ˆvalue_8 === 123) {
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        \\"foo\\": ˆp_7
+      } = ˆvalue_1;
+      {
+        if (ˆp_7 !== undefined && ˆp_7 !== null) {
+          const {
+            \\"bar\\": ˆp_8
+          } = ˆp_7;
+
+          if (ˆp_8 === \`spam\`) {
+            ni;
+            break ˆmatch_2;
+          }
+        }
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_9, ˆa_10, ˆa_11] = ˆvalue_1;
+
+      if (ˆa_9 === 1 && ˆa_10 === 2) {
+        if (ˆa_11 !== undefined && ˆa_11 !== null && typeof ˆa_11[Symbol.iterator] === \\"function\\") {
+          const [ˆa_12] = ˆa_11;
+
+          if (ˆa_12 === ni) {
+            ni;
+            break ˆmatch_2;
+          }
+        }
+      }
+    }
+
+    if (ˆvalue_1 === 123) {
       spam;
-      break ˆmatch_9;
+      break ˆmatch_2;
     }
   }
 }
-{
-  ˆmatch_13: {
-    const ˆvalue_12 = shrub;
+Object.assign(module.exports, {});"
+`;
 
-    if (ˆvalue_12 !== undefined && ˆvalue_12 !== null) {
+exports[`logical compiles without else 1`] = `
+"{
+  ˆmatch_2: {
+    const ˆvalue_1 = shrub;
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"foo\\": ˆp_14,
-        \\"ni\\": ˆp_15
-      } = ˆvalue_12;
+        \\"foo\\": ˆp_3,
+        \\"ni\\": ˆp_4
+      } = ˆvalue_1;
 
-      if (ˆp_14 === 4) {
-        if (ˆp_15 !== undefined && ˆp_15 !== null) {
-          const {
-            \\"na\\": ˆp_16,
-            \\"nu\\": ˆp_17
-          } = ˆp_15;
-
-          if (ˆp_16 === na && ˆp_17 === nu) {
-            spam + ni;
-            break ˆmatch_13;
-          }
-        }
+      if (ˆp_3 === 4 && ˆp_4 === ni) {
+        spam + ni;
+        break ˆmatch_2;
       }
     }
 
-    if (ˆvalue_12 !== undefined && ˆvalue_12 !== null && typeof ˆvalue_12[Symbol.iterator] === \\"function\\") {
-      const [ˆa_18, ˆa_19, ˆa_20] = ˆvalue_12;
-
-      if (ˆa_18 === 1 && ˆa_19 === 2) {
-        if (ˆa_20 !== undefined && ˆa_20 !== null && typeof ˆa_20[Symbol.iterator] === \\"function\\") {
-          const [ˆa_21] = ˆa_20;
-
-          if (ˆa_21 === ni) {
-            ni;
-            break ˆmatch_13;
-          }
-        }
-      }
-    }
-
-    if (ˆvalue_12 === 123) {
+    if (ˆvalue_1 === 123) {
       spam;
-      break ˆmatch_13;
+      break ˆmatch_2;
     }
   }
 }

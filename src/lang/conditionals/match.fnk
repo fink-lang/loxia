@@ -26,46 +26,50 @@ is_iterable = fn value:
   )
 
 
-simple_nested = fn identifiers, use_val: fn [simple, nested], item, idx:
-  elem = match true:
-    use_val: item.value
-    else: item
+split_simple_nested = fn id_props, use_val:
+  pipe id_props:
+    fold [id, item], [simple, nested]=[[], []]:
+      elem = match true:
+        use_val: item.value
+        else: item
 
-  id = identifiers.(idx)
-  # TODO: foo?!
-  foo = {id, elem, item}
-
-  match true:
-    (isArrayExpression(elem) || isObjectExpression(elem)):
-      [simple, [...nested, foo]]
-    else:
-      [[...simple, foo], nested]
+      match true:
+        (isArrayExpression(elem) || isObjectExpression(elem)):
+          [simple, [...nested, {id, elem}]]
+        else:
+          [[...simple, {id, elem}], nested]
 
 
 match_props = fn value, props, emit_result, ctx:
-  identifiers = props.map(fn: ctx.unique_ident('p'))
+  [...id_props] = pipe props:
+    map prop:
+      [ctx.unique_ident('p'), prop]
 
   decl = objectPattern(
-    props.map(fn prop, idx: objectProperty(prop.key, identifiers.(idx)))
+    id_props.map(fn [id, prop]: objectProperty(prop.key, id))
   )
 
-  [simple, nested] = props.reduce(
-    simple_nested(identifiers, true), [[], []]
-  )
+  [simple, nested] = split_simple_nested(id_props, true)
+
+  nested_block = match nested:
+    {length: 0}:
+      emit_result()
+    else:
+      blockStatement(
+        nested.map(fn {elem, id}:
+          match_condition(id, elem, emit_result, ctx)
+        )
+      )
 
   blockStatement([
     consts(decl, value),
-
-    iff(and(...simple.map(fn {elem, id}: eq(id, elem))))(
-      match nested:
-        {length: 0}: emit_result()
-        else:
-          blockStatement(
-          nested.map(fn {elem, id}:
-            match_condition(id, elem, emit_result, ctx)
-          )
+    match simple:
+      {length: 0}:
+        nested_block
+      else:
+        iff(and(...simple.map(fn {elem, id}: eq(id, elem))))(
+          nested_block
         )
-    )
   ])
 
 
@@ -76,10 +80,13 @@ match_obj = fn value, expr, emit_result, ctx:
 
 
 match_elems = fn value, elems, emit_result, ctx:
-  identifiers = elems.map(fn: ctx.unique_ident('a'))
-  decl = arrayPattern(identifiers)
+  [...id_elems] = pipe elems:
+    map elem:
+      [ctx.unique_ident('a'), elem]
 
-  [simple, nested] = elems.reduce(simple_nested(identifiers), [[], []])
+  decl = arrayPattern(id_elems.map(fn [id]: id))
+
+  [simple, nested] = split_simple_nested(id_elems, false)
 
   blockStatement([
     consts(decl, value),
@@ -90,7 +97,6 @@ match_elems = fn value, elems, emit_result, ctx:
           emit_result()
         else:
            blockStatement(
-            # eslint-disable-next-line no-use-before-define
             nested.map(fn {elem, id}:
               match_condition(id, elem, emit_result, ctx)
             )
@@ -131,7 +137,7 @@ split_condition = fn {left, right}:
   [left, right]
 
 
- match_all = fn value, matches, emit_result, ctx:
+match_all = fn value, matches, emit_result, ctx:
   pipe matches:
     map expr:
       [condition, result] = split_condition(expr)
