@@ -137,7 +137,7 @@ split_condition = fn {left, right}:
   [left, right]
 
 
- match_all = fn value, matches, emit_result, ctx:
+match_all = fn value, matches, emit_result, ctx:
   pipe matches:
     map expr:
       [condition, result] = split_condition(expr)
