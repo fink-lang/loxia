@@ -100,7 +100,8 @@ yields = fn expr, delegate:
   expressionStatement(yieldExpression(expr, delegate))
 
 
-iff = fn test: fn consequent: ifStatement(test, consequent)
+iff = fn test: fn consequent:
+  ifStatement(test, consequent)
 
 
 returns = fn expr: returnStatement(expr)

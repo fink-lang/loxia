@@ -6,7 +6,7 @@
 
 {
   member, str, for_of, split_last, and, eq, not_nullish, typof,
-  expr_block, consts, iff
+  expr_block, consts, iffq
 } = import '../../js/types'
 
 {is_call, is_calling} = import '../call/call'
@@ -32,14 +32,12 @@ simple_nested = fn identifiers, use_val: fn [simple, nested], item, idx:
     else: item
 
   id = identifiers.(idx)
-  # TODO: foo?!
-  foo = {id, elem, item}
 
   match true:
     (isArrayExpression(elem) || isObjectExpression(elem)):
-      [simple, [...nested, foo]]
+      [simple, [...nested, {id, elem}]]
     else:
-      [[...simple, foo], nested]
+      [[...simple, {id, elem}], nested]
 
 
 match_props = fn value, props, emit_result, ctx:
@@ -53,19 +51,23 @@ match_props = fn value, props, emit_result, ctx:
     simple_nested(identifiers, true), [[], []]
   )
 
+  nested_block = match nested:
+    {length: 0}: emit_result()
+    else:
+      blockStatement(
+        nested.map(fn {elem, id}:
+          match_condition(id, elem, emit_result, ctx)
+        )
+      )
+
   blockStatement([
     consts(decl, value),
-
-    iff(and(...simple.map(fn {elem, id}: eq(id, elem))))(
-      match nested:
-        {length: 0}: emit_result()
-        else:
-          blockStatement(
-          nested.map(fn {elem, id}:
-            match_condition(id, elem, emit_result, ctx)
-          )
+    match simple:
+      {length: 0}: nested_block
+      else:
+        iff(and(...simple.map(fn {elem, id}: eq(id, elem))))(
+          nested_block
         )
-    )
   ])
 
 
