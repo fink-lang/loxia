@@ -22,7 +22,7 @@ describe:: 'logical', fn:
     `) eq snapshot
 
 
-  it:: 'compiles nested', fn:
+  it:: 'compiles nested obj pattern', fn:
     fink2js(`
       match shrub:
         {foo: 4, ni: {na, nu}}: spam + ni
@@ -31,3 +31,13 @@ describe:: 'logical', fn:
         123: spam
     `) eq snapshot
 
+  it:: 'compiles nested match', fn:
+    fink2js(`
+      test = fn:
+        match foo:
+          bar:
+            match spam:
+              shrub: ni
+            bar
+
+    `) eq snapshot
