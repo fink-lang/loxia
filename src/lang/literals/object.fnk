@@ -19,7 +19,7 @@ get_key = fn {key}, ctx:
 
 
 transform_prop = fn node, ctx:
-  prop = match true:
+  match true:
     node.key.type == 'spread':
       ctx.transform(node.key)
     else:
@@ -36,5 +36,5 @@ transform_prop = fn node, ctx:
           value
 
       objectProperty(key, final_value, computed, shorthand)
-  prop
+
 

@@ -1,12 +1,13 @@
-{memberExpression} = import '@babel/types'
+{memberExpression, identifier} = import '@babel/types'
 {add, any} = import '../context'
 
 
 transform_member = fn node, ctx:
   left = ctx.transform(node.left)
 
-  # TODO: right hand side can be an identifier that should not be escaped
-  right = ctx.transform(node.right)
+  right = match node.right:
+    {type: 'ident'}: identifier(node.right.value)
+    else: ctx.transform(node.right)
 
   computed = (
     node.right.type == 'string'

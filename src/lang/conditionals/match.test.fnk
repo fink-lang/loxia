@@ -31,6 +31,7 @@ describe:: 'logical', fn:
         123: spam
     `) eq snapshot
 
+
   it:: 'compiles nested match', fn:
     fink2js(`
       test = fn:

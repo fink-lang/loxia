@@ -57,7 +57,7 @@ consume_all = fold item, acc=null: null
 replace_with_return = fn path:
   pipe last_expressions(path):
     map expr:
-      TODO = match true:
+      match true:
         expr.node.expression.operator == 'throw':
           # no return throw ...
           expr.replaceWith(
