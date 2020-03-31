@@ -27,7 +27,7 @@ transform_module = fn node, ctx:
     # filter {type}: type != 'comment'
     map expr: block_statement(ctx)(expr)
 
-  # TODO: auto export?
+  # TODO: use individual exports?
   exports = expressionStatement(
     call(member(identifier('Object'))(identifier('assign')))(
       member(identifier('module'))(identifier('exports')),

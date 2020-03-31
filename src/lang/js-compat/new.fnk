@@ -5,6 +5,5 @@
 transform_new = fn node, ctx:
   right = ctx.transform(node.right)
 
-  # TODO: should be able to use right.arguments
-  wrap(node, newExpression(right.callee, right.`arguments`))
+  wrap(node, newExpression(right.callee, right.arguments))
 
