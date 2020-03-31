@@ -117,12 +117,6 @@ yield_or_stop = fn expr, unique_ident, delegate:
 
   [
     consts(result, expr),
-    # iff(eq(result, ident('stop')))(
-    #   returns()
-    # ),
-    # iff(neq(result, ident('skip')))(
-    #   yields(result, delegate)
-    # )
     yields(result, delegate)
   ]
 

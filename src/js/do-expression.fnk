@@ -23,7 +23,6 @@ last_expressions = fn path:
 
     path.isLabeledStatement():
       body = path.get('body')
-      # console.log:: body.node
 
       items = []
       body.traverse(
