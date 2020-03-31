@@ -40,7 +40,33 @@ exports[`logical compiles 1`] = `
 Object.assign(module.exports, {});"
 `;
 
-exports[`logical compiles nested 1`] = `
+exports[`logical compiles nested match 1`] = `
+"const test = () => {
+  const ˆvalue_1 = foo;
+
+  if (ˆvalue_1 === bar) {
+    {
+      {
+        ˆmatch_4: {
+          const ˆvalue_3 = spam;
+
+          if (ˆvalue_3 === shrub) {
+            ni;
+            break ˆmatch_4;
+          }
+        }
+      }
+      return bar;
+    }
+  }
+};
+
+Object.assign(module.exports, {
+  test
+});"
+`;
+
+exports[`logical compiles nested obj pattern 1`] = `
 "{
   ˆmatch_2: {
     const ˆvalue_1 = shrub;

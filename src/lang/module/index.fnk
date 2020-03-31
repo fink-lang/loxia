@@ -11,23 +11,21 @@
 
 
 transform_module = fn node, ctx:
-  # TODO: cleanup
-  exported = node.exprs
-    .filter(fn expr: expr.type != 'comment')
-    .filter(fn expr:
-      match expr.left:
-        {type: 'ident'}: true
+  [...exported] = pipe node.exprs:
+    filter expr:
+      match expr:
+        {left: {type: 'ident'}}: true
+        {type: 'comment'} : false
         else: false
-    )
-    .map(fn expr:
-      # TODO: wrap with loc?
-      id = ident(expr.left.value)
-      objectProperty(id, id, false, true)
-    )
 
-  body = node.exprs
-    .filter(fn expr: expr.type != 'comment')
-    .map(fn expr: block_statement(ctx)(expr))
+    map {left: {value}}:
+      # TODO: wrap with loc?
+      id = ident(value)
+      objectProperty(id, id, false, true)
+
+  body = pipe node.exprs:
+    # filter {type}: type != 'comment'
+    map expr: block_statement(ctx)(expr)
 
   # TODO: auto export?
   exports = expressionStatement(

@@ -22,9 +22,15 @@ last_expressions = fn path:
           [...last_expressions(last)]
 
     path.isLabeledStatement():
+      body = path.get('body')
+      # console.log:: body.node
+
       items = []
-      path.traverse(
+      body.traverse(
         {
+          LabeledStatement: fn nested_match:
+            nested_match.skip()
+          ,
           BreakStatement: fn brk:
             last = brk.getSibling(brk.key - 1)
             # TODO: don't use mutation
