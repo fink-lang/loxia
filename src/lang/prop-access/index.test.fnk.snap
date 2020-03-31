@@ -4,9 +4,11 @@ exports[`member compiles 1`] = `
 "const foo = spam.shrub;
 const computed_member = item[\`bar spam\`];
 const computed_member2 = item[Symbol.iterator];
+const reserved_prop = item.arguments;
 Object.assign(module.exports, {
   foo,
   computed_member,
-  computed_member2
+  computed_member2,
+  reserved_prop
 });"
 `;

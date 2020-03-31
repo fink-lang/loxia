@@ -25,10 +25,10 @@ expr_block = fn ...exprs:
       ...pipe exprs:
         map node:
           match true:
-                (node.type.endsWith('Expression') || isIdentifier(node)):
-                  expressionStatement(node)
-                else:
-                  node
+            (node.type.endsWith('Expression') || isIdentifier(node)):
+              expressionStatement(node)
+            else:
+              node
     ])
   )
 
@@ -75,9 +75,14 @@ not_nullish = fn value:
 
 ident = fn name:
   match name:
-    # TODO: typeof name == 'string': identifier(escape_ident(name))
+    # TODO: typeof name == 'string': identifier(escape_ident(name)) or
     {constructor: String}: identifier(escape_ident(name))
-    else: name
+    else:
+      # {type: 'Identifier'}
+      # {type: 'ObjectPattern'}
+      # {type: 'ArrayPattern'}
+      # {type: 'AssignmentPattern'}
+      name
 
 
 consts = fn id, init:
@@ -112,12 +117,6 @@ yield_or_stop = fn expr, unique_ident, delegate:
 
   [
     consts(result, expr),
-    # iff(eq(result, ident('stop')))(
-    #   returns()
-    # ),
-    # iff(neq(result, ident('skip')))(
-    #   yields(result, delegate)
-    # )
     yields(result, delegate)
   ]
 

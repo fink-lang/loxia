@@ -12,9 +12,7 @@ block_statement = fn {transform}: fn expr:
       decl = variableDeclaration(
         'const', [variableDeclarator(st.left, st.right)]
       )
-      # TODO: do without assign
-      Object.assign(decl, {leadingComments: st.leadingComments})
-      decl
+      {...decl, leadingComments: st.leadingComments}
     else:
       # TODO: check if (isExpression(st)) ...
       expressionStatement(st)
