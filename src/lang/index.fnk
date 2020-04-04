@@ -55,7 +55,7 @@ transform_expr = fn node, ctx:
 
   transform_ctx = {
     ...ctx,
-    transform: fn nde: transform_expr(nde, transform_ctx)
+    transform: fn nde, foo_ctx: transform_expr(nde, foo_ctx || transform_ctx)
   }
 
   [err, ast] = attempt:

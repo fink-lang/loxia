@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`logical compiles 1`] = `
+exports[`match compiles 1`] = `
 "{
   ˆmatch_2: {
     const ˆvalue_1 = shrub;
@@ -40,7 +40,7 @@ exports[`logical compiles 1`] = `
 Object.assign(module.exports, {});"
 `;
 
-exports[`logical compiles nested match 1`] = `
+exports[`match compiles nested match 1`] = `
 "const test = () => {
   const ˆvalue_1 = foo;
 
@@ -66,7 +66,7 @@ Object.assign(module.exports, {
 });"
 `;
 
-exports[`logical compiles nested obj pattern 1`] = `
+exports[`match compiles nested obj pattern 1`] = `
 "{
   ˆmatch_2: {
     const ˆvalue_1 = shrub;
@@ -134,7 +134,83 @@ exports[`logical compiles nested obj pattern 1`] = `
 Object.assign(module.exports, {});"
 `;
 
-exports[`logical compiles without else 1`] = `
+exports[`match compiles patial application 1`] = `
+"{
+  ˆmatch_2: {
+    const ˆvalue_1 = {
+      \\"spam\\": 123
+    };
+
+    if (ˆvalue_1 > 123) {
+      ni;
+      break ˆmatch_2;
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        \\"spam\\": ˆp_3
+      } = ˆvalue_1;
+
+      if (ˆp_3 > 123) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        \\"spam\\": ˆp_4
+      } = ˆvalue_1;
+
+      if (ˆp_4.is_foo()) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        \\"spam\\": ˆp_5
+      } = ˆvalue_1;
+
+      if (is_foo(ˆp_5)) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_6] = ˆvalue_1;
+
+      if (ˆa_6 > 123) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_7] = ˆvalue_1;
+
+      if (ˆa_7.is_foo()) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_8] = ˆvalue_1;
+
+      if (is_foo(ˆa_8)) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+  }
+}
+Object.assign(module.exports, {});"
+`;
+
+exports[`match compiles without else 1`] = `
 "{
   ˆmatch_2: {
     const ˆvalue_1 = shrub;

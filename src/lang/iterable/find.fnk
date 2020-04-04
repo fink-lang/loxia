@@ -3,7 +3,7 @@
 
 
 transform_find = fn node, {transform, unique_ident}:
-  [item_param] = node.args.map(transform)
+  [item_param] = node.args.map(fn expr: transform(expr))
   [init] = params([item_param])
 
   item = unique_ident('item')

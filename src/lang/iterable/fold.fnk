@@ -3,7 +3,7 @@
 
 
 transform_fold = fn node, {transform, unique_ident}:
-  [item_param, acc_param] = node.args.map(transform)
+  [item_param, acc_param] = node.args.map(fn expr: transform(expr))
 
   [acc_decl, acc_initial] = [acc_param.left, acc_param.right]
 
