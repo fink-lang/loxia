@@ -9,7 +9,6 @@
   expr_block, consts, iff
 } = import '../../js/types'
 
-{is_call, is_calling} = import '../call/call'
 {get_key} = import '../literals/object'
 {is_array} = import '../literals/array'
 
@@ -27,35 +26,38 @@ is_iterable = fn value:
   )
 
 
+args_has_partial = fn {args}:
+  pipe args:
+    map arg: is_partial:: arg
+    find partial: partial
+
+
 is_partial = fn node:
   match node:
-    {callee: {value: '?'}}: true
-    {callee: {left: {value: '?'}}}: true
-    {type: 'call'}:
-      arg = pipe node.args:
-        find arg:
-          match arg:
-            {value: '?'}: true
-            else: false
-      !!arg
-
-    {type: 'comp', left: {value: '?'}}: true
-    else:
-      false
+    {type: 'partial'}: true
+    {left: {type: 'partial'}}: true
+    {right: {type: 'partial'}}: true
+    {type: 'call', callee: {type: 'partial'}}: true
+    {type: 'call', callee: {left: {type: 'partial'}}}: true
+    {type: 'call'}: args_has_partial:: node
+    else: false
 
 
-transform_foo = fn node, id, {partials=[], ...ctx}:
+transform_with_partials = fn id, node, {partial_ident, transform, ...ctx}:
   partial = is_partial:: node
 
-  foo_ctx = {...ctx, partials: [id, ...partials]}
+  value_ctx = {...ctx, partial_ident: id}
 
-  {partial, ...ctx.transform(node, foo_ctx)}
+  # TODO: should get partial info from transforming node?
+  [partial, transform(node, value_ctx)]
 
 
-comp = fn left, right:
-  match right:
-    {partial: true}: right
-    else: eq(left, right)
+comp = fn id, expected, ctx:
+  [partial, value] = transform_with_partials(id, expected, ctx)
+
+  match true:
+    partial: value
+    else: eq(id, value)
 
 
 split_simple_nested = fn id_props, use_val, ctx:
@@ -77,8 +79,7 @@ split_simple_nested = fn id_props, use_val, ctx:
         {type: 'object'}:
           [simple, [...nested, {elem, id}]]
         else:
-          foo = transform_foo(elem, id, ctx)
-          [[...simple, {id, elem: foo}], nested]
+          [[...simple, {id, elem}], nested]
 
 
 match_props = fn value, props, emit_result, ctx:
@@ -112,7 +113,7 @@ match_props = fn value, props, emit_result, ctx:
       {length: 0}:
         nested_block
       else:
-        iff(and(...simple.map(fn {elem, id}: comp(id, elem))))(
+        iff(and(...simple.map(fn {elem, id}: comp(id, elem, ctx))))(
           nested_block
         )
   ])
@@ -137,7 +138,7 @@ match_elems = fn value, elems, emit_result, ctx:
   blockStatement([
     consts(decl, value),
 
-    iff(and(...simple.map(fn {elem, id}: comp(id, elem))))(
+    iff(and(...simple.map(fn {elem, id}: comp(id, elem, ctx))))(
       match nested:
         {length: 0}:
           emit_result()
@@ -158,14 +159,11 @@ match_array = fn value, expr, emit_result, ctx:
 
 
 match_simple = fn value, expr, emit_result, ctx:
-  foo = transform_foo(expr, value, ctx)
-
-  # TODO: make wrapping more clear
   {
-    ...foo,
-    ...iff(comp(value, foo))(
+    ...iff(comp(value, expr, ctx))(
       emit_result()
-    )
+    ),
+    loc: expr.loc
   }
 
 

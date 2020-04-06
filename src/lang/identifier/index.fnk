@@ -4,13 +4,8 @@
 {add, any} = import '../context'
 
 
-transform_ident = fn {value}, {partials}:
-  [part] = partials || []
-
-  name = match value:
-    '?': part.name
-    else: escape_ident(value)
-
+transform_ident = fn {value}:
+  name = escape_ident(value)
   identifier(name)
 
 

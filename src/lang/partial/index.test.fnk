@@ -1,0 +1,15 @@
+{fink2js} = import '../../testing'
+{describe, it, eq, snapshot} = import '../../testing/jest'
+
+
+describe:: 'partial', fn:
+  it:: 'compiles outside of match', fn:
+    fink2js(`
+      foo1 = a * ? + 1
+      foo2 = bar(?)
+      foo3 = ?.bar()
+      foo4 = ?()
+    `) eq snapshot
+
+
+

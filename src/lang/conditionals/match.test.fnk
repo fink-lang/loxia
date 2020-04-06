@@ -47,12 +47,16 @@ describe:: 'match', fn:
     fink2js(`
       match {spam: 123}:
         ? > 123: ni
+        !?: ni
+        ?(): ni
 
         {spam: ? > 123}: ni
+        {spam: ?()}: ni
         {spam: ?.is_foo()}: ni
         {spam: is_foo(?)}: ni
 
         [? > 123]: ni
+        [?()]: ni
         [?.is_foo()]: ni
         [is_foo(?)]: ni
     `) eq snapshot

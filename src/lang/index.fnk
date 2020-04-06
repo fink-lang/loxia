@@ -22,12 +22,14 @@
 {add_js_compat} = import './js-compat'
 {add_arithmitic} = import './arithmitic'
 {add_generic} = import './generic'
+{add_partial} = import './partial'
 
 
 add_transformers = fn ctx:
   pipe ctx:
     add_module
     add_ident
+    add_partial
     add_literals
     add_group
     add_member

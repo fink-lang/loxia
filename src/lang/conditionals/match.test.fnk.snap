@@ -146,6 +146,16 @@ exports[`match compiles patial application 1`] = `
       break ˆmatch_2;
     }
 
+    if (!ˆvalue_1) {
+      ni;
+      break ˆmatch_2;
+    }
+
+    if (ˆvalue_1()) {
+      ni;
+      break ˆmatch_2;
+    }
+
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
         \\"spam\\": ˆp_3
@@ -162,7 +172,7 @@ exports[`match compiles patial application 1`] = `
         \\"spam\\": ˆp_4
       } = ˆvalue_1;
 
-      if (ˆp_4.is_foo()) {
+      if (ˆp_4()) {
         ni;
         break ˆmatch_2;
       }
@@ -173,16 +183,18 @@ exports[`match compiles patial application 1`] = `
         \\"spam\\": ˆp_5
       } = ˆvalue_1;
 
-      if (is_foo(ˆp_5)) {
+      if (ˆp_5.is_foo()) {
         ni;
         break ˆmatch_2;
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_6] = ˆvalue_1;
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        \\"spam\\": ˆp_6
+      } = ˆvalue_1;
 
-      if (ˆa_6 > 123) {
+      if (is_foo(ˆp_6)) {
         ni;
         break ˆmatch_2;
       }
@@ -191,7 +203,7 @@ exports[`match compiles patial application 1`] = `
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
       const [ˆa_7] = ˆvalue_1;
 
-      if (ˆa_7.is_foo()) {
+      if (ˆa_7 > 123) {
         ni;
         break ˆmatch_2;
       }
@@ -200,7 +212,25 @@ exports[`match compiles patial application 1`] = `
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
       const [ˆa_8] = ˆvalue_1;
 
-      if (is_foo(ˆa_8)) {
+      if (ˆa_8()) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_9] = ˆvalue_1;
+
+      if (ˆa_9.is_foo()) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_10] = ˆvalue_1;
+
+      if (is_foo(ˆa_10)) {
         ni;
         break ˆmatch_2;
       }
