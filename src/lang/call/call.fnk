@@ -2,7 +2,10 @@
 
 
 transform_call = fn node, ctx:
-  callee = ctx.transform(node.callee)
-  args = node.args.map(ctx.transform)
-  callExpression(callee, args)
+  callee = ctx.transform:: node.callee
 
+  [...args] = pipe node.args:
+    map expr:
+      ctx.transform:: expr
+
+  {...callExpression(callee, args)}

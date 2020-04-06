@@ -2,7 +2,7 @@
 {describe, it, eq, snapshot} = import '../../testing/jest'
 
 
-describe:: 'logical', fn:
+describe:: 'match', fn:
 
   it:: 'compiles', fn:
     fink2js(`
@@ -40,5 +40,23 @@ describe:: 'logical', fn:
             match spam:
               shrub: ni
             bar
+    `) eq snapshot
 
+
+  it:: 'compiles patial application', fn:
+    fink2js(`
+      match {spam: 123}:
+        ? > 123: ni
+        !?: ni
+        ?(): ni
+
+        {spam: ? > 123}: ni
+        {spam: ?()}: ni
+        {spam: ?.is_foo()}: ni
+        {spam: is_foo(?)}: ni
+
+        [? > 123]: ni
+        [?()]: ni
+        [?.is_foo()]: ni
+        [is_foo(?)]: ni
     `) eq snapshot

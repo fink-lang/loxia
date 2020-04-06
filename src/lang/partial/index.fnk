@@ -1,0 +1,17 @@
+{identifier} = import '@babel/types'
+
+{escape_ident} = import '../../js/identifier'
+{add} = import '../context'
+
+
+transform_partial = fn {value}, {partial_ident}:
+  name = match partial_ident || null:
+    null: escape_ident(value)
+    else: partial_ident.name
+
+  identifier(name)
+
+
+add_partial = fn ctx:
+  pipe ctx:
+    add('partial', '?', transform_partial)

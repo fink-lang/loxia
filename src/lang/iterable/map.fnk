@@ -5,7 +5,7 @@
 
 
 transform_any = fn flatten: fn node, {transform, unique_ident}:
-  [item_param] = node.args.map(transform)
+  [item_param] = node.args.map(fn expr: transform(expr))
 
   [item] = params([item_param])
   [expressions, last_expr] = split_last(node.exprs)

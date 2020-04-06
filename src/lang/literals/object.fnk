@@ -2,7 +2,7 @@
 
 
 transform_object = fn node, ctx:
-  props = node.exprs.map(ctx.transform)
+  props = node.exprs.map(fn expr: ctx.transform(expr))
   objectExpression(props)
 
 

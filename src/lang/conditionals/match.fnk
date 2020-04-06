@@ -9,7 +9,7 @@
   expr_block, consts, iff
 } = import '../../js/types'
 
-{is_call, is_calling} = import '../call/call'
+{get_key} = import '../literals/object'
 {is_array} = import '../literals/array'
 
 
@@ -26,16 +26,58 @@ is_iterable = fn value:
   )
 
 
-split_simple_nested = fn id_props, use_val:
+args_has_partial = fn {args}:
+  pipe args:
+    map arg: is_partial:: arg
+    find partial: partial
+
+
+is_partial = fn node:
+  match node:
+    {type: 'partial'}: true
+    {left: {type: 'partial'}}: true
+    {right: {type: 'partial'}}: true
+    {type: 'call', callee: {type: 'partial'}}: true
+    {type: 'call', callee: {left: {type: 'partial'}}}: true
+    {type: 'call'}: args_has_partial:: node
+    else: false
+
+
+transform_with_partials = fn id, node, {partial_ident, transform, ...ctx}:
+  partial = is_partial:: node
+
+  value_ctx = {...ctx, partial_ident: id}
+
+  # TODO: should get partial info from transforming node?
+  [partial, transform(node, value_ctx)]
+
+
+comp = fn id, expected, ctx:
+  [partial, value] = transform_with_partials(id, expected, ctx)
+
+  match true:
+    partial: value
+    else: eq(id, value)
+
+
+split_simple_nested = fn id_props, use_val, ctx:
   pipe id_props:
     fold [id, item], [simple, nested]=[[], []]:
       elem = match true:
-        use_val: item.value
+        use_val:
+          match item.value:
+            {type: 'block', exprs: {length: 1}}:
+              {exprs: [expr]} = item.value
+              expr
+            else:
+              item.value
         else: item
 
-      match true:
-        (isArrayExpression(elem) || isObjectExpression(elem)):
-          [simple, [...nested, {id, elem}]]
+      match elem:
+        {type: 'array'}:
+          [simple, [...nested, {elem, id}]]
+        {type: 'object'}:
+          [simple, [...nested, {elem, id}]]
         else:
           [[...simple, {id, elem}], nested]
 
@@ -43,13 +85,17 @@ split_simple_nested = fn id_props, use_val:
 match_props = fn value, props, emit_result, ctx:
   [...id_props] = pipe props:
     map prop:
-      [ctx.unique_ident('p'), prop]
+      id = ctx.unique_ident('p')
+      [id, prop]
 
   decl = objectPattern(
-    id_props.map(fn [id, prop]: objectProperty(prop.key, id))
+    id_props.map(fn [id, prop]:
+      [key, computed] = get_key(prop, ctx)
+      objectProperty(key, id, computed)
+    )
   )
 
-  [simple, nested] = split_simple_nested(id_props, true)
+  [simple, nested] = split_simple_nested(id_props, true, ctx)
 
   nested_block = match nested:
     {length: 0}:
@@ -67,7 +113,7 @@ match_props = fn value, props, emit_result, ctx:
       {length: 0}:
         nested_block
       else:
-        iff(and(...simple.map(fn {elem, id}: eq(id, elem))))(
+        iff(and(...simple.map(fn {elem, id}: comp(id, elem, ctx))))(
           nested_block
         )
   ])
@@ -75,23 +121,24 @@ match_props = fn value, props, emit_result, ctx:
 
 match_obj = fn value, expr, emit_result, ctx:
   iff(not_nullish(value))(
-    match_props(value, expr.properties, emit_result, ctx)
+    match_props(value, expr.exprs, emit_result, ctx)
   )
 
 
 match_elems = fn value, elems, emit_result, ctx:
   [...id_elems] = pipe elems:
     map elem:
-      [ctx.unique_ident('a'), elem]
+      id = ctx.unique_ident('a')
+      [id, elem]
 
   decl = arrayPattern(id_elems.map(fn [id]: id))
 
-  [simple, nested] = split_simple_nested(id_elems, false)
+  [simple, nested] = split_simple_nested(id_elems, false, ctx)
 
   blockStatement([
     consts(decl, value),
 
-    iff(and(...simple.map(fn {elem, id}: eq(id, elem))))(
+    iff(and(...simple.map(fn {elem, id}: comp(id, elem, ctx))))(
       match nested:
         {length: 0}:
           emit_result()
@@ -107,30 +154,29 @@ match_elems = fn value, elems, emit_result, ctx:
 
 match_array = fn value, expr, emit_result, ctx:
   iff(is_iterable(value))(
-    match_elems(value, expr.elements, emit_result, ctx)
+    match_elems(value, expr.exprs, emit_result, ctx)
   )
 
 
-match_simple = fn value, expr, emit_result:
-  # TODO: make wrapping more clear
+match_simple = fn value, expr, emit_result, ctx:
   {
-    ...expr,
-    ...iff(eq(value, expr))(
+    ...iff(comp(value, expr, ctx))(
       emit_result()
-    )
+    ),
+    loc: expr.loc
   }
 
 
 match_condition = fn value, expr, emit_result, ctx:
-  match true:
-    isObjectExpression(expr):
+  match expr:
+    {type: 'object'}:
       match_obj(value, expr, emit_result, ctx)
 
-    isArrayExpression(expr):
+    {type: 'array'}:
       match_array(value, expr, emit_result, ctx)
 
     else:
-      match_simple(value, expr, emit_result)
+      match_simple(value, expr, emit_result, ctx)
 
 
 split_condition = fn {left, right}:
@@ -141,13 +187,12 @@ match_all = fn value, matches, emit_result, ctx:
   pipe matches:
     map expr:
       [condition, result] = split_condition(expr)
-      test = ctx.transform(condition)
 
       match condition:
         {value: 'else'}:
           emit_result(result)
         else:
-          match_condition(value, test, fn: emit_result(result), ctx)
+          match_condition(value, condition, fn: emit_result(result), ctx)
 
 
 transform_match = fn node, ctx:

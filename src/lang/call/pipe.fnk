@@ -15,7 +15,7 @@ transform_pipe = fn node, {transform, unique_ident}:
 
   expr_block::
     # TODO: first should not be called with anything if there is no start_value
-    lets(result, start_value),
+    lets(result, start_value)
     ...pipe exprs:
       map expr:
         assign(result, call(transform(expr))(result))
