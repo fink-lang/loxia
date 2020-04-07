@@ -12,21 +12,15 @@ Object.assign(module.exports, {
 });"
 `;
 
-exports[`destructuring object compiles 1`] = `
+exports[`destructuring object compiles computed keys 1`] = `
 "const {
-  \\"a\\": a,
-  \\"b\\": b,
-  \\"c\\": c
-} = ni;
-const {
-  \\"e\\": e,
-  ...f
-} = {
-  \\"e\\": 0,
-  \\"foo\\": 12,
-  \\"bar\\": 34
-};
-const {
+  [\`n i\`]: ni
+} = foo;
+Object.assign(module.exports, {});"
+`;
+
+exports[`destructuring object compiles defaults 1`] = `
+"const {
   \\"x\\": x = 1,
   \\"ni\\": {
     \\"y\\": y,
@@ -38,43 +32,54 @@ const {
     \\"z\\": 2
   }
 };
-const {
-  [\`n i\`]: ni
-} = foo;
 Object.assign(module.exports, {});"
 `;
 
-exports[`object compiles 1`] = `
-"const obj1 = {};
-const obj2 = {
-  \\"a\\": a
-};
-const obj3 = {
-  \\"a\\": a,
-  \\"delete\\": ˆdelete,
-  \\"true\\": true,
-  \\"false\\": false
-};
-const obj4 = {
+exports[`destructuring object compiles simple 1`] = `
+"const {
   \\"a\\": a,
   \\"b\\": b,
-  ...c
+  \\"c\\": c
+} = ni;
+Object.assign(module.exports, {});"
+`;
+
+exports[`destructuring object compiles spread 1`] = `
+"const {
+  \\"e\\": e,
+  ...f
+} = {
+  \\"e\\": 0,
+  \\"foo\\": 12,
+  \\"bar\\": 34
 };
-const obj5 = {
+Object.assign(module.exports, {});"
+`;
+
+exports[`object compiles key:val 1`] = `
+"const obj = {
   \\"a\\": 1,
   \\"b\\": 123,
   [\`c-d-e\`]: cde
 };
-const obj6 = {
-  \\"a\\": a = 123,
-  \\"b\\": c = 456
-};
-const obj7 = {
+Object.assign(module.exports, {
+  obj
+});"
+`;
+
+exports[`object compiles key:val 2`] = `
+"const obj7 = {
   \\"a\\": 123,
   \\"b\\": 123 && 123 && 1345,
   \\"c\\": (a, b) => 134
 };
-const obj8 = {
+Object.assign(module.exports, {
+  obj7
+});"
+`;
+
+exports[`object compiles multiline 1`] = `
+"const obj = {
   \\"a\\": 123,
   \\"b\\": 123 && 123 && 1345,
   \\"c\\": (a, b) => 134,
@@ -83,19 +88,46 @@ const obj8 = {
     return foo(n);
   })()
 };
-({
+Object.assign(module.exports, {
+  obj
+});"
+`;
+
+exports[`object compiles shorthand 1`] = `
+"const obj = {
+  \\"a\\": a
+};
+Object.assign(module.exports, {
+  obj
+});"
+`;
+
+exports[`object compiles shorthand 2`] = `
+"const obj = {
+  \\"a\\": a,
+  \\"delete\\": ˆdelete,
+  \\"true\\": true,
+  \\"false\\": false
+};
+Object.assign(module.exports, {
+  obj
+});"
+`;
+
+exports[`object compiles simple 1`] = `
+"const obj = {};
+Object.assign(module.exports, {
+  obj
+});"
+`;
+
+exports[`object compiles spread 1`] = `
+"const obj = {
   \\"a\\": a,
   \\"b\\": b,
-  \\"c\\": c
-});
+  ...c
+};
 Object.assign(module.exports, {
-  obj1,
-  obj2,
-  obj3,
-  obj4,
-  obj5,
-  obj6,
-  obj7,
-  obj8
+  obj
 });"
 `;

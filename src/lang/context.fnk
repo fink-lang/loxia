@@ -13,9 +13,9 @@ obj_has = fn obj, key: Object.prototype.hasOwnProperty.call(obj, key)
 
 
 get_transformer = fn op, type, {transformers}:
-  match true:
-    obj_has(transformers, op):
+  match transformers:
+    obj_has:: ?, op:
       transformers.(op)
 
-    obj_has(transformers, type):
+    obj_has:: ?, type:
       transformers.(type)

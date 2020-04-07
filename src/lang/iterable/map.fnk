@@ -5,32 +5,32 @@
 
 
 transform_any = fn flatten: fn node, {transform, unique_ident}:
-  [item_param] = node.args.map(fn expr: transform(expr))
+  [item_param] = node.args.map:: fn expr: transform:: expr
 
-  [item] = params([item_param])
-  [expressions, last_expr] = split_last(node.exprs)
+  [item] = params:: [item_param]
+  [expressions, last_expr] = split_last:: node.exprs
 
-  last_is_spread = (last_expr.type == 'spread')
+  last_is_spread = last_expr.type == 'spread'
 
-  yield_value = match true:
-    last_is_spread: last_expr.right
+  yield_value = match last_is_spread:
+    true: last_expr.right
     else: last_expr
 
-  items = unique_ident('items')
+  items = unique_ident:: 'items'
 
   generator('map')(items)(
     for_of(item, items)(
-      ...expressions.map(block_statement({transform})),
+      ...expressions.map(block_statement:: {transform}),
 
-      ...yield_or_stop(
+      ...yield_or_stop::
         transform(yield_value),
-        unique_ident, flatten || last_is_spread
-      )
+        unique_ident,
+        flatten || last_is_spread
     )
   )
 
 
-transform_map = transform_any(false)
+transform_map = transform_any:: false
 
 
-transform_flat_map = transform_any(true)
+transform_flat_map = transform_any:: true

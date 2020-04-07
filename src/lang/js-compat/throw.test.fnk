@@ -6,8 +6,8 @@ describe:: 'throw', fn:
   it:: 'compiles', fn:
     fink2js(`
       fn bar:
-        match true:
-          has_err(bar): throw err('spam')
+        match bar:
+          has_err:: ?: throw err:: 'spam'
           else: bar
     `) eq snapshot
 

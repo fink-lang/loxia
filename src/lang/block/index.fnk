@@ -3,19 +3,19 @@
   expressionStatement, variableDeclaration, variableDeclarator
 } = import '@babel/types'
 
+{consts} = import '../../js/types'
+
 
 block_statement = fn {transform}: fn expr:
-  st = transform(expr)
+  st = transform:: expr
 
-  match true:
-    isAssignmentExpression(st):
-      decl = variableDeclaration(
-        'const', [variableDeclarator(st.left, st.right)]
-      )
+  match st:
+    isAssignmentExpression:: ?:
+      decl = consts:: st.left, st.right
       {...decl, leadingComments: st.leadingComments}
     else:
       # TODO: check if (isExpression(st)) ...
-      expressionStatement(st)
+      expressionStatement:: st
 
 
 transform_block = fn node, ctx:
@@ -24,10 +24,10 @@ transform_block = fn node, ctx:
   match exprs:
     {length: 1}:
       [expr] = exprs
-      ctx.transform(expr)
+      ctx.transform:: expr
     else:
-      doExpression(
-        blockStatement(
-          exprs.map(block_statement(ctx))
-        )
-      )
+      doExpression::
+        blockStatement::
+          # TODO: why map:: block_statement?
+          exprs.map:: block_statement:: ctx
+

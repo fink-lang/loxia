@@ -16,31 +16,30 @@
 
 
 wrap = fn larix_node, js_node:
-  {...js_node, ...get_comment(larix_node), loc: larix_node.loc}
+  comment = get_comment:: larix_node
+  {...js_node, ...comment, loc: larix_node.loc}
 
 
 expr_block = fn ...exprs:
-  doExpression(
-    blockStatement([
+  doExpression::
+    blockStatement:: [
       ...pipe exprs:
         map node:
-          match true:
-            (node.type.endsWith('Expression') || isIdentifier(node)):
-              expressionStatement(node)
-            else:
-              node
-    ])
-  )
+          match node:
+            {type: ?.endsWith('Expression')}: expressionStatement:: node
+            isIdentifier(?): expressionStatement:: node
+            else: node
+    ]
 
 
 member = fn obj: fn key, computed:
-  memberExpression(obj, key, computed)
+  memberExpression:: obj, key, computed
 
 
-str = fn txt: stringLiteral(txt)
+str = fn txt: stringLiteral:: txt
 
 
-typof = fn value: unaryExpression('typeof', value)
+typof = fn value: unaryExpression:: 'typeof', value
 
 
 split_last = fn [...items]:
@@ -48,35 +47,34 @@ split_last = fn [...items]:
 
 
 and = fn left, ...rest:
-  match true:
-    rest.length > 0:
-      logicalExpression('&&', left, and(...rest))
+  match rest:
+    {length: ? > 0}:
+      logicalExpression:: '&&', left, and:: ...rest
     else:
       left
 
 
-neq = fn left, right: binaryExpression('!==', left, right)
+neq = fn left, right: binaryExpression:: '!==', left, right
 
-eq = fn left, right: binaryExpression('===', left, right)
+eq = fn left, right: binaryExpression:: '===', left, right
 
-undef = fn: identifier('undefined')
+undef = fn: identifier:: 'undefined'
 
-nul = fn: identifier('null')
+nul = fn: identifier:: 'null'
 
-true_ = fn: identifier('true')
+true_ = fn: identifier:: 'true'
 
 
 not_nullish = fn value:
-  and(
-    neq(value, undef()),
-    neq(value, nul())
-  )
+  not_null = neq:: value, nul()
+  not_undef = neq:: value, undef()
+  and:: not_undef, not_null
 
 
 ident = fn name:
   match name:
     # TODO: typeof name == 'string': identifier(escape_ident(name)) or
-    {constructor: String}: identifier(escape_ident(name))
+    {constructor: String}: identifier:: escape_ident:: name
     else:
       # {type: 'Identifier'}
       # {type: 'ObjectPattern'}
@@ -85,36 +83,47 @@ ident = fn name:
       name
 
 
+declarator = fn id, init:
+  decl_id = ident:: id
+  variableDeclarator:: decl_id, init
+
+
 consts = fn id, init:
-  variableDeclaration('const', [variableDeclarator(ident(id), init)])
+  variableDeclaration::
+    'const',
+    [declarator:: id, init]
 
 
 lets = fn id, init:
-  variableDeclaration('let', [variableDeclarator(ident(id), init)])
+  variableDeclaration::
+    'let',
+    [declarator:: id, init]
 
 
 call = fn callee: fn ...args:
-  callExpression(callee, args)
+  callExpression:: callee, args
 
 
 assign = fn left, right:
-  expressionStatement(assignmentExpression('=', left, right))
+  expressionStatement::
+    assignmentExpression:: '=', left, right
 
 
 yields = fn expr, delegate:
-  expressionStatement(yieldExpression(expr, delegate))
+  expressionStatement::
+    yieldExpression:: expr, delegate
 
 
 iff = fn test: fn consequent:
   ifStatement(test, consequent)
 
 
-returns = fn expr: returnStatement(expr)
+returns = fn expr:
+  returnStatement:: expr
 
 
 yield_or_stop = fn expr, unique_ident, delegate:
-  result = unique_ident('result')
-
+  result = unique_ident:: 'result'
   [
     consts(result, expr),
     yields(result, delegate)
@@ -122,40 +131,36 @@ yield_or_stop = fn expr, unique_ident, delegate:
 
 
 func = fn ...args: fn expr, ...expressions:
-  arrowFunctionExpression(
+  arrowFunctionExpression::
     args,
-    expr_block(expr, ...expressions)
-  )
+    expr_block:: expr, ...expressions
 
 
 generator = fn name: fn ...args: fn ...statements:
-  functionExpression(
-    ident(name),
-    args,
-    blockStatement(statements),
-    true
-  )
+  func_name = ident:: name
+  body = blockStatement:: statements
+  functionExpression:: func_name, args,  body,  true
 
 
 for_of = fn item, items: fn ...expressions:
-  forOfStatement(
-    consts(item), items,
-    blockStatement(expressions)
-  )
+  forOfStatement::
+    consts(item),
+    items,
+    blockStatement:: expressions
 
 
 params = fn exprs:
   [...args] = pipe exprs:
     map expr:
-      match true:
-        isAssignmentExpression(expr):
-          assignmentPattern(expr.left, expr.right)
+      match expr:
+        isAssignmentExpression:: ?:
+          assignmentPattern:: expr.left, expr.right
 
-        isObjectExpression(expr):
-          objectPattern(params(expr.properties))
+        isObjectExpression:: ?:
+          objectPattern:: params:: expr.properties
 
-        isArrayExpression(expr):
-          arrayPattern(params(expr.elements))
+        isArrayExpression:: ?:
+          arrayPattern:: params:: expr.elements
 
         # TODO: was previously used.
         #  (isSpreadElement(expr):

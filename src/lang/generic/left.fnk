@@ -5,17 +5,17 @@
 
 
 transform_left = fn val:
-  match true:
-    isAssignmentExpression(val):
-      assignmentPattern(val.left, val.right)
+  match val:
+    isAssignmentExpression:: ?:
+      assignmentPattern:: val.left, val.right
 
-    isSpreadElement(val):
-      restElement(val.argument)
+    isSpreadElement:: ?:
+      restElement:: val.argument
 
-    isArrayExpression(val):
-      arrayPattern(val.elements.map(transform_left))
+    isArrayExpression:: ?:
+      arrayPattern:: val.elements.map:: transform_left
 
-    isObjectExpression(val):
-      objectPattern(val.properties.map(transform_left))
+    isObjectExpression:: ?:
+      objectPattern:: val.properties.map:: transform_left
 
     else: val
