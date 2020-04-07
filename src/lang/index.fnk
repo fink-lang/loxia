@@ -50,18 +50,13 @@ add_transformers = fn ctx:
 
 
 transform_expr = fn node, ctx:
-  transform = get_transformer:: node.op, node.type, ctx
-
-  match transform || null:
-    null:
-      err = new Error:: 'Unknown expression'
-      throw code_frame_err:: err, node, ctx
-
   transform_ctx = {
     ...ctx,
     transform: fn nde, foo_ctx:
       transform_expr:: nde, foo_ctx || transform_ctx
   }
+
+  transform = get_transformer:: node, ctx
 
   [err, ast] = attempt:
     transformed_node = transform:: node, transform_ctx

@@ -49,6 +49,7 @@ describe:: 'match', fn:
         ? > 123: ni
         !?: ni
         ?(): ni
+        shrub:: ?: ni
 
         {spam: ? > 123}: ni
         {spam: ?()}: ni
