@@ -12,10 +12,9 @@ it = fn descr, test:
   global.it(descr, test)
   undefined
 
-
+# istanbul ignore next
 eq = fn result, expected:
   match expected:
-    # istanbul ignore else
     snapshot: expect(result).toMatchSnapshot()
     else: expect(result).toEqual(expected)
 

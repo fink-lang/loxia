@@ -11,6 +11,7 @@
 
 {get_key} = import '../literals/object'
 {is_array} = import '../literals/array'
+{is_partial} = import '../partial'
 
 
 iter = fn value:
@@ -26,52 +27,26 @@ is_iterable = fn value:
   )
 
 
-args_has_partial = fn {args}:
-  pipe args:
-    map arg: is_partial:: arg
-    find partial: partial
-
-
-is_partial = fn node:
-  match node:
-    {type: 'partial'}: true
-    {left: {type: 'partial'}}: true
-    {right: {type: 'partial'}}: true
-    {type: 'call', callee: {type: 'partial'}}: true
-    {type: 'call', callee: {left: {type: 'partial'}}}: true
-    {type: 'call'}: args_has_partial:: node
-    else: false
-
-
-transform_with_partials = fn id, node, {partial_ident, transform, ...ctx}:
-  partial = is_partial:: node
-
+comp = fn id, expected, {partial_ident, transform, ...ctx}:
   value_ctx = {...ctx, partial_ident: id}
+  value = transform:: expected, value_ctx
 
-  # TODO: should get partial info from transforming node?
-  [partial, transform(node, value_ctx)]
-
-
-comp = fn id, expected, ctx:
-  [partial, value] = transform_with_partials(id, expected, ctx)
-
-  match true:
-    partial: value
-    else: eq(id, value)
+  match expected:
+    is_partial:: ?: value
+    else: eq:: id, value
 
 
-split_simple_nested = fn id_props, use_val, ctx:
+split_simple_nested = fn id_props, ctx:
   pipe id_props:
     fold [id, item], [simple, nested]=[[], []]:
-      elem = match true:
-        use_val:
-          match item.value:
-            {type: 'block', exprs: {length: 1}}:
-              {exprs: [expr]} = item.value
-              expr
-            else:
-              item.value
-        else: item
+      elem = match item:
+        {type: 'prop', value: {type: 'block', exprs: {length: 1}}}:
+          {exprs: [expr]} = item.value
+          expr
+        {type: 'prop'}:
+          item.value
+        else:
+          item
 
       match elem:
         {type: 'array'}:
@@ -95,7 +70,7 @@ match_props = fn value, props, emit_result, ctx:
     )
   )
 
-  [simple, nested] = split_simple_nested(id_props, true, ctx)
+  [simple, nested] = split_simple_nested(id_props, ctx)
 
   nested_block = match nested:
     {length: 0}:
@@ -133,7 +108,7 @@ match_elems = fn value, elems, emit_result, ctx:
 
   decl = arrayPattern(id_elems.map(fn [id]: id))
 
-  [simple, nested] = split_simple_nested(id_elems, false, ctx)
+  [simple, nested] = split_simple_nested(id_elems, ctx)
 
   blockStatement([
     consts(decl, value),

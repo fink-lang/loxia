@@ -1,5 +1,6 @@
-any = false
+{code_frame_err} = import './errors'
 
+any = false
 
 add = fn type, op, transformer: fn {transformers, ...ctx}:
   next_transformers = {
@@ -12,10 +13,14 @@ add = fn type, op, transformer: fn {transformers, ...ctx}:
 obj_has = fn obj, key: Object.prototype.hasOwnProperty.call(obj, key)
 
 
-get_transformer = fn op, type, {transformers}:
-  match true:
-    obj_has(transformers, op):
+get_transformer = fn {op, type}, {transformers}:
+  match transformers:
+    obj_has:: ?, op:
       transformers.(op)
 
-    obj_has(transformers, type):
+    obj_has:: ?, type:
       transformers.(type)
+
+    else: fn node, ctx:
+      err = new Error:: 'Unknown expression'
+      throw code_frame_err:: err, node, ctx

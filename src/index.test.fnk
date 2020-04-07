@@ -34,5 +34,3 @@ describe:: 'errors', fn:
       Unable to transform 'test'.
 
       Unknown expression`
-
-

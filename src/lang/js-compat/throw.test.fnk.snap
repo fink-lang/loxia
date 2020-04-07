@@ -2,9 +2,9 @@
 
 exports[`throw compiles 1`] = `
 "bar => {
-  const ˆvalue_1 = true;
+  const ˆvalue_1 = bar;
 
-  if (ˆvalue_1 === has_err(bar)) {
+  if (has_err(ˆvalue_1)) {
     throw err(\`spam\`);
   }
 

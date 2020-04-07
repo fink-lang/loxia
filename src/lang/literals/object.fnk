@@ -7,34 +7,36 @@ transform_object = fn node, ctx:
 
 
 str_key = fn {value, loc}:
-  {...stringLiteral(value), loc}
+  str = stringLiteral:: value
+  {...str, loc}
 
 
 get_key = fn {key}, ctx:
-  match true:
-    (key.type == 'group' || key.type == 'string'):
+  match key:
+    {type: 'group'}:
+      [ctx.transform(key), true]
+    {type: 'string'}:
       [ctx.transform(key), true]
     else:
       [str_key(key), false]
 
 
 transform_prop = fn node, ctx:
-  match true:
-    node.key.type == 'spread':
-      ctx.transform(node.key)
+  match node:
+    {key: {type: 'spread'}}:
+      ctx.transform:: node.key
     else:
-      [key, computed] = get_key(node, ctx)
-      value = ctx.transform(node.value)
+      [key, computed] = get_key:: node, ctx
+      value = ctx.transform:: node.value
 
-      shorthand = (node.key == node.value)
-      is_default_assignment = (node.value.type == 'assign')
+      shorthand = node.key == node.value
 
-      final_value = match true:
-        is_default_assignment:
-          assignmentPattern(value.left, value.right)
+      final_value = match node:
+        {value: {type: 'assign'}}:
+          assignmentPattern:: value.left, value.right
         else:
           value
 
-      objectProperty(key, final_value, computed, shorthand)
+      objectProperty:: key, final_value, computed, shorthand
 
 

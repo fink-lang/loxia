@@ -2,7 +2,9 @@
 
 exports[`new compiles 1`] = `
 "const foo = new Set();
+const bar = new Set(\`abca\`);
 Object.assign(module.exports, {
-  foo
+  foo,
+  bar
 });"
 `;

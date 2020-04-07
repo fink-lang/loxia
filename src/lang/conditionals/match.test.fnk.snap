@@ -156,6 +156,11 @@ exports[`match compiles patial application 1`] = `
       break ˆmatch_2;
     }
 
+    if (shrub(ˆvalue_1)) {
+      ni;
+      break ˆmatch_2;
+    }
+
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
         \\"spam\\": ˆp_3
