@@ -3,7 +3,7 @@
 
 
 describe:: 'partial', fn:
-  it:: 'compiles outside of match', fn:
+  it:: 'compiles assignment', fn:
     fink2js(`
       foo1 = a * ? + 1
       foo2 = bar(?)

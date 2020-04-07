@@ -2,11 +2,12 @@
 
 {add, any} = import '../context'
 {transform_left} = import '../generic/left'
+{transform_value} = import '../partial'
 
 
 transform_assign = fn node, ctx:
   left = transform_left(ctx.transform(node.left))
-  right = ctx.transform(node.right)
+  right = transform_value(node.right, ctx)
 
   # wrap(node, assignmentExpression('=', left, right))
   assignmentExpression('=', left, right)
