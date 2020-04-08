@@ -23,6 +23,7 @@
 {add_arithmitic} = import './arithmitic'
 {add_generic} = import './generic'
 {add_partial} = import './partial'
+{wrap_with_comment_loc} = import './comments'
 
 
 add_transformers = fn ctx:
@@ -59,9 +60,11 @@ transform_expr = fn node, ctx:
   transform = get_transformer:: node, ctx
 
   [err, ast] = attempt:
-    transformed_node = transform:: node, transform_ctx
+    js_node = transform:: node, transform_ctx
     # TODO: some nodes have location data
-    wrap:: node, transformed_node
+    match ctx:
+      {wrap: 'loc'}: wrap:: node, js_node
+      else: wrap_with_comment_loc:: js_node, node
 
   match err:
     null: ast

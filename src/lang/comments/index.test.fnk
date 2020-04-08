@@ -6,13 +6,14 @@ describe:: 'comment', fn:
   it:: 'compiles', fn:
 
     fink2js(`
-      # foobar spam ham
-      foo = 123
+      # leading expression
+      spam = ni
 
       ---
       Shrub ni.
       ---
       bar = fn:
         spam
+
     `) eq snapshot
 

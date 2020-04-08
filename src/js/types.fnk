@@ -4,20 +4,17 @@
   expressionStatement, callExpression, functionExpression,
   blockStatement, identifier, arrowFunctionExpression,
   logicalExpression, binaryExpression, unaryExpression,
-  stringLiteral, memberExpression, ifStatement, doExpression,
+  memberExpression, ifStatement, doExpression,
   assignmentExpression, returnStatement,
   isAssignmentExpression, isObjectExpression,
   isArrayExpression, isIdentifier
 } = import'@babel/types'
 
-{get_comment} = import'../lang/comments'
-
 {escape_ident} = import'./identifier'
 
 
 wrap = fn larix_node, js_node:
-  comment = get_comment:: larix_node
-  {...js_node, ...comment, loc: larix_node.loc}
+  {...js_node, loc: larix_node.loc}
 
 
 expr_block = fn ...exprs:
@@ -34,9 +31,6 @@ expr_block = fn ...exprs:
 
 member = fn obj: fn key, computed:
   memberExpression:: obj, key, computed
-
-
-str = fn txt: stringLiteral:: txt
 
 
 typof = fn value: unaryExpression:: 'typeof', value
