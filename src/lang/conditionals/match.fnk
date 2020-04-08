@@ -1,30 +1,31 @@
 {
   arrayPattern, blockStatement, breakStatement, labeledStatement, objectPattern,
-  objectProperty, isObjectExpression, isArrayExpression, expressionStatement,
+  objectProperty, expressionStatement, ifStatement,
+  doExpression, stringLiteral, memberExpression,
   identifier
 } = import '@babel/types'
 
-{
-  member, str, for_of, split_last, and, eq, not_nullish, typof,
-  expr_block, consts, iff
-} = import '../../js/types'
+{and, eq, not_nullish, typof, consts} = import '../../js/types'
 
 {get_key} = import '../literals/object'
 {is_array} = import '../literals/array'
 {is_partial} = import '../partial'
+{wrap_with_comment_loc} = import'../comments'
 
 
 iter = fn value:
-  member(value)(member(identifier('Symbol'))(identifier('iterator')), true)
+  symb = identifier:: 'Symbol'
+  iterator = identifier:: 'iterator'
+  symb_iter = memberExpression:: symb, iterator
+  memberExpression:: value, symb_iter, true
 
 
 is_iterable = fn value:
-  and(
+  and::
     not_nullish(value),
-    eq(
-      typof(iter(value)), str('function')
-    )
-  )
+    eq::
+      typof(iter:: value),
+      stringLiteral:: 'function'
 
 
 comp = fn id, expected, {partial_ident, transform, ...ctx}:
@@ -36,159 +37,131 @@ comp = fn id, expected, {partial_ident, transform, ...ctx}:
     else: eq:: id, value
 
 
-split_simple_nested = fn id_props, ctx:
-  pipe id_props:
-    fold [id, item], [simple, nested]=[[], []]:
-      elem = match item:
-        {type: 'prop', value: {type: 'block', exprs: {length: 1}}}:
-          {exprs: [expr]} = item.value
-          expr
-        {type: 'prop'}:
-          item.value
-        else:
-          item
+match_props = fn props, emit_result, ctx, cond:
+  [{id, prop}, ...rest] = props
 
-      match elem:
-        {type: 'array'}:
-          [simple, [...nested, {elem, id}]]
-        {type: 'object'}:
-          [simple, [...nested, {elem, id}]]
-        else:
-          [[...simple, {id, elem}], nested]
-
-
-match_props = fn value, props, emit_result, ctx:
-  [...id_props] = pipe props:
-    map prop:
-      id = ctx.unique_ident('p')
-      [id, prop]
-
-  decl = objectPattern(
-    id_props.map(fn [id, prop]:
-      [key, computed] = get_key(prop, ctx)
-      objectProperty(key, id, computed)
-    )
-  )
-
-  [simple, nested] = split_simple_nested(id_props, ctx)
-
-  nested_block = match nested:
-    {length: 0}:
-      emit_result()
+  value = match prop:
+    {value: {type: 'block', exprs: {length: 1}}}:
+      {exprs: [expr]} = prop.value
+      expr
     else:
-      blockStatement(
-        nested.map(fn {elem, id}:
-          match_condition(id, elem, emit_result, ctx)
-        )
-      )
+      prop.value
 
-  blockStatement([
-    consts(decl, value),
-    match simple:
-      {length: 0}:
-        nested_block
-      else:
-        iff(and(...simple.map(fn {elem, id}: comp(id, elem, ctx))))(
-          nested_block
-        )
-  ])
+  emit = match props:
+    {length: 1}: emit_result
+    else: fn: match_props:: rest, emit_result, ctx, cond
+
+  match_condition:: id, value, emit, ctx, cond
 
 
-match_obj = fn value, expr, emit_result, ctx:
-  iff(not_nullish(value))(
-    match_props(value, expr.exprs, emit_result, ctx)
-  )
+match_obj = fn value, obj, emit_result, ctx, cond:
+  [...id_props] = pipe obj.exprs:
+    map prop:
+      id = ctx.unique_ident:: 'p'
+      {id, prop}
+
+  decl = objectPattern::
+    id_props.map:: fn {id, prop}:
+      [key, computed] = get_key:: prop, ctx
+      objectProperty:: key, id, computed
 
 
-match_elems = fn value, elems, emit_result, ctx:
-  [...id_elems] = pipe elems:
-    map elem:
-      id = ctx.unique_ident('a')
-      [id, elem]
+  ifStatement::
+    not_nullish(value),
 
-  decl = arrayPattern(id_elems.map(fn [id]: id))
-
-  [simple, nested] = split_simple_nested(id_elems, ctx)
-
-  blockStatement([
-    consts(decl, value),
-
-    iff(and(...simple.map(fn {elem, id}: comp(id, elem, ctx))))(
-      match nested:
-        {length: 0}:
-          emit_result()
-        else:
-           blockStatement(
-            nested.map(fn {elem, id}:
-              match_condition(id, elem, emit_result, ctx)
-            )
-          )
-    )
-  ])
+    blockStatement:: [
+      consts(decl, value),
+      match_props:: id_props, emit_result, ctx, cond
+    ]
 
 
-match_array = fn value, expr, emit_result, ctx:
-  iff(is_iterable(value))(
-    match_elems(value, expr.exprs, emit_result, ctx)
-  )
+
+match_elems = fn elems, emit_result, ctx, cond:
+  [{id, value}, ...rest] = elems
+
+  emit =  match elems:
+    {length: 1}: emit_result
+    else: fn: match_elems:: rest, emit_result, ctx, cond
+
+  match_condition:: id, value, emit, ctx, cond
+
+
+match_array = fn value, arr, emit_result, ctx, cond:
+  [...id_elems] = pipe arr.exprs:
+    map value:
+      id = ctx.unique_ident:: 'a'
+      {id, value}
+
+  decl = arrayPattern:: id_elems.map:: fn {id}: id
+
+  ifStatement::
+    is_iterable(value),
+
+    blockStatement:: [
+      consts(decl, value),
+      match_elems:: id_elems, emit_result, ctx, cond
+    ]
 
 
 match_simple = fn value, expr, emit_result, ctx:
-  {
-    ...iff(comp(value, expr, ctx))(
-      emit_result()
-    ),
-    loc: expr.loc
-  }
+  ifStatement::
+    comp(value, expr, {...ctx, wrap: 'loc'}),
+
+    emit_result()
 
 
-match_condition = fn value, expr, emit_result, ctx:
-  match expr:
+
+match_condition = fn value, expr, emit_result, ctx, cond:
+  js_expr = match expr:
     {type: 'object'}:
-      match_obj(value, expr, emit_result, ctx)
+      match_obj:: value, expr, emit_result, ctx, cond
 
     {type: 'array'}:
-      match_array(value, expr, emit_result, ctx)
+      match_array:: value, expr, emit_result, ctx, cond
 
     else:
-      match_simple(value, expr, emit_result, ctx)
+      match_simple:: value, expr, emit_result, ctx
+
+  wrap_with_comment_loc:: js_expr, cond
 
 
 split_condition = fn {left, right}:
   [left, right]
 
 
-match_all = fn value, matches, emit_result, ctx:
+match_all = fn value, matches, emit, ctx:
   pipe matches:
     map expr:
-      [condition, result] = split_condition(expr)
+      [condition, result] = split_condition:: expr
 
-      match condition:
+      js_expr = match condition:
         {value: 'else'}:
-          emit_result(result)
+          js_expr = emit:: result
+          wrap_with_comment_loc:: js_expr, condition
         else:
-          match_condition(value, condition, fn: emit_result(result), ctx)
+          emit_result = fn: emit:: result
+          match_condition:: value, condition, emit_result, ctx, condition
 
 
 transform_match = fn node, ctx:
   {exprs} = node
   [inputs] = node.args
 
-  value = ctx.unique_ident('value')
-  break_lbl = ctx.unique_ident('match')
+  value = ctx.unique_ident:: 'value'
+  break_lbl = ctx.unique_ident:: 'match'
 
   emit_result = fn result:
-    blockStatement([
-      expressionStatement(ctx.transform(result)),
-      breakStatement(break_lbl)
-    ])
+    blockStatement:: [
+      expressionStatement(ctx.transform:: result),
+      breakStatement:: break_lbl
+    ]
 
-  expr_block(
-    labeledStatement(break_lbl,
-      blockStatement([
-        consts(value, ctx.transform(inputs)),
-        ...match_all(value, exprs, emit_result, ctx)
-      ])
-    )
-  )
-
+  doExpression::
+    blockStatement:: [
+      labeledStatement::
+        break_lbl,
+        blockStatement:: [
+          consts(value, ctx.transform:: inputs),
+          ...match_all(value, exprs, emit_result, ctx)
+        ]
+    ]

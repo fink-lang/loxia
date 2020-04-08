@@ -3,14 +3,36 @@
 
 
 describe:: 'match', fn:
+  it:: 'compiles s', fn:
+    fink2js(`
+      match shrub:
+        1: simp
+        [1, 2]: foo
+        [1, [2, 3], 4]: bar
+        [1, [2, [3, 4]], [5, 6], 7]: spam
+        {ni: {len: 1}, na: {len: 1}}: na
+        else: ni
+    `) eq snapshot
 
   it:: 'compiles', fn:
     fink2js(`
       match shrub:
-        {foo: 4, ni}: spam + ni
-        123: spam
-        [1, 2, ni]: ni
-        else: shrub
+        # simple value
+        123:
+          # result
+          spam
+
+        # object matching
+        {foo: 4, ni}:
+          spam + ni
+
+        # array matching
+        [1, 2, ni]:
+          ni
+
+        # fallback if none of above match
+        else:
+          shrub
     `) eq snapshot
 
 
@@ -22,13 +44,15 @@ describe:: 'match', fn:
     `) eq snapshot
 
 
-  it:: 'compiles nested obj pattern', fn:
+  it:: 'compiles nested pattern', fn:
     fink2js(`
       match shrub:
+        # deep obj comparison
         {foo: 4, ni: {na, nu}}: spam + ni
-        {foo: {bar: 'spam'}}: ni
+        {xx: 1, foo: {bar: 'spam'}, shrub: {na: 'nu'}}: ni
+
+        # deep array comparison
         [1, 2, [ni]]: ni
-        123: spam
     `) eq snapshot
 
 
@@ -46,18 +70,47 @@ describe:: 'match', fn:
   it:: 'compiles patial application', fn:
     fink2js(`
       match {spam: 123}:
-        ? > 123: ni
+        # simple unary
         !?: ni
+
+        # simple binary
+        ? > 123: ni
+
+        # simple call
         ?(): ni
+
+        # simple as call arg
         shrub:: ?: ni
 
+
+        # nested unary
+        {spam: !?}: ni
+
+        # nested binary
         {spam: ? > 123}: ni
+
+        # nested call
         {spam: ?()}: ni
+
+        # nested member call
         {spam: ?.is_foo()}: ni
+
+        # nested as call arg
         {spam: is_foo(?)}: ni
 
+
+        # nested unary
+        [!?]: ni
+
+        # nested binary
         [? > 123]: ni
+
+        # nested call
         [?()]: ni
+
+        # nested member call
         [?.is_foo()]: ni
+
+        # nested as call arg
         [is_foo(?)]: ni
     `) eq snapshot
