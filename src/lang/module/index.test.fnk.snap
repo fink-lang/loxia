@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`module handles comments 1`] = `
+"// leading comment
+// expr comment
+const foo = bar;
+Object.assign(module.exports, {
+  foo
+});
+// trailing comment"
+`;

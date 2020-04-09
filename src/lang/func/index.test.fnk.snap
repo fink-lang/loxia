@@ -3,13 +3,13 @@
 exports[`func compiles 1`] = `
 "const fun1 = (a, b = 12, ...d) => a + b + c;
 
-const fun2 = b => b * 2;
+const fun2 = (b) => b * 2;
 
 const fun3 = () => \`shrub\`;
 
 const fun4 = () => \`shrub\`;
 
-const fun5 = c => (d, e) => {
+const fun5 = (c) => (d, e) => {
   const ˆvalue_1 = [d, e];
 
   if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {

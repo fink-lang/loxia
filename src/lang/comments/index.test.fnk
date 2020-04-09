@@ -13,7 +13,9 @@ describe:: 'comment', fn:
       Shrub ni.
       ---
       bar = fn:
+        --- single line block ---
         spam
 
+      # trailing module
     `) eq snapshot
 

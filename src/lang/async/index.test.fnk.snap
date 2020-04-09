@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`await compiles 1`] = `
-"const task1 = async foo => -(await foo);
+"const task1 = async (foo) => -(await foo);
 
-const task2 = async foo => await (foo + 4);
+const task2 = async (foo) => await (foo + 4);
 
-const task3 = async foo => {
+const task3 = async (foo) => {
   const bar = await foo();
   return bar + 123;
 };

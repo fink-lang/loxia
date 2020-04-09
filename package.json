@@ -1,5 +1,5 @@
 {
-  "name": "@fink/loxia",
+  "name": "@fink/loxia-dev",
   "version": "0.0.0-semantically-released",
   "license": "MIT",
   "engines": {
@@ -21,7 +21,8 @@
     "build": "run build:*",
     "build:dir": "mkdir -p ./build/pkg/",
     "build:fnk": "fnk --src ./src --out-dir ./build/pkg --ignore '**/*.test.fnk'",
-    "build:files": "cp ./package.json ./README.md ./LICENSE ./build/pkg/",
+    "build:files": "cp ./README.md ./LICENSE ./build/pkg/",
+    "build:pkg": "./scripts/build-pkg-json",
     "test": "run test:build-helpers jest",
     "test:build-helpers": "fnk --src ./src/testing --out-dir build/test-helpers",
     "jest": "jest --verbose --runInBand --no-cache ",
@@ -36,16 +37,17 @@
   "devDependencies": {
     "@fink/cli": "^2.3.0",
     "@fink/jest": "^1.1.0",
-    "@fink/larix": "^4.8.1",
-    "commitizen": "^4.0.3",
+    "@fink/larix": "^4.9.0",
+    "@fink/loxia": "^4.8.2",
+    "commitizen": "^4.0.4",
     "cz-conventional-changelog": "^3.1.0",
-    "jest-cli": "^25.2.4",
+    "jest-cli": "^25.3.0",
     "npx-run": "^2.1.2",
     "semantic-release": "^17.0.4"
   },
   "dependencies": {
-    "@babel/generator": "^7.8.6",
-    "@babel/traverse": "^7.8.6",
-    "@babel/types": "^7.8.6"
+    "@babel/generator": "^7.9.5",
+    "@babel/traverse": "^7.9.5",
+    "@babel/types": "^7.9.5"
   }
 }

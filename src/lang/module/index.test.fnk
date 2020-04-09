@@ -1,0 +1,18 @@
+{fink2js} = import '../../testing'
+{describe, it, eq, snapshot} = import '../../testing/jest'
+
+
+describe:: 'module', fn:
+  it:: 'handles comments', fn:
+
+    fink2js(`
+      # leading comment
+
+      # expr comment
+      foo = bar
+
+      # trailing comment
+    `) eq snapshot
+
+
+
