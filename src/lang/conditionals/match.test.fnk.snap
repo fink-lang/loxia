@@ -87,46 +87,84 @@ exports[`match compiles nested pattern 1`] = `
     /* deep obj comparison */
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"foo\\": ˆp_3,
-        \\"ni\\": ˆp_4
+        \\"foo\\": ˆp_3
       } = ˆvalue_1;
 
       /* deep obj comparison */
-      if (ˆp_3 === 4)
-        /* deep obj comparison */
-        if (ˆp_4 !== undefined && ˆp_4 !== null) {
-          const {
-            \\"na\\": ˆp_5,
-            \\"nu\\": ˆp_6
-          } = ˆp_4;
-
-          /* deep obj comparison */
-          if (ˆp_5 === na)
-            /* deep obj comparison */
-            if (ˆp_6 === nu) {
-              spam + ni;
-              break ˆmatch_2;
-            }
-        }
+      if (ˆp_3 !== undefined && ˆp_3 !== null) {
+        spam + ni;
+        break ˆmatch_2;
+      }
     }
 
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"xx\\": ˆp_7,
-        \\"foo\\": ˆp_8,
-        \\"shrub\\": ˆp_9
+        \\"foo\\": ˆp_4
       } = ˆvalue_1;
-      if (ˆp_7 === 1) if (ˆp_8 !== undefined && ˆp_8 !== null) {
-        const {
-          \\"bar\\": ˆp_10
-        } = ˆp_8;
-        if (ˆp_10 === \`spam\`) if (ˆp_9 !== undefined && ˆp_9 !== null) {
-          const {
-            \\"na\\": ˆp_11
-          } = ˆp_9;
 
-          if (ˆp_11 === \`nu\`) {
+      if (ˆp_4 !== undefined && ˆp_4 !== null && typeof ˆp_4[Symbol.iterator] === \\"function\\") {
+        spam + ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        \\"foo\\": ˆp_5,
+        \\"ni\\": ˆp_6
+      } = ˆvalue_1;
+      if (ˆp_5 === 4) if (ˆp_6 !== undefined && ˆp_6 !== null) {
+        const {
+          \\"na\\": ˆp_7,
+          \\"nu\\": ˆp_8
+        } = ˆp_6;
+        if (ˆp_7 === na) if (ˆp_8 === nu) {
+          spam + ni;
+          break ˆmatch_2;
+        }
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        \\"xx\\": ˆp_9,
+        \\"foo\\": ˆp_10,
+        \\"shrub\\": ˆp_11
+      } = ˆvalue_1;
+      if (ˆp_9 === 1) if (ˆp_10 !== undefined && ˆp_10 !== null) {
+        const {
+          \\"bar\\": ˆp_12
+        } = ˆp_10;
+        if (ˆp_12 === \`spam\`) if (ˆp_11 !== undefined && ˆp_11 !== null) {
+          const {
+            \\"na\\": ˆp_13
+          } = ˆp_11;
+
+          if (ˆp_13 === \`nu\`) {
             ni;
+            break ˆmatch_2;
+          }
+        }
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        \\"ni\\": ˆp_14,
+        \\"na\\": ˆp_15
+      } = ˆvalue_1;
+
+      if (ˆp_14 !== undefined && ˆp_14 !== null) {
+        const {
+          \\"len\\": ˆp_16
+        } = ˆp_14;
+        if (ˆp_16 === 1) if (ˆp_15 !== undefined && ˆp_15 !== null) {
+          const {
+            \\"len\\": ˆp_17
+          } = ˆp_15;
+
+          if (ˆp_17 === 1) {
+            na;
             break ˆmatch_2;
           }
         }
@@ -135,22 +173,58 @@ exports[`match compiles nested pattern 1`] = `
 
     /* deep array comparison */
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_12, ˆa_13, ˆa_14] = ˆvalue_1;
+      const [ˆa_18, ˆa_19, ˆa_20] = ˆvalue_1;
 
       /* deep array comparison */
-      if (ˆa_12 === 1)
+      if (ˆa_18 === 1)
         /* deep array comparison */
-        if (ˆa_13 === 2)
+        if (ˆa_19 === 2)
           /* deep array comparison */
-          if (ˆa_14 !== undefined && ˆa_14 !== null && typeof ˆa_14[Symbol.iterator] === \\"function\\") {
-            const [ˆa_15] = ˆa_14;
+          if (ˆa_20 !== undefined && ˆa_20 !== null && typeof ˆa_20[Symbol.iterator] === \\"function\\") {
+            const [ˆa_21] = ˆa_20;
 
             /* deep array comparison */
-            if (ˆa_15 === ni) {
+            if (ˆa_21 === ni) {
               ni;
               break ˆmatch_2;
             }
           }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_22, ˆa_23, ˆa_24, ˆa_25] = ˆvalue_1;
+      if (ˆa_22 === 1) if (ˆa_23 === 2) if (ˆa_24 !== undefined && ˆa_24 !== null && typeof ˆa_24[Symbol.iterator] === \\"function\\") if (ˆa_25 !== undefined && ˆa_25 !== null) {
+        foo;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_26, ˆa_27, ˆa_28] = ˆvalue_1;
+      if (ˆa_26 === 1) if (ˆa_27 !== undefined && ˆa_27 !== null && typeof ˆa_27[Symbol.iterator] === \\"function\\") {
+        const [ˆa_29, ˆa_30] = ˆa_27;
+        if (ˆa_29 === 2) if (ˆa_30 === 3) if (ˆa_28 === 4) {
+          bar;
+          break ˆmatch_2;
+        }
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_31, ˆa_32, ˆa_33, ˆa_34] = ˆvalue_1;
+      if (ˆa_31 === 1) if (ˆa_32 !== undefined && ˆa_32 !== null && typeof ˆa_32[Symbol.iterator] === \\"function\\") {
+        const [ˆa_35, ˆa_36] = ˆa_32;
+        if (ˆa_35 === 2) if (ˆa_36 !== undefined && ˆa_36 !== null && typeof ˆa_36[Symbol.iterator] === \\"function\\") {
+          const [ˆa_37, ˆa_38] = ˆa_36;
+          if (ˆa_37 === 3) if (ˆa_38 === 4) if (ˆa_33 !== undefined && ˆa_33 !== null && typeof ˆa_33[Symbol.iterator] === \\"function\\") {
+            const [ˆa_39, ˆa_40] = ˆa_33;
+            if (ˆa_39 === 5) if (ˆa_40 === 6) if (ˆa_34 === 7) {
+              spam;
+              break ˆmatch_2;
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -306,84 +380,6 @@ exports[`match compiles patial application 1`] = `
         ni;
         break ˆmatch_2;
       }
-    }
-  }
-}
-Object.assign(module.exports, {});"
-`;
-
-exports[`match compiles s 1`] = `
-"{
-  ˆmatch_2: {
-    const ˆvalue_1 = shrub;
-
-    if (ˆvalue_1 === 1) {
-      simp;
-      break ˆmatch_2;
-    }
-
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_3, ˆa_4] = ˆvalue_1;
-      if (ˆa_3 === 1) if (ˆa_4 === 2) {
-        foo;
-        break ˆmatch_2;
-      }
-    }
-
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_5, ˆa_6, ˆa_7] = ˆvalue_1;
-      if (ˆa_5 === 1) if (ˆa_6 !== undefined && ˆa_6 !== null && typeof ˆa_6[Symbol.iterator] === \\"function\\") {
-        const [ˆa_8, ˆa_9] = ˆa_6;
-        if (ˆa_8 === 2) if (ˆa_9 === 3) if (ˆa_7 === 4) {
-          bar;
-          break ˆmatch_2;
-        }
-      }
-    }
-
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_10, ˆa_11, ˆa_12, ˆa_13] = ˆvalue_1;
-      if (ˆa_10 === 1) if (ˆa_11 !== undefined && ˆa_11 !== null && typeof ˆa_11[Symbol.iterator] === \\"function\\") {
-        const [ˆa_14, ˆa_15] = ˆa_11;
-        if (ˆa_14 === 2) if (ˆa_15 !== undefined && ˆa_15 !== null && typeof ˆa_15[Symbol.iterator] === \\"function\\") {
-          const [ˆa_16, ˆa_17] = ˆa_15;
-          if (ˆa_16 === 3) if (ˆa_17 === 4) if (ˆa_12 !== undefined && ˆa_12 !== null && typeof ˆa_12[Symbol.iterator] === \\"function\\") {
-            const [ˆa_18, ˆa_19] = ˆa_12;
-            if (ˆa_18 === 5) if (ˆa_19 === 6) if (ˆa_13 === 7) {
-              spam;
-              break ˆmatch_2;
-            }
-          }
-        }
-      }
-    }
-
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
-      const {
-        \\"ni\\": ˆp_20,
-        \\"na\\": ˆp_21
-      } = ˆvalue_1;
-
-      if (ˆp_20 !== undefined && ˆp_20 !== null) {
-        const {
-          \\"len\\": ˆp_22
-        } = ˆp_20;
-        if (ˆp_22 === 1) if (ˆp_21 !== undefined && ˆp_21 !== null) {
-          const {
-            \\"len\\": ˆp_23
-          } = ˆp_21;
-
-          if (ˆp_23 === 1) {
-            na;
-            break ˆmatch_2;
-          }
-        }
-      }
-    }
-
-    {
-      ni;
-      break ˆmatch_2;
     }
   }
 }
