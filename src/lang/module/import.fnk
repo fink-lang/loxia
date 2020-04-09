@@ -1,7 +1,9 @@
-{identifier} = import '@babel/types'
-{call} = import '../../js/types'
+{identifier, callExpression} = import '@babel/types'
 
 
-transform_import = fn node, ctx:
-  right = ctx.transform(node.right)
-  call(identifier('require'))(right)
+transform_import = fn node, {transform}:
+  right = transform:: node.right
+
+  callExpression::
+    identifier:: 'require'
+    [right]

@@ -1,5 +1,6 @@
 {
-  file, program, objectExpression, objectProperty, identifier,
+  file, program, objectProperty, identifier,
+  callExpression, objectExpression, memberExpression,
   expressionStatement
 } = import '@babel/types'
 
@@ -20,22 +21,30 @@ transform_module = fn node, ctx:
 
     map {left: {value}}:
       # TODO: wrap with loc?
-      id = ident(value)
-      objectProperty(id, id, false, true)
+      id = ident:: value
+      objectProperty:: id, id, false, true
 
   body = pipe node.exprs:
     # filter {type}: type != 'comment'
     map expr: block_statement(ctx)(expr)
 
-  # TODO: use individual exports?
-  exports = expressionStatement(
-    call(member(identifier('Object'))(identifier('assign')))(
-      member(identifier('module'))(identifier('exports')),
-      objectExpression(exported)
-    )
-  )
 
-  file(program([...body, exports], [], 'module'))
+  # TODO: use individual exports?
+  obj = identifier:: 'Object'
+  obj_assign = memberExpression:: obj, identifier:: 'assign'
+  mod = identifier:: 'module'
+  mod_exports = memberExpression:: mod, identifier:: 'exports'
+
+  exports = expressionStatement::
+    callExpression::
+      obj_assign,
+      [mod_exports, objectExpression:: exported]
+
+  file::
+    program::
+      [...body, exports]
+      []
+      'module'
 
 
 add_module = fn ctx:

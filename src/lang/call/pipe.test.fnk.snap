@@ -12,8 +12,7 @@ exports[`pipe compiles 1`] = `
 
   ˆpipe_result_2 = function* map(ˆitems_3) {
     for (const item of ˆitems_3) {
-      const ˆresult_4 = item * 2;
-      yield ˆresult_4;
+      yield item * 2;
     }
   }(ˆpipe_result_2);
 }

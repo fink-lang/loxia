@@ -1,4 +1,6 @@
-{call, assign, lets, expr_block, nul} = import '../../js/types'
+{callExpression} = import'@babel/types'
+
+{assign, lets, expr_block, nul} = import '../../js/types'
 
 
 transform_pipe = fn node, {transform, unique_ident}:
@@ -9,14 +11,20 @@ transform_pipe = fn node, {transform, unique_ident}:
       nul()
     else:
       [arg] = node.args
-      transform(arg)
+      transform:: arg
 
-  result = unique_ident('pipe_result')
+  result = unique_ident:: 'pipe_result'
+
+  pipe_calls = pipe exprs:
+    map expr:
+      assign::
+        result
+        callExpression::
+          transform:: expr
+          [result]
 
   expr_block::
     # TODO: first should not be called with anything if there is no start_value
-    lets(result, start_value)
-    ...pipe exprs:
-      map expr:
-        assign(result, call(transform(expr))(result))
+    lets:: result, start_value
+    ...pipe_calls
 

@@ -22,9 +22,9 @@ iter = fn value:
 
 is_iterable = fn value:
   and::
-    not_nullish(value),
+    not_nullish:: value
     eq::
-      typof(iter:: value),
+      typof:: iter:: value
       stringLiteral:: 'function'
 
 
@@ -67,7 +67,7 @@ match_obj = fn value, obj, emit_result, ctx, cond:
 
 
   ifStatement::
-    not_nullish(value),
+    not_nullish:: value
 
     blockStatement:: [
       consts(decl, value),
@@ -95,7 +95,7 @@ match_array = fn value, arr, emit_result, ctx, cond:
   decl = arrayPattern:: id_elems.map:: fn {id}: id
 
   ifStatement::
-    is_iterable(value),
+    is_iterable:: value
 
     blockStatement:: [
       consts(decl, value),
@@ -105,8 +105,7 @@ match_array = fn value, arr, emit_result, ctx, cond:
 
 match_simple = fn value, expr, emit_result, ctx:
   ifStatement::
-    comp(value, expr, {...ctx, wrap: 'loc'}),
-
+    comp:: value, expr, {...ctx, wrap: 'loc'}
     emit_result()
 
 
@@ -159,9 +158,9 @@ transform_match = fn node, ctx:
   doExpression::
     blockStatement:: [
       labeledStatement::
-        break_lbl,
+        break_lbl
         blockStatement:: [
           consts(value, ctx.transform:: inputs),
-          ...match_all(value, exprs, emit_result, ctx)
+          ...match_all:: value, exprs, emit_result, ctx
         ]
     ]

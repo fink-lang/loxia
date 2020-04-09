@@ -1,8 +1,12 @@
-{call, ident} = import '../../js/types'
+{callExpression} = import'@babel/types'
+{ident} = import '../../js/types'
 
 
-transform_inifx = fn node, ctx:
-  left = ctx.transform(node.left)
-  right = ctx.transform(node.right)
-  call(ident(node.op))(left, right)
+transform_inifx = fn node, {transform}:
+  left = transform:: node.left
+  right = transform:: node.right
+
+  callExpression::
+    ident:: node.op
+    [left, right]
 
