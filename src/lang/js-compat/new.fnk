@@ -2,8 +2,8 @@
 {wrap} = import '../../js/types'
 
 
-transform_new = fn node, ctx:
-  right = ctx.transform(node.right)
+transform_new = fn node, {transform}:
+  {callee, arguments} = transform:: node.right
 
-  wrap(node, newExpression(right.callee, right.arguments))
+  wrap:: node, newExpression:: callee, arguments
 

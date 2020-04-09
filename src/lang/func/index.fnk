@@ -6,10 +6,9 @@
 
 
 transform_func = fn node, ctx:
-  params = node.args.map(fn arg: transform_left(ctx.transform(arg)))
-  body = transform_block(node, ctx)
-  arrowFunctionExpression(params, body)
-
+  params = node.args.map:: fn arg: transform_left:: ctx.transform:: arg
+  body = transform_block:: node, ctx
+  arrowFunctionExpression:: params, body
 
 
 add_func = fn ctx:

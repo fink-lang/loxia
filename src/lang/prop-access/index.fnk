@@ -2,19 +2,19 @@
 {add, any} = import '../context'
 
 
-transform_member = fn node, ctx:
-  left = ctx.transform(node.left)
+transform_member = fn node, {transform}:
+  left = transform:: node.left
 
   right = match node.right:
-    {type: 'ident'}: identifier(node.right.value)
-    else: ctx.transform(node.right)
+    {type: 'ident'}: identifier:: node.right.value
+    else: transform:: node.right
 
   computed = (
     node.right.type == 'string'
     || node.right.type == 'group'
   )
 
-  memberExpression(left, right, computed)
+  memberExpression:: left, right, computed
 
 
 add_member = fn ctx:

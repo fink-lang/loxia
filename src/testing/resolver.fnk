@@ -5,7 +5,7 @@ resolveSnapshotPath = fn test_path, snapshot_ext:
 
 
 resolveTestPath = fn snaphot_path, snapshot_ext:
-  snaphot_path.slice(0, -snapshot_ext.length)
+  snaphot_path.slice:: 0, -snapshot_ext.length
 
 
 testPathForConsistencyCheck = 'some/tests/example.test.js'

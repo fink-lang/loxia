@@ -2,9 +2,9 @@
 {add, any} = import '../context'
 
 
-transform_spread = fn node, ctx:
-  right = ctx.transform(node.right)
-  spreadElement(right)
+transform_spread = fn node, {transform}:
+  right = transform:: node.right
+  spreadElement:: right
 
 
 add_spread = fn ctx:

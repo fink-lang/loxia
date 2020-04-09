@@ -4,7 +4,7 @@
 
 transform_group = fn node, {transform}:
   [expr] = node.exprs
-  transform(expr)
+  transform:: expr
 
 
 add_group = fn ctx:

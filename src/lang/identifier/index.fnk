@@ -5,8 +5,8 @@
 
 
 transform_ident = fn {value}:
-  name = escape_ident(value)
-  identifier(name)
+  name = escape_ident:: value
+  identifier:: name
 
 
 add_ident = fn ctx:

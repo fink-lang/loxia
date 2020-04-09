@@ -2,9 +2,7 @@
 {wrap} = import '../../js/types'
 
 
-transform_throw = fn node, ctx:
-  right = ctx.transform(node.right)
+transform_throw = fn node, {transform}:
+  right = transform:: node.right
 
-  wrap(node, unaryExpression('throw', right))
-
-
+  wrap:: node, unaryExpression:: 'throw', right

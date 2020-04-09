@@ -10,7 +10,8 @@ add = fn type, op, transformer: fn {transformers, ...ctx}:
   {transformers: next_transformers, ...ctx}
 
 
-obj_has = fn obj, key: Object.prototype.hasOwnProperty.call(obj, key)
+obj_has = fn obj, key:
+  Object.prototype.hasOwnProperty.call:: obj, key
 
 
 get_transformer = fn {op, type}, {transformers}:
