@@ -2,12 +2,12 @@
 {add, any} = import '../context'
 
 
-transform_await = fn node, ctx:
-  right = ctx.transform(node.right)
-  awaitExpression(right)
+transform_await = fn node, {transform}:
+  right = transform:: node.right
+  awaitExpression:: right
 
 
 add_async = fn ctx:
   pipe ctx:
-    add('await', any, transform_await)
+    add:: 'await', any, transform_await
 

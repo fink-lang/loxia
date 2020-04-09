@@ -9,10 +9,10 @@
 
 add_iterables = fn ctx:
   pipe ctx:
-    add(any, 'fold', transform_fold)
-    add(any, 'unfold', transform_unfold)
-    add(any, 'map', transform_map)
-    add(any, 'flat_map', transform_flat_map)
-    add(any, 'filter', transform_filter)
-    add(any, 'while', transform_while)
-    add(any, 'find', transform_find)
+    add:: any, 'fold', transform_fold
+    add:: any, 'unfold', transform_unfold
+    add:: any, 'map', transform_map
+    add:: any, 'flat_map', transform_flat_map
+    add:: any, 'filter', transform_filter
+    add:: any, 'while', transform_while
+    add:: any, 'find', transform_find

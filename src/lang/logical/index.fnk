@@ -12,7 +12,7 @@ transform_logical = fn node, ctx:
 
 add_logical = fn ctx:
   pipe ctx:
-    add(any, '&&', transform_logical)
-    add(any, '||', transform_logical)
-    add(any, '!', transform_unary)
+    add:: any, '&&', transform_logical
+    add:: any, '||', transform_logical
+    add:: any, '!', transform_unary
 

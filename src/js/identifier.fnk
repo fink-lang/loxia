@@ -180,13 +180,13 @@ var_prefix = 'ˆ'
 replace_chars = fn name, idx=0:
   prefixed_name = `${var_prefix}${name}`
 
-  match check_ident.exec(prefixed_name):
+  match check_ident.exec:: prefixed_name:
     null:
-      [char] = name.slice(idx, idx + 1)
+      [char] = name.slice:: idx, idx + 1
       char_replacement = name.charCodeAt(idx).toString(36)
 
-      start = name.slice(0, idx)
-      end = name.slice(idx + 1)
+      start = name.slice:: 0, idx
+      end = name.slice:: idx + 1
       new_name = `${start}${char_replacement}${end}`
 
       replace_chars:: new_name, idx + char_replacement.length
@@ -196,7 +196,7 @@ replace_chars = fn name, idx=0:
 
 
 escape_ident = fn name:
-  match check_ident.exec(name):
-    null: replace_chars(name)
+  match check_ident.exec:: name:
+    null: replace_chars:: name
     else: name
 

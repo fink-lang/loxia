@@ -9,4 +9,4 @@ transform_spread = fn node, ctx:
 
 add_spread = fn ctx:
   pipe ctx:
-    add(any, '...', transform_spread)
+    add:: any, '...', transform_spread

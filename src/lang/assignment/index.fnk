@@ -6,14 +6,14 @@
 
 
 transform_assign = fn node, ctx:
-  left = transform_left(ctx.transform(node.left))
-  right = transform_value(node.right, ctx)
+  left = transform_left:: ctx.transform:: node.left
+  right = transform_value:: node.right, ctx
 
   # wrap(node, assignmentExpression('=', left, right))
-  assignmentExpression('=', left, right)
+  assignmentExpression:: '=', left, right
 
 
 add_assignment = fn ctx:
   pipe ctx:
-    add(any, '=', transform_assign)
+    add:: any, '=', transform_assign
 

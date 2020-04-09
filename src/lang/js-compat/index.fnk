@@ -5,5 +5,5 @@
 
 add_js_compat = fn ctx:
   pipe ctx:
-    add('new', any, transform_new)
-    add('throw', any, transform_throw)
+    add:: 'new', any, transform_new
+    add:: 'throw', any, transform_throw

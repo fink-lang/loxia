@@ -11,4 +11,4 @@ transform_ident = fn {value}:
 
 add_ident = fn ctx:
   pipe ctx:
-    add('ident', any, transform_ident)
+    add:: 'ident', any, transform_ident

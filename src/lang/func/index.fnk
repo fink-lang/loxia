@@ -14,5 +14,5 @@ transform_func = fn node, ctx:
 
 add_func = fn ctx:
   pipe ctx:
-    add(any, 'fn', transform_func)
+    add:: any, 'fn', transform_func
 

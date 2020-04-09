@@ -47,6 +47,6 @@ transform_module = fn node, ctx:
 
 add_module = fn ctx:
   pipe ctx:
-    add('module', any, transform_module)
-    add('import', any, transform_import)
+    add:: 'module', any, transform_module
+    add:: 'import', any, transform_import
 

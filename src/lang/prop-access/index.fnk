@@ -19,5 +19,5 @@ transform_member = fn node, ctx:
 
 add_member = fn ctx:
   pipe ctx:
-    add(any, '.', transform_member)
+    add:: any, '.', transform_member
 
