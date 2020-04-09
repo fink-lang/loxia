@@ -5,45 +5,39 @@ exports[`match compiles 1`] = `
   ˆmatch_2: {
     const ˆvalue_1 = shrub;
 
-    /* simple value */
+    // simple value
     if (ˆvalue_1 === 123) {
-      /* result */
       spam;
       break ˆmatch_2;
     }
 
-    /* object matching */
+    // object matching
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
         \\"foo\\": ˆp_3,
         \\"ni\\": ˆp_4
       } = ˆvalue_1;
-
-      /* object matching */
-      if (ˆp_3 === 4)
-        /* object matching */
+      // object matching
+      if (ˆp_3 === 4) // object matching
         if (ˆp_4 === ni) {
           spam + ni;
           break ˆmatch_2;
         }
     }
 
-    /* array matching */
+    // array matching
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
       const [ˆa_5, ˆa_6, ˆa_7] = ˆvalue_1;
-
-      /* array matching */
-      if (ˆa_5 === 1)
-        /* array matching */
-        if (ˆa_6 === 2)
-          /* array matching */
+      // array matching
+      if (ˆa_5 === 1) // array matching
+        if (ˆa_6 === 2) // array matching
           if (ˆa_7 === ni) {
             ni;
             break ˆmatch_2;
           }
     }
 
-    /* fallback if none of above match */
+    // fallback if none of above match
     {
       shrub;
       break ˆmatch_2;
@@ -84,13 +78,13 @@ exports[`match compiles nested pattern 1`] = `
   ˆmatch_2: {
     const ˆvalue_1 = shrub;
 
-    /* deep obj comparison */
+    // deep obj comparison
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
         \\"foo\\": ˆp_3
       } = ˆvalue_1;
 
-      /* deep obj comparison */
+      // deep obj comparison
       if (ˆp_3 !== undefined && ˆp_3 !== null) {
         spam + ni;
         break ˆmatch_2;
@@ -171,19 +165,16 @@ exports[`match compiles nested pattern 1`] = `
       }
     }
 
-    /* deep array comparison */
+    // deep array comparison
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
       const [ˆa_18, ˆa_19, ˆa_20] = ˆvalue_1;
-
-      /* deep array comparison */
-      if (ˆa_18 === 1)
-        /* deep array comparison */
-        if (ˆa_19 === 2)
-          /* deep array comparison */
+      // deep array comparison
+      if (ˆa_18 === 1) // deep array comparison
+        if (ˆa_19 === 2) // deep array comparison
           if (ˆa_20 !== undefined && ˆa_20 !== null && typeof ˆa_20[Symbol.iterator] === \\"function\\") {
             const [ˆa_21] = ˆa_20;
 
-            /* deep array comparison */
+            // deep array comparison
             if (ˆa_21 === ni) {
               ni;
               break ˆmatch_2;
@@ -238,144 +229,144 @@ exports[`match compiles patial application 1`] = `
       \\"spam\\": 123
     };
 
-    /* simple unary */
+    // simple unary
     if (!ˆvalue_1) {
       ni;
       break ˆmatch_2;
     }
 
-    /* simple binary */
+    // simple binary
     if (ˆvalue_1 > 123) {
       ni;
       break ˆmatch_2;
     }
 
-    /* simple call */
+    // simple call
     if (ˆvalue_1()) {
       ni;
       break ˆmatch_2;
     }
 
-    /* simple as call arg */
+    // simple as call arg
     if (shrub(ˆvalue_1)) {
       ni;
       break ˆmatch_2;
     }
 
-    /* nested unary */
+    // nested unary
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
         \\"spam\\": ˆp_3
       } = ˆvalue_1;
 
-      /* nested unary */
+      // nested unary
       if (!ˆp_3) {
         ni;
         break ˆmatch_2;
       }
     }
 
-    /* nested binary */
+    // nested binary
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
         \\"spam\\": ˆp_4
       } = ˆvalue_1;
 
-      /* nested binary */
+      // nested binary
       if (ˆp_4 > 123) {
         ni;
         break ˆmatch_2;
       }
     }
 
-    /* nested call */
+    // nested call
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
         \\"spam\\": ˆp_5
       } = ˆvalue_1;
 
-      /* nested call */
+      // nested call
       if (ˆp_5()) {
         ni;
         break ˆmatch_2;
       }
     }
 
-    /* nested member call */
+    // nested member call
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
         \\"spam\\": ˆp_6
       } = ˆvalue_1;
 
-      /* nested member call */
+      // nested member call
       if (ˆp_6.is_foo()) {
         ni;
         break ˆmatch_2;
       }
     }
 
-    /* nested as call arg */
+    // nested as call arg
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
         \\"spam\\": ˆp_7
       } = ˆvalue_1;
 
-      /* nested as call arg */
+      // nested as call arg
       if (is_foo(ˆp_7)) {
         ni;
         break ˆmatch_2;
       }
     }
 
-    /* nested unary */
+    // nested unary
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
       const [ˆa_8] = ˆvalue_1;
 
-      /* nested unary */
+      // nested unary
       if (!ˆa_8) {
         ni;
         break ˆmatch_2;
       }
     }
 
-    /* nested binary */
+    // nested binary
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
       const [ˆa_9] = ˆvalue_1;
 
-      /* nested binary */
+      // nested binary
       if (ˆa_9 > 123) {
         ni;
         break ˆmatch_2;
       }
     }
 
-    /* nested call */
+    // nested call
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
       const [ˆa_10] = ˆvalue_1;
 
-      /* nested call */
+      // nested call
       if (ˆa_10()) {
         ni;
         break ˆmatch_2;
       }
     }
 
-    /* nested member call */
+    // nested member call
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
       const [ˆa_11] = ˆvalue_1;
 
-      /* nested member call */
+      // nested member call
       if (ˆa_11.is_foo()) {
         ni;
         break ˆmatch_2;
       }
     }
 
-    /* nested as call arg */
+    // nested as call arg
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
       const [ˆa_12] = ˆvalue_1;
 
-      /* nested as call arg */
+      // nested as call arg
       if (is_foo(ˆa_12)) {
         ni;
         break ˆmatch_2;

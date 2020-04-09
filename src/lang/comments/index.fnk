@@ -1,10 +1,22 @@
 
-get_comments = fn {comment=null}:
-  match comment:
-    null: {}
-    else:
-      {value, loc} = comment
-      {leadingComments: [{type: 'CommentBlock', value: `${value} `, loc}]}
+transform_comment = fn {op, value, loc, ...rest}:
+  match op:
+    '---': {type: 'CommentBlock', value, loc}
+    else: {type: 'CommentLine', value, loc}
+
+
+transform_comments = fn comments:
+  pipe comments:
+    map comment: transform_comment:: comment
+
+
+get_comments = fn {comments={}}:
+  {leading=[], trailing=[]} = comments
+
+  {
+    leadingComments: [...transform_comments:: leading],
+    trailingComments: [...transform_comments:: trailing]
+  }
 
 
 wrap_with_comment_loc = fn js_node, larix_node:

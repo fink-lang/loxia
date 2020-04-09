@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`partial compiles assignment 1`] = `
-"const foo1 = ˆ1r => a * ˆ1r + 1;
+"const foo1 = (ˆ1r) => a * ˆ1r + 1;
 
-const foo2 = ˆ1r => bar(ˆ1r);
+const foo2 = (ˆ1r) => bar(ˆ1r);
 
-const foo3 = ˆ1r => ˆ1r.bar();
+const foo3 = (ˆ1r) => ˆ1r.bar();
 
-const foo4 = ˆ1r => ˆ1r();
+const foo4 = (ˆ1r) => ˆ1r();
 
 Object.assign(module.exports, {
   foo1,

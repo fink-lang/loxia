@@ -14,14 +14,14 @@ it = fn descr, test:
 
 # istanbul ignore next
 eq = fn result, expected:
-  match expected:
-    snapshot: expect(result).toMatchSnapshot()
-    else: expect(result).toEqual(expected)
-
+  # match expected:
+  #   snapshot: expect(result).toMatchSnapshot()
+  #   else: expect(result).toEqual(expected)
+  expect(result).toMatchSnapshot()
 
 # istanbul ignore next
-is = fn result, expected:
-  expect(result).toBe(expected)
+# is = fn result, expected:
+#   expect(result).toBe(expected)
 
 
 to_throw = fn func, err:

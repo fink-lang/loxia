@@ -16,7 +16,6 @@ transform_module = fn node, ctx:
     filter expr:
       match expr:
         {left: {type: 'ident'}}: true
-        {type: 'comment'} : false
         else: false
 
     map {left: {value}}:
@@ -25,7 +24,6 @@ transform_module = fn node, ctx:
       objectProperty:: id, id, false, true
 
   body = pipe node.exprs:
-    # filter {type}: type != 'comment'
     map expr: block_statement(ctx)(expr)
 
 

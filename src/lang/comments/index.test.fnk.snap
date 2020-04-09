@@ -1,16 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`comment compiles 1`] = `
-"/* leading expression */
+"// leading expression
 const spam = ni;
 
 /*
 Shrub ni.
 */
-const bar = () => spam;
+const bar = () =>
+/* single line block */
+spam;
 
 Object.assign(module.exports, {
   spam,
   bar
-});"
+});
+// trailing module"
 `;

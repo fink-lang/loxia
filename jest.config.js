@@ -14,7 +14,6 @@ module.exports = {
   modulePathIgnorePatterns: ['<rootDir>/build/'],
 
   testMatch: [
-    '<rootDir>/**/*.test.js',
     '<rootDir>/**/*.test.fnk'
   ],
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
@@ -27,7 +26,6 @@ module.exports = {
 
   collectCoverage: true,
   collectCoverageFrom: [
-    '<rootDir>/src/**/*.js',
     '<rootDir>/src/**/*.fnk'
   ],
   coveragePathIgnorePatterns: [
