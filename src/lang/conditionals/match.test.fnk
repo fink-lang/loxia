@@ -3,17 +3,6 @@
 
 
 describe:: 'match', fn:
-  it:: 'compiles s', fn:
-    fink2js(`
-      match shrub:
-        1: simp
-        [1, 2]: foo
-        [1, [2, 3], 4]: bar
-        [1, [2, [3, 4]], [5, 6], 7]: spam
-        {ni: {len: 1}, na: {len: 1}}: na
-        else: ni
-    `) eq snapshot
-
   it:: 'compiles', fn:
     fink2js(`
       match shrub:
@@ -48,11 +37,17 @@ describe:: 'match', fn:
     fink2js(`
       match shrub:
         # deep obj comparison
+        {foo: {}}: spam + ni
+        {foo: []}: spam + ni
         {foo: 4, ni: {na, nu}}: spam + ni
         {xx: 1, foo: {bar: 'spam'}, shrub: {na: 'nu'}}: ni
+        {ni: {len: 1}, na: {len: 1}}: na
 
         # deep array comparison
         [1, 2, [ni]]: ni
+        [1, 2, [], {}]: foo
+        [1, [2, 3], 4]: bar
+        [1, [2, [3, 4]], [5, 6], 7]: spam
     `) eq snapshot
 
 

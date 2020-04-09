@@ -68,11 +68,14 @@ match_obj = fn value, obj, emit_result, ctx, cond:
 
   ifStatement::
     not_nullish:: value
-
-    blockStatement:: [
-      consts(decl, value),
-      match_props:: id_props, emit_result, ctx, cond
-    ]
+    match id_props:
+      {length: 0}:
+        emit_result()
+      else:
+        blockStatement:: [
+          consts(decl, value),
+          match_props:: id_props, emit_result, ctx, cond
+        ]
 
 
 
@@ -96,11 +99,14 @@ match_array = fn value, arr, emit_result, ctx, cond:
 
   ifStatement::
     is_iterable:: value
-
-    blockStatement:: [
-      consts(decl, value),
-      match_elems:: id_elems, emit_result, ctx, cond
-    ]
+    match id_elems:
+      {length: 0}:
+        emit_result()
+      else:
+        blockStatement:: [
+          consts(decl, value),
+          match_elems:: id_elems, emit_result, ctx, cond
+        ]
 
 
 match_simple = fn value, expr, emit_result, ctx:
