@@ -3,15 +3,13 @@
 exports[`flat_map compiles 1`] = `
 "(function* map(ˆitems_1) {
   for (const item of ˆitems_1) {
-    const ˆresult_2 = [spam + item];
-    yield* ˆresult_2;
+    yield* [spam + item];
   }
 });
 
-(function* map(ˆitems_3) {
-  for (const item of ˆitems_3) {
-    const ˆresult_4 = [spam];
-    yield* ˆresult_4;
+(function* map(ˆitems_2) {
+  for (const item of ˆitems_2) {
+    yield* [spam];
   }
 });
 
@@ -21,8 +19,7 @@ Object.assign(module.exports, {});"
 exports[`map compiles as flat map 1`] = `
 "(function* map(ˆitems_1) {
   for (const [x, y] of ˆitems_1) {
-    const ˆresult_2 = [x, y];
-    yield* ˆresult_2;
+    yield* [x, y];
   }
 });
 
@@ -32,8 +29,7 @@ Object.assign(module.exports, {});"
 exports[`map compiles multi line 1`] = `
 "(function* map(ˆitems_1) {
   for (const item of ˆitems_1) {
-    const ˆresult_2 = item * 2;
-    yield ˆresult_2;
+    yield item * 2;
   }
 });
 
@@ -43,8 +39,7 @@ Object.assign(module.exports, {});"
 exports[`map compiles single line 1`] = `
 "(function* map(ˆitems_1) {
   for (const item of ˆitems_1) {
-    const ˆresult_2 = item * 2;
-    yield ˆresult_2;
+    yield item * 2;
   }
 });
 
@@ -54,8 +49,7 @@ Object.assign(module.exports, {});"
 exports[`map compiles single line with default value 1`] = `
 "(function* map(ˆitems_1) {
   for (const item = 123 of ˆitems_1) {
-    const ˆresult_2 = item * 2;
-    yield ˆresult_2;
+    yield item * 2;
   }
 });
 
@@ -65,8 +59,7 @@ Object.assign(module.exports, {});"
 exports[`map compiles single line with destructured array 1`] = `
 "(function* map(ˆitems_1) {
   for (const [x, y] of ˆitems_1) {
-    const ˆresult_2 = x + y;
-    yield ˆresult_2;
+    yield x + y;
   }
 });
 
@@ -78,8 +71,7 @@ exports[`map compiles single line with destructured obj 1`] = `
   for (const {
     \\"item\\": item
   } of ˆitems_1) {
-    const ˆresult_2 = item * 2;
-    yield ˆresult_2;
+    yield item * 2;
   }
 });
 

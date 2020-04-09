@@ -1,13 +1,11 @@
 {
   variableDeclaration, variableDeclarator, arrayPattern,
   objectPattern, assignmentPattern, forOfStatement, yieldExpression,
-  expressionStatement, callExpression, functionExpression,
+  expressionStatement, functionExpression,
   blockStatement, identifier, arrowFunctionExpression,
   logicalExpression, binaryExpression, unaryExpression,
-  memberExpression, ifStatement, doExpression,
-  assignmentExpression, returnStatement,
-  isAssignmentExpression, isObjectExpression,
-  isArrayExpression, isIdentifier
+  doExpression, assignmentExpression, isAssignmentExpression,
+  isObjectExpression, isArrayExpression, isIdentifier
 } = import'@babel/types'
 
 {escape_ident} = import'./identifier'
@@ -23,15 +21,10 @@ expr_block = fn ...exprs:
       ...pipe exprs:
         map node:
           match node:
-            {type: ?.endsWith('Expression')}: expressionStatement:: node
-            isIdentifier(?): expressionStatement:: node
+            {type: ?.endsWith:: 'Expression'}: expressionStatement:: node
+            isIdentifier:: ?: expressionStatement:: node
             else: node
     ]
-
-
-member = fn obj: fn key, computed:
-  memberExpression:: obj, key, computed
-
 
 typof = fn value: unaryExpression:: 'typeof', value
 
@@ -90,12 +83,8 @@ consts = fn id, init:
 
 lets = fn id, init:
   variableDeclaration::
-    'let',
+    'let'
     [declarator:: id, init]
-
-
-call = fn callee: fn ...args:
-  callExpression:: callee, args
 
 
 assign = fn left, right:
@@ -108,25 +97,9 @@ yields = fn expr, delegate:
     yieldExpression:: expr, delegate
 
 
-iff = fn test: fn consequent:
-  ifStatement(test, consequent)
-
-
-returns = fn expr:
-  returnStatement:: expr
-
-
-yield_or_stop = fn expr, unique_ident, delegate:
-  result = unique_ident:: 'result'
-  [
-    consts(result, expr),
-    yields(result, delegate)
-  ]
-
-
 func = fn ...args: fn expr, ...expressions:
   arrowFunctionExpression::
-    args,
+    args
     expr_block:: expr, ...expressions
 
 
@@ -138,8 +111,8 @@ generator = fn name: fn ...args: fn ...statements:
 
 for_of = fn item, items: fn ...expressions:
   forOfStatement::
-    consts(item),
-    items,
+    consts:: item
+    items
     blockStatement:: expressions
 
 

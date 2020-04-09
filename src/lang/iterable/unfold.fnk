@@ -1,6 +1,5 @@
 {
-  assign, generator, for_of, split_last, yield_or_stop,
-  params, consts, yields, true_
+  assign, generator, split_last, params, consts, yields, true_
 } = import '../../js/types'
 {whileStatement, blockStatement} = import '@babel/types'
 {block_statement} = import '../block'
@@ -43,13 +42,13 @@ transform_unfold = fn node, {transform, unique_ident}:
       [acca]
 
 
-  generator('unfold')(...acc_init)(
+  generator('unfold')(...acc_init)::
     loop::
-      ...expressions.map(block_statement:: {transform}),
+      ...expressions.map:: block_statement:: {transform}
 
-      consts(result_id, transform:: result),
+      consts:: result_id, transform:: result
 
-      yields(result_id),
+      yields:: result_id
 
       ...acc_assign
-  )
+

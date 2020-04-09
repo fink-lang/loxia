@@ -1,4 +1,4 @@
-{params, generator, for_of, yield_or_stop, split_last} = import '../../js/types'
+{params, generator, for_of, yield_or_stop, yields, split_last} = import '../../js/types'
 
 {is_call, is_calling} = import '../call/call'
 {block_statement} = import '../block'
@@ -18,16 +18,13 @@ transform_any = fn flatten: fn node, {transform, unique_ident}:
 
   items = unique_ident:: 'items'
 
-  generator('map')(items)(
-    for_of(item, items)(
-      ...expressions.map(block_statement:: {transform}),
+  generator('map')(items)::
+    for_of(item, items)::
+      ...expressions.map:: block_statement:: {transform}
 
-      ...yield_or_stop::
-        transform(yield_value),
-        unique_ident,
+      yields::
+        transform:: yield_value
         flatten || last_is_spread
-    )
-  )
 
 
 transform_map = transform_any:: false

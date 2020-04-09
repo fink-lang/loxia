@@ -1,32 +1,32 @@
-{params, for_of, split_last, func, returns, iff, consts, undef} = import '../../js/types'
+{returnStatement, ifStatement} = import'@babel/types'
+
+{params, for_of, split_last, func, consts, undef} = import '../../js/types'
 {block_statement} = import '../block'
 
 
 transform_find = fn node, {transform, unique_ident}:
-  [item_param] = node.args.map(fn expr: transform(expr))
-  [init] = params([item_param])
+  [item_param] = node.args.map:: fn expr: transform:: expr
+  [init] = params:: [item_param]
 
-  item = unique_ident('item')
-  items = unique_ident('items')
-  found = unique_ident('found')
+  item = unique_ident:: 'item'
+  items = unique_ident:: 'items'
+  found = unique_ident:: 'found'
 
-  [expressions, last_expr] = split_last(node.exprs)
+  [expressions, last_expr] = split_last:: node.exprs
 
-  func(items)(
+  func(items)::
 
-    for_of(item, items)(
-      consts(init, item),
+    for_of(item, items)::
+      consts:: init, item
 
-      ...expressions.map(block_statement({transform})),
+      ...expressions.map:: block_statement:: {transform}
 
-      consts(found, transform(last_expr)),
+      consts:: found, transform:: last_expr
 
-      iff(found)(
-        returns(item)
-      )
-    ),
+      ifStatement::
+        found
+        returnStatement:: item
 
     undef()
-  )
 
 
