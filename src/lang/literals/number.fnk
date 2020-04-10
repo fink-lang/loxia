@@ -2,7 +2,7 @@
 
 
 transform_number = fn {value}:
-  match value.match(rx/\./):
-    null: bigIntLiteral(value)
-    else: numericLiteral(Number(value))
+  match value.match:: rx/\./:
+    null: bigIntLiteral:: value
+    else: numericLiteral:: Number:: value
 

@@ -24,7 +24,8 @@ transform_module = fn node, ctx:
       objectProperty:: id, id, false, true
 
   body = pipe node.exprs:
-    map expr: block_statement(ctx)(expr)
+    map expr:
+       block_statement(ctx):: expr
 
 
   # TODO: use individual exports?
@@ -47,6 +48,6 @@ transform_module = fn node, ctx:
 
 add_module = fn ctx:
   pipe ctx:
-    add('module', any, transform_module)
-    add('import', any, transform_import)
+    add:: 'module', any, transform_module
+    add:: 'import', any, transform_import
 

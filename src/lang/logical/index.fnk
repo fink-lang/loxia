@@ -3,16 +3,16 @@
 {transform_unary} = import '../generic/unary'
 
 
-transform_logical = fn node, ctx:
-  left = ctx.transform(node.left)
-  right = ctx.transform(node.right)
-  logicalExpression(node.op, left, right)
+transform_logical = fn node, {transform}:
+  left = transform:: node.left
+  right = transform:: node.right
+  logicalExpression:: node.op, left, right
 
 
 
 add_logical = fn ctx:
   pipe ctx:
-    add(any, '&&', transform_logical)
-    add(any, '||', transform_logical)
-    add(any, '!', transform_unary)
+    add:: any, '&&', transform_logical
+    add:: any, '||', transform_logical
+    add:: any, '!', transform_unary
 

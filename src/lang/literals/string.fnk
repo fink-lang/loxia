@@ -12,11 +12,14 @@ transform_string = fn node, {transform}:
     .filter(fn part, idx: idx % 2 == 1)
     .map(fn part:transform(part))
 
-  templ_str = templateLiteral(quasies, expressions)
+  templ_str = templateLiteral:: quasies, expressions
   {tag=null} = node
 
   match tag:
     null: templ_str
-    else: taggedTemplateExpression(transform(node.tag), templ_str)
+    else:
+      taggedTemplateExpression::
+        transform:: node.tag
+        templ_str
 
 

@@ -5,5 +5,5 @@
 
 add_conditionals = fn ctx:
   pipe ctx:
-    add(any, 'match', transform_match)
-    add(any, 'attempt', transform_attempt)
+    add:: any, 'match', transform_match
+    add:: any, 'attempt', transform_attempt

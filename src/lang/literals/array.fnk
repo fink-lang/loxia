@@ -1,11 +1,11 @@
 {arrayExpression} = import '@babel/types'
 
 
-transform_array = fn node, ctx:
+transform_array = fn node, {transform}:
   elems = node.exprs.map:: fn elem:
     match elem:
       null: null
-      else: ctx.transform(elem)
+      else: transform:: elem
 
-  arrayExpression(elems)
+  arrayExpression:: elems
 

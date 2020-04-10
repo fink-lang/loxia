@@ -4,9 +4,9 @@
 
 transform_group = fn node, {transform}:
   [expr] = node.exprs
-  transform(expr)
+  transform:: expr
 
 
 add_group = fn ctx:
   pipe ctx:
-    add('group', any, transform_group)
+    add:: 'group', any, transform_group

@@ -20,7 +20,7 @@ is_partial = fn node:
     else: false
 
 
-transform_value = fn node, ctx:
+transform_value = fn node, {transform}:
   partial_or_node = match node:
     is_partial:: ?:
       {
@@ -33,13 +33,15 @@ transform_value = fn node, ctx:
     else:
       node
 
-  ctx.transform(partial_or_node)
+  transform:: partial_or_node
 
 
 transform_partial = fn {value}, {partial_ident}:
   name = match partial_ident || null:
-    null: escape_ident:: value
-    else: partial_ident.name
+    null:
+      escape_ident:: value
+    else:
+      partial_ident.name
 
   identifier:: name
 

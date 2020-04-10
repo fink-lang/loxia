@@ -5,6 +5,6 @@
 
 add_generic = fn ctx:
   pipe ctx:
-    add('infix', any, transform_inifx)
-    add('block', any, transform_block)
+    add:: 'infix', any, transform_inifx
+    add:: 'block', any, transform_block
 

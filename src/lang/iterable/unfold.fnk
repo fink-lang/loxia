@@ -22,7 +22,7 @@ get_acc = fn inputs:
 
 transform_unfold = fn node, {transform, unique_ident}:
   [acc_id, acc_init] = get_acc::
-    node.args.map(fn arg: transform_left:: transform:: arg)
+    node.args.map:: fn arg: transform_left:: transform:: arg
 
   [expressions, last_expr] = split_last:: node.exprs
 

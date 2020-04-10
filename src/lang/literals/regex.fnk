@@ -2,6 +2,6 @@
 
 
 transform_regex = fn node:
-  pattern = node.pattern.replace(rx/(\#.*\n)|[\n\s]/gm, '')
+  pattern = node.pattern.replace:: rx/(\#.*\n)|[\n\s]/gm, ''
 
-  regExpLiteral(pattern, node.flags)
+  regExpLiteral:: pattern, node.flags
