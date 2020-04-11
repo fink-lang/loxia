@@ -22,7 +22,9 @@ describe:: 'destructuring array', fn:
     fink2js(`
       [a, b, c] = ni
       [,, d] = ni
-      [e, ...f] = ni
+      [head, ...tail] = ni
+      [...items, last] = '1234'
+      [first, second, ...middle, penultimate, end] = '123'
     `) eq snapshot
 
 

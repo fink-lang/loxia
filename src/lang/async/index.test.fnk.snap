@@ -10,8 +10,10 @@ const task3 = async (foo) => {
   return bar + 123;
 };
 
-const a_gen = async function* unfold(curr = 0) {
+const a_gen = async function* unfold(ˆaccu_4 = 0) {
   while (true) {
+    const curr = ˆaccu_4;
+
     let _do_result;
 
     ˆmatch_3: {
@@ -31,7 +33,7 @@ const a_gen = async function* unfold(curr = 0) {
     const ˆresult_1 = _do_result;
     _do_result = undefined;
     yield ˆresult_1;
-    curr = ˆresult_1;
+    ˆaccu_4 = ˆresult_1;
   }
 };
 

@@ -4,8 +4,7 @@
   expressionStatement, functionExpression,
   blockStatement, identifier, arrowFunctionExpression,
   logicalExpression, binaryExpression, unaryExpression,
-  doExpression, assignmentExpression, isAssignmentExpression,
-  isObjectExpression, isArrayExpression, isIdentifier
+  doExpression, assignmentExpression, isIdentifier
 } = import'@babel/types'
 
 {escape_ident} = import'./identifier'
@@ -114,25 +113,3 @@ for_of = fn item, items: fn ...expressions:
     consts:: item
     items
     blockStatement:: expressions
-
-
-params = fn exprs:
-  [...args] = pipe exprs:
-    map expr:
-      match expr:
-        isAssignmentExpression:: ?:
-          assignmentPattern:: expr.left, expr.right
-
-        isObjectExpression:: ?:
-          objectPattern:: params:: expr.properties
-
-        isArrayExpression:: ?:
-          arrayPattern:: params:: expr.elements
-
-        # TODO: was previously used.
-        #  (isSpreadElement(expr):
-        #     restElement(expr.argument)
-        #
-        else: expr
-  args
-

@@ -16,6 +16,12 @@ describe:: 'find', fn:
         match item:
           {spam}: shrub
           else: ni
+
+      find [foo , ...bar]:
+        foo && bar.length == 0
+
+      find [...foo , bar]:
+        bar && foo.length == 0
     `) eq snapshot
 
 

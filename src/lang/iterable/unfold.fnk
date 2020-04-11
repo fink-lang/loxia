@@ -1,54 +1,70 @@
-{
-  assign, generator, split_last, params, consts, yields, true_
-} = import '../../js/types'
-{whileStatement, blockStatement} = import '@babel/types'
+{whileStatement, blockStatement, assignmentPattern} = import '@babel/types'
+{assign, generator, split_last, consts, yields, true_} = import '../../js/types'
+
 {block_statement} = import '../block'
-{transform_left} = import '../generic/left'
+{transform_init} = import './init'
 
 
 loop = fn ...body:
   whileStatement:: true_(), blockStatement:: body
 
 
-get_acc = fn inputs:
-  match inputs:
-    {length: ? > 0}:
-      [acc_init] = params:: inputs
-      acc_id = acc_init.left || acc_init
-      [acc_id, [acc_init]]
+get_acc_exprs = fn node, next_value, ctx:
+  {transform, unique_ident} = ctx
+
+  acc = unique_ident:: 'accu'
+  [acc_arg] = node.args;
+
+  acc_left = match acc_arg:
+    {type: 'assign'}: acc_arg.left
+    else: acc_arg
+
+  acc_init = match acc_arg:
+    {type: 'assign'}:
+      assignmentPattern::
+        acc
+        transform:: acc_arg.right
     else:
-      [null, []]
+      acc
+
+  acc_assign = transform_init:: acc_left, acc, ctx
+
+  acc_result = assign:: acc, next_value
+
+  [[acc], [acc_init], [acc_assign], [acc_result]]
 
 
-transform_unfold = fn node, {transform, unique_ident}:
-  [acc_id, acc_init] = get_acc::
-    node.args.map:: fn arg: transform_left:: transform:: arg
+get_accs = fn node, next_value, ctx:
+  match node.args:
+    {length: 0}:
+      [[], [], [], []]
+    else:
+      get_acc_exprs:: node, next_value, ctx
+
+
+transform_unfold = fn node, ctx:
+  {transform, unique_ident} = ctx
 
   [expressions, last_expr] = split_last:: node.exprs
 
-  [result, next_value] = match last_expr:
-    {type: 'group'}: last_expr.exprs
-    else: [last_expr, null]
-
   result_id = unique_ident:: 'result'
 
-  acc_assign = match {acc_id, next_value}:
-    {acc_id: null, next_value: null}: []
-    {next_value: null}:
-      acca = assign:: acc_id, result_id
-      [acca]
+  [result, next_value] = match last_expr:
+    {type: 'group'}:
+      [result_expr, acc_expr] = last_expr.exprs
+      [transform(result_expr), transform(acc_expr)]
     else:
-      acca = assign:: acc_id, transform:: next_value
-      [acca]
+      [transform(last_expr), result_id]
 
+  [acc, acc_init, acc_assign, acc_result] = get_accs:: node, next_value, ctx
 
   generator('unfold')(...acc_init)::
     loop::
-      ...expressions.map:: block_statement:: {transform}
-
-      consts:: result_id, transform:: result
-
-      yields:: result_id
-
       ...acc_assign
 
+      ...expressions.map:: block_statement:: {transform}
+
+      consts:: result_id, result
+      yields:: result_id
+
+      ...acc_result

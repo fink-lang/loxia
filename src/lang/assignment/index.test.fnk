@@ -6,6 +6,7 @@ describe:: 'assignment', fn:
   it:: 'compiles', fn:
     fink2js(`
       assign = 1
+      # simple
       assign2 = assign
 
       no_clash_with_await = 13
@@ -17,4 +18,10 @@ describe:: 'assignment', fn:
         + 234 +
         -567
         - 1111
+
+      # standard JS destructuring
+      [...head, last] = '1234'
+
+      # enhanced destructuring
+      [foo, bar, ...spam, ni, shrub] = '123'
     `) eq snapshot

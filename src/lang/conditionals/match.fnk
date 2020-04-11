@@ -95,6 +95,7 @@ match_array = fn value, arr, emit_result, ctx, cond:
       id = ctx.unique_ident:: 'a'
       {id, value}
 
+  # TODO: support spread
   decl = arrayPattern:: id_elems.map:: fn {id}: id
 
   ifStatement::

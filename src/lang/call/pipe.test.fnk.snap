@@ -10,8 +10,9 @@ exports[`pipe compiles 1`] = `
 {
   let ˆpipe_result_2 = [1, 2, 3];
 
-  ˆpipe_result_2 = function* map(ˆitems_3) {
-    for (const item of ˆitems_3) {
+  ˆpipe_result_2 = function* map(ˆitems_4) {
+    for (const ˆitem_3 of ˆitems_4) {
+      const item = ˆitem_3;
       yield item * 2;
     }
   }(ˆpipe_result_2);

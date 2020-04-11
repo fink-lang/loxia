@@ -12,3 +12,32 @@ exports[`while compiles 1`] = `
 
 Object.assign(module.exports, {});"
 `;
+
+exports[`while compiles destructuring 1`] = `
+"(function* filter_while(ˆitems_2) {
+  for (const ˆitem_1 of ˆitems_2) {
+    const [foo, ...bar] = ˆitem_1;
+    const ˆresult_3 = foo && bar.length === 0;
+    if (ˆresult_3 !== true) return;
+    yield ˆitem_1;
+  }
+});
+
+(function* filter_while(ˆitems_6) {
+  for (const ˆitem_4 of ˆitems_6) {
+    let _do_result;
+
+    {
+      const [...ˆitems_5] = ˆitem_4;
+      _do_result = [ˆitems_5.slice(0, -1), ˆitems_5.slice(-1)];
+    }
+    const [foo, [bar]] = _do_result;
+    _do_result = undefined;
+    const ˆresult_7 = bar && foo.length === 0;
+    if (ˆresult_7 !== true) return;
+    yield ˆitem_4;
+  }
+});
+
+Object.assign(module.exports, {});"
+`;

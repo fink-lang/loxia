@@ -9,3 +9,13 @@ describe:: 'while', fn:
         item < 10
     `) eq snapshot
 
+
+  it:: 'compiles destructuring', fn:
+    fink2js(`
+      while [foo, ...bar]:
+        foo && bar.length == 0
+
+      while [...foo, bar]:
+        bar && foo.length == 0
+    `) eq snapshot
+
