@@ -1,6 +1,5 @@
 {
-  doExpression, blockStatement, isAssignmentExpression,
-  expressionStatement, variableDeclaration, variableDeclarator
+  doExpression, blockStatement, isAssignmentExpression, expressionStatement
 } = import '@babel/types'
 
 {consts} = import '../../js/types'
