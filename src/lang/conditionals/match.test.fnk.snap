@@ -165,17 +165,64 @@ exports[`match compiles nested pattern 1`] = `
       }
     }
 
+    // calculated props
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        [a]: ˆp_18
+      } = ˆvalue_1;
+
+      // calculated props
+      if (ˆp_18 !== undefined && ˆp_18 !== null) {
+        const {
+          \\"b\\": ˆp_19,
+          \\"c\\": ˆp_20
+        } = ˆp_18;
+        // calculated props
+        if (ˆp_19 === b) // calculated props
+          if (ˆp_20 === c) {
+            ni;
+            break ˆmatch_2;
+          }
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        [foo]: ˆp_21,
+        ...ˆp_22
+      } = ˆvalue_1;
+      if (ˆp_21 !== undefined && ˆp_21 !== null) if (ˆp_22 !== undefined && ˆp_22 !== null) {
+        const {
+          \\"bar\\": ˆp_23,
+          \\"spam\\": ˆp_24
+        } = ˆp_22;
+        if (ˆp_23 === bar) if (ˆp_24 === spam) {
+          ni;
+          break ˆmatch_2;
+        }
+      }
+    }
+  }
+}
+Object.assign(module.exports, {});"
+`;
+
+exports[`match compiles nested pattern 2`] = `
+"{
+  ˆmatch_2: {
+    const ˆvalue_1 = shrub;
+
     // deep array comparison
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_18, ˆa_19, ˆa_20] = ˆvalue_1;
+      const [ˆa_3, ˆa_4, ˆa_5] = ˆvalue_1;
       // deep array comparison
-      if (ˆa_18 === 1) // deep array comparison
-        if (ˆa_19 === 2) // deep array comparison
-          if (ˆa_20 !== undefined && ˆa_20 !== null && typeof ˆa_20[Symbol.iterator] === \\"function\\") {
-            const [ˆa_21] = ˆa_20;
+      if (ˆa_3 === 1) // deep array comparison
+        if (ˆa_4 === 2) // deep array comparison
+          if (ˆa_5 !== undefined && ˆa_5 !== null && typeof ˆa_5[Symbol.iterator] === \\"function\\") {
+            const [ˆa_6] = ˆa_5;
 
             // deep array comparison
-            if (ˆa_21 === ni) {
+            if (ˆa_6 === ni) {
               ni;
               break ˆmatch_2;
             }
@@ -183,18 +230,18 @@ exports[`match compiles nested pattern 1`] = `
     }
 
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_22, ˆa_23, ˆa_24, ˆa_25] = ˆvalue_1;
-      if (ˆa_22 === 1) if (ˆa_23 === 2) if (ˆa_24 !== undefined && ˆa_24 !== null && typeof ˆa_24[Symbol.iterator] === \\"function\\") if (ˆa_25 !== undefined && ˆa_25 !== null) {
+      const [ˆa_7, ˆa_8, ˆa_9, ˆa_10] = ˆvalue_1;
+      if (ˆa_7 === 1) if (ˆa_8 === 2) if (ˆa_9 !== undefined && ˆa_9 !== null && typeof ˆa_9[Symbol.iterator] === \\"function\\") if (ˆa_10 !== undefined && ˆa_10 !== null) {
         foo;
         break ˆmatch_2;
       }
     }
 
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_26, ˆa_27, ˆa_28] = ˆvalue_1;
-      if (ˆa_26 === 1) if (ˆa_27 !== undefined && ˆa_27 !== null && typeof ˆa_27[Symbol.iterator] === \\"function\\") {
-        const [ˆa_29, ˆa_30] = ˆa_27;
-        if (ˆa_29 === 2) if (ˆa_30 === 3) if (ˆa_28 === 4) {
+      const [ˆa_11, ˆa_12, ˆa_13] = ˆvalue_1;
+      if (ˆa_11 === 1) if (ˆa_12 !== undefined && ˆa_12 !== null && typeof ˆa_12[Symbol.iterator] === \\"function\\") {
+        const [ˆa_14, ˆa_15] = ˆa_12;
+        if (ˆa_14 === 2) if (ˆa_15 === 3) if (ˆa_13 === 4) {
           bar;
           break ˆmatch_2;
         }
@@ -202,20 +249,53 @@ exports[`match compiles nested pattern 1`] = `
     }
 
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_31, ˆa_32, ˆa_33, ˆa_34] = ˆvalue_1;
-      if (ˆa_31 === 1) if (ˆa_32 !== undefined && ˆa_32 !== null && typeof ˆa_32[Symbol.iterator] === \\"function\\") {
-        const [ˆa_35, ˆa_36] = ˆa_32;
-        if (ˆa_35 === 2) if (ˆa_36 !== undefined && ˆa_36 !== null && typeof ˆa_36[Symbol.iterator] === \\"function\\") {
-          const [ˆa_37, ˆa_38] = ˆa_36;
-          if (ˆa_37 === 3) if (ˆa_38 === 4) if (ˆa_33 !== undefined && ˆa_33 !== null && typeof ˆa_33[Symbol.iterator] === \\"function\\") {
-            const [ˆa_39, ˆa_40] = ˆa_33;
-            if (ˆa_39 === 5) if (ˆa_40 === 6) if (ˆa_34 === 7) {
+      const [ˆa_16, ˆa_17, ˆa_18, ˆa_19] = ˆvalue_1;
+      if (ˆa_16 === 1) if (ˆa_17 !== undefined && ˆa_17 !== null && typeof ˆa_17[Symbol.iterator] === \\"function\\") {
+        const [ˆa_20, ˆa_21] = ˆa_17;
+        if (ˆa_20 === 2) if (ˆa_21 !== undefined && ˆa_21 !== null && typeof ˆa_21[Symbol.iterator] === \\"function\\") {
+          const [ˆa_22, ˆa_23] = ˆa_21;
+          if (ˆa_22 === 3) if (ˆa_23 === 4) if (ˆa_18 !== undefined && ˆa_18 !== null && typeof ˆa_18[Symbol.iterator] === \\"function\\") {
+            const [ˆa_24, ˆa_25] = ˆa_18;
+            if (ˆa_24 === 5) if (ˆa_25 === 6) if (ˆa_19 === 7) {
               spam;
               break ˆmatch_2;
             }
           }
         }
       }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_26, ...ˆa_27] = ˆvalue_1;
+      if (ˆa_26 === 1) if (ˆa_27 !== undefined && ˆa_27 !== null) {
+        const {
+          \\"length\\": ˆp_28
+        } = ˆa_27;
+
+        if (ˆp_28 === 2) {
+          foo;
+          break ˆmatch_2;
+        }
+      }
+    }
+
+    // TODO: should just be , ...,
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      let _do_result;
+
+      {
+        const [...ˆitems_32] = ˆvalue_1;
+        _do_result = [ˆitems_32, ˆitems_32.slice(1, -1), ˆitems_32.slice(-1)];
+      }
+      const [[ˆa_29], ˆa_30, [ˆa_31]] = _do_result;
+      _do_result = undefined;
+      // TODO: should just be , ...,
+      if (ˆa_29 === 1) // TODO: should just be , ...,
+        if (ˆa_30 !== undefined && ˆa_30 !== null && typeof ˆa_30[Symbol.iterator] === \\"function\\") // TODO: should just be , ...,
+          if (ˆa_31 === 3) {
+            foo;
+            break ˆmatch_2;
+          }
     }
   }
 }

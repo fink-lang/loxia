@@ -1,7 +1,7 @@
 {
   arrayPattern, blockStatement, breakStatement, labeledStatement, objectPattern,
   objectProperty, expressionStatement, ifStatement,
-  doExpression, stringLiteral, memberExpression,
+  doExpression, stringLiteral, memberExpression, restElement,
   identifier
 } = import '@babel/types'
 
@@ -44,6 +44,8 @@ match_props = fn props, emit_result, ctx, cond:
     {value: {type: 'block', exprs: {length: 1}}}:
       {exprs: [expr]} = prop.value
       expr
+    {key: {type: 'spread'}}:
+      prop.key
     else:
       prop.value
 
@@ -62,9 +64,12 @@ match_obj = fn value, obj, emit_result, ctx, cond:
 
   decl = objectPattern::
     id_props.map:: fn {id, prop}:
-      [key, computed] = get_key:: prop, ctx
-      objectProperty:: key, id, computed
-
+      match prop:
+        {key: {type: 'spread'}}:
+          restElement:: id
+        else:
+          [key, computed] = get_key:: prop, ctx
+          objectProperty:: key, id, computed
 
   ifStatement::
     not_nullish:: value
@@ -78,7 +83,6 @@ match_obj = fn value, obj, emit_result, ctx, cond:
         ]
 
 
-
 match_elems = fn elems, emit_result, ctx, cond:
   [{id, value}, ...rest] = elems
 
@@ -89,14 +93,36 @@ match_elems = fn elems, emit_result, ctx, cond:
   match_condition:: id, value, emit, ctx, cond
 
 
+get_array_decl = fn arr, id_elems, right, ctx:
+  left = {
+    type: 'array',
+    exprs: id_elems.map(fn {id, value}:
+      ident = {type: 'ident', value: id.name}
+      match value:
+        {type: 'spread'}: {...value, right: ident}
+        else: ident
+    ),
+    loc: arr.loc
+  }
+
+  decl = ctx.transform:: {
+    type: 'assign',
+    op: '=',
+    left,
+    right: {type: 'ident', value: right.name, loc: arr.loc},
+    loc: arr.loc
+  }
+
+  consts(decl.left, decl.right)
+
+
 match_array = fn value, arr, emit_result, ctx, cond:
   [...id_elems] = pipe arr.exprs:
     map value:
       id = ctx.unique_ident:: 'a'
       {id, value}
 
-  # TODO: support spread
-  decl = arrayPattern:: id_elems.map:: fn {id}: id
+  array_decl = get_array_decl:: arr, id_elems, value, ctx
 
   ifStatement::
     is_iterable:: value
@@ -105,7 +131,7 @@ match_array = fn value, arr, emit_result, ctx, cond:
         emit_result()
       else:
         blockStatement:: [
-          consts(decl, value),
+          array_decl,
           match_elems:: id_elems, emit_result, ctx, cond
         ]
 
@@ -116,7 +142,6 @@ match_simple = fn value, expr, emit_result, ctx:
     emit_result()
 
 
-
 match_condition = fn value, expr, emit_result, ctx, cond:
   js_expr = match expr:
     {type: 'object'}:
@@ -124,6 +149,9 @@ match_condition = fn value, expr, emit_result, ctx, cond:
 
     {type: 'array'}:
       match_array:: value, expr, emit_result, ctx, cond
+
+    {type: 'spread'}:
+      match_condition:: value, expr.right, emit_result, ctx, cond
 
     else:
       match_simple:: value, expr, emit_result, ctx
