@@ -1,16 +1,105 @@
-{assignmentExpression} = import '@babel/types'
+{
+  blockStatement, variableDeclaration, variableDeclarator, doExpression,
+  arrayExpression, assignmentExpression, callExpression,
+  memberExpression, identifier, expressionStatement, arrayPattern, restElement,
+  numericLiteral
+} = import '@babel/types'
 
+{consts} = import '../../js/types'
 {add, any} = import '../context'
 {transform_left} = import '../generic/left'
 {transform_value} = import '../partial'
 
 
-transform_assign = fn node, ctx:
-  left = transform_left:: ctx.transform:: node.left
-  right = transform_value:: node.right, ctx
+is_spread_not_last = fn {left}:
+  match left:
+    {type: 'array', exprs: {length: ? > 1}}:
+      idx = left.exprs.findIndex:: fn expr:
+        match expr:
+          {type: 'spread'}: true
+          else: false
 
-  # wrap(node, assignmentExpression('=', left, right))
-  assignmentExpression:: '=', left, right
+      idx > -1 && idx < left.exprs.length - 1
+    else:
+      false
+
+
+transform_spread_left = fn {left}, {transform}:
+  [before, middle, end] = pipe left.exprs:
+    fold expr, [before=[], middle=false, end=[]]=[]:
+      match expr:
+        {type: 'spread'}:
+          [before, expr.right, end]
+        else:
+          match middle:
+            false: [[...before, expr], middle, end]
+            else: [before, middle, [...end, expr]]
+
+  exprs = match before:
+    {length: 0}: [middle, {type: 'array', exprs: end}]
+    else: [{type: 'array', exprs: before}, middle, {type: 'array', exprs: end}]
+
+  transform_left:: transform:: {...left, exprs}
+
+
+slice = fn items, start, end=null:
+  start_end = match end:
+    null: [numericLiteral(start)]
+    else: [numericLiteral(start), numericLiteral(end)]
+
+  callExpression::
+    memberExpression::
+      items
+      identifier:: 'slice'
+    start_end
+
+
+transform_spread_right = fn node, ctx:
+  items = ctx.unique_ident:: 'items'
+  items_init = variableDeclaration::
+    'const'
+    [
+      variableDeclarator::
+        arrayPattern:: [restElement:: items]
+        transform_value:: node.right, ctx
+    ]
+
+  len = node.left.exprs.length - 1
+  idx = node.left.exprs.findIndex:: fn expr:
+    match expr:
+      {type: 'spread'}: true
+      else: false
+
+  result_items = match idx:
+    0: [
+      slice(items, idx, idx - len),
+      slice(items, idx - len)
+    ]
+    else: [
+      items,
+      slice(items, idx, idx - len),
+      slice(items, idx - len)
+    ]
+
+  result = expressionStatement::
+    arrayExpression:: result_items
+
+  doExpression::
+    blockStatement:: [items_init, result]
+
+
+transform_assign = fn node, ctx:
+  match node:
+    is_spread_not_last:: ?:
+      left = transform_spread_left:: node, ctx
+      right = transform_spread_right:: node, ctx
+      assignmentExpression:: '=', left, right
+
+    else:
+      left = transform_left:: ctx.transform:: node.left
+      right = transform_value:: node.right, ctx
+      # wrap(node, assignmentExpression('=', left, right))
+      assignmentExpression:: '=', left, right
 
 
 add_assignment = fn ctx:

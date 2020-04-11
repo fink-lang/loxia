@@ -41,6 +41,16 @@ describe:: 'map', fn:
     `) eq snapshot
 
 
+  it:: 'compiles destructuring', fn:
+    fink2js(`
+      map [x, ...rest]:
+       rest
+
+      map [...ignored, last]:
+       last
+
+    `) eq snapshot
+
 describe:: 'flat_map', fn:
   it:: 'compiles', fn:
     fink2js(`

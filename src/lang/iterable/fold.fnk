@@ -1,27 +1,40 @@
+{expressionStatement} = import '@babel/types'
+
 {assign, params, for_of, split_last, func, consts, lets} = import '../../js/types'
 {block_statement} = import '../block'
+{transform_init} = import './init'
 
 
-transform_fold = fn node, {transform, unique_ident}:
-  [item_param, acc_param] = node.args.map:: fn expr: transform:: expr
+transform_fold = fn node, ctx:
+  {transform, unique_ident} = ctx
 
-  [acc_decl, acc_initial] = [acc_param.left, acc_param.right]
+  [item_arg, acc_arg] = node.args;
 
-  [item] = params:: [item_param]
-  items = unique_ident:: 'items'
+  item = unique_ident:: 'item'
+  item_init = transform_init:: item_arg, item, ctx
+
   acc = unique_ident:: 'acc'
+  acc_assign = transform::
+    {
+      type: 'assign',
+      op:'=',
+      left: acc_arg.left,
+      right: {type: 'ident', value: acc.name},
+      loc: acc_arg.left.loc
+    }
 
+  items = unique_ident:: 'items'
   [expressions, last_expr] = split_last(node.exprs)
 
   func(items)::
-    lets:: acc, acc_initial
+    lets:: acc, transform:: acc_arg.right
 
     for_of(item, items)::
-      consts:: acc_decl, acc
+      consts:: acc_assign.left, acc_assign.right
+      item_init
 
       ...expressions.map:: block_statement:: {transform}
 
       assign:: acc, transform:: last_expr
-
     acc
 

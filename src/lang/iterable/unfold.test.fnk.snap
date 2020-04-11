@@ -1,38 +1,94 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`unfold compiles 1`] = `
-"(function* unfold(curr = start) {
+exports[`unfold compiles destructured accus 1`] = `
+"(function* unfold(ˆaccu_2) {
   while (true) {
-    const ˆresult_1 = curr + inc;
+    const [foo, ...bar] = ˆaccu_2;
+    const ˆresult_1 = foo;
     yield ˆresult_1;
-    curr = curr * 2;
+    ˆaccu_2 = bar;
   }
 });
 
-(function* unfold(curr) {
+Object.assign(module.exports, {});"
+`;
+
+exports[`unfold compiles destructured accus 2`] = `
+"(function* unfold(ˆaccu_2) {
   while (true) {
-    const ˆresult_2 = curr + inc;
-    yield ˆresult_2;
-    curr = curr * 2;
+    let _do_result;
+
+    {
+      const [...ˆitems_3] = ˆaccu_2;
+      _do_result = [ˆitems_3.slice(0, -1), ˆitems_3.slice(-1)];
+    }
+    const [foo, [bar]] = _do_result;
+    _do_result = undefined;
+    const ˆresult_1 = foo;
+    yield ˆresult_1;
+    ˆaccu_2 = bar;
   }
 });
 
-(function* unfold() {
+Object.assign(module.exports, {});"
+`;
+
+exports[`unfold compiles item is accu 1`] = `
+"(function* unfold(ˆaccu_2 = 0) {
   while (true) {
-    const ˆresult_3 = 1234;
-    yield ˆresult_3;
+    const prev = ˆaccu_2;
+    const ˆresult_1 = prev + 1;
+    yield ˆresult_1;
+    ˆaccu_2 = ˆresult_1;
   }
 });
 
-const count = (start = 0, inc = 1) => function* unfold(curr = start) {
-  while (true) {
-    const ˆresult_4 = curr + inc;
-    yield ˆresult_4;
-    curr = ˆresult_4;
-  }
-};
+Object.assign(module.exports, {});"
+`;
 
-Object.assign(module.exports, {
-  count
-});"
+exports[`unfold compiles with separate item and accu result 1`] = `
+"(function* unfold(ˆaccu_2 = {}) {
+  while (true) {
+    const {
+      \\"prev\\": prev = 0,
+      \\"acc\\": acc = 0
+    } = ˆaccu_2;
+    const item = prev + accu;
+    const ˆresult_1 = item;
+    yield ˆresult_1;
+    ˆaccu_2 = {
+      \\"prev\\": item,
+      \\"accu\\": accu + 1
+    };
+  }
+});
+
+Object.assign(module.exports, {});"
+`;
+
+exports[`unfold compiles without accus 1`] = `
+"(function* unfold() {
+  while (true) {
+    const ˆresult_1 = 1234;
+    yield ˆresult_1;
+  }
+});
+
+Object.assign(module.exports, {});"
+`;
+
+exports[`unfold compiles without default assignment 1`] = `
+"{
+  let ˆpipe_result_1 = 0;
+
+  ˆpipe_result_1 = function* unfold(ˆaccu_3) {
+    while (true) {
+      const prev = ˆaccu_3;
+      const ˆresult_2 = prev + 1;
+      yield ˆresult_2;
+      ˆaccu_3 = ˆresult_2;
+    }
+  }(ˆpipe_result_1);
+}
+Object.assign(module.exports, {});"
 `;

@@ -1,16 +1,88 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`fold compiles 1`] = `
-"ˆitems_1 => {
+"ˆitems_3 => {
   let ˆacc_2 = 0;
 
-  for (const item of ˆitems_1) {
+  for (const ˆitem_1 of ˆitems_3) {
     const acc = ˆacc_2;
+    const item = ˆitem_1;
     const ni = item + acc;
     ˆacc_2 = item * acc;
   }
 
   return ˆacc_2;
+};
+
+Object.assign(module.exports, {});"
+`;
+
+exports[`fold destructuring accu 1`] = `
+"ˆitems_3 => {
+  let ˆacc_2 = [];
+
+  for (const ˆitem_1 of ˆitems_3) {
+    const [foo, ...bar] = ˆacc_2;
+    const item = ˆitem_1;
+    ˆacc_2 = [item, bar, foo];
+  }
+
+  return ˆacc_2;
+};
+
+ˆitems_7 => {
+  let ˆacc_5 = [];
+
+  for (const ˆitem_4 of ˆitems_7) {
+    let _do_result;
+
+    {
+      const [...ˆitems_6] = ˆacc_5;
+      _do_result = [ˆitems_6.slice(0, -1), ˆitems_6.slice(-1)];
+    }
+    const [foo, [bar]] = _do_result;
+    _do_result = undefined;
+    const item = ˆitem_4;
+    ˆacc_5 = [item, bar, foo];
+  }
+
+  return ˆacc_5;
+};
+
+Object.assign(module.exports, {});"
+`;
+
+exports[`fold destructuring item 1`] = `
+"ˆitems_3 => {
+  let ˆacc_2 = [];
+
+  for (const ˆitem_1 of ˆitems_3) {
+    const acc = ˆacc_2;
+    const [foo, ...bar] = ˆitem_1;
+    ˆacc_2 = [[foo, bar], ...acc];
+  }
+
+  return ˆacc_2;
+};
+
+ˆitems_7 => {
+  let ˆacc_6 = [];
+
+  for (const ˆitem_4 of ˆitems_7) {
+    const acc = ˆacc_6;
+
+    let _do_result;
+
+    {
+      const [...ˆitems_5] = ˆitem_4;
+      _do_result = [ˆitems_5.slice(0, -1), ˆitems_5.slice(-1)];
+    }
+    const [foo, [bar]] = _do_result;
+    _do_result = undefined;
+    ˆacc_6 = [[foo, bar], ...acc];
+  }
+
+  return ˆacc_6;
 };
 
 Object.assign(module.exports, {});"

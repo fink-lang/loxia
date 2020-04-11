@@ -2,6 +2,7 @@
 
 exports[`assignment compiles 1`] = `
 "const assign = 1;
+// simple
 const assign2 = assign;
 const no_clash_with_await = 13;
 const assign_lang_const1 = true;
@@ -17,3 +18,37 @@ Object.assign(module.exports, {
 });"
 `;
 
+exports[`assignment compiles destructuring 1`] = `
+"let _do_result;
+
+{
+  const [...ˆitems_1] = \`1234\`;
+  _do_result = [ˆitems_1.slice(0, -1), ˆitems_1.slice(-1)];
+}
+// standard JS destructuring
+const [head, [last]] = _do_result;
+_do_result = undefined;
+Object.assign(module.exports, {});"
+`;
+
+exports[`assignment compiles destructuring 2`] = `
+"let _do_result;
+
+{
+  const [...ˆitems_1] = \`123\`;
+  _do_result = [ˆitems_1, ˆitems_1.slice(2, -2), ˆitems_1.slice(-2)];
+}
+// enhanced destructuring
+const [[foo, bar], spam, [ni, shrub]] = _do_result;
+_do_result = undefined;
+
+let _do_result2;
+
+{
+  const [...ˆitems_2] = \`123\`;
+  _do_result2 = [ˆitems_2, ˆitems_2.slice(2, -2), ˆitems_2.slice(-2)];
+}
+const [[a,,],, [b, c]] = _do_result2;
+_do_result2 = undefined;
+Object.assign(module.exports, {});"
+`;

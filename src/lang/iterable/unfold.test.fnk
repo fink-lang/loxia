@@ -3,19 +3,48 @@
 
 
 describe:: 'unfold', fn:
-  it:: 'compiles', fn:
+
+  it:: 'compiles item is accu', fn:
     fink2js(`
-      unfold curr=start:
-        (curr + inc, curr * 2)
+      unfold prev=0:
+        prev + 1
+    `) eq snapshot
 
-      unfold curr:
-        (curr + inc, curr * 2)
 
+  it:: 'compiles with separate item and accu result', fn:
+    fink2js(`
+      unfold {prev=0, acc=0}={}:
+        item = prev + accu
+        # TODO should work without parens
+        (item, {prev: item, accu: accu + 1})
+    `) eq snapshot
+
+
+  it:: 'compiles without default assignment', fn:
+    fink2js(`
+      pipe 0:
+        unfold prev:
+          prev + 1
+    `) eq snapshot
+
+
+  it:: 'compiles without accus', fn:
+    fink2js(`
       unfold:
         1234
+    `) eq snapshot
 
-      count = fn start=0, inc=1:
-        unfold curr=start:
-          curr + inc
+
+  it:: 'compiles destructured accus', fn:
+    fink2js(`
+      unfold [foo, ...bar]:
+        # TODO should work without parens
+        (foo, bar)
+    `) eq snapshot
+
+    fink2js(`
+      unfold [...foo, bar]:
+        # TODO should work without parens
+        (foo, bar)
     `) eq snapshot
 

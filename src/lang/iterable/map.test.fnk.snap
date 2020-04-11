@@ -1,14 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`flat_map compiles 1`] = `
-"(function* map(ˆitems_1) {
-  for (const item of ˆitems_1) {
+"(function* map(ˆitems_2) {
+  for (const ˆitem_1 of ˆitems_2) {
+    const item = ˆitem_1;
     yield* [spam + item];
   }
 });
 
-(function* map(ˆitems_2) {
-  for (const item of ˆitems_2) {
+(function* map(ˆitems_4) {
+  for (const ˆitem_3 of ˆitems_4) {
+    const item = ˆitem_3;
     yield* [spam];
   }
 });
@@ -17,8 +19,9 @@ Object.assign(module.exports, {});"
 `;
 
 exports[`map compiles as flat map 1`] = `
-"(function* map(ˆitems_1) {
-  for (const [x, y] of ˆitems_1) {
+"(function* map(ˆitems_2) {
+  for (const ˆitem_1 of ˆitems_2) {
+    const [x, y] = ˆitem_1;
     yield* [x, y];
   }
 });
@@ -26,9 +29,35 @@ exports[`map compiles as flat map 1`] = `
 Object.assign(module.exports, {});"
 `;
 
+exports[`map compiles destructuring 1`] = `
+"(function* map(ˆitems_2) {
+  for (const ˆitem_1 of ˆitems_2) {
+    const [x, ...rest] = ˆitem_1;
+    yield rest;
+  }
+});
+
+(function* map(ˆitems_5) {
+  for (const ˆitem_3 of ˆitems_5) {
+    let _do_result;
+
+    {
+      const [...ˆitems_4] = ˆitem_3;
+      _do_result = [ˆitems_4.slice(0, -1), ˆitems_4.slice(-1)];
+    }
+    const [ignored, [last]] = _do_result;
+    _do_result = undefined;
+    yield last;
+  }
+});
+
+Object.assign(module.exports, {});"
+`;
+
 exports[`map compiles multi line 1`] = `
-"(function* map(ˆitems_1) {
-  for (const item of ˆitems_1) {
+"(function* map(ˆitems_2) {
+  for (const ˆitem_1 of ˆitems_2) {
+    const item = ˆitem_1;
     yield item * 2;
   }
 });
@@ -37,8 +66,9 @@ Object.assign(module.exports, {});"
 `;
 
 exports[`map compiles single line 1`] = `
-"(function* map(ˆitems_1) {
-  for (const item of ˆitems_1) {
+"(function* map(ˆitems_2) {
+  for (const ˆitem_1 of ˆitems_2) {
+    const item = ˆitem_1;
     yield item * 2;
   }
 });
@@ -47,8 +77,9 @@ Object.assign(module.exports, {});"
 `;
 
 exports[`map compiles single line with default value 1`] = `
-"(function* map(ˆitems_1) {
-  for (const item = 123 of ˆitems_1) {
+"(function* map(ˆitems_2) {
+  for (const ˆitem_1 of ˆitems_2) {
+    const item = 123 = ˆitem_1;
     yield item * 2;
   }
 });
@@ -57,8 +88,9 @@ Object.assign(module.exports, {});"
 `;
 
 exports[`map compiles single line with destructured array 1`] = `
-"(function* map(ˆitems_1) {
-  for (const [x, y] of ˆitems_1) {
+"(function* map(ˆitems_2) {
+  for (const ˆitem_1 of ˆitems_2) {
+    const [x, y] = ˆitem_1;
     yield x + y;
   }
 });
@@ -67,10 +99,11 @@ Object.assign(module.exports, {});"
 `;
 
 exports[`map compiles single line with destructured obj 1`] = `
-"(function* map(ˆitems_1) {
-  for (const {
-    \\"item\\": item
-  } of ˆitems_1) {
+"(function* map(ˆitems_2) {
+  for (const ˆitem_1 of ˆitems_2) {
+    const {
+      \\"item\\": item
+    } = ˆitem_1;
     yield item * 2;
   }
 });

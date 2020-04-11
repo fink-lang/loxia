@@ -9,5 +9,28 @@ exports[`filter compiles 1`] = `
   }
 });
 
+(function* filter(ˆitems_5) {
+  for (const ˆitem_4 of ˆitems_5) {
+    const [a, ...b] = ˆitem_4;
+    const ˆresult_6 = a && b.length === 0;
+    if (ˆresult_6) yield ˆitem_4;
+  }
+});
+
+(function* filter(ˆitems_9) {
+  for (const ˆitem_7 of ˆitems_9) {
+    let _do_result;
+
+    {
+      const [...ˆitems_8] = ˆitem_7;
+      _do_result = [ˆitems_8.slice(0, -1), ˆitems_8.slice(-1)];
+    }
+    const [a, [b]] = _do_result;
+    _do_result = undefined;
+    const ˆresult_10 = b && a.length === 0;
+    if (ˆresult_10) yield ˆitem_7;
+  }
+});
+
 Object.assign(module.exports, {});"
 `;

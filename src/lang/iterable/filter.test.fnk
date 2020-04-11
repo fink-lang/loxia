@@ -7,5 +7,11 @@ describe:: 'filter', fn:
     fink2js(`
       filter item:
         item % 2 == 0
+
+      filter [a, ...b]:
+        a && b.length == 0
+
+      filter [...a, b]:
+        b && a.length == 0
     `) eq snapshot
 

@@ -42,12 +42,28 @@ describe:: 'match', fn:
         {foo: 4, ni: {na, nu}}: spam + ni
         {xx: 1, foo: {bar: 'spam'}, shrub: {na: 'nu'}}: ni
         {ni: {len: 1}, na: {len: 1}}: na
+        # calculated props
+        {(a): {b, c}}: ni
+        # spread
+        {(foo): {}, ...{bar, spam}}: ni
+    `) eq snapshot
 
+    fink2js(`
+      match shrub:
         # deep array comparison
         [1, 2, [ni]]: ni
         [1, 2, [], {}]: foo
         [1, [2, 3], 4]: bar
         [1, [2, [3, 4]], [5, 6], 7]: spam
+    `) eq snapshot
+
+    fink2js(`
+      # spread and ignored elems
+      match shrub:
+        [1, ,2]: foo
+        [1, ...{length: 0}]: foo
+        [1, ..., 3]: foo
+        [1, ...{length: 0}, 3]: foo
     `) eq snapshot
 
 
