@@ -57,9 +57,9 @@ transform_expr = fn node, ctx:
       transform_expr:: nde, foo_ctx || transform_ctx
   }
 
-  transform = get_transformer:: node, ctx
-
   [err, ast] = attempt:
+    transform = get_transformer:: node, ctx
+
     js_node = transform:: node, transform_ctx
     # TODO: some nodes have location data
     match ctx:

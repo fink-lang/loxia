@@ -44,6 +44,7 @@ describe:: 'match', fn:
         {ni: {len: 1}, na: {len: 1}}: na
         # calculated props
         {(a): {b, c}}: ni
+        # spread
         {(foo): {}, ...{bar, spam}}: ni
     `) eq snapshot
 
@@ -54,9 +55,15 @@ describe:: 'match', fn:
         [1, 2, [], {}]: foo
         [1, [2, 3], 4]: bar
         [1, [2, [3, 4]], [5, 6], 7]: spam
-        [1, ...{length: 2}]: foo
-        # TODO: should just be , ...,
-        [1, ...[], 3]: foo
+    `) eq snapshot
+
+    fink2js(`
+      # spread and ignored elems
+      match shrub:
+        [1, ,2]: foo
+        [1, ...{length: 0}]: foo
+        [1, ..., 3]: foo
+        [1, ...{length: 0}, 3]: foo
     `) eq snapshot
 
 

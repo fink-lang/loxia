@@ -186,21 +186,26 @@ exports[`match compiles nested pattern 1`] = `
       }
     }
 
+    // spread
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
         [foo]: ˆp_21,
         ...ˆp_22
       } = ˆvalue_1;
-      if (ˆp_21 !== undefined && ˆp_21 !== null) if (ˆp_22 !== undefined && ˆp_22 !== null) {
-        const {
-          \\"bar\\": ˆp_23,
-          \\"spam\\": ˆp_24
-        } = ˆp_22;
-        if (ˆp_23 === bar) if (ˆp_24 === spam) {
-          ni;
-          break ˆmatch_2;
+      // spread
+      if (ˆp_21 !== undefined && ˆp_21 !== null) // spread
+        if (ˆp_22 !== undefined && ˆp_22 !== null) {
+          const {
+            \\"bar\\": ˆp_23,
+            \\"spam\\": ˆp_24
+          } = ˆp_22;
+          // spread
+          if (ˆp_23 === bar) // spread
+            if (ˆp_24 === spam) {
+              ni;
+              break ˆmatch_2;
+            }
         }
-      }
     }
   }
 }
@@ -264,38 +269,71 @@ exports[`match compiles nested pattern 2`] = `
         }
       }
     }
+  }
+}
+Object.assign(module.exports, {});"
+`;
+
+exports[`match compiles nested pattern 3`] = `
+"{
+  ˆmatch_2: {
+    const ˆvalue_1 = shrub;
 
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_26, ...ˆa_27] = ˆvalue_1;
-      if (ˆa_26 === 1) if (ˆa_27 !== undefined && ˆa_27 !== null) {
-        const {
-          \\"length\\": ˆp_28
-        } = ˆa_27;
+      const [ˆa_3,, ˆa_5] = ˆvalue_1;
+      if (ˆa_3 === 1) if (ˆa_5 === 2) {
+        foo;
+        break ˆmatch_2;
+      }
+    }
 
-        if (ˆp_28 === 2) {
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_6, ...ˆa_7] = ˆvalue_1;
+      if (ˆa_6 === 1) if (ˆa_7 !== undefined && ˆa_7 !== null) {
+        const {
+          \\"length\\": ˆp_8
+        } = ˆa_7;
+
+        if (ˆp_8 === 0) {
           foo;
           break ˆmatch_2;
         }
       }
     }
 
-    // TODO: should just be , ...,
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
       let _do_result;
 
       {
-        const [...ˆitems_32] = ˆvalue_1;
-        _do_result = [ˆitems_32, ˆitems_32.slice(1, -1), ˆitems_32.slice(-1)];
+        const [...ˆitems_12] = ˆvalue_1;
+        _do_result = [ˆitems_12, ˆitems_12.slice(1, -1), ˆitems_12.slice(-1)];
       }
-      const [[ˆa_29], ˆa_30, [ˆa_31]] = _do_result;
+      const [[ˆa_9],, [ˆa_11]] = _do_result;
       _do_result = undefined;
-      // TODO: should just be , ...,
-      if (ˆa_29 === 1) // TODO: should just be , ...,
-        if (ˆa_30 !== undefined && ˆa_30 !== null && typeof ˆa_30[Symbol.iterator] === \\"function\\") // TODO: should just be , ...,
-          if (ˆa_31 === 3) {
-            foo;
-            break ˆmatch_2;
-          }
+      if (ˆa_9 === 1) if (ˆa_11 === 3) {
+        foo;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      let _do_result2;
+
+      {
+        const [...ˆitems_16] = ˆvalue_1;
+        _do_result2 = [ˆitems_16, ˆitems_16.slice(1, -1), ˆitems_16.slice(-1)];
+      }
+      const [[ˆa_13], ˆa_14, [ˆa_15]] = _do_result2;
+      _do_result2 = undefined;
+      if (ˆa_13 === 1) if (ˆa_14 !== undefined && ˆa_14 !== null) {
+        const {
+          \\"length\\": ˆp_17
+        } = ˆa_14;
+        if (ˆp_17 === 0) if (ˆa_15 === 3) {
+          foo;
+          break ˆmatch_2;
+        }
+      }
     }
   }
 }

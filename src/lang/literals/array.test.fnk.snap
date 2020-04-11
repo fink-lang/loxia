@@ -35,5 +35,23 @@ let _do_result2;
 }
 const [[first, second], middle, [penultimate, end]] = _do_result2;
 _do_result2 = undefined;
+
+let _do_result3;
+
+{
+  const [...ˆitems_3] = \`123\`;
+  _do_result3 = [ˆitems_3, ˆitems_3.slice(1, -1), ˆitems_3.slice(-1)];
+}
+const [[ni],, [nu]] = _do_result3;
+_do_result3 = undefined;
+
+let _do_result4;
+
+{
+  const [...ˆitems_4] = \`123\`;
+  _do_result4 = [ˆitems_4.slice(0, -1), ˆitems_4.slice(-1)];
+}
+const [, [nuna]] = _do_result4;
+_do_result4 = undefined;
 Object.assign(module.exports, {});"
 `;

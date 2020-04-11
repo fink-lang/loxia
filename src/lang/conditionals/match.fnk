@@ -86,7 +86,7 @@ match_obj = fn value, obj, emit_result, ctx, cond:
 match_elems = fn elems, emit_result, ctx, cond:
   [{id, value}, ...rest] = elems
 
-  emit =  match elems:
+  emit = match elems:
     {length: 1}: emit_result
     else: fn: match_elems:: rest, emit_result, ctx, cond
 
@@ -97,10 +97,18 @@ get_array_decl = fn arr, id_elems, right, ctx:
   left = {
     type: 'array',
     exprs: id_elems.map(fn {id, value}:
-      ident = {type: 'ident', value: id.name}
       match value:
-        {type: 'spread'}: {...value, right: ident}
-        else: ident
+        # e.g. empty elems in [,, foo, bar]
+        null: null
+        # e.g. spread in [foo, ..., bar]
+        {type: 'spread', right: null}:
+          value
+        # e.g. spread in [foo, ...bar, spam]
+        {type: 'spread'}:
+          ident = {type: 'ident', value: id.name}
+          {...value, right: ident}
+        else:
+          {type: 'ident', value: id.name}
     ),
     loc: arr.loc
   }
@@ -118,11 +126,20 @@ get_array_decl = fn arr, id_elems, right, ctx:
 
 match_array = fn value, arr, emit_result, ctx, cond:
   [...id_elems] = pipe arr.exprs:
-    map value:
+    map expr:
       id = ctx.unique_ident:: 'a'
-      {id, value}
+      {id, value: expr}
 
   array_decl = get_array_decl:: arr, id_elems, value, ctx
+
+  [...filtered_id_elems] = pipe id_elems:
+    filter {value}:
+      match value:
+        # empty elements need no matching
+        null: false
+        # empty spreads need no matching
+        {type: 'spread', right: null}: false
+        else: true
 
   ifStatement::
     is_iterable:: value
@@ -132,7 +149,7 @@ match_array = fn value, arr, emit_result, ctx, cond:
       else:
         blockStatement:: [
           array_decl,
-          match_elems:: id_elems, emit_result, ctx, cond
+          match_elems:: filtered_id_elems, emit_result, ctx, cond
         ]
 
 

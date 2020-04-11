@@ -25,6 +25,8 @@ describe:: 'destructuring array', fn:
       [head, ...tail] = ni
       [...items, last] = '1234'
       [first, second, ...middle, penultimate, end] = '123'
+      [ni, ..., nu] = '123'
+      [..., nuna] = '123'
     `) eq snapshot
 
 

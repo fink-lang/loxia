@@ -25,19 +25,19 @@ is_spread_not_last = fn {left}:
 
 
 transform_spread_left = fn {left}, {transform}:
-  [b, m, e] = pipe left.exprs:
-    fold expr, [before=[], middle=null, end=[]]=[]:
+  [before, middle, end] = pipe left.exprs:
+    fold expr, [before=[], middle=false, end=[]]=[]:
       match expr:
         {type: 'spread'}:
           [before, expr.right, end]
         else:
           match middle:
-            null: [[...before, expr], middle, end]
+            false: [[...before, expr], middle, end]
             else: [before, middle, [...end, expr]]
 
-  exprs = match b:
-    {length: 0}: [m, {type: 'array', exprs: e}]
-    else: [{type: 'array', exprs: b}, m, {type: 'array', exprs: e}]
+  exprs = match before:
+    {length: 0}: [middle, {type: 'array', exprs: end}]
+    else: [{type: 'array', exprs: before}, middle, {type: 'array', exprs: end}]
 
   transform_left:: transform:: {...left, exprs}
 

@@ -18,10 +18,19 @@ describe:: 'assignment', fn:
         + 234 +
         -567
         - 1111
+  `) eq snapshot
 
+
+  it:: 'compiles destructuring', fn:
+    fink2js(`
       # standard JS destructuring
       [...head, last] = '1234'
+    `) eq snapshot
 
+
+    fink2js(`
       # enhanced destructuring
       [foo, bar, ...spam, ni, shrub] = '123'
+
+      [a, , ..., b, c] = '123'
     `) eq snapshot
