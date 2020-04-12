@@ -21,7 +21,8 @@ describe:: 'find', fn:
             else: ni
 
         find [foo , ...bar]:
-          foo && bar.length == 0
+          foo_alone = foo && bar.length == 0
+          foo_alone
 
         find [...foo , bar]:
           bar && foo.length == 0

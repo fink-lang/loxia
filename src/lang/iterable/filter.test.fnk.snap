@@ -12,7 +12,8 @@ exports[`filter compiles 1`] = `
 (function* filter(ˆitems_5) {
   for (const ˆitem_4 of ˆitems_5) {
     const [a, ...b] = ˆitem_4;
-    const ˆresult_6 = a && b.length === 0;
+    const a_alone = a && b.length === 0;
+    const ˆresult_6 = a_alone;
     if (ˆresult_6) yield ˆitem_4;
   }
 });

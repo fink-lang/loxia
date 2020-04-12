@@ -58,7 +58,8 @@ exports[`map compiles multi line 1`] = `
 "(function* map(ˆitems_2) {
   for (const ˆitem_1 of ˆitems_2) {
     const item = ˆitem_1;
-    yield item * 2;
+    const ni = foo(item);
+    yield ni + 2;
   }
 });
 

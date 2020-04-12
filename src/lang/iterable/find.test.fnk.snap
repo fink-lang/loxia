@@ -40,7 +40,8 @@ exports[`find compiles complex find 1`] = `
 ˆitems_8 => {
   for (const ˆitem_7 of ˆitems_8) {
     const [foo, ...bar] = ˆitem_7;
-    const ˆfound_9 = foo && bar.length === 0;
+    const foo_alone = foo && bar.length === 0;
+    const ˆfound_9 = foo_alone;
     if (ˆfound_9) return ˆitem_7;
   }
 

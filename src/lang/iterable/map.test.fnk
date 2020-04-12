@@ -15,7 +15,8 @@ describe:: 'map', fn:
     expect::
       fink2js`
         map item:
-          item * 2
+          ni = foo:: item
+          ni + 2
       `
       to_match_snapshot
 

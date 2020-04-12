@@ -17,7 +17,8 @@ exports[`while compiles destructuring 1`] = `
 "(function* filter_while(ˆitems_2) {
   for (const ˆitem_1 of ˆitems_2) {
     const [foo, ...bar] = ˆitem_1;
-    const ˆresult_3 = foo && bar.length === 0;
+    const foo_alone = foo && bar.length === 0;
+    const ˆresult_3 = foo_alone;
     if (ˆresult_3 !== true) return;
     yield ˆitem_1;
   }

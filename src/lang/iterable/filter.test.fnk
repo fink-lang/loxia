@@ -10,7 +10,8 @@ describe:: 'filter', fn:
           item % 2 == 0
 
         filter [a, ...b]:
-          a && b.length == 0
+          a_alone = a && b.length == 0
+          a_alone
 
         filter [...a, b]:
           b && a.length == 0
