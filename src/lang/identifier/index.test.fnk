@@ -1,28 +1,34 @@
 {fink2js} = import '../../testing'
-{describe, it, eq, snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
 
 
 describe:: 'identifiers', fn:
   it:: 'escapes reserved JS identifiers', fn:
-    fink2js`
-      {do, if, in, for, let, new, try, var, case, enum, void} = foobar
-      {with, break, catch, class, const, super, while, yield, delete} = spam
-      {export, import, public, return, static, switch, typeof, default} = ham
-      {extends, finally, package, private, continue, debugger, function} = ni
-      {arguments, interface, protected, implements, instanceof} = nu
-    ` eq snapshot
+    expect::
+      fink2js`
+        {do, if, in, for, let, new, try, var, case, enum, void} = foobar
+        {with, break, catch, class, const, super, while, yield, delete} = spam
+        {export, import, public, return, static, switch, typeof, default} = ham
+        {extends, finally, package, private, continue, debugger, function} = ni
+        {arguments, interface, protected, implements, instanceof} = nu
+      `
+      to_match_snapshot
 
 
   it:: 'does not escape true, false, null', fn:
-    fink2js`
-      foo = [true, false, null]
-    ` eq snapshot
+    expect::
+      fink2js`
+        foo = [true, false, null]
+      `
+      to_match_snapshot
 
 
   it:: 'escapes identifiers incompatible with JS', fn:
-    fink2js`
-      @ = spam
-      ∂ = shrub
-    ` eq snapshot
+    expect::
+      fink2js`
+        @ = spam
+        ∂ = shrub
+      `
+      to_match_snapshot
 
 

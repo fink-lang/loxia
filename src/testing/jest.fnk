@@ -1,7 +1,3 @@
-anything = Symbol:: `anything`
-
-snapshot = Symbol:: `snapshot`
-
 
 describe = fn descr, tests:
   global.describe:: descr, tests
@@ -13,18 +9,13 @@ it = fn descr, test:
   undefined
 
 
-eq = fn result, expected:
-  match expected:
-    # istanbul ignore else
-    snapshot: expect(result).toMatchSnapshot()
-    # istanbul ignore next
-    else: expect(result).toEqual:: expected
+to_match_snapshot = fn expect_actual:
+  expect_actual.toMatchSnapshot()
 
 
-# istanbul ignore next
-is = fn result, expected:
-  expect(result).toBe:: expected
+to_throw = fn expected: fn expect_actual:
+  expect_actual.toThrow:: expected
 
 
-to_throw = fn func, err:
-  expect(func).toThrow:: err
+expect = fn actual, expectation:
+  expectation:: global.expect:: actual

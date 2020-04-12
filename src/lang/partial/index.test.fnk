@@ -1,15 +1,17 @@
 {fink2js} = import '../../testing'
-{describe, it, eq, snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
 
 
 describe:: 'partial', fn:
   it:: 'compiles assignment', fn:
-    fink2js`
-      foo1 = a * ? + 1
-      foo2 = bar(?)
-      foo3 = ?.bar()
-      foo4 = ?()
-    ` eq snapshot
+    expect::
+      fink2js`
+        foo1 = a * ? + 1
+        foo2 = bar(?)
+        foo3 = ?.bar()
+        foo4 = ?()
+      `
+      to_match_snapshot
 
 
 

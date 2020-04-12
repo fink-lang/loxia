@@ -1,12 +1,14 @@
 {fink2js} = import '../../testing'
-{describe, it, eq, snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
 
 
 describe:: 'new', fn:
   it:: 'compiles', fn:
-    fink2js`
-      foo = new Set()
-      bar = new Set:: 'abca'
-    ` eq snapshot
+    expect::
+      fink2js`
+        foo = new Set()
+        bar = new Set:: 'abca'
+      `
+      to_match_snapshot
 
 

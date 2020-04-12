@@ -1,33 +1,39 @@
 {fink2js} = import '../../testing'
-{describe, it, eq, snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
 
 
 describe:: 'fold', fn:
   it:: 'compiles', fn:
-    fink2js`
-      fold item, acc=0:
-        ni = item + acc
-        item * acc
-    ` eq snapshot
+    expect::
+      fink2js`
+        fold item, acc=0:
+          ni = item + acc
+          item * acc
+      `
+      to_match_snapshot
 
 
   it:: 'destructuring item', fn:
-    fink2js`
-      fold [foo, ...bar], acc=[]:
-        [[foo, bar], ...acc]
+    expect::
+      fink2js`
+        fold [foo, ...bar], acc=[]:
+          [[foo, bar], ...acc]
 
-      fold [...foo, bar], acc=[]:
-        [[foo, bar], ...acc]
-    ` eq snapshot
+        fold [...foo, bar], acc=[]:
+          [[foo, bar], ...acc]
+      `
+      to_match_snapshot
 
 
   it:: 'destructuring accu', fn:
-    fink2js`
-      fold item, [foo, ...bar]=[]:
-        [item, bar, foo]
+    expect::
+      fink2js`
+        fold item, [foo, ...bar]=[]:
+          [item, bar, foo]
 
-      fold item, [...foo, bar]=[]:
-        [item, bar, foo]
-    ` eq snapshot
+        fold item, [...foo, bar]=[]:
+          [item, bar, foo]
+      `
+      to_match_snapshot
 
 

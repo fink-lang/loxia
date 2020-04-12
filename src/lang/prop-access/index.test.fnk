@@ -1,14 +1,16 @@
 {fink2js} = import '../../testing'
-{describe, it, eq, snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
 
 
 describe:: 'member', fn:
   it:: 'compiles', fn:
 
-    fink2js`
-      foo = spam.shrub
-      computed_member = item.'bar spam'
-      computed_member2 = item.(Symbol.iterator)
-      reserved_prop = item.arguments
-    ` eq snapshot
+    expect::
+      fink2js`
+        foo = spam.shrub
+        computed_member = item.'bar spam'
+        computed_member2 = item.(Symbol.iterator)
+        reserved_prop = item.arguments
+      `
+      to_match_snapshot
 

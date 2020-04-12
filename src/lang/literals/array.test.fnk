@@ -1,33 +1,37 @@
 {fink2js} = import '../../testing'
-{describe, it, eq, snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
 
 
 describe:: 'array', fn:
   it:: 'compiles', fn:
-    fink2js`
-      array1 = []
-      array2 = [1]
-      array3 = [1, 2, 4, a(), ...b]
-      array4 = [
-        a + 1 + 45+
-          b + c,
-        [1, 2],
-        (3 + 3) * 2
-      ]
-    ` eq snapshot
+    expect::
+      fink2js`
+        array1 = []
+        array2 = [1]
+        array3 = [1, 2, 4, a(), ...b]
+        array4 = [
+          a + 1 + 45+
+            b + c,
+          [1, 2],
+          (3 + 3) * 2
+        ]
+      `
+      to_match_snapshot
 
 
 describe:: 'destructuring array', fn:
   it:: 'compiles', fn:
-    fink2js`
-      [a, b, c] = ni
-      [,, d] = ni
-      [head, ...tail] = ni
-      [...items, last] = '1234'
-      [first, second, ...middle, penultimate, end] = '123'
-      [ni, ..., nu] = '123'
-      [..., nuna] = '123'
-    ` eq snapshot
+    expect::
+      fink2js`
+        [a, b, c] = ni
+        [,, d] = ni
+        [head, ...tail] = ni
+        [...items, last] = '1234'
+        [first, second, ...middle, penultimate, end] = '123'
+        [ni, ..., nu] = '123'
+        [..., nuna] = '123'
+      `
+      to_match_snapshot
 
 
 

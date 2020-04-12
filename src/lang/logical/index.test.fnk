@@ -1,13 +1,15 @@
 {fink2js} = import '../../testing'
-{describe, it, eq, snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
 
 
 describe:: 'logical', fn:
   it:: 'compiles operators', fn:
 
-    fink2js`
-      logical = a || b || c && d < 1 <= s
-    ` eq snapshot
+    expect::
+      fink2js`
+        logical = a || b || c && d < 1 <= s
+      `
+      to_match_snapshot
 
 
 
