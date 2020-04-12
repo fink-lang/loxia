@@ -4,23 +4,23 @@
 
 describe:: 'object', fn:
   it:: 'compiles simple', fn:
-    fink2js(`obj = {}`) eq snapshot
+    fink2js`obj = {}` eq snapshot
 
   it:: 'compiles shorthand', fn:
-    fink2js(`obj = {a}`) eq snapshot
-    fink2js(`obj = {a, delete, true, false}`) eq snapshot
+    fink2js`obj = {a}` eq snapshot
+    fink2js`obj = {a, delete, true, false}` eq snapshot
 
   it:: 'compiles spread', fn:
-    fink2js(`obj = {a, b, ...c}`) eq snapshot
+    fink2js`obj = {a, b, ...c}` eq snapshot
 
   it:: 'compiles key:val', fn:
-    fink2js(`obj = {a: 1, b: 123, 'c-d-e': cde}`) eq snapshot
-    fink2js(`
+    fink2js`obj = {a: 1, b: 123, 'c-d-e': cde}` eq snapshot
+    fink2js`
       obj7 = {a: 123, b: 123 && 123 && 1345, c: fn a, b: 134}
-    `) eq snapshot
+    ` eq snapshot
 
   it:: 'compiles multiline', fn:
-    fink2js(`obj = {
+    fink2js`obj = {
         a: 123,
 
         b: 123
@@ -33,31 +33,31 @@ describe:: 'object', fn:
           n = a+3
           foo(n)
       }
-    `) eq snapshot
+    ` eq snapshot
 
 
 describe:: 'calculated props', fn:
   it:: 'compiles', fn:
-    fink2js(`
+    fink2js`
       foo = {
         foo,
         (Symbol('foo')): 123,
         'spam': 456,
         ni
       }
-    `) eq snapshot
+    ` eq snapshot
 
 
 describe:: 'destructuring object', fn:
   it:: 'compiles simple', fn:
-    fink2js(`{a, b, c} = ni`) eq snapshot
+    fink2js`{a, b, c} = ni` eq snapshot
 
   it:: 'compiles spread', fn:
-    fink2js(`{e, ...f} = {e: 0, foo: 12, bar: 34}`) eq snapshot
+    fink2js`{e, ...f} = {e: 0, foo: 12, bar: 34}` eq snapshot
 
   it:: 'compiles defaults', fn:
-    fink2js(`{x=1, ni: {y, z}} = {ni: {y: 1, z: 2}}`) eq snapshot
+    fink2js`{x=1, ni: {y, z}} = {ni: {y: 1, z: 2}}` eq snapshot
 
   it:: 'compiles computed keys', fn:
-    fink2js(`{'n i': ni} = foo`) eq snapshot
+    fink2js`{'n i': ni} = foo` eq snapshot
 

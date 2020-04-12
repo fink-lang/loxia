@@ -5,8 +5,8 @@
 describe:: 'infix operators', fn:
   it:: 'compiles', fn:
 
-    fink2js(`
+    fink2js`
       add = fn a, b: a + b
       foo = 123 add 456
-    `) eq snapshot
+    ` eq snapshot
 

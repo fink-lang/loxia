@@ -20,16 +20,14 @@ expr_block = fn ...exprs:
       ...pipe exprs:
         map node:
           match node:
-            {type: ?.endsWith:: 'Expression'}: expressionStatement:: node
-            isIdentifier:: ?: expressionStatement:: node
+            {type: ?.endsWith:: 'Expression'}:
+              expressionStatement:: node
+            isIdentifier:: ?:
+              expressionStatement:: node
             else: node
     ]
 
 typof = fn value: unaryExpression:: 'typeof', value
-
-
-split_last = fn [...items]:
-  [items.slice(0, -1), items.(items.length - 1)]
 
 
 and = fn left, ...rest:
@@ -59,7 +57,7 @@ not_nullish = fn value:
 
 ident = fn name:
   match name:
-    # TODO: typeof name == 'string': identifier(escape_ident(name)) or
+    # TODO: typeof name == 'string': identifier:: escape_ident:: name or
     {constructor: String}: identifier:: escape_ident:: name
     else:
       # {type: 'Identifier'}

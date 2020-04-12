@@ -4,30 +4,30 @@
 
 describe:: 'fold', fn:
   it:: 'compiles', fn:
-    fink2js(`
+    fink2js`
       fold item, acc=0:
         ni = item + acc
         item * acc
-    `) eq snapshot
+    ` eq snapshot
 
 
   it:: 'destructuring item', fn:
-    fink2js(`
+    fink2js`
       fold [foo, ...bar], acc=[]:
         [[foo, bar], ...acc]
 
       fold [...foo, bar], acc=[]:
         [[foo, bar], ...acc]
-    `) eq snapshot
+    ` eq snapshot
 
 
   it:: 'destructuring accu', fn:
-    fink2js(`
+    fink2js`
       fold item, [foo, ...bar]=[]:
         [item, bar, foo]
 
       fold item, [...foo, bar]=[]:
         [item, bar, foo]
-    `) eq snapshot
+    ` eq snapshot
 
 

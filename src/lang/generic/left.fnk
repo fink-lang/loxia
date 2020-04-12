@@ -13,9 +13,14 @@ transform_left = fn val:
       restElement:: val.argument
 
     isArrayExpression:: ?:
-      arrayPattern:: val.elements.map:: transform_left
+      arrayPattern:: [
+        ... pipe val.elements:
+          map item: transform_left:: item
+      ]
 
     isObjectExpression:: ?:
-      objectPattern:: val.properties.map:: transform_left
-
+      objectPattern:: [
+        ... pipe val.properties:
+          map prop: transform_left:: prop
+      ]
     else: val

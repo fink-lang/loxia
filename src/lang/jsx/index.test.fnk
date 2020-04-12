@@ -4,7 +4,7 @@
 
 describe:: 'jsx', fn:
   it:: 'compiles', fn:
-    fink2js(`
+    fink2js`
       jsx1 = <a/>
       jsx2 = <b></b>
       jsx3 = <a foo bar="ni" />
@@ -18,7 +18,7 @@ describe:: 'jsx', fn:
           <c />
           ni
         </a>
-      `) eq snapshot
+      ` eq snapshot
 
 
 

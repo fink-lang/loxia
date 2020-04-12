@@ -4,7 +4,7 @@
 
 describe:: 'filter', fn:
   it:: 'compiles', fn:
-    fink2js(`
+    fink2js`
       filter item:
         item % 2 == 0
 
@@ -13,5 +13,5 @@ describe:: 'filter', fn:
 
       filter [...a, b]:
         b && a.length == 0
-    `) eq snapshot
+    ` eq snapshot
 

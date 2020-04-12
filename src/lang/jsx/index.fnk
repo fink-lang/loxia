@@ -7,8 +7,11 @@
 
 transform_jsx_elem = fn node, {transform}:
   id = jsxIdentifier:: node.name
-  attrs = node.props.map:: fn expr: transform:: expr
-  children = node.children.map:: fn expr: transform:: expr
+  [...attrs] = pipe node.props:
+    map expr: transform:: expr
+
+  [...children] = pipe node.children:
+    map expr: transform:: expr
 
   jsxElement::
     jsxOpeningElement:: id, attrs, node.self_closing

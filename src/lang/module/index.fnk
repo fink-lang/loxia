@@ -23,10 +23,8 @@ transform_module = fn node, ctx:
       id = ident:: value
       objectProperty:: id, id, false, true
 
-  body = pipe node.exprs:
-    map expr:
-       block_statement(ctx):: expr
-
+  [...body] = pipe node.exprs:
+    map expr: block_statement:: expr, ctx
 
   # TODO: use individual exports?
   obj = identifier:: 'Object'

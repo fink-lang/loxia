@@ -4,7 +4,7 @@
 
 describe:: 'func', fn:
   it:: 'compiles', fn:
-    fink2js(`
+    fink2js`
       fun1 = fn a, b=12, ...d: a + b + c
 
       fun2 = fn b:
@@ -29,7 +29,7 @@ describe:: 'func', fn:
         shrub(...a)
         foo()
         bar()
-    `) eq snapshot
+    ` eq snapshot
 
 
 

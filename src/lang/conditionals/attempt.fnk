@@ -3,17 +3,16 @@
   expressionStatement, doExpression, nullLiteral, isDoExpression
 } = import '@babel/types'
 
-{split_last} = import '../../js/types'
 {transform_block} = import '../block'
 
 
 transform_attempt = fn node, ctx:
-  block = transform_block(node, ctx)
+  block = transform_block:: node, ctx
   body = match block:
     isDoExpression:: ?: block.body.body
     else: [block]
 
-  [expressions, last_expr] = split_last:: body
+  [...expressions, last_expr] = body
   err = ctx.unique_ident:: 'error'
 
   try_block = blockStatement:: [

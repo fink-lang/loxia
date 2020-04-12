@@ -5,14 +5,14 @@
 describe:: 'module', fn:
   it:: 'handles comments', fn:
 
-    fink2js(`
+    fink2js`
       # leading comment
 
       # expr comment
       foo = bar
 
       # trailing comment
-    `) eq snapshot
+    ` eq snapshot
 
 
 

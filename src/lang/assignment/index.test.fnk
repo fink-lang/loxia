@@ -4,7 +4,7 @@
 
 describe:: 'assignment', fn:
   it:: 'compiles', fn:
-    fink2js(`
+    fink2js`
       assign = 1
       # simple
       assign2 = assign
@@ -18,19 +18,19 @@ describe:: 'assignment', fn:
         + 234 +
         -567
         - 1111
-  `) eq snapshot
+    ` eq snapshot
 
 
   it:: 'compiles destructuring', fn:
-    fink2js(`
+    fink2js`
       # standard JS destructuring
       [...head, last] = '1234'
-    `) eq snapshot
+    ` eq snapshot
 
 
-    fink2js(`
+    fink2js`
       # enhanced destructuring
       [foo, bar, ...spam, ni, shrub] = '123'
 
       [a, , ..., b, c] = '123'
-    `) eq snapshot
+    ` eq snapshot

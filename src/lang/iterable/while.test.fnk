@@ -4,18 +4,18 @@
 
 describe:: 'while', fn:
   it:: 'compiles', fn:
-    fink2js(`
+    fink2js`
       while item:
         item < 10
-    `) eq snapshot
+    ` eq snapshot
 
 
   it:: 'compiles destructuring', fn:
-    fink2js(`
+    fink2js`
       while [foo, ...bar]:
         foo && bar.length == 0
 
       while [...foo, bar]:
         bar && foo.length == 0
-    `) eq snapshot
+    ` eq snapshot
 

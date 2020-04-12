@@ -5,9 +5,9 @@
 describe:: 'logical', fn:
   it:: 'compiles operators', fn:
 
-    fink2js(`
+    fink2js`
       logical = a || b || c && d < 1 <= s
-    `) eq snapshot
+    ` eq snapshot
 
 
 

@@ -1,6 +1,6 @@
 {returnStatement, ifStatement} = import'@babel/types'
 
-{for_of, split_last, func, consts, undef} = import '../../js/types'
+{for_of, func, consts, undef} = import '../../js/types'
 {block_statement} = import '../block'
 {transform_init} = import './init'
 
@@ -15,14 +15,15 @@ transform_find = fn node, ctx:
   items = unique_ident:: 'items'
   found = unique_ident:: 'found'
 
-  [expressions, last_expr] = split_last:: node.exprs
+  [...expressions, last_expr] = node.exprs
 
   func(items)::
 
     for_of(item, items)::
       item_init
 
-      ...expressions.map:: block_statement:: {transform}
+      ...pipe expressions:
+        map expr: block_statement:: expr, ctx
 
       consts:: found, transform:: last_expr
 

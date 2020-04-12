@@ -1,6 +1,6 @@
 {returnStatement, ifStatement} = import'@babel/types'
 
-{generator, for_of, split_last, yields, consts, neq, true_} = import '../../js/types'
+{generator, for_of, yields, consts, neq, true_} = import '../../js/types'
 {block_statement} = import '../block'
 {transform_init} = import './init'
 
@@ -16,14 +16,15 @@ transform_while = fn node, ctx:
   items = unique_ident:: 'items'
   result = unique_ident:: 'result'
 
-  [expressions, last_expr] = split_last:: node.exprs
+  [...expressions, last_expr] = node.exprs
 
 
   generator('filter_while')(items)::
     for_of(item, items)::
       item_init
 
-      ...expressions.map:: block_statement:: {transform}
+      ...pipe expressions:
+        map expr: block_statement:: expr, ctx
 
       consts:: result, transform:: last_expr
 

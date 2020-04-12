@@ -4,14 +4,14 @@
 
 describe:: 'find', fn:
   it:: 'compiles simple find', fn:
-    fink2js(`
+    fink2js`
       find item:
         item > 3
-    `) eq snapshot
+    ` eq snapshot
 
 
   it:: 'compiles complex find', fn:
-    fink2js(`
+    fink2js`
       find {item}:
         match item:
           {spam}: shrub
@@ -22,7 +22,7 @@ describe:: 'find', fn:
 
       find [...foo , bar]:
         bar && foo.length == 0
-    `) eq snapshot
+    ` eq snapshot
 
 
 

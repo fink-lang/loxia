@@ -4,12 +4,12 @@
 
 describe:: 'partial', fn:
   it:: 'compiles assignment', fn:
-    fink2js(`
+    fink2js`
       foo1 = a * ? + 1
       foo2 = bar(?)
       foo3 = ?.bar()
       foo4 = ?()
-    `) eq snapshot
+    ` eq snapshot
 
 
 

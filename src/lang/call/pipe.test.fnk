@@ -5,7 +5,7 @@
 describe:: 'pipe', fn:
   it:: 'compiles', fn:
 
-    fink2js(`
+    fink2js`
       pipe:
         foo
         bar
@@ -13,5 +13,5 @@ describe:: 'pipe', fn:
 
       pipe [1, 2, 3]:
         map item: item * 2
-    `) eq snapshot
+    ` eq snapshot
 

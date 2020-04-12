@@ -4,9 +4,9 @@
 
 describe:: 'new', fn:
   it:: 'compiles', fn:
-    fink2js(`
+    fink2js`
       foo = new Set()
       bar = new Set:: 'abca'
-    `) eq snapshot
+    ` eq snapshot
 
 

@@ -23,7 +23,7 @@ last_expressions = fn path:
 
     isBlockStatement:: ?:
       body = get_body:: path
-      last = body.(body.length - 1)
+      [..., last] = body
       match last:
         isExpressionStatement:: ?:
           [last]

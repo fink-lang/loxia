@@ -6,7 +6,10 @@
 
 
 transform_func = fn node, ctx:
-  params = node.args.map:: fn arg: transform_left:: ctx.transform:: arg
+  [...params] = pipe node.args:
+    map arg:
+      transform_left:: ctx.transform:: arg
+
   body = transform_block:: node, ctx
   arrowFunctionExpression:: params, body
 

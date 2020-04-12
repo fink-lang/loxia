@@ -6,9 +6,9 @@
 describe:: 'errors', fn:
   it:: 'throws with code snippet', fn:
     (
-      fn: fink2js(`
+      fn: fink2js`
         123 = foo`
-      )
+
     ) to_throw `
       test.fnk:1:0
       1| 123 = foo

@@ -4,7 +4,7 @@
 
 describe:: 'array', fn:
   it:: 'compiles', fn:
-    fink2js(`
+    fink2js`
       array1 = []
       array2 = [1]
       array3 = [1, 2, 4, a(), ...b]
@@ -14,12 +14,12 @@ describe:: 'array', fn:
         [1, 2],
         (3 + 3) * 2
       ]
-    `) eq snapshot
+    ` eq snapshot
 
 
 describe:: 'destructuring array', fn:
   it:: 'compiles', fn:
-    fink2js(`
+    fink2js`
       [a, b, c] = ni
       [,, d] = ni
       [head, ...tail] = ni
@@ -27,7 +27,7 @@ describe:: 'destructuring array', fn:
       [first, second, ...middle, penultimate, end] = '123'
       [ni, ..., nu] = '123'
       [..., nuna] = '123'
-    `) eq snapshot
+    ` eq snapshot
 
 
 

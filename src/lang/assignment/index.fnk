@@ -43,9 +43,14 @@ transform_spread_left = fn {left}, {transform}:
 
 
 slice = fn items, start, end=null:
+  start_num = numericLiteral:: start
+
   start_end = match end:
-    null: [numericLiteral(start)]
-    else: [numericLiteral(start), numericLiteral(end)]
+    null:
+      [start_num]
+    else:
+      end_num = numericLiteral:: end
+      [start_num, end_num]
 
   callExpression::
     memberExpression::
@@ -54,18 +59,18 @@ slice = fn items, start, end=null:
     start_end
 
 
-transform_spread_right = fn node, ctx:
+transform_spread_right = fn {left, right}, ctx:
   items = ctx.unique_ident:: 'items'
   items_init = variableDeclaration::
     'const'
     [
       variableDeclarator::
         arrayPattern:: [restElement:: items]
-        transform_value:: node.right, ctx
+        transform_value:: right, ctx
     ]
 
-  len = node.left.exprs.length - 1
-  idx = node.left.exprs.findIndex:: fn expr:
+  len = left.exprs.length - 1
+  idx = left.exprs.findIndex:: fn expr:
     match expr:
       {type: 'spread'}: true
       else: false
@@ -98,7 +103,7 @@ transform_assign = fn node, ctx:
     else:
       left = transform_left:: ctx.transform:: node.left
       right = transform_value:: node.right, ctx
-      # wrap(node, assignmentExpression('=', left, right))
+      # wrap with loc and comment?
       assignmentExpression:: '=', left, right
 
 

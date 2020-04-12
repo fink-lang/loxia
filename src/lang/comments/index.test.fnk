@@ -5,7 +5,7 @@
 describe:: 'comment', fn:
   it:: 'compiles', fn:
 
-    fink2js(`
+    fink2js`
       # leading expression
       spam = ni
 
@@ -17,5 +17,5 @@ describe:: 'comment', fn:
         spam
 
       # trailing module
-    `) eq snapshot
+    ` eq snapshot
 

@@ -5,41 +5,41 @@
 describe:: 'string', fn:
 
   it:: 'compiles simple', fn:
-    fink2js(`
+    fink2js`
       str = 'ab'
-    `) eq snapshot
+    ` eq snapshot
 
 
   it:: 'compiles multiline', fn:
-    fink2js(`
+    fink2js`
       str = '
         line 1
         line 2 with leading space
         line 3'
-    `) eq snapshot
+    ` eq snapshot
 
 
   it:: 'compiles escape chars', fn:
-    fink2js(`
+    fink2js`
       str1 = 'foo\`bar\\nspam\\\`ni'
       str2 = \`foo\\\`bar\`
       str3 = "foo\\\\"
-    `) eq snapshot
+    ` eq snapshot
 
 
   it:: 'compiles tagged template string', fn:
-    fink2js(`
+    fink2js`
       str = foo'bar \${spam ni shrub} na'
-    `) eq snapshot
+    ` eq snapshot
 
 
   it:: 'compiles multiline with expressions', fn:
-    fink2js(`
+    fink2js`
       str = '
         bar
         spam \${shrub + ni}\${foo}
         ni
       '
-    `) eq snapshot
+    ` eq snapshot
 
 

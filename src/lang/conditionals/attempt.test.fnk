@@ -5,7 +5,7 @@
 describe:: 'attempt', fn:
   it:: 'compiles', fn:
 
-    fink2js(`
+    fink2js`
       foo1 = fn:
         [item, err] = attempt:
           bar = shrub()
@@ -13,7 +13,7 @@ describe:: 'attempt', fn:
         [item, err]
 
       foo2 = fn: attempt: 1/0
-    `) eq snapshot
+    ` eq snapshot
 
 
 
