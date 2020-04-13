@@ -2,17 +2,14 @@
 {isArrowFunctionExpression, isFunctionExpression} = import '@babel/types'
 
 
-assign = Object.assign
-
-
 transform_async = fn path:
   # TODO: should avoid mutating nodes
   match path:
     isArrowFunctionExpression:: ?:
-      path.node assign {async: true}
+      Object.assign:: path.node, {async: true}
 
     isFunctionExpression:: ?:
-      path.node assign {async: true}
+      Object.assign:: path.node, {async: true}
 
     {parentPath: {}}:
       transform_async:: path.parentPath

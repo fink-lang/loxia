@@ -36,7 +36,7 @@ describe:: 'string', fn:
   it:: 'compiles tagged template string', fn:
     expect::
       fink2js`
-        str = foo'bar \${spam ni shrub} na'
+        str = foo'bar \${ni:: spam, shrub} na'
       `
       to_match_snapshot
 
