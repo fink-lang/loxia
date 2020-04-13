@@ -1,4 +1,4 @@
-{generator, for_of, yields, split_last} = import '../../js/types'
+{generator, for_of, yields} = import '../../js/types'
 
 {block_statement} = import '../block'
 {transform_init} = import './init'
@@ -14,7 +14,7 @@ transform_any = fn flatten: fn node, ctx:
 
   items = unique_ident:: 'items'
 
-  [expressions, last_expr] = split_last:: node.exprs
+  [...expressions, last_expr] = node.exprs
   last_is_spread = last_expr.type == 'spread'
 
   yield_value = match last_is_spread:
@@ -26,7 +26,8 @@ transform_any = fn flatten: fn node, ctx:
     for_of(item, items)::
       item_init
 
-      ...expressions.map:: block_statement:: {transform}
+      ...pipe expressions:
+        map expr: block_statement:: expr, ctx
 
       yields::
         transform:: yield_value

@@ -8,10 +8,10 @@ transform_op = {
 }
 
 
-transform_binary = fn node, {transform}:
-  left = transform:: node.left
-  right = transform:: node.right
+transform_binary = fn {op, left, right}, {transform}:
+  {(op): operator=op} = transform_op
 
-  op = transform_op.(node.op) || node.op
+  bin_left = transform:: left
+  bin_right = transform:: right
 
-  binaryExpression:: op, left, right
+  binaryExpression:: operator, bin_left, bin_right

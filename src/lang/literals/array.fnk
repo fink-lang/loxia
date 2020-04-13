@@ -2,10 +2,11 @@
 
 
 transform_array = fn node, {transform}:
-  elems = node.exprs.map:: fn elem:
-    match elem:
-      null: null
-      else: transform:: elem
+  [...elems] = pipe node.exprs:
+    map elem:
+      match elem:
+        null: null
+        else: transform:: elem
 
   arrayExpression:: elems
 

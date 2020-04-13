@@ -1,63 +1,87 @@
 {fink2js} = import '../../testing'
-{describe, it, eq, snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
 
 
 describe:: 'object', fn:
   it:: 'compiles simple', fn:
-    fink2js(`obj = {}`) eq snapshot
+    expect::
+      fink2js`obj = {}`
+      to_match_snapshot
 
   it:: 'compiles shorthand', fn:
-    fink2js(`obj = {a}`) eq snapshot
-    fink2js(`obj = {a, delete, true, false}`) eq snapshot
+    expect::
+      fink2js`obj = {a}`
+      to_match_snapshot
+    expect::
+      fink2js`obj = {a, delete, true, false}`
+      to_match_snapshot
 
   it:: 'compiles spread', fn:
-    fink2js(`obj = {a, b, ...c}`) eq snapshot
+    expect::
+      fink2js`obj = {a, b, ...c}`
+      to_match_snapshot
 
   it:: 'compiles key:val', fn:
-    fink2js(`obj = {a: 1, b: 123, 'c-d-e': cde}`) eq snapshot
-    fink2js(`
-      obj7 = {a: 123, b: 123 && 123 && 1345, c: fn a, b: 134}
-    `) eq snapshot
+    expect::
+      fink2js`obj = {a: 1, b: 123, 'c-d-e': cde}`
+      to_match_snapshot
+    expect::
+      fink2js`
+        obj7 = {a: 123, b: 123 && 123 && 1345, c: fn a, b: 134}
+      `
+      to_match_snapshot
 
   it:: 'compiles multiline', fn:
-    fink2js(`obj = {
-        a: 123,
+    expect::
+      fink2js`obj = {
+          a: 123,
 
-        b: 123
-          && 123
-          && 1345,
+          b: 123
+            && 123
+            && 1345,
 
-        c: fn a, b: 134,
+          c: fn a, b: 134,
 
-        d:
-          n = a+3
-          foo(n)
-      }
-    `) eq snapshot
+          d:
+            n = a+3
+            foo(n)
+        }
+      `
+      to_match_snapshot
 
 
 describe:: 'calculated props', fn:
   it:: 'compiles', fn:
-    fink2js(`
-      foo = {
-        foo,
-        (Symbol('foo')): 123,
-        'spam': 456,
-        ni
-      }
-    `) eq snapshot
+    expect::
+      fink2js`
+        foo = {
+          foo,
+          (Symbol('foo')): 123,
+          'spam': 456,
+          ni
+        }
+      `
+      to_match_snapshot
 
 
 describe:: 'destructuring object', fn:
   it:: 'compiles simple', fn:
-    fink2js(`{a, b, c} = ni`) eq snapshot
+    expect::
+      fink2js`{a, b, c} = ni`
+      to_match_snapshot
 
   it:: 'compiles spread', fn:
-    fink2js(`{e, ...f} = {e: 0, foo: 12, bar: 34}`) eq snapshot
+    expect::
+      fink2js`{e, ...f} = {e: 0, foo: 12, bar: 34}`
+      to_match_snapshot
 
   it:: 'compiles defaults', fn:
-    fink2js(`{x=1, ni: {y, z}} = {ni: {y: 1, z: 2}}`) eq snapshot
+    expect::
+      fink2js`{x=1, ni: {y, z}} = {ni: {y: 1, z: 2}}`
+      to_match_snapshot
 
   it:: 'compiles computed keys', fn:
-    fink2js(`{'n i': ni} = foo`) eq snapshot
+    expect::
+      fink2js`{'n i': ni} = foo`
+      to_match_snapshot
 

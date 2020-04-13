@@ -1,17 +1,20 @@
 {fink2js} = import '../../testing'
-{describe, it, eq, snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
 
 
 describe:: 'filter', fn:
   it:: 'compiles', fn:
-    fink2js(`
-      filter item:
-        item % 2 == 0
+    expect::
+      fink2js`
+        filter item:
+          item % 2 == 0
 
-      filter [a, ...b]:
-        a && b.length == 0
+        filter [a, ...b]:
+          a_alone = a && b.length == 0
+          a_alone
 
-      filter [...a, b]:
-        b && a.length == 0
-    `) eq snapshot
+        filter [...a, b]:
+          b && a.length == 0
+      `
+      to_match_snapshot
 

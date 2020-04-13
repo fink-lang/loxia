@@ -62,14 +62,16 @@ match_obj = fn value, obj, emit_result, ctx, cond:
       id = ctx.unique_ident:: 'p'
       {id, prop}
 
-  decl = objectPattern::
-    id_props.map:: fn {id, prop}:
-      match prop:
-        {key: {type: 'spread'}}:
-          restElement:: id
-        else:
-          [key, computed] = get_key:: prop, ctx
-          objectProperty:: key, id, computed
+  decl = objectPattern:: [
+    ... pipe id_props:
+      map {id, prop}:
+        match prop:
+          {key: {type: 'spread'}}:
+            restElement:: id
+          else:
+            [computed, key] = get_key:: prop, ctx
+            objectProperty:: key, id, computed
+  ]
 
   ifStatement::
     not_nullish:: value
@@ -94,9 +96,8 @@ match_elems = fn elems, emit_result, ctx, cond:
 
 
 get_array_decl = fn arr, id_elems, right, ctx:
-  left = {
-    type: 'array',
-    exprs: id_elems.map(fn {id, value}:
+  [...exprs] = pipe id_elems:
+    map {id, value}:
       match value:
         # e.g. empty elems in [,, foo, bar]
         null: null
@@ -109,9 +110,8 @@ get_array_decl = fn arr, id_elems, right, ctx:
           {...value, right: ident}
         else:
           {type: 'ident', value: id.name}
-    ),
-    loc: arr.loc
-  }
+
+  left = {type: 'array', exprs, loc: arr.loc}
 
   decl = ctx.transform:: {
     type: 'assign',

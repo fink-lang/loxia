@@ -2,7 +2,9 @@
 
 
 transform_object = fn node, ctx:
-  props = node.exprs.map:: fn expr: ctx.transform:: expr
+  [...props] = pipe node.exprs:
+    map expr: ctx.transform:: expr
+
   objectExpression:: props
 
 
@@ -14,11 +16,11 @@ str_key = fn {value, loc}:
 get_key = fn {key}, ctx:
   match key:
     {type: 'group'}:
-      [ctx.transform(key), true]
+      [true, ctx.transform:: key]
     {type: 'string'}:
-      [ctx.transform(key), true]
+      [true, ctx.transform:: key]
     else:
-      [str_key(key), false]
+      [false, str_key:: key]
 
 
 transform_prop = fn node, ctx:
@@ -26,7 +28,7 @@ transform_prop = fn node, ctx:
     {key: {type: 'spread'}}:
       ctx.transform:: node.key
     else:
-      [key, computed] = get_key:: node, ctx
+      [computed, key] = get_key:: node, ctx
       value = ctx.transform:: node.value
 
       shorthand = node.key == node.value

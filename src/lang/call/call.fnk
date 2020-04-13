@@ -8,4 +8,4 @@ transform_call = fn node, ctx:
     map expr:
       ctx.transform:: expr
 
-  {...callExpression(callee, args)}
+  {...callExpression:: callee, args}

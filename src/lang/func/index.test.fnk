@@ -1,35 +1,37 @@
 {fink2js} = import '../../testing'
-{describe, it, eq, snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
 
 
 describe:: 'func', fn:
   it:: 'compiles', fn:
-    fink2js(`
-      fun1 = fn a, b=12, ...d: a + b + c
+    expect::
+      fink2js`
+        fun1 = fn a, b=12, ...d: a + b + c
 
-      fun2 = fn b:
-        b * 2
+        fun2 = fn b:
+          b * 2
 
-      fun3 = fn: 'shrub'
-      fun4 = fn:
-        'shrub'
+        fun3 = fn: 'shrub'
+        fun4 = fn:
+          'shrub'
 
-      fun5 = fn c: fn d, e:
-        match [d, e]:
-          [1, 2]: c
-          [2, 1]: 1/c
+        fun5 = fn c: fn d, e:
+          match [d, e]:
+            [1, 2]: c
+            [2, 1]: 1/c
 
-      fun6 = fn c, d:
-        x = 123
-        match ni:
-          c + x: d
-          c + 1: d + 1
+        fun6 = fn c, d:
+          x = 123
+          match ni:
+            c + x: d
+            c + 1: d + 1
 
-      fun7 = fn a, b=12, c:
-        shrub(...a)
-        foo()
-        bar()
-    `) eq snapshot
+        fun7 = fn a, b=12, c:
+          shrub(...a)
+          foo()
+          bar()
+      `
+      to_match_snapshot
 
 
 

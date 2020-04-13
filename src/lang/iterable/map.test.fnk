@@ -1,63 +1,80 @@
 {fink2js} = import '../../testing'
-{describe, it, eq, snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
 
 
 describe:: 'map', fn:
   it:: 'compiles single line', fn:
-    fink2js(`
-      map item: item * 2
-    `) eq snapshot
+    expect::
+      fink2js`
+        map item: item * 2
+      `
+      to_match_snapshot
 
 
   it:: 'compiles multi line', fn:
-    fink2js(`
-      map item:
-        item * 2
-    `) eq snapshot
+    expect::
+      fink2js`
+        map item:
+          ni = foo:: item
+          ni + 2
+      `
+      to_match_snapshot
 
 
   it:: 'compiles single line with default value', fn:
-    fink2js(`
-      map item=123: item * 2
-    `) eq snapshot
+    expect::
+      fink2js`
+        map item=123: item * 2
+      `
+      to_match_snapshot
 
 
   it:: 'compiles single line with destructured obj', fn:
-    fink2js(`
-      map {item}: item * 2
-    `) eq snapshot
+    expect::
+      fink2js`
+        map {item}: item * 2
+      `
+      to_match_snapshot
 
 
   it:: 'compiles single line with destructured array', fn:
-    fink2js(`
-      map [x, y]: x + y
-    `) eq snapshot
+    expect::
+      fink2js`
+        map [x, y]: x + y
+      `
+      to_match_snapshot
 
 
   it:: 'compiles as flat map', fn:
-    fink2js(`
-      map [x, y]:
-        ...[x, y]
-    `) eq snapshot
+    expect::
+      fink2js`
+        map [x, y]:
+          ...[x, y]
+      `
+      to_match_snapshot
 
 
   it:: 'compiles destructuring', fn:
-    fink2js(`
-      map [x, ...rest]:
-       rest
+    expect::
+      fink2js`
+        map [x, ...rest]:
+         rest
 
-      map [...ignored, last]:
-       last
+        map [...ignored, last]:
+         last
 
-    `) eq snapshot
+      `
+      to_match_snapshot
 
 describe:: 'flat_map', fn:
   it:: 'compiles', fn:
-    fink2js(`
-      flat_map item: [spam + item]
+    expect::
+      fink2js`
+        flat_map item: [spam + item]
 
-      flat_map item: [spam]
-    `) eq snapshot
+        flat_map item: [spam]
+      `
+      to_match_snapshot
 
 
 

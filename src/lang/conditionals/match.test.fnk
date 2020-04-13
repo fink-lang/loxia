@@ -1,127 +1,141 @@
 {fink2js} = import '../../testing'
-{describe, it, eq, snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
 
 
 describe:: 'match', fn:
   it:: 'compiles', fn:
-    fink2js(`
-      match shrub:
-        # simple value
-        123:
-          # result
-          spam
+    expect::
+      fink2js`
+        match shrub:
+          # simple value
+          123:
+            # result
+            spam
 
-        # object matching
-        {foo: 4, ni}:
-          spam + ni
+          # object matching
+          {foo: 4, ni}:
+            spam + ni
 
-        # array matching
-        [1, 2, ni]:
-          ni
+          # array matching
+          [1, 2, ni]:
+            ni
 
-        # fallback if none of above match
-        else:
-          shrub
-    `) eq snapshot
+          # fallback if none of above match
+          else:
+            shrub
+      `
+      to_match_snapshot
 
 
   it:: 'compiles without else', fn:
-    fink2js(`
-      match shrub:
-        {foo: 4, ni}: spam + ni
-        123: spam
-    `) eq snapshot
+    expect::
+      fink2js`
+        match shrub:
+          {foo: 4, ni}: spam + ni
+          123: spam
+      `
+      to_match_snapshot
 
 
   it:: 'compiles nested pattern', fn:
-    fink2js(`
-      match shrub:
-        # deep obj comparison
-        {foo: {}}: spam + ni
-        {foo: []}: spam + ni
-        {foo: 4, ni: {na, nu}}: spam + ni
-        {xx: 1, foo: {bar: 'spam'}, shrub: {na: 'nu'}}: ni
-        {ni: {len: 1}, na: {len: 1}}: na
-        # calculated props
-        {(a): {b, c}}: ni
-        # spread
-        {(foo): {}, ...{bar, spam}}: ni
-    `) eq snapshot
+    expect::
+      fink2js`
+        match shrub:
+          # deep obj comparison
+          {foo: {}}: spam + ni
+          {foo: []}: spam + ni
+          {foo: 4, ni: {na, nu}}: spam + ni
+          {xx: 1, foo: {bar: 'spam'}, shrub: {na: 'nu'}}: ni
+          {ni: {len: 1}, na: {len: 1}}: na
+          # calculated props
+          {(a): {b, c}}: ni
+          # spread
+          {(foo): {}, ...{bar, spam}}: ni
+      `
+      to_match_snapshot
 
-    fink2js(`
-      match shrub:
-        # deep array comparison
-        [1, 2, [ni]]: ni
-        [1, 2, [], {}]: foo
-        [1, [2, 3], 4]: bar
-        [1, [2, [3, 4]], [5, 6], 7]: spam
-    `) eq snapshot
+    expect::
+      fink2js`
+        match shrub:
+          # deep array comparison
+          [1, 2, [ni]]: ni
+          [1, 2, [], {}]: foo
+          [1, [2, 3], 4]: bar
+          [1, [2, [3, 4]], [5, 6], 7]: spam
+      `
+      to_match_snapshot
 
-    fink2js(`
-      # spread and ignored elems
-      match shrub:
-        [1, ,2]: foo
-        [1, ...{length: 0}]: foo
-        [1, ..., 3]: foo
-        [1, ...{length: 0}, 3]: foo
-    `) eq snapshot
+    expect::
+      fink2js`
+        # spread and ignored elems
+        match shrub:
+          [1, ,2]: foo
+          [1, ...{length: 0}]: foo
+          [1, ..., 3]: foo
+          [1, ...{length: 0}, 3]: foo
+      `
+      to_match_snapshot
 
 
   it:: 'compiles nested match', fn:
-    fink2js(`
-      test = fn:
-        match foo:
-          bar:
-            match spam:
-              shrub: ni
-            bar
-    `) eq snapshot
+    expect::
+      fink2js`
+        test = fn:
+          match foo:
+            bar:
+              match spam:
+                shrub: ni
+              bar
+      `
+      to_match_snapshot
 
 
   it:: 'compiles patial application', fn:
-    fink2js(`
-      match {spam: 123}:
-        # simple unary
-        !?: ni
+    expect::
+      fink2js`
+        match {spam: 123}:
+          # simple unary
+          !?: ni
 
-        # simple binary
-        ? > 123: ni
+          # simple binary
+          ? > 123: ni
 
-        # simple call
-        ?(): ni
+          # simple call
+          ?(): ni
 
-        # simple as call arg
-        shrub:: ?: ni
-
-
-        # nested unary
-        {spam: !?}: ni
-
-        # nested binary
-        {spam: ? > 123}: ni
-
-        # nested call
-        {spam: ?()}: ni
-
-        # nested member call
-        {spam: ?.is_foo()}: ni
-
-        # nested as call arg
-        {spam: is_foo(?)}: ni
+          # simple as call arg
+          shrub:: ?: ni
 
 
-        # nested unary
-        [!?]: ni
+          # nested unary
+          {spam: !?}: ni
 
-        # nested binary
-        [? > 123]: ni
+          # nested binary
+          {spam: ? > 123}: ni
 
-        # nested call
-        [?()]: ni
+          # nested call
+          {spam: ?()}: ni
 
-        # nested member call
-        [?.is_foo()]: ni
+          # nested member call
+          {spam: ?.is_foo()}: ni
 
-        # nested as call arg
-        [is_foo(?)]: ni
-    `) eq snapshot
+          # nested as call arg
+          {spam: is_foo(?)}: ni
+
+
+          # nested unary
+          [!?]: ni
+
+          # nested binary
+          [? > 123]: ni
+
+          # nested call
+          [?()]: ni
+
+          # nested member call
+          [?.is_foo()]: ni
+
+          # nested as call arg
+          [is_foo(?)]: ni
+      `
+      to_match_snapshot

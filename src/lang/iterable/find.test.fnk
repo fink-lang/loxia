@@ -1,28 +1,33 @@
 {fink2js} = import '../../testing'
-{describe, it, eq, snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
 
 
 describe:: 'find', fn:
   it:: 'compiles simple find', fn:
-    fink2js(`
-      find item:
-        item > 3
-    `) eq snapshot
+    expect::
+      fink2js`
+        find item:
+          item > 3
+      `
+      to_match_snapshot
 
 
   it:: 'compiles complex find', fn:
-    fink2js(`
-      find {item}:
-        match item:
-          {spam}: shrub
-          else: ni
+    expect::
+      fink2js`
+        find {item}:
+          match item:
+            {spam}: shrub
+            else: ni
 
-      find [foo , ...bar]:
-        foo && bar.length == 0
+        find [foo , ...bar]:
+          foo_alone = foo && bar.length == 0
+          foo_alone
 
-      find [...foo , bar]:
-        bar && foo.length == 0
-    `) eq snapshot
+        find [...foo , bar]:
+          bar && foo.length == 0
+      `
+      to_match_snapshot
 
 
 

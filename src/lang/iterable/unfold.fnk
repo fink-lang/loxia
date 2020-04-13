@@ -1,5 +1,5 @@
 {whileStatement, blockStatement, assignmentPattern} = import '@babel/types'
-{assign, generator, split_last, consts, yields, true_} = import '../../js/types'
+{assign, generator, consts, yields, true_} = import '../../js/types'
 
 {block_statement} = import '../block'
 {transform_init} = import './init'
@@ -45,7 +45,7 @@ get_accs = fn node, next_value, ctx:
 transform_unfold = fn node, ctx:
   {transform, unique_ident} = ctx
 
-  [expressions, last_expr] = split_last:: node.exprs
+  [...expressions, last_expr] = node.exprs
 
   result_id = unique_ident:: 'result'
 
@@ -62,7 +62,8 @@ transform_unfold = fn node, ctx:
     loop::
       ...acc_assign
 
-      ...expressions.map:: block_statement:: {transform}
+      ...pipe expressions:
+        map expr: block_statement:: expr, ctx
 
       consts:: result_id, result
       yields:: result_id

@@ -2,15 +2,13 @@
 
 
 transform_string = fn node, {transform}:
-  quasies = node.parts
-    .filter(fn part, idx: idx % 2 == 0)
-    .map(fn part: templateElement({
-      raw: part.value.replace(rx/\\([\s\S])|(`)/g, '\\$1$2')
-    }))
+  [...quasies] = pipe node.parts.filter:: fn part, idx: idx % 2 == 0:
+    map part: templateElement::
+      {raw: part.value.replace(rx/\\([\s\S])|(`)/g, '\\$1$2')}
 
-  expressions = node.parts
-    .filter(fn part, idx: idx % 2 == 1)
-    .map(fn part:transform(part))
+
+  [...expressions] = pipe node.parts.filter:: fn part, idx: idx % 2 == 1:
+    map part:transform:: part
 
   templ_str = templateLiteral:: quasies, expressions
   {tag=null} = node
@@ -21,5 +19,4 @@ transform_string = fn node, {transform}:
       taggedTemplateExpression::
         transform:: node.tag
         templ_str
-
 
