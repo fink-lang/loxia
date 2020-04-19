@@ -6,7 +6,7 @@ transform_array = fn node, {transform}:
     map elem:
       match elem:
         null: null
+        {type: 'empty'}: null
         else: transform:: elem
 
   arrayExpression:: elems
-
