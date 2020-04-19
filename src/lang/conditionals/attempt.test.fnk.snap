@@ -11,13 +11,13 @@ exports[`attempt compiles 1`] = `
     _do_result = [ˆerror_1, null];
   }
 
-  const [item, err] = _do_result;
+  const [err, item] = _do_result;
   _do_result = undefined;
   return [item, err];
 };
 
 const foo2 = () => try {
-  return [null, 1 / 0];
+  return [null, throw new Error(\`foobar\`)];
 } catch (ˆerror_2) {
   return [ˆerror_2, null];
 };

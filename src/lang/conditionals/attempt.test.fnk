@@ -8,12 +8,12 @@ describe:: 'attempt', fn:
     expect::
       fink2js`
         foo1 = fn:
-          [item, err] = attempt:
+          [err, item] = attempt:
             bar = shrub()
             bar + ni()
           [item, err]
 
-        foo2 = fn: attempt: 1/0
+        foo2 = fn: attempt: throw new Error:: 'foobar'
       `
       to_match_snapshot
 

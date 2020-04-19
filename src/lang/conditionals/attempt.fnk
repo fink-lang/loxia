@@ -25,6 +25,7 @@ transform_attempt = fn node, ctx:
     err,
     blockStatement:: [
       expressionStatement::
+        # TODO: should return undef
         arrayExpression:: [err, nullLiteral()]
     ]
 

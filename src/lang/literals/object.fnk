@@ -1,9 +1,9 @@
 {objectExpression, objectProperty, stringLiteral, assignmentPattern} = import '@babel/types'
 
 
-transform_object = fn node, ctx:
+transform_object = fn node, {transform}:
   [...props] = pipe node.exprs:
-    map expr: ctx.transform:: expr
+    map prop: transform:: prop
 
   objectExpression:: props
 
