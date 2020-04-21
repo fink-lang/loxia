@@ -1,5 +1,5 @@
 {fink2js} = import '../../testing'
-{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
 describe:: 'await', fn:
@@ -18,7 +18,7 @@ describe:: 'await', fn:
         a_gen = unfold curr=0:
           match shrub:
             spam: await ni(curr)
-            else : curr + 1
+            else: curr + 1
 
         await ni
       `

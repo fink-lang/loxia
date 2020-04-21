@@ -41,9 +41,6 @@ match_props = fn props, emit_result, ctx, cond:
   [{id, prop}, ...rest] = props
 
   value = match prop:
-    {value: {type: 'block', exprs: {length: 1}}}:
-      {exprs: [expr]} = prop.value
-      expr
     {key: {type: 'spread'}}:
       prop.key
     else:
@@ -100,7 +97,8 @@ get_array_decl = fn arr, id_elems, right, ctx:
     map {id, value}:
       match value:
         # e.g. empty elems in [,, foo, bar]
-        null: null
+        {type: 'empty'}:
+          null
         # e.g. spread in [foo, ..., bar]
         {type: 'spread', right: null}:
           value
@@ -136,7 +134,7 @@ match_array = fn value, arr, emit_result, ctx, cond:
     filter {value}:
       match value:
         # empty elements need no matching
-        null: false
+        {type: 'empty'}: false
         # empty spreads need no matching
         {type: 'spread', right: null}: false
         else: true

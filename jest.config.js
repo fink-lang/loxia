@@ -5,7 +5,7 @@ module.exports = {
   moduleFileExtensions: ['js', 'fnk'],
   transform: {
     '^.+\\.js$': 'babel-jest',
-    '^.+\\.fnk$': ['@fink/jest']
+    '^.+\\.fnk$': ['@fink/jest/transform']
   },
   transformIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
 

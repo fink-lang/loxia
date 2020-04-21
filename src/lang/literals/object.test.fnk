@@ -1,5 +1,5 @@
 {fink2js} = import '../../testing'
-{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
 describe:: 'object', fn:
@@ -34,17 +34,15 @@ describe:: 'object', fn:
   it:: 'compiles multiline', fn:
     expect::
       fink2js`obj = {
-          a: 123,
+          a: 123
 
           b: 123
             && 123
             && 1345,
 
-          c: fn a, b: 134,
+          c: fn a, b: 134
 
-          d:
-            n = a+3
-            foo(n)
+          d: foo:: a + 3
         }
       `
       to_match_snapshot

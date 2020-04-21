@@ -83,10 +83,7 @@ exports[`object compiles multiline 1`] = `
   \\"a\\": 123,
   \\"b\\": 123 && 123 && 1345,
   \\"c\\": (a, b) => 134,
-  \\"d\\": (() => {
-    const n = a + 3;
-    return foo(n);
-  })()
+  \\"d\\": foo(a + 3)
 };
 Object.assign(module.exports, {
   obj

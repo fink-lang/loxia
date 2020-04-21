@@ -36,8 +36,12 @@ transform_spread_left = fn {left}, {transform}:
             else: [before, middle, [...end, expr]]
 
   exprs = match before:
-    {length: 0}: [middle, {type: 'array', exprs: end}]
-    else: [{type: 'array', exprs: before}, middle, {type: 'array', exprs: end}]
+    {length: 0}:
+      # TODO missing loc
+      [middle, {type: 'array', exprs: end}]
+    else:
+      # TODO missing loc
+      [{type: 'array', exprs: before}, middle, {type: 'array', exprs: end}]
 
   transform_left:: transform:: {...left, exprs}
 

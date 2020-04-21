@@ -1,5 +1,5 @@
 {fink2js} = import '../../testing'
-{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
+{describe, it, only, expect, to_match_snapshot} = import '@fink/jest'
 
 
 describe:: 'match', fn:
@@ -139,3 +139,18 @@ describe:: 'match', fn:
           [is_foo(?)]: ni
       `
       to_match_snapshot
+
+
+  it:: 'compiles do-expr', fn:
+    expect::
+      fink2js`
+        foo = match bar:
+          spam:
+            ni
+            throw foobar
+          else:
+            shrub
+            throw ni
+      `
+      to_match_snapshot
+

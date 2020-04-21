@@ -25,7 +25,7 @@ transform_jsx_attr = fn node, {transform}:
 
   value = match node.value:
     null: null
-    else : transform:: node.value
+    else: transform:: node.value
 
   jsxAttribute:: id, value
 

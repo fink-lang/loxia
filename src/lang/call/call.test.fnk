@@ -1,5 +1,5 @@
 {fink2js} = import '../../testing'
-{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
 describe:: 'call', fn:
@@ -9,7 +9,7 @@ describe:: 'call', fn:
       fink2js`
         call1 = a(ni, x=123, ...x)
         call2 = a(ni)
-        call3 = a ()
+        call3 = a()
         call4 = a(fn x: x*2)
       `
       to_match_snapshot
