@@ -1,5 +1,5 @@
 {fink2js} = import '../../testing'
-{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
 describe:: 'identifiers', fn:
@@ -9,7 +9,7 @@ describe:: 'identifiers', fn:
         {do, if, in, for, let, new, try, var, case, enum, void} = foobar
         {with, break, catch, class, const, super, while, yield, delete} = spam
         {export, import, public, return, static, switch, typeof, default} = ham
-        {extends, finally, package, private, continue, debugger, function} = ni
+        {extends, finally, package, private, continue, function} = ni
         {arguments, interface, protected, implements, instanceof} = nu
       `
       to_match_snapshot

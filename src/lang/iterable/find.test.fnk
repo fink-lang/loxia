@@ -1,5 +1,5 @@
 {fink2js} = import '../../testing'
-{describe, it, expect, to_match_snapshot} = import '../../testing/jest'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
 describe:: 'find', fn:
@@ -20,11 +20,11 @@ describe:: 'find', fn:
             {spam}: shrub
             else: ni
 
-        find [foo , ...bar]:
+        find [foo, ...bar]:
           foo_alone = foo && bar.length == 0
           foo_alone
 
-        find [...foo , bar]:
+        find [...foo, bar]:
           bar && foo.length == 0
       `
       to_match_snapshot

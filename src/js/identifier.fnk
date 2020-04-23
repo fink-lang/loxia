@@ -2,7 +2,7 @@
 check_ident = rx/
   ^(?!(?:
     do|if|in|for|let|new|try|var|case|enum|void|with|break|catch|class|const|super|while|yield|delete|export|import|public|return|static|switch|
-    typeof|default|extends|finally|package|private|continue|debugger|function|
+    typeof|default|extends|finally|package|private|continue|function|
     arguments|interface|protected|implements|instanceof
   )$)
   [

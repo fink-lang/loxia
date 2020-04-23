@@ -47,6 +47,38 @@ exports[`match compiles 1`] = `
 Object.assign(module.exports, {});"
 `;
 
+exports[`match compiles do-expr 1`] = `
+"let _do_result;
+
+ˆmatch_2: {
+  const ˆvalue_1 = bar;
+
+  if (ˆvalue_1 === spam) {
+    _do_result = (() => {
+      ni;
+      throw foobar;
+    })();
+
+    break ˆmatch_2;
+  }
+
+  {
+    _do_result = (() => {
+      shrub;
+      throw ni;
+    })();
+
+    break ˆmatch_2;
+  }
+}
+
+const foo = _do_result;
+_do_result = undefined;
+Object.assign(module.exports, {
+  foo
+});"
+`;
+
 exports[`match compiles nested match 1`] = `
 "const test = () => {
   const ˆvalue_1 = foo;

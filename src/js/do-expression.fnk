@@ -1,18 +1,38 @@
 {
-  assignmentExpression, returnStatement, callExpression,
-  arrowFunctionExpression, expressionStatement,
+  assignmentExpression, returnStatement, expressionStatement,
   isDoExpression, isBlockStatement, isLabeledStatement, isTryStatement,
   isVariableDeclarator, isArrowFunctionExpression, isExpressionStatement,
-  isReturnStatement, isProgram, isIfStatement
+  isReturnStatement, isIfStatement, arrowFunctionExpression, callExpression
 } = import '@babel/types'
 
 
 {lets, assign, undef} = import './types'
 
-
 get_body = fn path: path.get:: 'body'
 
 consume_all = fold item, acc=null: null
+
+
+simple = fn body, sl=false:
+  match body:
+    isBlockStatement:: ?:
+      [stmnt, ...rest] = get_body:: body
+
+      match rest:
+        {length: 0}:
+          # e.g. fn arg: match ...: ...
+          match {sl, stmnt}:
+            {sl: true, stmnt: isLabeledStatement:: ?}:
+              stmnt.node.body
+            # TODO:
+            # {sl: true, stmnt: isIfStatement:: ?}:
+            #   body.node
+            else:
+              simple:: stmnt
+        else:
+          body.node
+    else:
+      body.node
 
 
 last_expressions = fn path:
@@ -38,11 +58,18 @@ last_expressions = fn path:
         {
           LabeledStatement: fn nested_match:
             nested_match.skip()
-          ,
+
           BreakStatement: fn brk:
             last = brk.getSibling:: brk.key - 1
-            # TODO: don't use mutation
-            items.push:: last
+            # TODO: don't add throw expr
+            match last.node:
+              {expression: {operator: 'throw'}}:
+                last.replaceWith::
+                  expressionStatement:: last.node.expression
+                brk.remove()
+              else:
+                # TODO: don't use mutation
+                items.push:: last
             null
         }
       items
@@ -63,10 +90,8 @@ replace_with_return = fn path:
     map expr:
       match expr:
         {node: {expression: {operator:'throw'}}}:
-          # no return throw ...
           expr.replaceWith::
             expressionStatement:: expr.node.expression
-
         else:
           expr.replaceWith::
             returnStatement:: expr.node.expression
@@ -79,28 +104,6 @@ replace_with_return = fn path:
           sibl.remove()
 
     consume_all
-
-
-simple = fn body, sl=false:
-  match body:
-    isBlockStatement:: ?:
-      [stmnt, ...rest] = get_body:: body
-
-      match rest:
-        {length: 0}:
-          # e.g. fn arg: match ...: ...
-          match {sl, stmnt}:
-            {sl: true, stmnt: isLabeledStatement:: ?}:
-              stmnt.node.body
-            # TODO:
-            # {sl: true, stmnt: isIfStatement:: ?}:
-            #   body.node
-            else:
-              simple:: stmnt
-        else:
-          body.node
-    else:
-      body.node
 
 
 replace_with_assign = fn target, path:
@@ -148,16 +151,17 @@ transform_do_expr = fn path:
         simple:: body, true
 
       replace_with_return:: path
+
     else:
       # e.g.
-      # {
-      #   foo:
-      #     x = spam
-      #     x + 3
-      # }
+      # fn:
+      #   foo = match:
+      #      spam:
+      #        shrub
+      #        ni
+      #   foo
       arrow = arrowFunctionExpression:: [], path.node
       path.replaceWith::
         callExpression:: arrow, []
 
   null
-

@@ -1,6 +1,6 @@
 {generate} = import '.'
 {fink2js} = import './testing'
-{describe, it, expect, to_throw} = import './testing/jest'
+{describe, it, expect, to_throw} = import '@fink/jest'
 
 
 describe:: 'errors', fn:
