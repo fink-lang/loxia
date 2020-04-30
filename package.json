@@ -37,13 +37,13 @@
   "devDependencies": {
     "@fink/cli": "^3.0.0",
     "@fink/jest": "^2.0.0",
-    "@fink/larix": "^6.0.3",
-    "@fink/loxia": "^4.11.0",
+    "@fink/larix": "^6.0.4",
+    "@fink/loxia": "^5.0.0",
     "commitizen": "^4.0.4",
     "cz-conventional-changelog": "^3.1.0",
     "jest-cli": "^25.3.0",
     "npx-run": "^2.1.2",
-    "semantic-release": "^17.0.4"
+    "semantic-release": "^17.0.7"
   },
   "dependencies": {
     "@babel/generator": "^7.9.5",
