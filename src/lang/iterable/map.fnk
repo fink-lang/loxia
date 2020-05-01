@@ -5,7 +5,7 @@
 
 
 
-transform_any = fn flatten: fn node, ctx:
+transform_map = fn node, ctx:
   {transform, unique_ident} = ctx
 
   item = unique_ident:: 'item'
@@ -31,10 +31,4 @@ transform_any = fn flatten: fn node, ctx:
 
       yields::
         transform:: yield_value
-        flatten || last_is_spread
-
-
-transform_map = transform_any:: false
-
-
-transform_flat_map = transform_any:: true
+        last_is_spread

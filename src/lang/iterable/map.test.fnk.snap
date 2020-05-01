@@ -1,23 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`flat_map compiles 1`] = `
-"(function* map(ˆitems_2) {
-  for (const ˆitem_1 of ˆitems_2) {
-    const item = ˆitem_1;
-    yield* [spam + item];
-  }
-});
-
-(function* map(ˆitems_4) {
-  for (const ˆitem_3 of ˆitems_4) {
-    const item = ˆitem_3;
-    yield* [spam];
-  }
-});
-
-Object.assign(module.exports, {});"
-`;
-
 exports[`map compiles as flat map 1`] = `
 "(function* map(ˆitems_2) {
   for (const ˆitem_1 of ˆitems_2) {

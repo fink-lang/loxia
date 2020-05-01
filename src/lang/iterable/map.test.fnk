@@ -66,16 +66,6 @@ describe:: 'map', fn:
       `
       to_match_snapshot
 
-describe:: 'flat_map', fn:
-  it:: 'compiles', fn:
-    expect::
-      fink2js`
-        flat_map item: [spam + item]
-
-        flat_map item: [spam]
-      `
-      to_match_snapshot
-
 
 
 
