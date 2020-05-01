@@ -41,10 +41,10 @@ match_props = fn props, emit_result, ctx, cond:
   [{id, prop}, ...rest] = props
 
   value = match prop:
-    {key: {type: 'spread'}}:
-      prop.key
+    {left: {type: 'spread'}}:
+      prop.left
     else:
-      prop.value
+      prop.right
 
   emit = match props:
     {length: 1}: emit_result
@@ -63,7 +63,7 @@ match_obj = fn value, obj, emit_result, ctx, cond:
     ... pipe id_props:
       map {id, prop}:
         match prop:
-          {key: {type: 'spread'}}:
+          {left: {type: 'spread'}}:
             restElement:: id
           else:
             [computed, key] = get_key:: prop, ctx
@@ -184,7 +184,7 @@ match_all = fn value, matches, emit, ctx:
       [condition, result] = split_condition:: expr
 
       js_expr = match condition:
-        {value: 'else'}:
+        {type: 'literal', value: 'else'}:
           js_expr = emit:: result
           wrap_with_comment_loc:: js_expr, condition
         else:

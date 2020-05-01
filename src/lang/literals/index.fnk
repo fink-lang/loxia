@@ -5,6 +5,8 @@
 {transform_regex} = import './regex'
 {transform_array} = import './array'
 {transform_object, transform_prop} = import './object'
+{transform_keyword} = import './keywords'
+
 
 
 add_literals = fn ctx:
@@ -14,4 +16,5 @@ add_literals = fn ctx:
     add:: 'regex', any, transform_regex
     add:: 'array', any, transform_array
     add:: 'object', any, transform_object
-    add:: 'prop', any, transform_prop
+    add:: 'object:prop', any, transform_prop
+    add:: 'literal', any, transform_keyword
