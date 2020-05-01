@@ -1,7 +1,7 @@
 {add, any} = import '../context'
 {transform_fold} = import './fold'
 {transform_unfold} = import './unfold'
-{transform_map, transform_flat_map} = import './map'
+{transform_map} = import './map'
 {transform_filter} = import './filter'
 {transform_while} = import './while'
 {transform_find} = import './find'
@@ -12,7 +12,6 @@ add_iterables = fn ctx:
     add:: any, 'fold', transform_fold
     add:: any, 'unfold', transform_unfold
     add:: any, 'map', transform_map
-    add:: any, 'flat_map', transform_flat_map
     add:: any, 'filter', transform_filter
     add:: any, 'while', transform_while
     add:: any, 'find', transform_find

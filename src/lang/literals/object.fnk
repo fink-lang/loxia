@@ -13,7 +13,7 @@ str_key = fn {value, loc}:
   {...str, loc}
 
 
-get_key = fn {key}, ctx:
+get_key = fn {left: key}, ctx:
   match key:
     {type: 'group'}:
       [true, ctx.transform:: key]
@@ -25,16 +25,16 @@ get_key = fn {key}, ctx:
 
 transform_prop = fn node, ctx:
   match node:
-    {key: {type: 'spread'}}:
-      ctx.transform:: node.key
+    {left: {type: 'spread'}}:
+      ctx.transform:: node.left
     else:
       [computed, key] = get_key:: node, ctx
-      value = ctx.transform:: node.value
+      value = ctx.transform:: node.right
 
-      shorthand = node.key == node.value
+      shorthand = node.left == node.right
 
       final_value = match node:
-        {value: {type: 'assign'}}:
+        {right: {type: 'assign'}}:
           assignmentPattern:: value.left, value.right
         else:
           value
