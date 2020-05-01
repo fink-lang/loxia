@@ -38,7 +38,7 @@
     "@fink/cli": "^3.1.0",
     "@fink/jest": "^2.0.0",
     "@fink/larix": "^7.0.0",
-    "@fink/loxia": "^5.0.0",
+    "@fink/loxia": "^6.0.0",
     "commitizen": "^4.0.5",
     "cz-conventional-changelog": "^3.1.0",
     "jest-cli": "^25.5.3",
