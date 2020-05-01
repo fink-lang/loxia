@@ -1,8 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`logical compiles operators 1`] = `
-"const logical = a || b || c && d < 1 <= s;
+exports[`logical compiles 1`] = `
+"const foo = a || b || c;
+const bar = a && b && c;
+const spam = !a;
 Object.assign(module.exports, {
-  logical
+  foo,
+  bar,
+  spam
+});"
+`;
+
+exports[`logical compiles 2`] = `
+"const foo = a || b || c;
+const bar = a && b && c;
+const spam = !a;
+Object.assign(module.exports, {
+  foo,
+  bar,
+  spam
 });"
 `;
