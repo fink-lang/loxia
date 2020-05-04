@@ -5,7 +5,7 @@
 describe 'jsx', fn:
   it 'compiles', fn:
     expect
-      fink2js`
+      fink2js `
         jsx1 = <a/>
         jsx2 = <b></b>
         jsx3 = <a foo bar="ni" />

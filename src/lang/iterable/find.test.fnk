@@ -5,7 +5,7 @@
 describe 'find', fn:
   it 'compiles simple find', fn:
     expect
-      fink2js`
+      fink2js `
         find item:
           item > 3
       `
@@ -14,7 +14,7 @@ describe 'find', fn:
 
   it 'compiles complex find', fn:
     expect
-      fink2js`
+      fink2js `
         find {item}:
           match item:
             {spam}: shrub

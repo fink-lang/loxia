@@ -5,7 +5,7 @@
 describe 'import', fn:
   it 'compiles', fn:
     expect
-      fink2js`
+      fink2js `
         {foo} = import './spam'
         {foo: bar} = import './shrub'
       `

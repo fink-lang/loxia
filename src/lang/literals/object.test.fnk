@@ -5,35 +5,35 @@
 describe 'object', fn:
   it 'compiles simple', fn:
     expect
-      fink2js`obj = {}`
+      fink2js `obj = {}`
       to_match_snapshot
 
   it 'compiles shorthand', fn:
     expect
-      fink2js`obj = {a}`
+      fink2js `obj = {a}`
       to_match_snapshot
     expect
-      fink2js`obj = {a, delete, true, false}`
+      fink2js `obj = {a, delete, true, false}`
       to_match_snapshot
 
   it 'compiles spread', fn:
     expect
-      fink2js`obj = {a, b, ...c}`
+      fink2js `obj = {a, b, ...c}`
       to_match_snapshot
 
   it 'compiles key:val', fn:
     expect
-      fink2js`obj = {a: 1, b: 123, 'c-d-e': cde}`
+      fink2js `obj = {a: 1, b: 123, 'c-d-e': cde}`
       to_match_snapshot
     expect
-      fink2js`
+      fink2js `
         obj7 = {a: 123, b: 123 && 123 && 1345, c: fn a, b: 134}
       `
       to_match_snapshot
 
   it 'compiles multiline', fn:
     expect
-      fink2js`obj = {
+      fink2js `obj = {
           a: 123
 
           b: 123
@@ -48,7 +48,7 @@ describe 'object', fn:
       to_match_snapshot
 
     expect
-      fink2js`obj = dict:
+      fink2js `obj = dict:
           a: 123
 
           b: 123
@@ -65,7 +65,7 @@ describe 'object', fn:
 describe 'calculated props', fn:
   it 'compiles', fn:
     expect
-      fink2js`
+      fink2js `
         foo = dict:
           foo
           (Symbol('foo')): 123
@@ -78,21 +78,21 @@ describe 'calculated props', fn:
 describe 'destructuring object', fn:
   it 'compiles simple', fn:
     expect
-      fink2js`{a, b, c} = ni`
+      fink2js `{a, b, c} = ni`
       to_match_snapshot
 
   it 'compiles spread', fn:
     expect
-      fink2js`{e, ...f} = {e: 0, foo: 12, bar: 34}`
+      fink2js `{e, ...f} = {e: 0, foo: 12, bar: 34}`
       to_match_snapshot
 
   it 'compiles defaults', fn:
     expect
-      fink2js`{x=1, ni: {y, z}} = {ni: {y: 1, z: 2}}`
+      fink2js `{x=1, ni: {y, z}} = {ni: {y: 1, z: 2}}`
       to_match_snapshot
 
   it 'compiles computed keys', fn:
     expect
-      fink2js`{'n i': ni} = foo`
+      fink2js `{'n i': ni} = foo`
       to_match_snapshot
 

@@ -5,7 +5,7 @@
 describe 'numbers', fn:
   it 'transforms integers', fn:
     expect
-      fink2js`
+      fink2js `
         x = 1234578
         y = 0123
       `
@@ -14,7 +14,7 @@ describe 'numbers', fn:
 
   it 'transforms floats', fn:
     expect
-      fink2js`
+      fink2js `
         x = 1.234578
         y = 1.23e45
         z = 1.23e-45
@@ -25,7 +25,7 @@ describe 'numbers', fn:
 
   it 'transforms hex, octet, binary', fn:
     expect
-      fink2js`
+      fink2js `
         h = 0x123456789ABCDEF0
         o = 0o12345670
         b = 0b01010

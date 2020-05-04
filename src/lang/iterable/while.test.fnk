@@ -5,7 +5,7 @@
 describe 'while', fn:
   it 'compiles', fn:
     expect
-      fink2js`
+      fink2js `
         while item:
           item < 10
       `
@@ -14,7 +14,7 @@ describe 'while', fn:
 
   it 'compiles destructuring', fn:
     expect
-      fink2js`
+      fink2js `
         while [foo, ...bar]:
           foo_alone = foo && bar.length == 0
           foo_alone

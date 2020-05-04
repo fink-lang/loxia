@@ -5,7 +5,7 @@
 describe 'filter', fn:
   it 'compiles', fn:
     expect
-      fink2js`
+      fink2js `
         filter item:
           item % 2 == 0
 

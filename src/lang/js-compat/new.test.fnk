@@ -5,7 +5,7 @@
 describe 'new', fn:
   it 'compiles', fn:
     expect
-      fink2js`
+      fink2js `
         foo = new Set()
         bar = new Set 'abca'
       `

@@ -5,7 +5,7 @@
 describe 'map', fn:
   it 'compiles single line', fn:
     expect
-      fink2js`
+      fink2js `
         map item: item * 2
       `
       to_match_snapshot
@@ -13,7 +13,7 @@ describe 'map', fn:
 
   it 'compiles multi line', fn:
     expect
-      fink2js`
+      fink2js `
         map item:
           ni = foo item
           ni + 2
@@ -23,7 +23,7 @@ describe 'map', fn:
 
   it 'compiles single line with default value', fn:
     expect
-      fink2js`
+      fink2js `
         map item=123: item * 2
       `
       to_match_snapshot
@@ -31,7 +31,7 @@ describe 'map', fn:
 
   it 'compiles single line with destructured obj', fn:
     expect
-      fink2js`
+      fink2js `
         map {item}: item * 2
       `
       to_match_snapshot
@@ -39,7 +39,7 @@ describe 'map', fn:
 
   it 'compiles single line with destructured array', fn:
     expect
-      fink2js`
+      fink2js `
         map [x, y]: x + y
       `
       to_match_snapshot
@@ -47,7 +47,7 @@ describe 'map', fn:
 
   it 'compiles as flat map', fn:
     expect
-      fink2js`
+      fink2js `
         map [x, y]:
           ...[x, y]
       `
@@ -56,7 +56,7 @@ describe 'map', fn:
 
   it 'compiles destructuring', fn:
     expect
-      fink2js`
+      fink2js `
         map [x, ...rest]:
          rest
 

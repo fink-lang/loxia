@@ -6,7 +6,7 @@ describe 'pipe', fn:
   it 'compiles', fn:
 
     expect
-      fink2js`
+      fink2js `
         pipe:
           foo
           bar

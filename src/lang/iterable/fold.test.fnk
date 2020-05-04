@@ -5,7 +5,7 @@
 describe 'fold', fn:
   it 'compiles', fn:
     expect
-      fink2js`
+      fink2js `
         fold item, acc=0:
           ni = item + acc
           item * acc
@@ -15,7 +15,7 @@ describe 'fold', fn:
 
   it 'destructuring item', fn:
     expect
-      fink2js`
+      fink2js `
         fold [foo, ...bar], acc=[]:
           [[foo, bar], ...acc]
 
@@ -27,7 +27,7 @@ describe 'fold', fn:
 
   it 'destructuring accu', fn:
     expect
-      fink2js`
+      fink2js `
         fold item, [foo, ...bar]=[]:
           [item, bar, foo]
 

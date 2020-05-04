@@ -5,7 +5,7 @@
 describe 'array', fn:
   it 'compiles', fn:
     expect
-      fink2js`
+      fink2js `
         array1 = []
         array2 = [1]
         array3 = [1, 2, 4, a(), ...b]
@@ -21,7 +21,7 @@ describe 'array', fn:
 describe 'destructuring array', fn:
   it 'compiles', fn:
     expect
-      fink2js`
+      fink2js `
         [a, b, c] = ni
         [,, d] = ni
         [head, ...tail] = ni

@@ -5,7 +5,7 @@
 describe 'keywords', fn:
   it 'transforms literals', fn:
     expect
-      fink2js`
+      fink2js `
         x = false
         y = true
         z = null

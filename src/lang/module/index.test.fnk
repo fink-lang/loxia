@@ -6,7 +6,7 @@ describe 'module', fn:
   it 'handles comments', fn:
 
     expect
-      fink2js`
+      fink2js `
         # leading comment
 
         # expr comment

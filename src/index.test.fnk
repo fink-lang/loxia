@@ -6,7 +6,7 @@
 describe 'errors', fn:
   it 'throws with code snippet', fn:
       expect
-        fn: fink2js`
+        fn: fink2js `
           123 = foo`
 
         to_throw `

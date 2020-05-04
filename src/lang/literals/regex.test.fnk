@@ -5,7 +5,7 @@
 describe 'regex', fn:
   it 'compiles single line', fn:
     expect
-      fink2js`
+      fink2js `
         regex = rx/(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})/
       `
       to_match_snapshot
@@ -13,7 +13,7 @@ describe 'regex', fn:
 
   it 'compiles multiline', fn:
     expect
-      fink2js`
+      fink2js `
         regex = rx/
           (?<year>\\d{4})-    # year part of a date
           (?<month>\\d{2})-   # month part of a date
@@ -25,7 +25,7 @@ describe 'regex', fn:
 
   it 'compiles escape char', fn:
     expect
-      fink2js`
+      fink2js `
         regex = rx/.+\\/.+\\\\/
       `
       to_match_snapshot

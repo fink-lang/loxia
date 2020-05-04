@@ -6,7 +6,7 @@ describe 'try', fn:
   it 'compiles', fn:
 
     expect
-      fink2js`
+      fink2js `
         foo1 = fn:
           [err, item] = try:
             bar = shrub()
