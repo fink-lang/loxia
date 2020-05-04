@@ -104,7 +104,7 @@ describe:: 'match', fn:
           ?(): ni
 
           # simple as call arg
-          shrub:: ?: ni
+          shrub ?: ni
 
 
           # nested unary
@@ -120,7 +120,7 @@ describe:: 'match', fn:
           {spam: ?.is_foo()}: ni
 
           # nested as call arg
-          {spam: is_foo(?)}: ni
+          {spam: is_foo ?}: ni
 
 
           # nested unary
@@ -136,7 +136,7 @@ describe:: 'match', fn:
           [?.is_foo()]: ni
 
           # nested as call arg
-          [is_foo(?)]: ni
+          [is_foo ?]: ni
       `
       to_match_snapshot
 

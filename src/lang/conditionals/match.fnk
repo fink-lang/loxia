@@ -99,13 +99,16 @@ get_array_decl = fn arr, id_elems, right, ctx:
         # e.g. empty elems in [,, foo, bar]
         {type: 'empty'}:
           null
-        # e.g. spread in [foo, ..., bar]
-        {type: 'spread', right: null}:
-          value
+
         # e.g. spread in [foo, ...bar, spam]
-        {type: 'spread'}:
+        {type: 'spread', right: {}}:
           ident = {type: 'ident', value: id.name}
           {...value, right: ident}
+
+        # e.g. spread in [foo, ..., bar]
+        {type: 'spread'}:
+          value
+
         else:
           {type: 'ident', value: id.name}
 
@@ -135,8 +138,9 @@ match_array = fn value, arr, emit_result, ctx, cond:
       match value:
         # empty elements need no matching
         {type: 'empty'}: false
+        {type: 'spread', right: {}}: true
         # empty spreads need no matching
-        {type: 'spread', right: null}: false
+        {type: 'spread'}: false
         else: true
 
   ifStatement::
@@ -165,7 +169,7 @@ match_condition = fn value, expr, emit_result, ctx, cond:
     {type: 'array'}:
       match_array:: value, expr, emit_result, ctx, cond
 
-    {type: 'spread'}:
+    {type: 'spread', right: {}}:
       match_condition:: value, expr.right, emit_result, ctx, cond
 
     else:
@@ -181,13 +185,13 @@ split_condition = fn {left, right}:
 match_all = fn value, matches, emit, ctx:
   pipe matches:
     map expr:
-      [condition, result] = split_condition:: expr
-
-      js_expr = match condition:
-        {type: 'literal', value: 'else'}:
-          js_expr = emit:: result
-          wrap_with_comment_loc:: js_expr, condition
+      match expr:
+        {type: 'block', op: 'else'}:
+          {op, ...block} = expr
+          js_expr = emit:: block
+          wrap_with_comment_loc:: js_expr, block
         else:
+          [condition, result] = split_condition:: expr
           emit_result = fn: emit:: result
           match_condition:: value, condition, emit_result, ctx, condition
 

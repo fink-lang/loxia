@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`attempt compiles 1`] = `
+exports[`try compiles 1`] = `
 "const foo1 = () => {
   let _do_result;
 

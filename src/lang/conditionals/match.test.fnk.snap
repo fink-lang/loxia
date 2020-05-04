@@ -39,6 +39,7 @@ exports[`match compiles 1`] = `
 
     // fallback if none of above match
     {
+      // fallback if none of above match
       shrub;
       break ˆmatch_2;
     }

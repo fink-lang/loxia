@@ -2,18 +2,18 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'attempt', fn:
+describe:: 'try', fn:
   it:: 'compiles', fn:
 
     expect::
       fink2js`
         foo1 = fn:
-          [err, item] = attempt:
+          [err, item] = try:
             bar = shrub()
             bar + ni()
           [item, err]
 
-        foo2 = fn: attempt: throw new Error:: 'foobar'
+        foo2 = fn: try: throw new Error 'foobar'
       `
       to_match_snapshot
 

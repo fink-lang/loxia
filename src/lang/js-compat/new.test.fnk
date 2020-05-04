@@ -7,7 +7,7 @@ describe:: 'new', fn:
     expect::
       fink2js`
         foo = new Set()
-        bar = new Set:: 'abca'
+        bar = new Set 'abca'
       `
       to_match_snapshot
 

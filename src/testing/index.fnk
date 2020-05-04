@@ -5,7 +5,7 @@
 fink2js = fn strings, ...exprs:
   source = String.raw:: {raw: strings}, ...exprs
   filename = 'test.fnk'
-  ast = parse:: source, filename
+  [ast, {errors}] = parse:: source, filename
   {code} = generate:: ast, filename, source
   code
 
