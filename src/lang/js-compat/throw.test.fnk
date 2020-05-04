@@ -8,7 +8,7 @@ describe:: 'throw', fn:
       fink2js`
         fn bar:
           match bar:
-            has_err:: ?: throw err:: 'spam'
+            has_err ?: throw err 'spam'
             else: bar
       `
       to_match_snapshot

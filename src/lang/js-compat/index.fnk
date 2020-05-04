@@ -1,9 +1,11 @@
 {add, any} = import '../context'
 {transform_new} = import './new'
 {transform_throw} = import './throw'
+{transform_try} = import './try'
 
 
 add_js_compat = fn ctx:
   pipe ctx:
-    add:: 'new', any, transform_new
-    add:: 'throw', any, transform_throw
+    add:: any, 'new', transform_new
+    add:: any, 'throw', transform_throw
+    add:: any, 'try', transform_try

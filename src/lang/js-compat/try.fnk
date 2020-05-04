@@ -6,7 +6,7 @@
 {transform_block} = import '../block'
 
 
-transform_attempt = fn node, ctx:
+transform_try = fn node, ctx:
   block = transform_block:: node, ctx
   body = match block:
     isDoExpression:: ?: block.body.body

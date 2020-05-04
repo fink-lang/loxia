@@ -7,10 +7,10 @@ describe:: 'call', fn:
 
     expect::
       fink2js`
-        call1 = a(ni, x=123, ...x)
-        call2 = a(ni)
+        call1 = a ni, x=123, ...x
+        call2 = a ni
         call3 = a()
-        call4 = a(fn x: x*2)
+        call4 = a fn x: x*2
       `
       to_match_snapshot
 

@@ -42,7 +42,7 @@ describe:: 'object', fn:
 
           c: fn a, b: 134
 
-          d: foo:: a + 3
+          d: foo a + 3
         }
       `
       to_match_snapshot

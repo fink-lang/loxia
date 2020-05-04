@@ -28,8 +28,12 @@ transform_spread_left = fn {left}, {transform}:
   [before, middle, end] = pipe left.exprs:
     fold expr, [before=[], middle=false, end=[]]=[]:
       match expr:
-        {type: 'spread'}:
+        {type: 'spread', right: {}}:
           [before, expr.right, end]
+
+        {type: 'spread'}:
+          [before, null, end]
+
         else:
           match middle:
             false: [[...before, expr], middle, end]
@@ -46,11 +50,11 @@ transform_spread_left = fn {left}, {transform}:
   transform_left:: transform:: {...left, exprs}
 
 
-slice = fn items, start, end=null:
+slice = fn items, start, end=false:
   start_num = numericLiteral:: start
 
   start_end = match end:
-    null:
+    false:
       [start_num]
     else:
       end_num = numericLiteral:: end
