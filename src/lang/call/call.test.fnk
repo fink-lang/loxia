@@ -2,10 +2,10 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'call', fn:
-  it:: 'compiles', fn:
+describe 'call', fn:
+  it 'compiles', fn:
 
-    expect::
+    expect
       fink2js`
         call1 = a ni, x=123, ...x
         call2 = a ni

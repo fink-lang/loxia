@@ -3,18 +3,18 @@
 
 
 transform_member = fn {left, right}, {transform}:
-  memb_left = transform:: left
+  memb_left = transform left
 
   memb_right = match right:
-    {type: 'ident'}: identifier:: right.value
-    else: transform:: right
+    {type: 'ident'}: identifier right.value
+    else: transform right
 
   computed = (right.type == 'string' || right.type == 'group')
 
-  memberExpression:: memb_left, memb_right, computed
+  memberExpression memb_left, memb_right, computed
 
 
 add_member = fn ctx:
   pipe ctx:
-    add:: any, '.', transform_member
+    add any, '.', transform_member
 

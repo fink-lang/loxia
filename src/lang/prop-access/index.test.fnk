@@ -2,10 +2,10 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'member', fn:
-  it:: 'compiles', fn:
+describe 'member', fn:
+  it 'compiles', fn:
 
-    expect::
+    expect
       fink2js`
         foo = spam.shrub
         computed_member = item.'bar spam'

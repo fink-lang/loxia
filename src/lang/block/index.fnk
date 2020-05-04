@@ -6,15 +6,15 @@
 
 
 block_statement = fn expr, {transform}:
-  st = transform:: expr
+  st = transform expr
 
   match st:
-    isAssignmentExpression:: ?:
-      decl = consts:: st.left, st.right
+    isAssignmentExpression ?:
+      decl = consts st.left, st.right
       {...decl, leadingComments: st.leadingComments}
     else:
-      # TODO: check if isExpression:: ?: ...
-      expressionStatement:: st
+      # TODO: check if isExpression ?: ...
+      expressionStatement st
 
 
 transform_block = fn node, ctx:
@@ -23,10 +23,10 @@ transform_block = fn node, ctx:
   match exprs:
     {length: 1}:
       [expr] = exprs
-      ctx.transform:: expr
+      ctx.transform expr
     else:
-      doExpression::
-        blockStatement:: [
+      doExpression
+        blockStatement list:
           ...pipe exprs:
-            map expr: block_statement:: expr, ctx
-        ]
+            map expr: block_statement expr, ctx
+

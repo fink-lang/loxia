@@ -51,24 +51,23 @@ add_transformers = fn ctx:
 
 
 transform_expr = fn node, ctx:
-  transform_ctx = {
-    ...ctx,
+  transform_ctx = dict:
+    ...ctx
     transform: fn nde, foo_ctx:
-      transform_expr:: nde, foo_ctx || transform_ctx
-  }
+      transform_expr nde, foo_ctx || transform_ctx
 
-  [err, ast] = attempt:
-    transform = get_transformer:: node, ctx
+  [err, ast] = try:
+    transform = get_transformer node, ctx
 
-    js_node = transform:: node, transform_ctx
+    js_node = transform node, transform_ctx
     # TODO: some nodes have location data
     match ctx:
-      {wrap: 'loc'}: wrap:: node, js_node
-      else: wrap_with_comment_loc:: js_node, node
+      {wrap: 'loc'}: wrap node, js_node
+      else: wrap_with_comment_loc js_node, node
 
   match err:
     null: ast
-    else: throw code_frame_err:: err, node, ctx
+    else: throw code_frame_err err, node, ctx
 
 
 init_ctx = fn code, filename:
@@ -76,22 +75,19 @@ init_ctx = fn code, filename:
     unfold id:
       id + 1
 
-  ctx = {
-    filename,
-    code,
+  ctx = dict:
+    filename
+    code
     unique_ident: fn name:
       # TODO: return ident and new ctx to make it not stateful
       {value} = id_cntr.next()
-      ident:: `${var_prefix}${name}_${value}`
-  }
+      ident `${var_prefix}${name}_${value}`
 
   pipe ctx:
     add_transformers
 
 
 transform_ast = fn node, code, filename:
-  ctx = init_ctx:: code, filename
-  js_ast = transform_expr:: node, ctx
+  ctx = init_ctx code, filename
+  js_ast = transform_expr node, ctx
   js_ast
-
-

@@ -2,17 +2,17 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'map', fn:
-  it:: 'compiles single line', fn:
-    expect::
+describe 'map', fn:
+  it 'compiles single line', fn:
+    expect
       fink2js`
         map item: item * 2
       `
       to_match_snapshot
 
 
-  it:: 'compiles multi line', fn:
-    expect::
+  it 'compiles multi line', fn:
+    expect
       fink2js`
         map item:
           ni = foo item
@@ -21,32 +21,32 @@ describe:: 'map', fn:
       to_match_snapshot
 
 
-  it:: 'compiles single line with default value', fn:
-    expect::
+  it 'compiles single line with default value', fn:
+    expect
       fink2js`
         map item=123: item * 2
       `
       to_match_snapshot
 
 
-  it:: 'compiles single line with destructured obj', fn:
-    expect::
+  it 'compiles single line with destructured obj', fn:
+    expect
       fink2js`
         map {item}: item * 2
       `
       to_match_snapshot
 
 
-  it:: 'compiles single line with destructured array', fn:
-    expect::
+  it 'compiles single line with destructured array', fn:
+    expect
       fink2js`
         map [x, y]: x + y
       `
       to_match_snapshot
 
 
-  it:: 'compiles as flat map', fn:
-    expect::
+  it 'compiles as flat map', fn:
+    expect
       fink2js`
         map [x, y]:
           ...[x, y]
@@ -54,8 +54,8 @@ describe:: 'map', fn:
       to_match_snapshot
 
 
-  it:: 'compiles destructuring', fn:
-    expect::
+  it 'compiles destructuring', fn:
+    expect
       fink2js`
         map [x, ...rest]:
          rest

@@ -3,34 +3,35 @@
 {describe, it, expect, to_throw} = import '@fink/jest'
 
 
-describe:: 'errors', fn:
-  it:: 'throws with code snippet', fn:
-      expect::
+describe 'errors', fn:
+  it 'throws with code snippet', fn:
+      expect
         fn: fink2js`
           123 = foo`
 
-        to_throw:: `
+        to_throw `
           test.fnk:1:0
           1| 123 = foo
              ^
 
           Unable to transform 'assign ='.`
 
-      expect::
-        fn: generate({
-          type: 'test',
-          op: null,
-          loc: {
-            start: {pos: 0, line: 1, column: 0},
-            end: {pos: 9, line: 1, column: 9}
-          }
-        }, 'test.fnk', 'foobar')
+      expect
+        fn: generate
+          dict:
+            type: 'test'
+            op: 'foobar'
+            loc: dict:
+              start: {pos: 0, line: 1, column: 0}
+              end: {pos: 9, line: 1, column: 9}
 
-        to_throw:: `
+          'test.fnk', 'foobar'
+
+        to_throw `
           test.fnk:1:0
           1| foobar
              ^
 
-          Unable to transform 'test'.
+          Unable to transform 'test foobar'.
 
           Unknown expression`

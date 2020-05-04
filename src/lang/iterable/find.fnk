@@ -8,28 +8,28 @@
 transform_find = fn node, ctx:
   {transform, unique_ident} = ctx
 
-  item = unique_ident:: 'item'
+  item = unique_ident 'item'
   [item_val] = node.args;
-  item_init = transform_init:: item_val, item, ctx
+  item_init = transform_init item_val, item, ctx
 
-  items = unique_ident:: 'items'
-  found = unique_ident:: 'found'
+  items = unique_ident 'items'
+  found = unique_ident 'found'
 
   [...expressions, last_expr] = node.exprs
 
-  func(items)::
+  func [items],
 
-    for_of(item, items)::
+    for_of [item, items],
       item_init
 
       ...pipe expressions:
-        map expr: block_statement:: expr, ctx
+        map expr: block_statement expr, ctx
 
-      consts:: found, transform:: last_expr
+      consts found, transform last_expr
 
-      ifStatement::
+      ifStatement
         found
-        returnStatement:: item
+        returnStatement item
 
     undef()
 

@@ -2,9 +2,9 @@
 {describe, it, only, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'match', fn:
-  it:: 'compiles', fn:
-    expect::
+describe 'match', fn:
+  it 'compiles', fn:
+    expect
       fink2js`
         match shrub:
           # simple value
@@ -27,8 +27,8 @@ describe:: 'match', fn:
       to_match_snapshot
 
 
-  it:: 'compiles without else', fn:
-    expect::
+  it 'compiles without else', fn:
+    expect
       fink2js`
         match shrub:
           {foo: 4, ni}: spam + ni
@@ -37,8 +37,8 @@ describe:: 'match', fn:
       to_match_snapshot
 
 
-  it:: 'compiles nested pattern', fn:
-    expect::
+  it 'compiles nested pattern', fn:
+    expect
       fink2js`
         match shrub:
           # deep obj comparison
@@ -54,7 +54,7 @@ describe:: 'match', fn:
       `
       to_match_snapshot
 
-    expect::
+    expect
       fink2js`
         match shrub:
           # deep array comparison
@@ -65,7 +65,7 @@ describe:: 'match', fn:
       `
       to_match_snapshot
 
-    expect::
+    expect
       fink2js`
         # spread and ignored elems
         match shrub:
@@ -77,8 +77,8 @@ describe:: 'match', fn:
       to_match_snapshot
 
 
-  it:: 'compiles nested match', fn:
-    expect::
+  it 'compiles nested match', fn:
+    expect
       fink2js`
         test = fn:
           match foo:
@@ -90,8 +90,8 @@ describe:: 'match', fn:
       to_match_snapshot
 
 
-  it:: 'compiles patial application', fn:
-    expect::
+  it 'compiles patial application', fn:
+    expect
       fink2js`
         match {spam: 123}:
           # simple unary
@@ -141,8 +141,8 @@ describe:: 'match', fn:
       to_match_snapshot
 
 
-  it:: 'compiles do-expr', fn:
-    expect::
+  it 'compiles do-expr', fn:
+    expect
       fink2js`
         foo = match bar:
           spam:

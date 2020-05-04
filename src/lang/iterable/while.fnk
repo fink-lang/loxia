@@ -9,28 +9,28 @@
 transform_while = fn node, ctx:
   {transform, unique_ident} = ctx
 
-  item = unique_ident:: 'item'
+  item = unique_ident 'item'
   [item_val] = node.args;
-  item_init = transform_init:: item_val, item, ctx
+  item_init = transform_init item_val, item, ctx
 
-  items = unique_ident:: 'items'
-  result = unique_ident:: 'result'
+  items = unique_ident 'items'
+  result = unique_ident 'result'
 
   [...expressions, last_expr] = node.exprs
 
 
-  generator('filter_while')(items)::
-    for_of(item, items)::
+  generator 'filter_while', [items],
+    for_of [item, items],
       item_init
 
       ...pipe expressions:
-        map expr: block_statement:: expr, ctx
+        map expr: block_statement expr, ctx
 
-      consts:: result, transform:: last_expr
+      consts result, transform last_expr
 
-      ifStatement::
-        neq:: result, true_()
+      ifStatement
+        neq result, true_()
         returnStatement()
 
-      yields:: item
+      yields item
 

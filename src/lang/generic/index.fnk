@@ -4,5 +4,5 @@
 
 add_generic = fn ctx:
   pipe ctx:
-    add:: 'block', any, transform_block
+    add 'block', any, transform_block
 

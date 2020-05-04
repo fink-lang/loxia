@@ -2,10 +2,10 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'unfold', fn:
+describe 'unfold', fn:
 
-  it:: 'compiles item is accu', fn:
-    expect::
+  it 'compiles item is accu', fn:
+    expect
       fink2js`
         unfold prev=0:
           prev + 1
@@ -13,8 +13,8 @@ describe:: 'unfold', fn:
       to_match_snapshot
 
 
-  it:: 'compiles with separate item and accu result', fn:
-    expect::
+  it 'compiles with separate item and accu result', fn:
+    expect
       fink2js`
         unfold {prev=0, acc=0}={}:
           item = prev + accu
@@ -24,8 +24,8 @@ describe:: 'unfold', fn:
       to_match_snapshot
 
 
-  it:: 'compiles without default assignment', fn:
-    expect::
+  it 'compiles without default assignment', fn:
+    expect
       fink2js`
         pipe 0:
           unfold prev:
@@ -34,8 +34,8 @@ describe:: 'unfold', fn:
       to_match_snapshot
 
 
-  it:: 'compiles without accus', fn:
-    expect::
+  it 'compiles without accus', fn:
+    expect
       fink2js`
         unfold:
           1234
@@ -43,8 +43,8 @@ describe:: 'unfold', fn:
       to_match_snapshot
 
 
-  it:: 'compiles destructured accus', fn:
-    expect::
+  it 'compiles destructured accus', fn:
+    expect
       fink2js`
         unfold [foo, ...bar]:
           # TODO should work without parens
@@ -52,7 +52,7 @@ describe:: 'unfold', fn:
       `
       to_match_snapshot
 
-    expect::
+    expect
       fink2js`
         unfold [...foo, bar]:
           # TODO should work without parens

@@ -2,9 +2,9 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'partial', fn:
-  it:: 'compiles assignment', fn:
-    expect::
+describe 'partial', fn:
+  it 'compiles assignment', fn:
+    expect
       fink2js`
         foo1 = a * ? + 1
         foo2 = bar(?)

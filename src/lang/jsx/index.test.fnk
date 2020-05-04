@@ -2,9 +2,9 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'jsx', fn:
-  it:: 'compiles', fn:
-    expect::
+describe 'jsx', fn:
+  it 'compiles', fn:
+    expect
       fink2js`
         jsx1 = <a/>
         jsx2 = <b></b>

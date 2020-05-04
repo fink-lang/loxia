@@ -5,12 +5,12 @@
 transform_async = fn path:
   # TODO: should avoid mutating nodes
   match path:
-    isArrowFunctionExpression:: ?:
-      Object.assign:: path.node, {async: true}
+    isArrowFunctionExpression ?:
+      Object.assign path.node, {async: true}
 
-    isFunctionExpression:: ?:
-      Object.assign:: path.node, {async: true}
+    isFunctionExpression ?:
+      Object.assign path.node, {async: true}
 
     {parentPath: {}}:
-      transform_async:: path.parentPath
+      transform_async path.parentPath
   null

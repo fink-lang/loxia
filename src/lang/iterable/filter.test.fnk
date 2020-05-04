@@ -2,9 +2,9 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'filter', fn:
-  it:: 'compiles', fn:
-    expect::
+describe 'filter', fn:
+  it 'compiles', fn:
+    expect
       fink2js`
         filter item:
           item % 2 == 0

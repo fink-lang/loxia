@@ -1,9 +1,9 @@
 {
-  variableDeclaration, variableDeclarator, arrayPattern,
-  objectPattern, assignmentPattern, forOfStatement, yieldExpression,
-  expressionStatement, functionExpression,
-  blockStatement, identifier, arrowFunctionExpression,
-  logicalExpression, binaryExpression, unaryExpression,
+  variableDeclaration, variableDeclarator, arrayPattern
+  objectPattern, assignmentPattern, forOfStatement, yieldExpression
+  expressionStatement, functionExpression
+  blockStatement, identifier, arrowFunctionExpression
+  logicalExpression, binaryExpression, unaryExpression
   doExpression, assignmentExpression, isIdentifier
 } = import'@babel/types'
 
@@ -15,50 +15,50 @@ wrap = fn larix_node, js_node:
 
 
 expr_block = fn ...exprs:
-  doExpression::
-    blockStatement:: [
+  doExpression
+    blockStatement list:
       ...pipe exprs:
         map node:
           match node:
-            {type: ?.endsWith:: 'Expression'}:
-              expressionStatement:: node
-            isIdentifier:: ?:
-              expressionStatement:: node
+            {type: ?.endsWith 'Expression'}:
+              expressionStatement node
+            isIdentifier ?:
+              expressionStatement node
             else: node
-    ]
 
-typof = fn value: unaryExpression:: 'typeof', value
+
+typof = fn value: unaryExpression 'typeof', value
 
 
 and = fn left, ...rest:
   match rest:
     {length: ? > 0}:
-      logicalExpression:: '&&', left, and:: ...rest
+      logicalExpression '&&', left, and ...rest
     else:
       left
 
 
-neq = fn left, right: binaryExpression:: '!==', left, right
+neq = fn left, right: binaryExpression '!==', left, right
 
-eq = fn left, right: binaryExpression:: '===', left, right
+eq = fn left, right: binaryExpression '===', left, right
 
-undef = fn: identifier:: 'undefined'
+undef = fn: identifier 'undefined'
 
-nul = fn: identifier:: 'null'
+nul = fn: identifier 'null'
 
-true_ = fn: identifier:: 'true'
+true_ = fn: identifier 'true'
 
 
 not_nullish = fn value:
-  not_null = neq:: value, nul()
-  not_undef = neq:: value, undef()
-  and:: not_undef, not_null
+  not_null = neq value, nul()
+  not_undef = neq value, undef()
+  and not_undef, not_null
 
 
 ident = fn name:
   match name:
-    # TODO: typeof name == 'string': identifier:: escape_ident:: name or
-    {constructor: String}: identifier:: escape_ident:: name
+    # TODO: typeof name == 'string': identifier escape_ident name or
+    {constructor: String}: identifier escape_ident name
     else:
       # {type: 'Identifier'}
       # {type: 'ObjectPattern'}
@@ -68,46 +68,46 @@ ident = fn name:
 
 
 declarator = fn id, init:
-  decl_id = ident:: id
-  variableDeclarator:: decl_id, init
+  decl_id = ident id
+  variableDeclarator decl_id, init
 
 
 consts = fn id, init:
-  variableDeclaration::
-    'const',
-    [declarator:: id, init]
+  variableDeclaration
+    'const'
+    [declarator id, init]
 
 
 lets = fn id, init:
-  variableDeclaration::
+  variableDeclaration
     'let'
-    [declarator:: id, init]
+    [declarator id, init]
 
 
 assign = fn left, right:
-  expressionStatement::
-    assignmentExpression:: '=', left, right
+  expressionStatement
+    assignmentExpression '=', left, right
 
 
 yields = fn expr, delegate:
-  expressionStatement::
-    yieldExpression:: expr, delegate
+  expressionStatement
+    yieldExpression expr, delegate
 
 
-func = fn ...args: fn expr, ...expressions:
-  arrowFunctionExpression::
+func = fn args, ...expressions:
+  arrowFunctionExpression
     args
-    expr_block:: expr, ...expressions
+    expr_block ...expressions
 
 
-generator = fn name: fn ...args: fn ...statements:
-  func_name = ident:: name
-  body = blockStatement:: statements
-  functionExpression:: func_name, args,  body,  true
+generator = fn name, args, ...statements:
+  func_name = ident name
+  body = blockStatement statements
+  functionExpression func_name, args,  body,  true
 
 
-for_of = fn item, items: fn ...expressions:
-  forOfStatement::
-    consts:: item
+for_of = fn [item, items], ...expressions:
+  forOfStatement
+    consts item
     items
-    blockStatement:: expressions
+    blockStatement expressions

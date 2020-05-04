@@ -7,18 +7,18 @@ transform_string = fn node, {transform}:
   [...quasies] = pipe parts:
     filter part: part.type == 'string:text'
     map part:
-      templateElement:: {raw: part.value.replace(rx/\\([\s\S])|(`)/g, '\\$1$2')}
+      templateElement {raw: part.value.replace(rx/\\([\s\S])|(`)/g, '\\$1$2')}
 
   [...expressions] = pipe parts:
     filter part: part.type != 'string:text'
-    map part: transform:: part
+    map part: transform part
 
-  templ_str = templateLiteral:: quasies, expressions
+  templ_str = templateLiteral quasies, expressions
 
   match tag:
     null: templ_str
     else:
-      taggedTemplateExpression::
-        transform:: node.tag
+      taggedTemplateExpression
+        transform node.tag
         templ_str
 

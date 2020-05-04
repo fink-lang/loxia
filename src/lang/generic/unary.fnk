@@ -2,5 +2,5 @@
 
 
 transform_unary = fn node, {transform}:
-  right = transform:: node.right
-  unaryExpression:: node.op, right
+  right = transform node.right
+  unaryExpression node.op, right

@@ -2,9 +2,9 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'throw', fn:
-  it:: 'compiles', fn:
-    expect::
+describe 'throw', fn:
+  it 'compiles', fn:
+    expect
       fink2js`
         fn bar:
           match bar:

@@ -6,13 +6,13 @@
 
 
 loop = fn ...body:
-  whileStatement:: true_(), blockStatement:: body
+  whileStatement true_(), blockStatement body
 
 
 get_acc_exprs = fn node, next_value, ctx:
   {transform, unique_ident} = ctx
 
-  acc = unique_ident:: 'accu'
+  acc = unique_ident 'accu'
   [acc_arg] = node.args;
 
   acc_left = match acc_arg:
@@ -21,15 +21,15 @@ get_acc_exprs = fn node, next_value, ctx:
 
   acc_init = match acc_arg:
     {type: 'assign'}:
-      assignmentPattern::
+      assignmentPattern
         acc
-        transform:: acc_arg.right
+        transform acc_arg.right
     else:
       acc
 
-  acc_assign = transform_init:: acc_left, acc, ctx
+  acc_assign = transform_init acc_left, acc, ctx
 
-  acc_result = assign:: acc, next_value
+  acc_result = assign acc, next_value
 
   [[acc], [acc_init], [acc_assign], [acc_result]]
 
@@ -39,7 +39,7 @@ get_accs = fn node, next_value, ctx:
     {length: 0}:
       [[], [], [], []]
     else:
-      get_acc_exprs:: node, next_value, ctx
+      get_acc_exprs node, next_value, ctx
 
 
 transform_unfold = fn node, ctx:
@@ -47,7 +47,7 @@ transform_unfold = fn node, ctx:
 
   [...expressions, last_expr] = node.exprs
 
-  result_id = unique_ident:: 'result'
+  result_id = unique_ident 'result'
 
   [result, next_value] = match last_expr:
     {type: 'group'}:
@@ -56,16 +56,16 @@ transform_unfold = fn node, ctx:
     else:
       [transform(last_expr), result_id]
 
-  [acc, acc_init, acc_assign, acc_result] = get_accs:: node, next_value, ctx
+  [acc, acc_init, acc_assign, acc_result] = get_accs node, next_value, ctx
 
-  generator('unfold')(...acc_init)::
-    loop::
+  generator 'unfold', [...acc_init],
+    loop
       ...acc_assign
 
       ...pipe expressions:
-        map expr: block_statement:: expr, ctx
+        map expr: block_statement expr, ctx
 
-      consts:: result_id, result
-      yields:: result_id
+      consts result_id, result
+      yields result_id
 
       ...acc_result

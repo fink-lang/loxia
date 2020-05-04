@@ -3,11 +3,11 @@
 
 transform_init = fn left, right, {transform}:
 
-  item_init = transform:: {
-    type: 'assign',
-    op: '=',
-    left,
-    right: {type: 'ident', value: right.name, loc: left.loc},
+  item_init = transform dict:
+    type: 'assign'
+    op: '='
+    left
+    right: {type: 'ident', value: right.name, loc: left.loc}
     loc: left.loc
-  }
-  consts:: item_init.left, item_init.right
+
+  consts item_init.left, item_init.right

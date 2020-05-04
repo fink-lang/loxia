@@ -2,10 +2,10 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'try', fn:
-  it:: 'compiles', fn:
+describe 'try', fn:
+  it 'compiles', fn:
 
-    expect::
+    expect
       fink2js`
         foo1 = fn:
           [err, item] = try:
