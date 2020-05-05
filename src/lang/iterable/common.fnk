@@ -1,0 +1,25 @@
+{consts, yields} = import '../../js/types'
+
+
+transform_init = fn left, right, {transform}:
+
+  item_init = transform dict:
+    type: 'assign'
+    op: '='
+    left
+    right: {type: 'ident', value: right.name, loc: left.loc}
+    loc: left.loc
+
+  consts item_init.left, item_init.right
+
+
+yield_expr = fn result, expr, {transform}:
+  [yield_value, is_spread] = match expr:
+    {type: 'spread'}: [expr.right, true]
+    else: [expr, false]
+
+  list:
+    consts result, transform yield_value
+    yields
+      result
+      is_spread

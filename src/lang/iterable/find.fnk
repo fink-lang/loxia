@@ -1,8 +1,9 @@
 {returnStatement, ifStatement} = import'@babel/types'
 
 {for_of, func, consts, undef} = import '../../js/types'
+
 {block_statement} = import '../block'
-{transform_init} = import './init'
+{transform_init} = import './common'
 
 
 transform_find = fn node, ctx:

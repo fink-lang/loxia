@@ -1,25 +1,20 @@
 {expressionStatement} = import '@babel/types'
 
-{assign, params, for_of, func, consts, lets} = import '../../js/types'
+{assign, params, for_of, func, lets} = import '../../js/types'
 {block_statement} = import '../block'
-{transform_init} = import './init'
+{transform_init} = import './common'
 
 
 transform_fold = fn node, ctx:
   {transform, unique_ident} = ctx
 
-  [item_arg, acc_arg] = node.args;
+  [item_arg, acc_arg] = node.args
 
   item = unique_ident 'item'
   item_init = transform_init item_arg, item, ctx
 
   acc = unique_ident 'acc'
-  acc_assign = transform  dict:
-    type: 'assign'
-    op:'='
-    left: acc_arg.left
-    right: {type: 'ident', value: acc.name}
-    loc: acc_arg.left.loc
+  acc_assign = transform_init acc_arg.left, acc, ctx
 
   items = unique_ident 'items'
   [...expressions, last_expr] = node.exprs
@@ -28,7 +23,7 @@ transform_fold = fn node, ctx:
     lets acc, transform acc_arg.right
 
     for_of [item, items],
-      consts acc_assign.left, acc_assign.right
+      acc_assign
       item_init
 
       ...pipe expressions:

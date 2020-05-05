@@ -62,13 +62,13 @@ describe 'unfold', fn:
     expect
       fink2js `
         unfold [...foo, bar]:
-          (foo, bar)
+          (bar, foo)
       `
       to_match_snapshot
 
     expect
       fink2js `
-        unfold [foo, bar]:
+        unfold [foo, ...bar]:
           (...foo, bar)
       `
       to_match_snapshot

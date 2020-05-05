@@ -1,35 +1,52 @@
-{generator, for_of, yields} = import '../../js/types'
+{generator, for_of, lets, assign} = import '../../js/types'
 
 {block_statement} = import '../block'
-{transform_init} = import './init'
+{transform_init, yield_expr} = import './common'
 
 
-yield_expr = fn expr, {transform}:
-  [yield_value, is_spread] = match expr:
-    {type: 'spread'}: [expr.right, true]
-    else: [expr, false]
+get_accs = fn node, last_expr, ctx:
+  {unique_ident, transform} = ctx
+  [, acc_arg] = node.args
 
-  yields
-    transform yield_value
-    is_spread
+  match node.args:
+    {length: 2}:
+      acc = unique_ident 'accu'
+      acc_init = lets acc, transform acc_arg.right
+
+      acc_assign = transform_init acc_arg.left, acc, ctx
+
+      [result_expr, acc_expr] = last_expr.exprs
+      next_acc_assign = assign acc, transform acc_expr
+
+      [[acc_init], [acc_assign], result_expr, [next_acc_assign]]
+
+    else:
+      [[], [], last_expr, []]
 
 
 transform_map = fn node, ctx:
   {unique_ident} = ctx
 
+  [item_arg] = node.args
   item = unique_ident 'item'
-  [item_val] = node.args;
-  item_init = transform_init item_val, item, ctx
-
-  items = unique_ident 'items'
+  item_init = transform_init item_arg, item, ctx
 
   [...expressions, last_expr] = node.exprs
 
+  [acc_init, acc_assign, result_expr, next_accu] = get_accs node, last_expr, ctx
+
+  items = unique_ident 'items'
+  result = unique_ident 'result'
+
   generator 'map', [items],
+    ...acc_init
+
     for_of [item, items],
       item_init
+      ...acc_assign
 
       ...pipe expressions:
         map expr: block_statement expr, ctx
 
-      yield_expr last_expr, ctx
+      ...yield_expr result, result_expr, ctx
+      ...next_accu
