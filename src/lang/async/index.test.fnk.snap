@@ -10,30 +10,30 @@ const task3 = async (foo) => {
   return bar + 123;
 };
 
-const a_gen = async function* unfold(ˆaccu_4 = 0) {
+const a_gen = async function* unfold(ˆaccu_2 = 0) {
   while (true) {
-    const curr = ˆaccu_4;
+    const curr = ˆaccu_2;
 
     let _do_result;
 
-    ˆmatch_3: {
-      const ˆvalue_2 = shrub;
+    ˆmatch_4: {
+      const ˆvalue_3 = shrub;
 
-      if (ˆvalue_2 === spam) {
+      if (ˆvalue_3 === spam) {
         _do_result = await ni(curr);
-        break ˆmatch_3;
+        break ˆmatch_4;
       }
 
       {
         _do_result = curr + 1;
-        break ˆmatch_3;
+        break ˆmatch_4;
       }
     }
 
     const ˆresult_1 = _do_result;
     _do_result = undefined;
     yield ˆresult_1;
-    ˆaccu_4 = ˆresult_1;
+    ˆaccu_2 = ˆresult_1;
   }
 };
 

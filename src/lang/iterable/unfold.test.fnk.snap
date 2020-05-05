@@ -33,6 +33,19 @@ exports[`unfold compiles destructured accus 2`] = `
 Object.assign(module.exports, {});"
 `;
 
+exports[`unfold compiles destructured accus 3`] = `
+"(function* unfold(ˆaccu_2) {
+  while (true) {
+    const [foo, bar] = ˆaccu_2;
+    const ˆresult_1 = foo;
+    yield* ˆresult_1;
+    ˆaccu_2 = bar;
+  }
+});
+
+Object.assign(module.exports, {});"
+`;
+
 exports[`unfold compiles item is accu 1`] = `
 "(function* unfold(ˆaccu_2 = 0) {
   while (true) {
@@ -60,6 +73,17 @@ exports[`unfold compiles with separate item and accu result 1`] = `
       \\"prev\\": item,
       \\"accu\\": accu + 1
     };
+  }
+});
+
+Object.assign(module.exports, {});"
+`;
+
+exports[`unfold compiles with spread 1`] = `
+"(function* unfold() {
+  while (true) {
+    const ˆresult_1 = [1, 2, 3];
+    yield* ˆresult_1;
   }
 });
 

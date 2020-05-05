@@ -31,15 +31,27 @@ get_acc_exprs = fn node, next_value, ctx:
 
   acc_result = assign acc, next_value
 
-  [[acc], [acc_init], [acc_assign], [acc_result]]
+  [[acc_init], [acc_assign], [acc_result]]
 
 
 get_accs = fn node, next_value, ctx:
   match node.args:
     {length: 0}:
-      [[], [], [], []]
+      [[], [], []]
     else:
       get_acc_exprs node, next_value, ctx
+
+
+yield_expr = fn result, expr, {transform}:
+  [yield_value, is_spread] = match expr:
+    {type: 'spread'}: [expr.right, true]
+    else: [expr, false]
+
+  list:
+    consts result, transform yield_value
+    yields
+      result
+      is_spread
 
 
 transform_unfold = fn node, ctx:
@@ -49,14 +61,14 @@ transform_unfold = fn node, ctx:
 
   result_id = unique_ident 'result'
 
-  [result, next_value] = match last_expr:
+  [result_expr, next_value] = match last_expr:
     {type: 'group'}:
       [result_expr, acc_expr] = last_expr.exprs
-      [transform(result_expr), transform(acc_expr)]
+      [result_expr, transform acc_expr]
     else:
-      [transform(last_expr), result_id]
+      [last_expr, result_id]
 
-  [acc, acc_init, acc_assign, acc_result] = get_accs node, next_value, ctx
+  [acc_init, acc_assign, acc_result] = get_accs node, next_value, ctx
 
   generator 'unfold', [...acc_init],
     loop
@@ -65,7 +77,6 @@ transform_unfold = fn node, ctx:
       ...pipe expressions:
         map expr: block_statement expr, ctx
 
-      consts result_id, result
-      yields result_id
+      ...yield_expr result_id, result_expr, ctx
 
       ...acc_result
