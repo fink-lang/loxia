@@ -27,7 +27,7 @@ describe 'func', fn:
             c + 1: d + 1
 
         fun7 = fn a, b=12, c:
-          shrub(...a)
+          shrub ...a
           foo()
           bar()
       `

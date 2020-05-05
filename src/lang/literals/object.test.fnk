@@ -68,7 +68,7 @@ describe 'calculated props', fn:
       fink2js `
         foo = dict:
           foo
-          (Symbol('foo')): 123
+          (Symbol 'foo'): 123
           'spam': 456
           ni
         `

@@ -84,13 +84,13 @@ transform_spread_right = fn {left, right}, ctx:
 
   result_items = match idx:
     0: list:
-      slice(items, idx, idx - len)
-      slice(items, idx - len)
+      slice items, idx, idx - len
+      slice items, idx - len
 
     else: list:
       items
-      slice(items, idx, idx - len)
-      slice(items, idx - len)
+      slice items, idx, idx - len
+      slice items, idx - len
 
 
   result = expressionStatement

@@ -9,7 +9,7 @@ transform_error = fn {message}, node, {code, filename}:
   # TODO: add filename and line to constructor?
   err = new Error
     `${filename}:${line}:${column}\n${
-      highlight_code_loc(code, node.loc)
+      highlight_code_loc code, node.loc
     }\n\nUnable to transform '${type_op}'.\n\n${message}`
 
   Object.assign err, {is_transform_err: true}
