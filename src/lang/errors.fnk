@@ -4,9 +4,7 @@
 transform_error = fn {message}, node, {code, filename}:
   {start: {line, column}} = node.loc
 
-  type_op = match node:
-    {op: {}}: `${node.type} ${node.op}`
-    else: node.type
+  type_op = `${node.type} ${node.op}`
 
   # TODO: add filename and line to constructor?
   err = new Error
