@@ -21,7 +21,7 @@
 {add_jsx} = import './jsx'
 {add_js_compat} = import './js-compat'
 {add_arithmitic} = import './arithmitic'
-{add_generic} = import './generic'
+{add_block} = import './block'
 {add_partial} = import './partial'
 {wrap_with_comment_loc} = import './comments'
 
@@ -46,7 +46,7 @@ add_transformers = fn ctx:
     add_call
     add_async
     add_jsx
-    add_generic
+    add_block
     add_js_compat
 
 

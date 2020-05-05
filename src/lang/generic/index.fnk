@@ -1,8 +1,0 @@
-{add, any} = import '../context'
-{transform_block} = import '../block'
-
-
-add_generic = fn ctx:
-  pipe ctx:
-    add 'block', any, transform_block
-

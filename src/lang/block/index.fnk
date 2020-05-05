@@ -3,6 +3,7 @@
 } = import '@babel/types'
 
 {consts} = import '../../js/types'
+{add, any} = import '../context'
 
 
 block_statement = fn expr, {transform}:
@@ -29,4 +30,9 @@ transform_block = fn node, ctx:
         blockStatement list:
           ...pipe exprs:
             map expr: block_statement expr, ctx
+
+
+add_block = fn ctx:
+  pipe ctx:
+    add 'block', any, transform_block
 

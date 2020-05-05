@@ -1,6 +1,0 @@
-{unaryExpression} = import '@babel/types'
-
-
-transform_unary = fn node, {transform}:
-  right = transform node.right
-  unaryExpression node.op, right

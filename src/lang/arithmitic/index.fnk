@@ -1,11 +1,27 @@
+{binaryExpression, unaryExpression} = import '@babel/types'
 {add, any} = import '../context'
-{transform_binary} = import '../generic/binary'
-{transform_unary} = import '../generic/unary'
+
+
+transform_op = dict:
+  '^': '**'
+
+
+transform_arithmitic = fn {op, left, right}, {transform}:
+  {(op): operator=op} = transform_op
+
+  binaryExpression operator,
+    transform left
+    transform right
+
+
+transform_unary = fn {op, right}, {transform}:
+  unaryExpression op, transform right
+
 
 
 add_arithmitic = fn ctx:
   pipe ctx:
-    add 'arithm', any, transform_binary
-    add 'arithm:right', any, transform_binary
+    add 'arithm', any, transform_arithmitic
+    add 'arithm:right', any, transform_arithmitic
     add 'arithm:prefix', any, transform_unary
 

@@ -6,8 +6,8 @@
 } = import '@babel/types'
 
 {consts} = import '../../js/types'
+{transform_left} = import '../../js/left'
 {add, any} = import '../context'
-{transform_left} = import '../generic/left'
 {transform_value} = import '../partial'
 
 

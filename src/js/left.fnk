@@ -17,7 +17,6 @@ transform_left = fn val:
         ... pipe val.elements:
           map item: transform_left item
 
-
     isObjectExpression ?:
       objectPattern list:
         ... pipe val.properties:
