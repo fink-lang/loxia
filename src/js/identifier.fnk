@@ -183,7 +183,7 @@ replace_chars = fn name, idx=0:
   match check_ident.exec prefixed_name:
     null:
       [char] = name.slice idx, idx + 1
-      char_replacement = name.charCodeAt(idx).toString(36)
+      char_replacement = name.charCodeAt(idx).toString 36
 
       start = name.slice 0, idx
       end = name.slice idx + 1

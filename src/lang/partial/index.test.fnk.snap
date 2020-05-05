@@ -5,14 +5,28 @@ exports[`partial compiles assignment 1`] = `
 
 const foo2 = (ˆ1r) => bar(ˆ1r);
 
-const foo3 = (ˆ1r) => ˆ1r.bar();
+const foo3 = (ˆ1r) => ˆ1r.bar(spam);
 
 const foo4 = (ˆ1r) => ˆ1r();
+
+const foo5 = (ˆ1r) => ˆ1r(bar, spam);
 
 Object.assign(module.exports, {
   foo1,
   foo2,
   foo3,
-  foo4
+  foo4,
+  foo5
+});"
+`;
+
+exports[`partial compiles assignment 2`] = `
+"const foo1 = (ˆ1r) => bar(ˆ1r);
+
+const foo2 = (ˆ1r) => ˆ1r(bar, spam);
+
+Object.assign(module.exports, {
+  foo1,
+  foo2
 });"
 `;

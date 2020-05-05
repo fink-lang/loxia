@@ -120,7 +120,7 @@ get_array_decl = fn arr, id_elems, right, ctx:
     right: {type: 'ident', value: right.name, loc: arr.loc}
     loc: arr.loc
 
-  consts(decl.left, decl.right)
+  consts decl.left, decl.right
 
 
 match_array = fn value, arr, emit_result, ctx, cond:

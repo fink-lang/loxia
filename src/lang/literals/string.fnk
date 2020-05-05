@@ -7,7 +7,7 @@ transform_string = fn node, {transform}:
   [...quasies] = pipe parts:
     filter part: part.type == 'string:text'
     map part:
-      templateElement {raw: part.value.replace(rx/\\([\s\S])|(`)/g, '\\$1$2')}
+      templateElement {raw: part.value.replace rx/\\([\s\S])|(`)/g, '\\$1$2'}
 
   [...expressions] = pipe parts:
     filter part: part.type != 'string:text'

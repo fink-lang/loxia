@@ -7,6 +7,8 @@ describe 'module', fn:
 
     expect
       fink2js `
+        #!/usr/bin/env node
+
         # leading comment
 
         # expr comment

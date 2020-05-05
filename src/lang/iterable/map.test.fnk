@@ -54,6 +54,25 @@ describe 'map', fn:
       to_match_snapshot
 
 
+  it 'compiles with foo', fn:
+    expect
+      fink2js `
+        map {foo}:
+          match foo:
+            bar: spam
+      `
+      to_match_snapshot
+
+
+  it 'compiles with acc', fn:
+    expect
+      fink2js `
+        map {foo}, acc=0:
+          (foo + acc, acc+1)
+      `
+      to_match_snapshot
+
+
   it 'compiles destructuring', fn:
     expect
       fink2js `
@@ -65,8 +84,3 @@ describe 'map', fn:
 
       `
       to_match_snapshot
-
-
-
-
-

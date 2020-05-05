@@ -6,8 +6,8 @@
 } = import '@babel/types'
 
 {consts} = import '../../js/types'
+{transform_left} = import '../../js/left'
 {add, any} = import '../context'
-{transform_left} = import '../generic/left'
 {transform_value} = import '../partial'
 
 
@@ -84,13 +84,13 @@ transform_spread_right = fn {left, right}, ctx:
 
   result_items = match idx:
     0: list:
-      slice(items, idx, idx - len)
-      slice(items, idx - len)
+      slice items, idx, idx - len
+      slice items, idx - len
 
     else: list:
       items
-      slice(items, idx, idx - len)
-      slice(items, idx - len)
+      slice items, idx, idx - len
+      slice items, idx - len
 
 
   result = expressionStatement

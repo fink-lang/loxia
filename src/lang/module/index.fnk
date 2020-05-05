@@ -1,7 +1,7 @@
 {
   file, program, objectProperty, identifier
   callExpression, objectExpression, memberExpression
-  expressionStatement
+  expressionStatement, interpreterDirective
 } = import '@babel/types'
 
 {call, member, ident} = import '../../js/types'
@@ -9,6 +9,18 @@
 
 {block_statement} = import '../block'
 {transform_import} = import './import'
+
+
+# TODO should larix handle shebang as special expr?
+get_shebang = fn expr:
+  {comments} = expr
+  match comments:
+    {leading: [{op: '#', loc: {start: {line: 1}}, value: ?.startsWith '!'}]}:
+      [first, ...rest] = comments.leading
+      shebang = interpreterDirective '${first.value.slice 1}'
+      [[shebang], {...expr, comments: {...comments, leading: rest}}]
+    else:
+      [[], expr]
 
 
 transform_module = fn node, ctx:
@@ -23,7 +35,11 @@ transform_module = fn node, ctx:
       id = ident value
       objectProperty id, id, false, true
 
-  [...body] = pipe node.exprs:
+  [maybe_shebang, ...rest] = node.exprs
+
+  [interpreter, first] = get_shebang maybe_shebang
+
+  [...body] = pipe [first, ...rest]:
     map expr: block_statement expr, ctx
 
   # TODO: use individual exports?
@@ -42,6 +58,7 @@ transform_module = fn node, ctx:
       [...body, exports]
       []
       'module'
+      ...interpreter
 
 
 add_module = fn ctx:

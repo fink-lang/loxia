@@ -1,8 +1,8 @@
 {whileStatement, blockStatement, assignmentPattern} = import '@babel/types'
-{assign, generator, consts, yields, true_} = import '../../js/types'
+{assign, generator, true_, lets} = import '../../js/types'
 
 {block_statement} = import '../block'
-{transform_init} = import './init'
+{transform_init, yield_expr} = import './common'
 
 
 loop = fn ...body:
@@ -12,26 +12,20 @@ loop = fn ...body:
 get_acc_exprs = fn node, next_value, ctx:
   {transform, unique_ident} = ctx
 
+  initial = unique_ident 'initial'
   acc = unique_ident 'accu'
   [acc_arg] = node.args;
 
-  acc_left = match acc_arg:
-    {type: 'assign'}: acc_arg.left
-    else: acc_arg
+  [acc_left, acc_right] = match acc_arg:
+    {type: 'assign'}: [acc_arg.left, transform acc_arg.right]
+    else: [acc_arg, initial]
 
-  acc_init = match acc_arg:
-    {type: 'assign'}:
-      assignmentPattern
-        acc
-        transform acc_arg.right
-    else:
-      acc
+  acc_init = lets acc, acc_right
 
   acc_assign = transform_init acc_left, acc, ctx
 
   acc_result = assign acc, next_value
-
-  [[acc], [acc_init], [acc_assign], [acc_result]]
+  [[initial], [acc_init], [acc_assign], [acc_result]]
 
 
 get_accs = fn node, next_value, ctx:
@@ -46,26 +40,26 @@ transform_unfold = fn node, ctx:
   {transform, unique_ident} = ctx
 
   [...expressions, last_expr] = node.exprs
-
   result_id = unique_ident 'result'
 
-  [result, next_value] = match last_expr:
+  [result_expr, next_accu] = match last_expr:
     {type: 'group'}:
       [result_expr, acc_expr] = last_expr.exprs
-      [transform(result_expr), transform(acc_expr)]
+      [result_expr, transform acc_expr]
     else:
-      [transform(last_expr), result_id]
+      [last_expr, result_id]
 
-  [acc, acc_init, acc_assign, acc_result] = get_accs node, next_value, ctx
+  [initial, acc_init, acc_assign, acc_result] = get_accs node, next_accu, ctx
 
-  generator 'unfold', [...acc_init],
+  generator 'unfold', [...initial],
+    ...acc_init
+
     loop
       ...acc_assign
 
       ...pipe expressions:
         map expr: block_statement expr, ctx
 
-      consts result_id, result
-      yields result_id
+      ...yield_expr result_id, result_expr, ctx
 
       ...acc_result

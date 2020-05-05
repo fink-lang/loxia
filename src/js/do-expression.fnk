@@ -79,8 +79,8 @@ last_expressions = fn path:
       handler = path.get 'handler'
       body = get_body handler
       list:
-        ...last_expressions(block)
-        ...last_expressions(body)
+        ...last_expressions block
+        ...last_expressions body
 
 
 replace_with_return = fn path:

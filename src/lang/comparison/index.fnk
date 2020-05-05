@@ -1,8 +1,22 @@
+{binaryExpression} = import '@babel/types'
+
 {add, any} = import '../context'
-{transform_binary} = import '../generic/binary'
+
+transform_op = dict:
+  '==': '==='
+  '!=': '!=='
+
+
+transform_comp = fn {op, left, right}, {transform}:
+  {(op): operator=op} = transform_op
+
+  bin_left = transform left
+  bin_right = transform right
+
+  binaryExpression operator, bin_left, bin_right
 
 
 add_comparison = fn ctx:
   pipe ctx:
-    add 'comp', any, transform_binary
+    add 'comp', any, transform_comp
 
