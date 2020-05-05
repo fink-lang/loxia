@@ -63,6 +63,7 @@ describe 'map', fn:
       `
       to_match_snapshot
 
+
   it 'compiles with acc', fn:
     expect
       fink2js `
@@ -83,8 +84,3 @@ describe 'map', fn:
 
       `
       to_match_snapshot
-
-
-
-
-
