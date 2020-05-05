@@ -2,18 +2,18 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'regex', fn:
-  it:: 'compiles single line', fn:
-    expect::
-      fink2js`
+describe 'regex', fn:
+  it 'compiles single line', fn:
+    expect
+      fink2js `
         regex = rx/(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})/
       `
       to_match_snapshot
 
 
-  it:: 'compiles multiline', fn:
-    expect::
-      fink2js`
+  it 'compiles multiline', fn:
+    expect
+      fink2js `
         regex = rx/
           (?<year>\\d{4})-    # year part of a date
           (?<month>\\d{2})-   # month part of a date
@@ -23,9 +23,9 @@ describe:: 'regex', fn:
       to_match_snapshot
 
 
-  it:: 'compiles escape char', fn:
-    expect::
-      fink2js`
+  it 'compiles escape char', fn:
+    expect
+      fink2js `
         regex = rx/.+\\/.+\\\\/
       `
       to_match_snapshot

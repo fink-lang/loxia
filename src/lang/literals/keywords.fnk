@@ -3,6 +3,6 @@
 
 transform_keyword = fn node:
   match node:
-    {'value': 'true'}: booleanLiteral:: true
-    {'value': 'false'}: booleanLiteral:: false
+    {'value': 'true'}: booleanLiteral true
+    {'value': 'false'}: booleanLiteral false
     {'value': 'null'}: nullLiteral()

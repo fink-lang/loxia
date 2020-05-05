@@ -8,27 +8,25 @@
 
 
 transform = fn node, code, filename:
-  ast = transform_ast:: node, code, filename
+  ast = transform_ast node, code, filename
 
-  traverse::
+  traverse
     ast
-    {
-      DoExpression: transform_do_expr,
+    dict:
+      DoExpression: transform_do_expr
       AwaitExpression: {enter: transform_async}
-    }
 
   ast
 
 
 generate = fn ast, filename, code:
-  new_ast = transform:: ast, code, filename
+  new_ast = transform ast, code, filename
 
-  options = {
-    filename,
-    sourceMaps: true,
+  options = dict:
+    filename
+    sourceMaps: true
     sourceFileName: filename
-  }
 
-  generated = babel_gen:: new_ast, options, code
+  generated = babel_gen new_ast, options, code
 
   {...generated, ast: new_ast}

@@ -5,6 +5,6 @@
 
 add_call = fn ctx:
   pipe ctx:
-    add:: 'call', any, transform_call
-    add:: any, 'pipe', transform_pipe
+    add 'call', any, transform_call
+    add any, 'pipe', transform_pipe
 

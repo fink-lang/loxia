@@ -3,42 +3,42 @@
 
 transform_object = fn node, {transform}:
   [...props] = pipe node.exprs:
-    map prop: transform:: prop
+    map prop: transform prop
 
-  objectExpression:: props
+  objectExpression props
 
 
 str_key = fn {value, loc}:
-  str = stringLiteral:: value
+  str = stringLiteral value
   {...str, loc}
 
 
 get_key = fn {left: key}, ctx:
   match key:
     {type: 'group'}:
-      [true, ctx.transform:: key]
+      [true, ctx.transform key]
     {type: 'string'}:
-      [true, ctx.transform:: key]
+      [true, ctx.transform key]
     else:
-      [false, str_key:: key]
+      [false, str_key key]
 
 
 transform_prop = fn node, ctx:
   match node:
     {left: {type: 'spread'}}:
-      ctx.transform:: node.left
+      ctx.transform node.left
     else:
-      [computed, key] = get_key:: node, ctx
-      value = ctx.transform:: node.right
+      [computed, key] = get_key node, ctx
+      value = ctx.transform node.right
 
       shorthand = node.left == node.right
 
       final_value = match node:
         {right: {type: 'assign'}}:
-          assignmentPattern:: value.left, value.right
+          assignmentPattern value.left, value.right
         else:
           value
 
-      objectProperty:: key, final_value, computed, shorthand
+      objectProperty key, final_value, computed, shorthand
 
 

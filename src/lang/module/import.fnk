@@ -2,8 +2,8 @@
 
 
 transform_import = fn node, {transform}:
-  right = transform:: node.right
+  right = transform node.right
 
-  callExpression::
-    identifier:: 'require'
+  callExpression
+    identifier 'require'
     [right]

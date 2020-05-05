@@ -1,26 +1,26 @@
 {
-  isAssignmentExpression, assignmentPattern, isSpreadElement, restElement,
+  isAssignmentExpression, assignmentPattern, isSpreadElement, restElement
   isArrayExpression, arrayPattern, isObjectExpression, objectPattern
 } = import '@babel/types'
 
 
 transform_left = fn val:
   match val:
-    isAssignmentExpression:: ?:
-      assignmentPattern:: val.left, val.right
+    isAssignmentExpression ?:
+      assignmentPattern val.left, val.right
 
-    isSpreadElement:: ?:
-      restElement:: val.argument
+    isSpreadElement ?:
+      restElement val.argument
 
-    isArrayExpression:: ?:
-      arrayPattern:: [
+    isArrayExpression ?:
+      arrayPattern list:
         ... pipe val.elements:
-          map item: transform_left:: item
-      ]
+          map item: transform_left item
 
-    isObjectExpression:: ?:
-      objectPattern:: [
+
+    isObjectExpression ?:
+      objectPattern list:
         ... pipe val.properties:
-          map prop: transform_left:: prop
-      ]
+          map prop: transform_left prop
+
     else: val

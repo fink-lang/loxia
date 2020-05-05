@@ -7,6 +7,6 @@ transform_array = fn node, {transform}:
       match elem:
         null: null
         {type: 'empty'}: null
-        else: transform:: elem
+        else: transform elem
 
-  arrayExpression:: elems
+  arrayExpression elems

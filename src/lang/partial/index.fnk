@@ -6,46 +6,45 @@
 
 args_has_partial = fn {args}:
   pipe args:
-    map arg: is_partial:: arg
+    map arg: is_partial arg
     find partial: partial
 
 
 is_partial = fn node:
   match node:
     {type: 'partial'}: true
-    {left: is_partial:: ?}: true
-    {right: is_partial:: ?}: true
-    {type: 'call', callee: is_partial:: ?}: true
-    {type: 'call'}: args_has_partial:: node
+    {left: is_partial ?}: true
+    {right: is_partial ?}: true
+    {type: 'call', callee: is_partial ?}: true
+    {type: 'call'}: args_has_partial node
     else: false
 
 
 transform_value = fn node, {transform}:
   partial_or_node = match node:
-    is_partial:: ?:
-      {
-        type: 'func',
-        op: 'fn',
-        args: [{type: 'partial', value: '?'}],
-        exprs: [node],
+    is_partial ?:
+      dict:
+        type: 'func'
+        op: 'fn'
+        args: [{type: 'partial', value: '?'}]
+        exprs: [node]
         loc: node.loc
-      }
     else:
       node
 
-  transform:: partial_or_node
+  transform partial_or_node
 
 
 transform_partial = fn {value}, {partial_ident}:
   name = match partial_ident || null:
     null:
-      escape_ident:: value
+      escape_ident value
     else:
       partial_ident.name
 
-  identifier:: name
+  identifier name
 
 
 add_partial = fn ctx:
   pipe ctx:
-    add:: 'partial', '?', transform_partial
+    add 'partial', '?', transform_partial

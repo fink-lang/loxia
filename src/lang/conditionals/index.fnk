@@ -4,4 +4,4 @@
 
 add_conditionals = fn ctx:
   pipe ctx:
-    add:: any, 'match', transform_match
+    add any, 'match', transform_match

@@ -2,10 +2,10 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'identifiers', fn:
-  it:: 'escapes reserved JS identifiers', fn:
-    expect::
-      fink2js`
+describe 'identifiers', fn:
+  it 'escapes reserved JS identifiers', fn:
+    expect
+      fink2js `
         {do, if, in, for, let, new, try, var, case, enum, void} = foobar
         {with, break, catch, class, const, super, while, yield, delete} = spam
         {export, import, public, return, static, switch, typeof, default} = ham
@@ -15,17 +15,17 @@ describe:: 'identifiers', fn:
       to_match_snapshot
 
 
-  it:: 'does not escape true, false, null', fn:
-    expect::
-      fink2js`
+  it 'does not escape true, false, null', fn:
+    expect
+      fink2js `
         foo = [true, false, null]
       `
       to_match_snapshot
 
 
-  it:: 'escapes identifiers incompatible with JS', fn:
-    expect::
-      fink2js`
+  it 'escapes identifiers incompatible with JS', fn:
+    expect
+      fink2js `
         @ = spam
         ∂ = shrub
       `

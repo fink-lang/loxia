@@ -2,19 +2,19 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'find', fn:
-  it:: 'compiles simple find', fn:
-    expect::
-      fink2js`
+describe 'find', fn:
+  it 'compiles simple find', fn:
+    expect
+      fink2js `
         find item:
           item > 3
       `
       to_match_snapshot
 
 
-  it:: 'compiles complex find', fn:
-    expect::
-      fink2js`
+  it 'compiles complex find', fn:
+    expect
+      fink2js `
         find {item}:
           match item:
             {spam}: shrub

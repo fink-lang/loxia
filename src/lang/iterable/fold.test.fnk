@@ -2,10 +2,10 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'fold', fn:
-  it:: 'compiles', fn:
-    expect::
-      fink2js`
+describe 'fold', fn:
+  it 'compiles', fn:
+    expect
+      fink2js `
         fold item, acc=0:
           ni = item + acc
           item * acc
@@ -13,9 +13,9 @@ describe:: 'fold', fn:
       to_match_snapshot
 
 
-  it:: 'destructuring item', fn:
-    expect::
-      fink2js`
+  it 'destructuring item', fn:
+    expect
+      fink2js `
         fold [foo, ...bar], acc=[]:
           [[foo, bar], ...acc]
 
@@ -25,9 +25,9 @@ describe:: 'fold', fn:
       to_match_snapshot
 
 
-  it:: 'destructuring accu', fn:
-    expect::
-      fink2js`
+  it 'destructuring accu', fn:
+    expect
+      fink2js `
         fold item, [foo, ...bar]=[]:
           [item, bar, foo]
 

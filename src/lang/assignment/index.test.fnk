@@ -2,10 +2,10 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'assignment', fn:
-  it:: 'compiles', fn:
-    expect::
-      fink2js`
+describe 'assignment', fn:
+  it 'compiles', fn:
+    expect
+      fink2js `
         assign = 1
         # simple
         assign2 = assign
@@ -23,17 +23,17 @@ describe:: 'assignment', fn:
       to_match_snapshot
 
 
-  it:: 'compiles destructuring', fn:
-    expect::
-      fink2js`
+  it 'compiles destructuring', fn:
+    expect
+      fink2js `
         # standard JS destructuring
         [...head, last] = '1234'
       `
       to_match_snapshot
 
 
-    expect::
-      fink2js`
+    expect
+      fink2js `
         # enhanced destructuring
         [foo, bar, ...spam, ni, shrub] = '123'
 

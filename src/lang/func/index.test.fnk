@@ -2,10 +2,10 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'func', fn:
-  it:: 'compiles', fn:
-    expect::
-      fink2js`
+describe 'func', fn:
+  it 'compiles', fn:
+    expect
+      fink2js `
         fun1 = fn a, b=12, ...d: a + b + c
 
         fun2 = fn b:

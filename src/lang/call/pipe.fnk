@@ -11,20 +11,20 @@ transform_pipe = fn node, {transform, unique_ident}:
       nul()
     else:
       [arg] = node.args
-      transform:: arg
+      transform arg
 
-  result = unique_ident:: 'pipe_result'
+  result = unique_ident 'pipe_result'
 
   pipe_calls = pipe exprs:
     map expr:
-      assign::
+      assign
         result
-        callExpression::
-          transform:: expr
+        callExpression
+          transform expr
           [result]
 
-  expr_block::
+  expr_block
     # TODO: first should not be called with anything if there is no start_value
-    lets:: result, start_value
+    lets result, start_value
     ...pipe_calls
 

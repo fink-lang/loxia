@@ -4,5 +4,5 @@
 
 add_comparison = fn ctx:
   pipe ctx:
-    add:: 'comp', any, transform_binary
+    add 'comp', any, transform_binary
 

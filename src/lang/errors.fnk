@@ -4,21 +4,19 @@
 transform_error = fn {message}, node, {code, filename}:
   {start: {line, column}} = node.loc
 
-  type_op = match node:
-    {op: {}}: `${node.type} ${node.op}`
-    else: node.type
+  type_op = `${node.type} ${node.op}`
 
   # TODO: add filename and line to constructor?
-  err = new Error::
+  err = new Error
     `${filename}:${line}:${column}\n${
       highlight_code_loc(code, node.loc)
     }\n\nUnable to transform '${type_op}'.\n\n${message}`
 
-  Object.assign:: err, {is_transform_err: true}
+  Object.assign err, {is_transform_err: true}
   err
 
 
 code_frame_err = fn err, node, code:
   match err:
     {is_transform_err: true}: err
-    else: transform_error:: err, node, code
+    else: transform_error err, node, code

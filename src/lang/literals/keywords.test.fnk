@@ -2,10 +2,10 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'keywords', fn:
-  it:: 'transforms literals', fn:
-    expect::
-      fink2js`
+describe 'keywords', fn:
+  it 'transforms literals', fn:
+    expect
+      fink2js `
         x = false
         y = true
         z = null

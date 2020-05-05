@@ -7,19 +7,18 @@ transform_comment = fn {op, value, loc, ...rest}:
 
 transform_comments = fn comments:
   pipe comments:
-    map comment: transform_comment:: comment
+    map comment: transform_comment comment
 
 
 get_comments = fn {comments={}}:
   {leading=[], trailing=[]} = comments
 
-  {
-    leadingComments: [...transform_comments:: leading],
-    trailingComments: [...transform_comments:: trailing]
-  }
+  dict:
+    leadingComments: [...transform_comments leading]
+    trailingComments: [...transform_comments trailing]
 
 
 wrap_with_comment_loc = fn js_node, larix_node:
-  comments = get_comments:: larix_node
+  comments = get_comments larix_node
   {loc} = larix_node
   {...js_node, ...comments, loc}

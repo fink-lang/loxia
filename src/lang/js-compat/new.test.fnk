@@ -2,10 +2,10 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'new', fn:
-  it:: 'compiles', fn:
-    expect::
-      fink2js`
+describe 'new', fn:
+  it 'compiles', fn:
+    expect
+      fink2js `
         foo = new Set()
         bar = new Set 'abca'
       `

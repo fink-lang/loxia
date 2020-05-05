@@ -2,19 +2,19 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'string', fn:
+describe 'string', fn:
 
-  it:: 'compiles simple', fn:
-    expect::
-      fink2js`
+  it 'compiles simple', fn:
+    expect
+      fink2js `
         str = 'ab'
       `
       to_match_snapshot
 
 
-  it:: 'compiles multiline', fn:
-    expect::
-      fink2js`
+  it 'compiles multiline', fn:
+    expect
+      fink2js `
         str = '
           line 1
           line 2 with leading space
@@ -23,9 +23,9 @@ describe:: 'string', fn:
       to_match_snapshot
 
 
-  it:: 'compiles escape chars', fn:
-    expect::
-      fink2js`
+  it 'compiles escape chars', fn:
+    expect
+      fink2js `
         str1 = 'foo\`bar\\nspam\\\`ni'
         str2 = \`foo\\\`bar\`
         str3 = "foo\\\\"
@@ -33,17 +33,17 @@ describe:: 'string', fn:
       to_match_snapshot
 
 
-  it:: 'compiles tagged template string', fn:
-    expect::
-      fink2js`
+  it 'compiles tagged template string', fn:
+    expect
+      fink2js `
         str = foo'bar \${ni spam, shrub} na'
       `
       to_match_snapshot
 
 
-  it:: 'compiles multiline with expressions', fn:
-    expect::
-      fink2js`
+  it 'compiles multiline with expressions', fn:
+    expect
+      fink2js `
         str = '
           bar
           spam \${shrub + ni}\${foo}

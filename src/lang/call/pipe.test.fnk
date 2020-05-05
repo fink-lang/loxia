@@ -2,11 +2,11 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'pipe', fn:
-  it:: 'compiles', fn:
+describe 'pipe', fn:
+  it 'compiles', fn:
 
-    expect::
-      fink2js`
+    expect
+      fink2js `
         pipe:
           foo
           bar

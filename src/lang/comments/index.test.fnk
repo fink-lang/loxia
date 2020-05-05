@@ -2,11 +2,11 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'comment', fn:
-  it:: 'compiles', fn:
+describe 'comment', fn:
+  it 'compiles', fn:
 
-    expect::
-      fink2js`
+    expect
+      fink2js `
         # leading expression
         spam = ni
 

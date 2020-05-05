@@ -2,11 +2,11 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'await', fn:
-  it:: 'compiles', fn:
+describe 'await', fn:
+  it 'compiles', fn:
 
-    expect::
-      fink2js`
+    expect
+      fink2js `
         task1 = fn foo: - await foo
 
         task2 = fn foo: await (foo + 4)

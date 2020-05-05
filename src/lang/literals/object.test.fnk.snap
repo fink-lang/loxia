@@ -90,6 +90,18 @@ Object.assign(module.exports, {
 });"
 `;
 
+exports[`object compiles multiline 2`] = `
+"const obj = {
+  \\"a\\": 123,
+  \\"b\\": 123 && 123 && 1345,
+  \\"c\\": (a, b) => 134,
+  \\"d\\": foo(a + 3)
+};
+Object.assign(module.exports, {
+  obj
+});"
+`;
+
 exports[`object compiles shorthand 1`] = `
 "const obj = {
   \\"a\\": a

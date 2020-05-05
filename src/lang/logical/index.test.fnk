@@ -2,19 +2,19 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'logical', fn:
-  it:: 'compiles', fn:
+describe 'logical', fn:
+  it 'compiles', fn:
 
-    expect::
-      fink2js`
+    expect
+      fink2js `
         foo = a || b || c
         bar = a && b && c
         spam = !a
       `
       to_match_snapshot
 
-    expect::
-      fink2js`
+    expect
+      fink2js `
         foo = a or b or c
         bar = a and b and c
         spam = not a

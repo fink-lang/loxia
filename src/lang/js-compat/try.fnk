@@ -1,5 +1,5 @@
 {
-  tryStatement, blockStatement, catchClause, arrayExpression,
+  tryStatement, blockStatement, catchClause, arrayExpression
   expressionStatement, doExpression, nullLiteral, isDoExpression
 } = import '@babel/types'
 
@@ -7,32 +7,32 @@
 
 
 transform_try = fn node, ctx:
-  block = transform_block:: node, ctx
+  block = transform_block node, ctx
   body = match block:
-    isDoExpression:: ?: block.body.body
+    isDoExpression ?: block.body.body
     else: [block]
 
   [...expressions, last_expr] = body
-  err = ctx.unique_ident:: 'error'
+  err = ctx.unique_ident 'error'
 
-  try_block = blockStatement:: [
-    ...expressions,
-    expressionStatement::
-      arrayExpression:: [nullLiteral(), last_expr.expression || last_expr]
-  ]
+  try_block = blockStatement list:
+    ...expressions
+    expressionStatement
+      arrayExpression [nullLiteral(), last_expr.expression || last_expr]
 
-  catch_block = catchClause::
-    err,
-    blockStatement:: [
-      expressionStatement::
+
+  catch_block = catchClause
+    err
+    blockStatement list:
+      expressionStatement
         # TODO: should return undef
-        arrayExpression:: [err, nullLiteral()]
-    ]
+        arrayExpression [err, nullLiteral()]
 
-  doExpression::
-    blockStatement:: [
-      tryStatement::
-        try_block,
+
+  doExpression
+    blockStatement list:
+      tryStatement
+        try_block
         catch_block
-    ]
+
 

@@ -2,19 +2,19 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'numbers', fn:
-  it:: 'transforms integers', fn:
-    expect::
-      fink2js`
+describe 'numbers', fn:
+  it 'transforms integers', fn:
+    expect
+      fink2js `
         x = 1234578
         y = 0123
       `
       to_match_snapshot
 
 
-  it:: 'transforms floats', fn:
-    expect::
-      fink2js`
+  it 'transforms floats', fn:
+    expect
+      fink2js `
         x = 1.234578
         y = 1.23e45
         z = 1.23e-45
@@ -23,9 +23,9 @@ describe:: 'numbers', fn:
       to_match_snapshot
 
 
-  it:: 'transforms hex, octet, binary', fn:
-    expect::
-      fink2js`
+  it 'transforms hex, octet, binary', fn:
+    expect
+      fink2js `
         h = 0x123456789ABCDEF0
         o = 0o12345670
         b = 0b01010

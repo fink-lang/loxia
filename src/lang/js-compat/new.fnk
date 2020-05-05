@@ -3,7 +3,7 @@
 
 
 transform_new = fn node, {transform}:
-  {callee, arguments} = transform:: node.right
+  {callee, arguments} = transform node.right
 
-  wrap:: node, newExpression:: callee, arguments
+  wrap node, newExpression callee, arguments
 

@@ -1,34 +1,34 @@
 {
-  assignmentExpression, returnStatement, expressionStatement,
-  isDoExpression, isBlockStatement, isLabeledStatement, isTryStatement,
-  isVariableDeclarator, isArrowFunctionExpression, isExpressionStatement,
+  assignmentExpression, returnStatement, expressionStatement
+  isDoExpression, isBlockStatement, isLabeledStatement, isTryStatement
+  isVariableDeclarator, isArrowFunctionExpression, isExpressionStatement
   isReturnStatement, isIfStatement, arrowFunctionExpression, callExpression
 } = import '@babel/types'
 
 
 {lets, assign, undef} = import './types'
 
-get_body = fn path: path.get:: 'body'
+get_body = fn path: path.get 'body'
 
 consume_all = fold item, acc=null: null
 
 
 simple = fn body, sl=false:
   match body:
-    isBlockStatement:: ?:
-      [stmnt, ...rest] = get_body:: body
+    isBlockStatement ?:
+      [stmnt, ...rest] = get_body body
 
       match rest:
         {length: 0}:
           # e.g. fn arg: match ...: ...
           match {sl, stmnt}:
-            {sl: true, stmnt: isLabeledStatement:: ?}:
+            {sl: true, stmnt: isLabeledStatement ?}:
               stmnt.node.body
             # TODO:
-            # {sl: true, stmnt: isIfStatement:: ?}:
+            # {sl: true, stmnt: isIfStatement ?}:
             #   body.node
             else:
-              simple:: stmnt
+              simple stmnt
         else:
           body.node
     else:
@@ -37,67 +37,65 @@ simple = fn body, sl=false:
 
 last_expressions = fn path:
   match path:
-    isDoExpression:: ?:
-      body = get_body:: path
-      [...last_expressions:: body]
+    isDoExpression ?:
+      body = get_body path
+      [...last_expressions body]
 
-    isBlockStatement:: ?:
-      body = get_body:: path
+    isBlockStatement ?:
+      body = get_body path
       [..., last] = body
       match last:
-        isExpressionStatement:: ?:
+        isExpressionStatement ?:
           [last]
         else:
-          [...last_expressions:: last]
+          [...last_expressions last]
 
-    isLabeledStatement:: ?:
-      body = get_body:: path
+    isLabeledStatement ?:
+      body = get_body path
 
       items = []
-      body.traverse::
-        {
+      body.traverse
+        dict:
           LabeledStatement: fn nested_match:
             nested_match.skip()
 
           BreakStatement: fn brk:
-            last = brk.getSibling:: brk.key - 1
+            last = brk.getSibling brk.key - 1
             # TODO: don't add throw expr
             match last.node:
               {expression: {operator: 'throw'}}:
-                last.replaceWith::
-                  expressionStatement:: last.node.expression
+                last.replaceWith
+                  expressionStatement last.node.expression
                 brk.remove()
               else:
                 # TODO: don't use mutation
-                items.push:: last
+                items.push last
             null
-        }
       items
 
-    # TODO: isTryStatement:: ?:
+    # TODO: isTryStatement ?:
     else:
-      block = path.get::'block'
-      handler = path.get:: 'handler'
-      body = get_body:: handler
-      [
-        ...last_expressions(block),
+      block = path.get'block'
+      handler = path.get 'handler'
+      body = get_body handler
+      list:
+        ...last_expressions(block)
         ...last_expressions(body)
-      ]
 
 
 replace_with_return = fn path:
-  pipe last_expressions:: path:
+  pipe last_expressions path:
     map expr:
       match expr:
         {node: {expression: {operator:'throw'}}}:
-          expr.replaceWith::
-            expressionStatement:: expr.node.expression
+          expr.replaceWith
+            expressionStatement expr.node.expression
         else:
-          expr.replaceWith::
-            returnStatement:: expr.node.expression
+          expr.replaceWith
+            returnStatement expr.node.expression
 
       # TODO: no need for e.g. breaks after a return
-      sibl = expr.getSibling:: expr.key + 1
+      sibl = expr.getSibling expr.key + 1
       match {sibl}:
         # istanbul ignore else
         {sibl: {}}:
@@ -107,18 +105,18 @@ replace_with_return = fn path:
 
 
 replace_with_assign = fn target, path:
-  id = path.parentPath.scope.generateUidIdentifier:: 'do_result'
+  id = path.parentPath.scope.generateUidIdentifier 'do_result'
   #TODO: don't mutate
-  Object.assign:: target.node, {init: id}
+  Object.assign target.node, {init: id}
 
-  target.parentPath.insertBefore:: lets:: id
-  target.parentPath.insertBefore:: simple:: get_body:: path
-  target.parentPath.insertAfter:: assign:: id, undef()
+  target.parentPath.insertBefore lets id
+  target.parentPath.insertBefore simple get_body path
+  target.parentPath.insertAfter assign id, undef()
 
-  pipe last_expressions:: path:
+  pipe last_expressions path:
     map expr:
-      expr.replaceWith::
-        assignmentExpression:: '=', id, expr.node.expression
+      expr.replaceWith
+        assignmentExpression '=', id, expr.node.expression
 
     consume_all
 
@@ -127,30 +125,28 @@ transform_do_expr = fn path:
   {parentPath: parent} = path
 
   match parent:
-    isVariableDeclarator:: ?:
-      replace_with_assign:: parent, path
+    isVariableDeclarator ?:
+      replace_with_assign parent, path
 
-    isArrowFunctionExpression:: ?:
-      body = get_body:: path
+    isArrowFunctionExpression ?:
+      body = get_body path
 
-      Object.assign::
-        parent.node,
-        {body: simple:: body, true}
+      Object.assign parent.node, {body: simple body, true}
 
-      replace_with_return:: path
+      replace_with_return path
 
-    isExpressionStatement:: ?:
+    isExpressionStatement ?:
       # this is used e.g. for conditional at the module level
-      parent.replaceWith::
-        get_body:: path
+      parent.replaceWith
+        get_body path
 
-    isReturnStatement:: ?:
-      body = get_body:: path
+    isReturnStatement ?:
+      body = get_body path
 
-      parent.replaceWith::
-        simple:: body, true
+      parent.replaceWith
+        simple body, true
 
-      replace_with_return:: path
+      replace_with_return path
 
     else:
       # e.g.
@@ -160,8 +156,8 @@ transform_do_expr = fn path:
       #        shrub
       #        ni
       #   foo
-      arrow = arrowFunctionExpression:: [], path.node
-      path.replaceWith::
-        callExpression:: arrow, []
+      arrow = arrowFunctionExpression [], path.node
+      path.replaceWith
+        callExpression arrow, []
 
   null

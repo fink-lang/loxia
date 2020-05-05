@@ -10,32 +10,30 @@ transform_fold = fn node, ctx:
 
   [item_arg, acc_arg] = node.args;
 
-  item = unique_ident:: 'item'
-  item_init = transform_init:: item_arg, item, ctx
+  item = unique_ident 'item'
+  item_init = transform_init item_arg, item, ctx
 
-  acc = unique_ident:: 'acc'
-  acc_assign = transform::
-    {
-      type: 'assign',
-      op:'=',
-      left: acc_arg.left,
-      right: {type: 'ident', value: acc.name},
-      loc: acc_arg.left.loc
-    }
+  acc = unique_ident 'acc'
+  acc_assign = transform  dict:
+    type: 'assign'
+    op:'='
+    left: acc_arg.left
+    right: {type: 'ident', value: acc.name}
+    loc: acc_arg.left.loc
 
-  items = unique_ident:: 'items'
+  items = unique_ident 'items'
   [...expressions, last_expr] = node.exprs
 
-  func(items)::
-    lets:: acc, transform:: acc_arg.right
+  func [items],
+    lets acc, transform acc_arg.right
 
-    for_of(item, items)::
-      consts:: acc_assign.left, acc_assign.right
+    for_of [item, items],
+      consts acc_assign.left, acc_assign.right
       item_init
 
       ...pipe expressions:
-        map expr: block_statement:: expr, ctx
+        map expr: block_statement expr, ctx
 
-      assign:: acc, transform:: last_expr
+      assign acc, transform last_expr
     acc
 

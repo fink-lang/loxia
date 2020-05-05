@@ -2,19 +2,19 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe:: 'while', fn:
-  it:: 'compiles', fn:
-    expect::
-      fink2js`
+describe 'while', fn:
+  it 'compiles', fn:
+    expect
+      fink2js `
         while item:
           item < 10
       `
       to_match_snapshot
 
 
-  it:: 'compiles destructuring', fn:
-    expect::
-      fink2js`
+  it 'compiles destructuring', fn:
+    expect
+      fink2js `
         while [foo, ...bar]:
           foo_alone = foo && bar.length == 0
           foo_alone

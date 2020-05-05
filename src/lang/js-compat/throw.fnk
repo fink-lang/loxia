@@ -3,6 +3,6 @@
 
 
 transform_throw = fn node, {transform}:
-  right = transform:: node.right
+  right = transform node.right
 
-  wrap:: node, unaryExpression:: 'throw', right
+  wrap node, unaryExpression 'throw', right
