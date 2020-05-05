@@ -4,9 +4,18 @@
 {transform_init} = import './init'
 
 
+yield_expr = fn expr, {transform}:
+  [yield_value, is_spread] = match expr:
+    {type: 'spread'}: [expr.right, true]
+    else: [expr, false]
+
+  yields
+    transform yield_value
+    is_spread
+
 
 transform_map = fn node, ctx:
-  {transform, unique_ident} = ctx
+  {unique_ident} = ctx
 
   item = unique_ident 'item'
   [item_val] = node.args;
@@ -15,12 +24,6 @@ transform_map = fn node, ctx:
   items = unique_ident 'items'
 
   [...expressions, last_expr] = node.exprs
-  last_is_spread = last_expr.type == 'spread'
-
-  yield_value = match last_is_spread:
-    true: last_expr.right
-    else: last_expr
-
 
   generator 'map', [items],
     for_of [item, items],
@@ -29,6 +32,4 @@ transform_map = fn node, ctx:
       ...pipe expressions:
         map expr: block_statement expr, ctx
 
-      yields
-        transform yield_value
-        last_is_spread
+      yield_expr last_expr, ctx
