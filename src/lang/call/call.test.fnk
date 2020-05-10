@@ -11,6 +11,7 @@ describe 'call', fn:
         call2 = a ni
         call3 = a()
         call4 = a fn x: x*2
+        call5 = a foo, , bar
       `
       to_match_snapshot
 

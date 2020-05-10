@@ -30,6 +30,9 @@ describe 'func', fn:
           shrub ...a
           foo()
           bar()
+
+        fun8 = fn a,,b:
+          b
       `
       to_match_snapshot
 

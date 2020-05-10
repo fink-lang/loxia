@@ -48,6 +48,8 @@ const fun7 = (a, b = 12, c) => {
   return bar();
 };
 
+const fun8 = (a, ˆ, b) => b;
+
 Object.assign(module.exports, {
   fun1,
   fun2,
@@ -55,6 +57,7 @@ Object.assign(module.exports, {
   fun4,
   fun5,
   fun6,
-  fun7
+  fun7,
+  fun8
 });"
 `;
