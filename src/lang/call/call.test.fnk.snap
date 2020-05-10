@@ -5,10 +5,12 @@ exports[`call compiles 1`] = `
 const call2 = a(ni);
 const call3 = a();
 const call4 = a((x) => x * 2);
+const call5 = a(foo, undefined, bar);
 Object.assign(module.exports, {
   call1,
   call2,
   call3,
-  call4
+  call4,
+  call5
 });"
 `;

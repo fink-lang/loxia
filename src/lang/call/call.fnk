@@ -1,4 +1,4 @@
-{callExpression} = import '@babel/types'
+{callExpression, identifier} = import '@babel/types'
 
 
 transform_call = fn node, ctx:
@@ -6,6 +6,11 @@ transform_call = fn node, ctx:
 
   [...args] = pipe node.args:
     map expr:
-      ctx.transform expr
+      match expr:
+        {type: 'empty'}:
+          identifier 'undefined'
+        else:
+          ctx.transform expr
 
   {...callExpression callee, args}
+

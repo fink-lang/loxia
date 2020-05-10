@@ -1,4 +1,4 @@
-{arrowFunctionExpression} = import '@babel/types'
+{arrowFunctionExpression, identifier} = import '@babel/types'
 
 {transform_left} = import '../../js/left'
 {add, any} = import '../context'
@@ -8,7 +8,11 @@
 transform_func = fn node, ctx:
   [...params] = pipe node.args:
     map arg:
-      transform_left ctx.transform arg
+      match arg:
+        {type: 'empty'}:
+          identifier 'ˆ'
+        else:
+          transform_left ctx.transform arg
 
   body = transform_block node, ctx
   arrowFunctionExpression params, body
