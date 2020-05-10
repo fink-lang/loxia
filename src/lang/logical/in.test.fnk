@@ -1,0 +1,14 @@
+{fink2js} = import '../../testing'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest'
+
+
+describe 'in', fn:
+  it 'shortcuts known with knwon right hand side', fn:
+    expect
+      fink2js `
+        foo = 1 in [1, 2, 3]
+        bar = '2' in '1234'
+        spam = key in {foo: bar}
+        shrub = item in ni
+      `
+      to_match_snapshot

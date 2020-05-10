@@ -1,5 +1,7 @@
 {logicalExpression, unaryExpression} = import '@babel/types'
 {add, any} = import '../context'
+{transform_in} = import './in'
+
 
 
 transform_op = dict:
@@ -35,4 +37,4 @@ add_logical = fn ctx:
     add any, 'and', transform_logical
     add any, 'or', transform_logical
     add any, 'not', transform_not
-
+    add any, 'in', transform_in
