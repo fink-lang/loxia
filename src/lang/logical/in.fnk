@@ -1,0 +1,64 @@
+{identifier, optionalCallExpression, optionalMemberExpression, memberExpression, callExpression, logicalExpression} = import'@babel/types'
+
+
+transform_in = fn node, ctx:
+  {transform} = ctx
+
+  {left, right} = node
+  match right:
+    {type: 'array'}:
+      callExpression
+        memberExpression
+          transform right
+          identifier 'includes'
+        [transform left]
+
+    {type: 'string'}:
+      callExpression
+        memberExpression
+          transform right
+          identifier 'includes'
+        [transform left]
+
+    {type: 'object'}:
+      callExpression
+        memberExpression
+          transform right
+          identifier 'hasOwnProperty'
+        [transform left]
+
+    else:
+      logicalExpression
+        '??'
+        optionalCallExpression
+          optionalMemberExpression
+            transform right
+            identifier 'includes'
+            false
+            true
+          [transform left]
+          true
+
+        logicalExpression
+          '??'
+          optionalCallExpression
+            optionalMemberExpression
+              transform right
+              identifier 'has'
+              false
+              true
+            [transform left]
+            true
+
+          logicalExpression
+            '??'
+            optionalCallExpression
+              optionalMemberExpression
+                transform right
+                identifier 'hasOwnProperty'
+                false
+                true
+              [transform left]
+              true
+            identifier 'false'
+
