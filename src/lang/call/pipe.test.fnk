@@ -9,8 +9,10 @@ describe 'pipe', fn:
       fink2js `
         pipe:
           foo
-          bar
+          bar ?, {foo, ...?}
           spam
+          [...?]
+
 
         pipe [1, 2, 3]:
           map item: item * 2

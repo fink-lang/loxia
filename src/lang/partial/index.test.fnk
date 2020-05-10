@@ -21,3 +21,10 @@ describe 'partial', fn:
       `
       to_match_snapshot
 
+    expect
+      fink2js `
+        foo1 = [1, ...?, 9]
+        foo2 = {foo, ...?}
+      `
+      to_match_snapshot
+

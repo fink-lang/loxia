@@ -4,8 +4,15 @@ exports[`pipe compiles 1`] = `
 "{
   let ˆpipe_result_1 = null;
   ˆpipe_result_1 = foo(ˆpipe_result_1);
-  ˆpipe_result_1 = bar(ˆpipe_result_1);
+
+  ˆpipe_result_1 = ((ˆ1r) => bar(ˆ1r, {
+    \\"foo\\": foo,
+    ...ˆ1r
+  }))(ˆpipe_result_1);
+
   ˆpipe_result_1 = spam(ˆpipe_result_1);
+
+  ˆpipe_result_1 = ((ˆ1r) => [...ˆ1r])(ˆpipe_result_1);
 }
 {
   let ˆpipe_result_2 = [1, 2, 3];

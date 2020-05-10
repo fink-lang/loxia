@@ -4,9 +4,9 @@
 {add} = import '../context'
 
 
-args_has_partial = fn {args}:
-  pipe args:
-    map arg: is_partial arg
+has_partial = fn exprs:
+  pipe exprs:
+    map expr: is_partial expr
     find partial: partial
 
 
@@ -16,7 +16,9 @@ is_partial = fn node:
     {left: is_partial ?}: true
     {right: is_partial ?}: true
     {type: 'call', callee: is_partial ?}: true
-    {type: 'call'}: args_has_partial node
+    {type: 'call'}: has_partial node.args,
+    {type: 'array'}: has_partial node.exprs
+    {type: 'object'}: has_partial node.exprs
     else: false
 
 
@@ -28,6 +30,7 @@ transform_value = fn node, {transform}:
         op: 'fn'
         args: [{type: 'partial', value: '?'}]
         exprs: [node]
+        comments: node.comments
         loc: node.loc
     else:
       node

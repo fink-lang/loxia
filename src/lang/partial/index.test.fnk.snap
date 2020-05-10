@@ -30,3 +30,17 @@ Object.assign(module.exports, {
   foo2
 });"
 `;
+
+exports[`partial compiles assignment 3`] = `
+"const foo1 = (ˆ1r) => [1, ...ˆ1r, 9];
+
+const foo2 = (ˆ1r) => ({
+  \\"foo\\": foo,
+  ...ˆ1r
+});
+
+Object.assign(module.exports, {
+  foo1,
+  foo2
+});"
+`;
