@@ -1,9 +1,10 @@
 {callExpression} = import'@babel/types'
 
 {assign, lets, expr_block, nul} = import '../../js/types'
+{transform_value} = import '../partial'
 
-
-transform_pipe = fn node, {transform, unique_ident}:
+transform_pipe = fn node, ctx:
+  {transform, unique_ident} = ctx
   {exprs} = node
 
   start_value = match node.args:
@@ -20,7 +21,7 @@ transform_pipe = fn node, {transform, unique_ident}:
       assign
         result
         callExpression
-          transform expr
+          transform_value expr, ctx
           [result]
 
   expr_block
