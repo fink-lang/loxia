@@ -5,7 +5,6 @@
   numericLiteral
 } = import '@babel/types'
 
-{consts} = import '../../js/types'
 {transform_left} = import '../../js/left'
 {add, any} = import '../context'
 {transform_value} = import '../partial'
@@ -91,7 +90,6 @@ transform_spread_right = fn {left, right}, ctx:
       items
       slice items, idx, idx - len
       slice items, idx - len
-
 
   result = expressionStatement
     arrayExpression result_items
