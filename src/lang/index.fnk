@@ -50,24 +50,50 @@ add_transformers = fn ctx:
     add_js_compat
 
 
+wrap_node = fn ctx, js_node, node:
+  # TODO: some nodes have location data
+  match ctx:
+    {wrap: 'loc'}:
+      wrap node, js_node
+    else:
+      wrap_with_comment_loc js_node, node
+
+
+try_transform = fn transform, node, ctx:
+  [err, js_node] = try: transform node, ctx
+
+  match err:
+    null:
+      js_node
+    else:
+      code_frame_err err, node, ctx
+
+
+transform_with_comments = fn transform, node, ctx:
+  js_node = try_transform transform, node, ctx
+  match js_node:
+    {error: {}}:
+      ctx.errors.push js_node
+      js_node
+    else:
+      wrap_node ctx, js_node, node
+
+
 transform_expr = fn node, ctx:
   transform_ctx = dict:
     ...ctx
-    transform: fn nde, foo_ctx:
-      transform_expr nde, foo_ctx || transform_ctx
+    transform: fn next_node, next_ctx:
+      transform_expr next_node, next_ctx || transform_ctx
 
-  [err, ast] = try:
-    transform = get_transformer node, ctx
+  transform = get_transformer node, ctx
 
-    js_node = transform node, transform_ctx
-    # TODO: some nodes have location data
-    match ctx:
-      {wrap: 'loc'}: wrap node, js_node
-      else: wrap_with_comment_loc js_node, node
-
-  match err:
-    null: ast
-    else: throw code_frame_err err, node, ctx
+  match transform:
+    false:
+      err = code_frame_err 'Unknown expression.', node, ctx
+      ctx.errors.push err
+      err
+    else:
+      transform_with_comments transform, node, transform_ctx
 
 
 init_ctx = fn code, filename:
@@ -78,6 +104,7 @@ init_ctx = fn code, filename:
   ctx = dict:
     filename
     code
+    errors: []
     unique_ident: fn name:
       # TODO: return ident and new ctx to make it not stateful
       {value} = id_cntr.next()
@@ -87,7 +114,14 @@ init_ctx = fn code, filename:
     add_transformers
 
 
-transform_ast = fn node, code, filename:
+transform_ast = fn expr, code, filename:
   ctx = init_ctx code, filename
-  js_ast = transform_expr node, ctx
-  js_ast
+  js_ast = transform_expr expr, ctx
+
+  match js_ast:
+    {error: {}}:
+      {errors: ctx.errors}
+    else:
+      {...js_ast, errors: []}
+
+

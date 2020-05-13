@@ -44,8 +44,7 @@ exports[`match compiles 1`] = `
       break ˆmatch_2;
     }
   }
-}
-Object.assign(module.exports, {});"
+}"
 `;
 
 exports[`match compiles do-expr 1`] = `
@@ -73,15 +72,12 @@ exports[`match compiles do-expr 1`] = `
   }
 }
 
-const foo = _do_result;
-_do_result = undefined;
-Object.assign(module.exports, {
-  foo
-});"
+export const foo = _do_result;
+_do_result = undefined;"
 `;
 
 exports[`match compiles nested match 1`] = `
-"const test = () => {
+"export const test = () => {
   const ˆvalue_1 = foo;
 
   if (ˆvalue_1 === bar) {
@@ -99,11 +95,7 @@ exports[`match compiles nested match 1`] = `
       return bar;
     }
   }
-};
-
-Object.assign(module.exports, {
-  test
-});"
+};"
 `;
 
 exports[`match compiles nested pattern 1`] = `
@@ -241,8 +233,7 @@ exports[`match compiles nested pattern 1`] = `
         }
     }
   }
-}
-Object.assign(module.exports, {});"
+}"
 `;
 
 exports[`match compiles nested pattern 2`] = `
@@ -303,8 +294,7 @@ exports[`match compiles nested pattern 2`] = `
       }
     }
   }
-}
-Object.assign(module.exports, {});"
+}"
 `;
 
 exports[`match compiles nested pattern 3`] = `
@@ -369,8 +359,7 @@ exports[`match compiles nested pattern 3`] = `
       }
     }
   }
-}
-Object.assign(module.exports, {});"
+}"
 `;
 
 exports[`match compiles patial application 1`] = `
@@ -524,8 +513,7 @@ exports[`match compiles patial application 1`] = `
       }
     }
   }
-}
-Object.assign(module.exports, {});"
+}"
 `;
 
 exports[`match compiles without else 1`] = `
@@ -549,6 +537,5 @@ exports[`match compiles without else 1`] = `
       break ˆmatch_2;
     }
   }
-}
-Object.assign(module.exports, {});"
+}"
 `;

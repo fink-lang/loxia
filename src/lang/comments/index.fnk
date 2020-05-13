@@ -1,5 +1,5 @@
 
-transform_comment = fn {op, value, loc, ...rest}:
+transform_comment = fn {op, value, loc}:
   match op:
     '---': {type: 'CommentBlock', value, loc}
     else: {type: 'CommentLine', value, loc}

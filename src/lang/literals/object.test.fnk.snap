@@ -1,22 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`calculated props compiles 1`] = `
-"const foo = {
+"export const foo = {
   \\"foo\\": foo,
   [Symbol(\`foo\`)]: 123,
   [\`spam\`]: 456,
   \\"ni\\": ni
-};
-Object.assign(module.exports, {
-  foo
-});"
+};"
 `;
 
 exports[`destructuring object compiles computed keys 1`] = `
 "const {
   [\`n i\`]: ni
-} = foo;
-Object.assign(module.exports, {});"
+} = foo;"
 `;
 
 exports[`destructuring object compiles defaults 1`] = `
@@ -31,8 +27,7 @@ exports[`destructuring object compiles defaults 1`] = `
     \\"y\\": 1,
     \\"z\\": 2
   }
-};
-Object.assign(module.exports, {});"
+};"
 `;
 
 exports[`destructuring object compiles simple 1`] = `
@@ -40,8 +35,7 @@ exports[`destructuring object compiles simple 1`] = `
   \\"a\\": a,
   \\"b\\": b,
   \\"c\\": c
-} = ni;
-Object.assign(module.exports, {});"
+} = ni;"
 `;
 
 exports[`destructuring object compiles spread 1`] = `
@@ -52,91 +46,64 @@ exports[`destructuring object compiles spread 1`] = `
   \\"e\\": 0,
   \\"foo\\": 12,
   \\"bar\\": 34
-};
-Object.assign(module.exports, {});"
+};"
 `;
 
 exports[`object compiles key:val 1`] = `
-"const obj = {
+"export const obj = {
   \\"a\\": 1,
   \\"b\\": 123,
   [\`c-d-e\`]: cde
-};
-Object.assign(module.exports, {
-  obj
-});"
+};"
 `;
 
 exports[`object compiles key:val 2`] = `
-"const obj7 = {
+"export const obj7 = {
   \\"a\\": 123,
   \\"b\\": 123 && 123 && 1345,
   \\"c\\": (a, b) => 134
-};
-Object.assign(module.exports, {
-  obj7
-});"
+};"
 `;
 
 exports[`object compiles multiline 1`] = `
-"const obj = {
+"export const obj = {
   \\"a\\": 123,
   \\"b\\": 123 && 123 && 1345,
   \\"c\\": (a, b) => 134,
   \\"d\\": foo(a + 3)
-};
-Object.assign(module.exports, {
-  obj
-});"
+};"
 `;
 
 exports[`object compiles multiline 2`] = `
-"const obj = {
+"export const obj = {
   \\"a\\": 123,
   \\"b\\": 123 && 123 && 1345,
   \\"c\\": (a, b) => 134,
   \\"d\\": foo(a + 3)
-};
-Object.assign(module.exports, {
-  obj
-});"
+};"
 `;
 
 exports[`object compiles shorthand 1`] = `
-"const obj = {
+"export const obj = {
   \\"a\\": a
-};
-Object.assign(module.exports, {
-  obj
-});"
+};"
 `;
 
 exports[`object compiles shorthand 2`] = `
-"const obj = {
+"export const obj = {
   \\"a\\": a,
   \\"delete\\": ˆdelete,
   \\"true\\": true,
   \\"false\\": false
-};
-Object.assign(module.exports, {
-  obj
-});"
+};"
 `;
 
-exports[`object compiles simple 1`] = `
-"const obj = {};
-Object.assign(module.exports, {
-  obj
-});"
-`;
+exports[`object compiles simple 1`] = `"export const obj = {};"`;
 
 exports[`object compiles spread 1`] = `
-"const obj = {
+"export const obj = {
   \\"a\\": a,
   \\"b\\": b,
   ...c
-};
-Object.assign(module.exports, {
-  obj
-});"
+};"
 `;

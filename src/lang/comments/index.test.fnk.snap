@@ -2,18 +2,13 @@
 
 exports[`comment compiles 1`] = `
 "// leading expression
-const spam = ni;
+export const spam = ni;
 
 /*
 Shrub ni.
 */
-const bar = () =>
+export const bar = () =>
 /* single line block */
 spam;
-
-Object.assign(module.exports, {
-  spam,
-  bar
-});
 // trailing module"
 `;

@@ -1,24 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`jsx compiles 1`] = `
-"const jsx1 = <a />;
-const jsx2 = <b></b>;
-const jsx3 = <a foo bar=\\"ni\\" />;
-const jsx4 = <a foo bar=\\"ni\\" />;
-const jsx5 = <a foo bar={1234} />;
-const jsx6 = <a>
+"export const jsx1 = <a />;
+export const jsx2 = <b></b>;
+export const jsx3 = <a foo bar=\\"ni\\" />;
+export const jsx4 = <a foo bar=\\"ni\\" />;
+export const jsx5 = <a foo bar={1234} />;
+export const jsx6 = <a>
     foo {ni}
     <b /> ham
     spam
     <c />
     ni
-  </a>;
-Object.assign(module.exports, {
-  jsx1,
-  jsx2,
-  jsx3,
-  jsx4,
-  jsx5,
-  jsx6
-});"
+  </a>;"
 `;

@@ -25,7 +25,7 @@ transform_try = fn node, ctx:
     err
     blockStatement list:
       expressionStatement
-        # TODO: should return undef
+        # TODO: should return undef or better false?
         arrayExpression [err, nullLiteral()]
 
 

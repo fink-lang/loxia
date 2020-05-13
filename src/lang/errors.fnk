@@ -1,19 +1,33 @@
 {highlight_code_loc} = import '@fink/snippet'
 
 
-transform_error = fn {message}, node, {code, filename}:
-  {start: {line, column}} = node.loc
+get_stack_trace = fn func:
+  err = {}
+  Error.captureStackTrace err, func
+  err.stack
 
-  type_op = `${node.type} ${node.op}`
 
-  # TODO: add filename and line to constructor?
-  err = new Error
-    `${filename}:${line}:${column}\n${
-      highlight_code_loc code, node.loc
-    }\n\nUnable to transform '${type_op}'.\n\n${message}`
+get_error = fn reason, expr, {code, filename}, stack_func:
+  {start: {line, column}} = expr.loc
+  type_op = `${expr.type} ${expr.op}`
 
-  Object.assign err, {is_transform_err: true}
-  err
+  error = dict:
+    error: `
+      ${filename}:${line}:${column}
+      ${highlight_code_loc code, expr.loc}
+
+      Unable to transform '${type_op}'.
+      `
+    expr
+    reason
+    stack: get_stack_trace stack_func
+
+  error
+
+
+transform_error = fn {message}, expr, {code, filename}:
+  err = get_error message, expr, {code, filename}, transform_error
+  {...err, is_transform_err: true}
 
 
 code_frame_err = fn err, node, code:

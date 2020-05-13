@@ -1,37 +1,100 @@
 {generate} = import '.'
 {fink2js} = import './testing'
-{describe, it, expect, to_throw} = import '@fink/jest'
+{describe, it, expect, to_equal, to_match_snapshot} = import '@fink/jest'
+
+
+describe 'module types', fn:
+  it 'compiles to mjs', fn:
+    expect
+      fink2js
+        `
+        import 'foobar'
+        foo = import 'shrub'
+        {bar: spam, ni} = import 'ni'
+
+        shrub = ni
+        default = shrub
+        `
+        {module_type: 'mjs'}
+      to_match_snapshot
+
+
+  it 'compiles to cjs', fn:
+    expect
+      fink2js
+        `
+        import 'foobar'
+        foo = import 'shrub'
+        {bar: spam, ni} = import 'ni'
+
+        shrub = ni
+        default = shrub
+        `
+        {module_type: 'cjs'}
+      to_match_snapshot
+
 
 
 describe 'errors', fn:
-  it 'throws with code snippet', fn:
-      expect
-        fn: fink2js `
-          123 = foo`
+  it 'handles parse errors', fn:
+    {errors: [{error}]} = fink2js `
+      foo = [`
 
-        to_throw `
-          test.fnk:1:0
-          1| 123 = foo
-             ^
+    expect
+      error
+      to_equal `
+        test.fnk:1:7
+        1| foo = [
+                  ^
 
-          Unable to transform 'assign ='.`
+        Expected ',' or indented new line or ']'.
+        `
 
-      expect
-        fn: generate
-          dict:
-            type: 'test'
-            op: 'foobar'
-            loc: dict:
-              start: {pos: 0, line: 1, column: 0}
-              end: {pos: 9, line: 1, column: 9}
+  it 'errors with code snippet', fn:
+    {errors: [{error}]} = fink2js `
+      foo = bar
+      123 = foo
+      shrub = ni`
 
-          'test.fnk', 'foobar'
+    expect
+      error
+      to_equal `
+        test.fnk:2:0
+        1| foo = bar
+        2| 123 = foo
+           ^
+        3| shrub = ni
 
-        to_throw `
-          test.fnk:1:0
-          1| foobar
-             ^
+        Unable to transform 'assign ='.
+        `
 
-          Unable to transform 'test foobar'.
+  it 'errors with bad babel options', fn:
+    {errors: [{message}]} = fink2js
+      `foo = bar`
+      {use_babel_conf: true, sourceMaps: 'foobar'}
 
-          Unknown expression`
+    expect
+      message
+      to_equal `.sourceMaps must be a boolean, "inline", "both", or undefined`
+
+
+  it 'errors when provided with unknown tokens', fn:
+    {errors: [{error}]} = generate
+      dict:
+        type: 'test'
+        op: 'foobar'
+        loc: dict:
+          start: {pos: 0, line: 1, column: 0}
+          end: {pos: 9, line: 1, column: 9}
+
+      'test.fnk', 'foobar'
+
+    expect
+      error
+      to_equal `
+        test.fnk:1:0
+        1| foobar
+           ^
+
+        Unable to transform 'test foobar'.
+        `

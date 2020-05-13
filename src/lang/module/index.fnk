@@ -1,14 +1,14 @@
 {
-  file, program, objectProperty, identifier
-  callExpression, objectExpression, memberExpression
-  expressionStatement, interpreterDirective
+  file, program, interpreterDirective, stringLiteral
+  importDeclaration, importSpecifier, importDefaultSpecifier
+  exportNamedDeclaration, exportDefaultDeclaration
 } = import '@babel/types'
 
-{call, member, ident} = import '../../js/types'
 {add, any} = import '../context'
 
+{wrap_with_comment_loc} = import '../comments'
 {block_statement} = import '../block'
-{transform_import} = import './import'
+{transform_import: transform_async_import} = import './import'
 
 
 # TODO should larix handle shebang as special expr?
@@ -23,39 +23,60 @@ get_shebang = fn expr:
       [[], expr]
 
 
+
+transform_import = fn node, {transform}:
+  [...imports] = match node.left:
+    {type: 'ident'}:
+      [importDefaultSpecifier transform node.left]
+
+    {type: 'object'}:
+      pipe node.left.exprs:
+        map prop:
+          importSpecifier
+            transform prop.right
+            transform prop.left
+
+  {right: {right: {exprs: [url]}}} = node
+
+  importDeclaration imports, stringLiteral url.value
+
+
+
 transform_module = fn node, ctx:
-  [...exported] = pipe node.exprs:
-    filter expr:
-      match expr:
-        {left: {type: 'ident'}}: true
-        else: false
-
-    map {left: {value}}:
-      # TODO: wrap with loc?
-      id = ident value
-      objectProperty id, id, false, true
-
   [maybe_shebang, ...rest] = node.exprs
-
   [interpreter, first] = get_shebang maybe_shebang
 
   [...body] = pipe [first, ...rest]:
-    map expr: block_statement expr, ctx
+    map expr:
+      match expr:
+        {op: 'import'}:
+          {right: {exprs: [url]}} = expr
+          wrap_with_comment_loc
+            importDeclaration [], stringLiteral url.value
+            expr
 
-  # TODO: use individual exports?
-  obj = identifier 'Object'
-  obj_assign = memberExpression obj, identifier 'assign'
-  mod = identifier 'module'
-  mod_exports = memberExpression mod, identifier 'exports'
+        {right: {op: 'import'}}:
+          wrap_with_comment_loc
+            transform_import expr, ctx
+            expr
 
-  exports = expressionStatement
-    callExpression
-      obj_assign
-      [mod_exports, objectExpression exported]
+        {type: 'assign', left: {type: 'ident', value: 'default'}}:
+          wrap_with_comment_loc
+            exportDefaultDeclaration ctx.transform expr.right
+            expr
+
+        {type: 'assign', left: {type: 'ident'}}:
+          # TODO: we don't want to double up on comments?
+          {comments, ...decl} = expr
+          wrap_with_comment_loc
+            exportNamedDeclaration block_statement decl, ctx
+            expr
+        else:
+          block_statement expr, ctx
 
   file
     program
-      [...body, exports]
+      body
       []
       'module'
       ...interpreter
@@ -64,5 +85,5 @@ transform_module = fn node, ctx:
 add_module = fn ctx:
   pipe ctx:
     add 'module', any, transform_module
-    add 'import', any, transform_import
+    add 'import', any, transform_async_import
 

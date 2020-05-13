@@ -1,0 +1,72 @@
+{
+  identifier, assignmentExpression, expressionStatement,
+  memberExpression, callExpression, objectProperty, objectPattern
+  variableDeclaration, variableDeclarator
+  isImportDefaultSpecifier, isImportSpecifier
+} = import '@babel/types'
+
+
+
+transform_specifiers = fn {specifiers, source}:
+  init = callExpression
+    identifier 'require'
+    [source]
+
+  [first] = specifiers
+
+  match first:
+    isImportDefaultSpecifier ?:
+      [{local}] = specifiers
+      variableDeclaration 'const', [variableDeclarator local, init]
+
+    isImportSpecifier ?:
+      [...props] = pipe specifiers:
+        map node:
+          objectProperty
+            node.imported
+            node.local
+            false
+            node.imported.name == node.local.name
+
+      variableDeclaration 'const', list:
+        variableDeclarator
+          objectPattern props
+          init
+
+    else:
+      expressionStatement init
+
+
+# ImportNamespaceSpecifier:
+module_transforms = dict:
+  ImportDeclaration: fn path:
+    path.replaceWith transform_specifiers path.node
+    null
+
+  ExportDefaultDeclaration: fn path:
+    id = path.node.declaration;
+    foo = expressionStatement
+      assignmentExpression
+        '='
+        memberExpression
+          identifier 'exports'
+          identifier 'default'
+        id
+
+    path.insertAfter foo
+    path.remove()
+    null
+
+  ExportNamedDeclaration: fn path:
+    {declarations: [{id}]} = path.node.declaration;
+    foo = expressionStatement
+      assignmentExpression
+        '='
+        memberExpression
+          identifier 'exports'
+          id
+        id
+
+    path.insertAfter foo
+    path.replaceWith path.node.declaration
+    null

@@ -10,9 +10,7 @@ exports[`unfold compiles destructured accus 1`] = `
     yield ˆresult_1;
     ˆaccu_3 = bar;
   }
-});
-
-Object.assign(module.exports, {});"
+});"
 `;
 
 exports[`unfold compiles destructured accus 2`] = `
@@ -32,9 +30,7 @@ exports[`unfold compiles destructured accus 2`] = `
     yield ˆresult_1;
     ˆaccu_3 = foo;
   }
-});
-
-Object.assign(module.exports, {});"
+});"
 `;
 
 exports[`unfold compiles destructured accus 3`] = `
@@ -47,9 +43,7 @@ exports[`unfold compiles destructured accus 3`] = `
     yield* ˆresult_1;
     ˆaccu_3 = bar;
   }
-});
-
-Object.assign(module.exports, {});"
+});"
 `;
 
 exports[`unfold compiles item is accu 1`] = `
@@ -62,9 +56,7 @@ exports[`unfold compiles item is accu 1`] = `
     yield ˆresult_1;
     ˆaccu_3 = ˆresult_1;
   }
-});
-
-Object.assign(module.exports, {});"
+});"
 `;
 
 exports[`unfold compiles with separate item and accu result 1`] = `
@@ -84,9 +76,7 @@ exports[`unfold compiles with separate item and accu result 1`] = `
       \\"accu\\": accu + 1
     };
   }
-});
-
-Object.assign(module.exports, {});"
+});"
 `;
 
 exports[`unfold compiles with spread 1`] = `
@@ -95,9 +85,7 @@ exports[`unfold compiles with spread 1`] = `
     const ˆresult_1 = [1, 2, 3];
     yield* ˆresult_1;
   }
-});
-
-Object.assign(module.exports, {});"
+});"
 `;
 
 exports[`unfold compiles without accus 1`] = `
@@ -106,9 +94,7 @@ exports[`unfold compiles without accus 1`] = `
     const ˆresult_1 = 1234;
     yield ˆresult_1;
   }
-});
-
-Object.assign(module.exports, {});"
+});"
 `;
 
 exports[`unfold compiles without default assignment 1`] = `
@@ -125,6 +111,5 @@ exports[`unfold compiles without default assignment 1`] = `
       ˆaccu_4 = ˆresult_2;
     }
   }(ˆpipe_result_1);
-}
-Object.assign(module.exports, {});"
+}"
 `;

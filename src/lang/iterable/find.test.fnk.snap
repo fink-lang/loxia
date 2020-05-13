@@ -63,9 +63,7 @@ exports[`find compiles complex find 1`] = `
   }
 
   return undefined;
-};
-
-Object.assign(module.exports, {});"
+};"
 `;
 
 exports[`find compiles simple find 1`] = `
@@ -77,7 +75,5 @@ exports[`find compiles simple find 1`] = `
   }
 
   return undefined;
-};
-
-Object.assign(module.exports, {});"
+};"
 `;

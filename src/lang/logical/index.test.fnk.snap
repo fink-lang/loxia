@@ -1,23 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`logical compiles 1`] = `
-"const foo = a || b || c;
-const bar = a && b && c;
-const spam = !a;
-Object.assign(module.exports, {
-  foo,
-  bar,
-  spam
-});"
+"export const foo = a || b || c;
+export const bar = a && b && c;
+export const spam = !a;"
 `;
 
 exports[`logical compiles 2`] = `
-"const foo = a || b || c;
-const bar = a && b && c;
-const spam = !a;
-Object.assign(module.exports, {
-  foo,
-  bar,
-  spam
-});"
+"export const foo = a || b || c;
+export const bar = a && b && c;
+export const spam = !a;"
 `;

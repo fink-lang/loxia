@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`try compiles 1`] = `
-"const foo1 = () => {
+"export const foo1 = () => {
   let _do_result;
 
   try {
@@ -15,15 +15,9 @@ exports[`try compiles 1`] = `
   _do_result = undefined;
   return [item, err];
 };
-
-const foo2 = () => try {
+export const foo2 = () => try {
   return [null, throw new Error(\`foobar\`)];
 } catch (ˆerror_2) {
   return [ˆerror_2, null];
-};
-
-Object.assign(module.exports, {
-  foo1,
-  foo2
-});"
+};"
 `;

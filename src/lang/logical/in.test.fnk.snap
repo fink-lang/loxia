@@ -1,16 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`in shortcuts known with knwon right hand side 1`] = `
-"const foo = [1, 2, 3].includes(1);
-const bar = \`1234\`.includes(\`2\`);
-const spam = {
+"export const foo = [1, 2, 3].includes(1);
+export const bar = \`1234\`.includes(\`2\`);
+export const spam = {
   \\"foo\\": bar
 }.hasOwnProperty(key);
-const shrub = ni?.includes?.(item) ?? ni?.has?.(item) ?? ni?.hasOwnProperty?.(item) ?? false;
-Object.assign(module.exports, {
-  foo,
-  bar,
-  spam,
-  shrub
-});"
+export const shrub = ni?.includes?.(item) ?? ni?.has?.(item) ?? ni?.hasOwnProperty?.(item) ?? false;"
 `;

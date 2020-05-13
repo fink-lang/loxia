@@ -1,8 +1,8 @@
 {
   assignmentExpression, returnStatement, expressionStatement
-  isDoExpression, isBlockStatement, isLabeledStatement, isTryStatement
+  isDoExpression, isBlockStatement, isLabeledStatement
   isVariableDeclarator, isArrowFunctionExpression, isExpressionStatement
-  isReturnStatement, isIfStatement, arrowFunctionExpression, callExpression
+  isReturnStatement, arrowFunctionExpression, callExpression
 } = import '@babel/types'
 
 

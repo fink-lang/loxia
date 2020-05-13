@@ -1,12 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`keywords transforms literals 1`] = `
-"const x = false;
-const y = true;
-const z = null;
-Object.assign(module.exports, {
-  x,
-  y,
-  z
-});"
+"export const x = false;
+export const y = true;
+export const z = null;"
 `;

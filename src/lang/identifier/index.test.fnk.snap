@@ -1,19 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`identifiers does not escape true, false, null 1`] = `
-"const foo = [true, false, null];
-Object.assign(module.exports, {
-  foo
-});"
-`;
+exports[`identifiers does not escape true, false, null 1`] = `"export const foo = [true, false, null];"`;
 
 exports[`identifiers escapes identifiers incompatible with JS 1`] = `
-"const ˆ1s = spam;
-const ˆ6pu = shrub;
-Object.assign(module.exports, {
-  ˆ1s,
-  ˆ6pu
-});"
+"export const ˆ1s = spam;
+export const ˆ6pu = shrub;"
 `;
 
 exports[`identifiers escapes reserved JS identifiers 1`] = `
@@ -65,6 +56,5 @@ const {
   \\"protected\\": ˆprotected,
   \\"implements\\": ˆimplements,
   \\"instanceof\\": ˆinstanceof
-} = nu;
-Object.assign(module.exports, {});"
+} = nu;"
 `;

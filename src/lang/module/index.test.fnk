@@ -11,8 +11,19 @@ describe 'module', fn:
 
         # leading comment
 
+        # imp comment
+        import 'shrub'
+
+        # imp comment 2
+        foo = import './foo'
+
+        # imp comment 3
+        {bar} = import './spam'
+        {foo: spam} = import './shrub'
+
         # expr comment
-        foo = bar
+        shrub = foo + bar
+        ni = await import spam
 
         # trailing comment
       `

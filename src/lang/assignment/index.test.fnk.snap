@@ -1,21 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`assignment compiles 1`] = `
-"const assign = 1;
+"export const assign = 1;
 // simple
-const assign2 = assign;
-const no_clash_with_await = 13;
-const assign_lang_const1 = true;
-const assign_lang_const2 = false;
-const multi_line_assign = 123 + 234 + (-567 - 1111);
-Object.assign(module.exports, {
-  assign,
-  assign2,
-  no_clash_with_await,
-  assign_lang_const1,
-  assign_lang_const2,
-  multi_line_assign
-});"
+export const assign2 = assign;
+export const no_clash_with_await = 13;
+export const assign_lang_const1 = true;
+export const assign_lang_const2 = false;
+export const multi_line_assign = 123 + 234 + (-567 - 1111);"
 `;
 
 exports[`assignment compiles destructuring 1`] = `
@@ -27,8 +19,7 @@ exports[`assignment compiles destructuring 1`] = `
 }
 // standard JS destructuring
 const [head, [last]] = _do_result;
-_do_result = undefined;
-Object.assign(module.exports, {});"
+_do_result = undefined;"
 `;
 
 exports[`assignment compiles destructuring 2`] = `
@@ -49,6 +40,5 @@ let _do_result2;
   _do_result2 = [ˆitems_2, ˆitems_2.slice(2, -2), ˆitems_2.slice(-2)];
 }
 const [[a,,],, [b, c]] = _do_result2;
-_do_result2 = undefined;
-Object.assign(module.exports, {});"
+_do_result2 = undefined;"
 `;

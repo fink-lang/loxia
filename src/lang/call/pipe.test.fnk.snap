@@ -24,6 +24,5 @@ exports[`pipe compiles 1`] = `
       yield ˆresult_5;
     }
   }(ˆpipe_result_2);
-}
-Object.assign(module.exports, {});"
+}"
 `;

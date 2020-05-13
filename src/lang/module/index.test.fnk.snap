@@ -3,10 +3,15 @@
 exports[`module handles comments 1`] = `
 "#!/usr/bin/env node
 // leading comment
+// imp comment
+import \\"shrub\\";
+// imp comment 2
+import foo from \\"./foo\\";
+// imp comment 3
+import { bar } from \\"./spam\\";
+import { foo as spam } from \\"./shrub\\";
 // expr comment
-const foo = bar;
-Object.assign(module.exports, {
-  foo
-});
+export const shrub = foo + bar;
+export const ni = await import(spam);
 // trailing comment"
 `;

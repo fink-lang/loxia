@@ -12,9 +12,7 @@ exports[`fold compiles 1`] = `
   }
 
   return ˆacc_2;
-};
-
-Object.assign(module.exports, {});"
+};"
 `;
 
 exports[`fold destructuring accu 1`] = `
@@ -47,9 +45,7 @@ exports[`fold destructuring accu 1`] = `
   }
 
   return ˆacc_5;
-};
-
-Object.assign(module.exports, {});"
+};"
 `;
 
 exports[`fold destructuring item 1`] = `
@@ -83,7 +79,5 @@ exports[`fold destructuring item 1`] = `
   }
 
   return ˆacc_6;
-};
-
-Object.assign(module.exports, {});"
+};"
 `;
