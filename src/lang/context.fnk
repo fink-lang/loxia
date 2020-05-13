@@ -2,7 +2,6 @@
 
 any = false
 
-
 add = fn type, op, transformer: fn {transformers, ...ctx}:
   next_transformers = dict:
     ...transformers
@@ -23,6 +22,5 @@ get_transformer = fn {op, type}, {transformers}:
     obj_has ?, type:
       transformers.(type)
 
-    else: fn node, ctx:
-      err = new Error 'Unknown expression'
-      throw code_frame_err err, node, ctx
+    else:
+      false

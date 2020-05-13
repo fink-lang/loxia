@@ -1,14 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`member compiles 1`] = `
-"const foo = spam.shrub;
-const computed_member = item[\`bar spam\`];
-const computed_member2 = item[Symbol.iterator];
-const reserved_prop = item.arguments;
-Object.assign(module.exports, {
-  foo,
-  computed_member,
-  computed_member2,
-  reserved_prop
-});"
+"export const foo = spam.shrub;
+export const computed_member = item[\`bar spam\`];
+export const computed_member2 = item[Symbol.iterator];
+export const reserved_prop = item.arguments;"
 `;

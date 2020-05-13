@@ -1,9 +1,8 @@
-{identifier, callExpression} = import '@babel/types'
+{callExpression, import: asyncImport} = import '@babel/types'
 
 
 transform_import = fn node, {transform}:
   right = transform node.right
-
   callExpression
-    identifier 'require'
+    asyncImport()
     [right]

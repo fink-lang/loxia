@@ -1,9 +1,19 @@
 {parse} = import '@fink/larix'
 {generate} = import '..'
 
-fink2js = fn source:
+
+fink2js = fn source, options:
   filename = 'test.fnk'
   [ast, {errors}] = parse source, filename
-  {code} = generate ast, filename, source
-  code
+
+  match errors:
+    {length: 0}:
+      {code, errors} = generate ast, filename, source, options
+      match errors:
+        {length: 0}:
+          code
+        else:
+          {errors}
+    else:
+      {errors}
 

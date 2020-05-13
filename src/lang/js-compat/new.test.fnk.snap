@@ -1,10 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`new compiles 1`] = `
-"const foo = new Set();
-const bar = new Set(\`abca\`);
-Object.assign(module.exports, {
-  foo,
-  bar
-});"
+"export const foo = new Set();
+export const bar = new Set(\`abca\`);"
 `;

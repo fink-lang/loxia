@@ -8,9 +8,7 @@ exports[`while compiles 1`] = `
     if (ˆresult_3 !== true) return;
     yield ˆitem_1;
   }
-});
-
-Object.assign(module.exports, {});"
+});"
 `;
 
 exports[`while compiles destructuring 1`] = `
@@ -38,7 +36,5 @@ exports[`while compiles destructuring 1`] = `
     if (ˆresult_7 !== true) return;
     yield ˆitem_4;
   }
-});
-
-Object.assign(module.exports, {});"
+});"
 `;

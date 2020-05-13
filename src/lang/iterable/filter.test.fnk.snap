@@ -31,7 +31,5 @@ exports[`filter compiles 1`] = `
     const ˆresult_10 = b && a.length === 0;
     if (ˆresult_10) yield ˆitem_7;
   }
-});
-
-Object.assign(module.exports, {});"
+});"
 `;

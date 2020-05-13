@@ -11,7 +11,5 @@ exports[`throw compiles 1`] = `
   {
     return bar;
   }
-};
-
-Object.assign(module.exports, {});"
+};"
 `;

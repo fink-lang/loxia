@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`module types compiles to cjs 1`] = `
+"require(\\"foobar\\");
+
+const foo = require(\\"shrub\\");
+
+const {
+  bar: spam,
+  ni
+} = require(\\"ni\\");
+
+const shrub = ni;
+exports.shrub = shrub;
+exports.default = shrub;"
+`;
+
+exports[`module types compiles to mjs 1`] = `
+"import \\"foobar\\";
+import foo from \\"shrub\\";
+import { bar as spam, ni } from \\"ni\\";
+export const shrub = ni;
+export default shrub;"
+`;
