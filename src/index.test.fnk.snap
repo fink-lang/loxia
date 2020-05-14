@@ -10,8 +10,17 @@ const {
   ni
 } = require(\\"ni\\");
 
+// reserved words import
+const {
+  default: dflt,
+  ˆif
+} = require(\\"es6-module\\");
+
 const shrub = ni;
 exports.shrub = shrub;
+// reserved export
+const ˆcase = ni;
+exports.ˆcase = ˆcase;
 exports.default = shrub;"
 `;
 
@@ -19,6 +28,10 @@ exports[`module types compiles to mjs 1`] = `
 "import \\"foobar\\";
 import foo from \\"shrub\\";
 import { bar as spam, ni } from \\"ni\\";
+// reserved words import
+import { default as dflt, ˆif } from \\"es6-module\\";
 export const shrub = ni;
+// reserved export
+export const ˆcase = ni;
 export default shrub;"
 `;
