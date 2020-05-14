@@ -4,33 +4,30 @@
 
 
 describe 'module types', fn:
+  code = `
+    import 'foobar'
+    foo = import 'shrub'
+    {bar: spam, ni} = import 'ni'
+
+    # reserved words import
+    {default: dflt, if} = import 'es6-module'
+
+    shrub = ni
+    # reserved export
+    case = ni
+
+    default = shrub
+    `
+
   it 'compiles to mjs', fn:
     expect
-      fink2js
-        `
-        import 'foobar'
-        foo = import 'shrub'
-        {bar: spam, ni} = import 'ni'
-
-        shrub = ni
-        default = shrub
-        `
-        {module_type: 'mjs'}
+      fink2js code,  {module_type: 'mjs'}
       to_match_snapshot
 
 
   it 'compiles to cjs', fn:
     expect
-      fink2js
-        `
-        import 'foobar'
-        foo = import 'shrub'
-        {bar: spam, ni} = import 'ni'
-
-        shrub = ni
-        default = shrub
-        `
-        {module_type: 'cjs'}
+      fink2js code, {module_type: 'cjs'}
       to_match_snapshot
 
 

@@ -1,7 +1,7 @@
 {
   file, program, interpreterDirective, stringLiteral
   importDeclaration, importSpecifier, importDefaultSpecifier
-  exportNamedDeclaration, exportDefaultDeclaration
+  exportNamedDeclaration, exportDefaultDeclaration, identifier
 } = import '@babel/types'
 
 {add, any} = import '../context'
@@ -23,7 +23,6 @@ get_shebang = fn expr:
       [[], expr]
 
 
-
 transform_import = fn node, {transform}:
   [...imports] = match node.left:
     {type: 'ident'}:
@@ -32,9 +31,15 @@ transform_import = fn node, {transform}:
     {type: 'object'}:
       pipe node.left.exprs:
         map prop:
-          importSpecifier
-            transform prop.right
-            transform prop.left
+          match prop:
+            {left: {value: 'default'}}:
+              importSpecifier
+                transform prop.right
+                identifier prop.left.value
+            else:
+              importSpecifier
+                transform prop.right
+                transform prop.left
 
   {right: {right: {exprs: [url]}}} = node
 
