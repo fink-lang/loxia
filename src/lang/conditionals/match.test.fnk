@@ -1,5 +1,5 @@
 {fink2js} = import '../../testing'
-{describe, it, only, expect, to_match_snapshot} = import '@fink/jest'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
 describe 'match', fn:

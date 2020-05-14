@@ -12,7 +12,7 @@ exports[`filter compiles 1`] = `
 (function* filter(ˆitems_5) {
   for (const ˆitem_4 of ˆitems_5) {
     const [a, ...b] = ˆitem_4;
-    const a_alone = a && b.length === 0;
+    const a_alone = a && 0 === length(b);
     const ˆresult_6 = a_alone;
     if (ˆresult_6) yield ˆitem_4;
   }
@@ -28,7 +28,7 @@ exports[`filter compiles 1`] = `
     }
     const [a, [b]] = _do_result;
     _do_result = undefined;
-    const ˆresult_10 = b && a.length === 0;
+    const ˆresult_10 = b && 0 === length(a);
     if (ˆresult_10) yield ˆitem_7;
   }
 });"

@@ -1,5 +1,5 @@
 {
-  arrayPattern, blockStatement, breakStatement, labeledStatement, objectPattern
+  blockStatement, breakStatement, labeledStatement, objectPattern
   objectProperty, expressionStatement, ifStatement
   doExpression, stringLiteral, memberExpression, restElement
   identifier
@@ -8,7 +8,6 @@
 {and, eq, not_nullish, typof, consts} = import '../../js/types'
 
 {get_key} = import '../literals/object'
-{is_array} = import '../literals/array'
 {is_partial} = import '../partial'
 {wrap_with_comment_loc} = import'../comments'
 
@@ -28,7 +27,7 @@ is_iterable = fn value:
       stringLiteral 'function'
 
 
-comp = fn id, expected, {partial_ident, transform, ...ctx}:
+comp = fn id, expected, {transform, ...ctx}:
   value_ctx = {...ctx, partial_ident: id}
   value = transform expected, value_ctx
 

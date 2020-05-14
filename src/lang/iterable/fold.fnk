@@ -1,6 +1,4 @@
-{expressionStatement} = import '@babel/types'
-
-{assign, params, for_of, func, lets} = import '../../js/types'
+{assign, for_of, func, lets} = import '../../js/types'
 {block_statement} = import '../block'
 {transform_init} = import './common'
 

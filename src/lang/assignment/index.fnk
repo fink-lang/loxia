@@ -4,21 +4,28 @@
   memberExpression, identifier, expressionStatement, arrayPattern, restElement
   numericLiteral
 } = import '@babel/types'
+{length} = import '@fink/std-lib/iter'
+
 
 {transform_left} = import '../../js/left'
 {add, any} = import '../context'
 {transform_value} = import '../partial'
 
+# TODO: std-lib
+find_index = fn iterable, func:
+  iterable.findIndex func
+
 
 is_spread_not_last = fn {left}:
   match left:
     {type: 'array', exprs: {length: ? > 1}}:
-      idx = left.exprs.findIndex fn expr:
+      idx = find_index left.exprs, fn expr:
         match expr:
           {type: 'spread'}: true
           else: false
 
-      idx > -1 && idx < left.exprs.length - 1
+      exprs_len = length left.exprs
+      idx > -1 && idx < exprs_len - 1
     else:
       false
 
@@ -75,8 +82,8 @@ transform_spread_right = fn {left, right}, ctx:
         arrayPattern [restElement items]
         transform_value right, ctx
 
-  len = left.exprs.length - 1
-  idx = left.exprs.findIndex fn expr:
+  len = (length left.exprs) - 1
+  idx = find_index left.exprs, fn expr:
     match expr:
       {type: 'spread'}: true
       else: false

@@ -1,7 +1,8 @@
 {regExpLiteral} = import '@babel/types'
+{replace} = import '@fink/std-lib/str'
 
 
 transform_regex = fn node:
-  pattern = node.value.replace rx/(\#.*\n)|[\n\s]/gm, ''
+  pattern = replace node.value, rx/(\#.*\n)|[\n\s]/gm, ''
 
   regExpLiteral pattern, node.flags

@@ -1,8 +1,8 @@
-{callExpression, import: asyncImport} = import '@babel/types'
+{callExpression, Import: async_import} = import '@babel/types'
 
 
 transform_import = fn node, {transform}:
   right = transform node.right
   callExpression
-    asyncImport()
+    async_import()
     [right]

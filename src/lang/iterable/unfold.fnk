@@ -1,4 +1,4 @@
-{whileStatement, blockStatement, assignmentPattern} = import '@babel/types'
+{whileStatement, blockStatement} = import '@babel/types'
 {assign, generator, true_, lets} = import '../../js/types'
 
 {block_statement} = import '../block'

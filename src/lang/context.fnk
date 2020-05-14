@@ -1,5 +1,3 @@
-{code_frame_err} = import './errors'
-
 any = false
 
 add = fn type, op, transformer: fn {transformers, ...ctx}:
@@ -10,16 +8,15 @@ add = fn type, op, transformer: fn {transformers, ...ctx}:
   {transformers: next_transformers, ...ctx}
 
 
-obj_has = fn obj, key:
-  Object.prototype.hasOwnProperty.call obj, key
-
-
 get_transformer = fn {op, type}, {transformers}:
+
   match transformers:
-    obj_has ?, op:
+    # TODO: why copy with spread instead of op in ?
+    op in {...?}:
       transformers.(op)
 
-    obj_has ?, type:
+    # TODO: why copy with spread instead of op in ?
+    type in {...?}:
       transformers.(type)
 
     else:

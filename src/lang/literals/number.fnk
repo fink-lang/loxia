@@ -1,8 +1,13 @@
 {numericLiteral, bigIntLiteral} = import '@babel/types'
+{matches} = import '@fink/std-lib/str'
+
+# TODO: std-lib
+parse_number = fn num_str:
+  Number num_str
 
 
 transform_number = fn {value}:
-  match value.match rx/\./:
-    null: bigIntLiteral value
-    else: numericLiteral Number value
+  match matches value, rx/\./:
+    {length: 0}: bigIntLiteral value
+    else: numericLiteral parse_number value
 
