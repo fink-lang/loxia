@@ -3,6 +3,7 @@
   importDeclaration, importSpecifier, importDefaultSpecifier
   exportNamedDeclaration, exportDefaultDeclaration, identifier
 } = import '@babel/types'
+{starts_with, slice} = import '@fink/std-lib/str'
 
 {add, any} = import '../context'
 
@@ -15,9 +16,9 @@
 get_shebang = fn expr:
   {comments} = expr
   match comments:
-    {leading: [{op: '#', loc: {start: {line: 1}}, value: ?.startsWith '!'}]}:
+    {leading: [{op: '#', loc: {start: {line: 1}}, value: starts_with ?, '!'}]}:
       [first, ...rest] = comments.leading
-      shebang = interpreterDirective '${first.value.slice 1}'
+      shebang = interpreterDirective '${slice first.value, 1}'
       [[shebang], {...expr, comments: {...comments, leading: rest}}]
     else:
       [[], expr]

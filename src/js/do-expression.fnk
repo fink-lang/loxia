@@ -4,13 +4,15 @@
   isVariableDeclarator, isArrowFunctionExpression, isExpressionStatement
   isReturnStatement, arrowFunctionExpression, callExpression
 } = import '@babel/types'
+{set_props} = import '@fink/std-lib/obj'
+{for_each} = import '@fink/std-lib/iter'
 
 
 {lets, assign, undef} = import './types'
 
 get_body = fn path: path.get 'body'
 
-consume_all = fold item, acc=null: null
+consume_all = for_each fn: null
 
 
 simple = fn body, sl=false:
@@ -53,6 +55,7 @@ last_expressions = fn path:
     isLabeledStatement ?:
       body = get_body path
 
+      # TODO: don't use mutable obj
       items = []
       body.traverse
         dict:
@@ -107,7 +110,7 @@ replace_with_return = fn path:
 replace_with_assign = fn target, path:
   id = path.parentPath.scope.generateUidIdentifier 'do_result'
   #TODO: don't mutate
-  Object.assign target.node, {init: id}
+  set_props target.node, {init: id}
 
   target.parentPath.insertBefore lets id
   target.parentPath.insertBefore simple get_body path
@@ -131,7 +134,7 @@ transform_do_expr = fn path:
     isArrowFunctionExpression ?:
       body = get_body path
 
-      Object.assign parent.node, {body: simple body, true}
+      set_props parent.node, {body: simple body, true}
 
       replace_with_return path
 

@@ -1,15 +1,16 @@
 
 {isArrowFunctionExpression, isFunctionExpression} = import '@babel/types'
+{set_props} = import '@fink/std-lib/obj'
 
 
 transform_async = fn path:
   # TODO: should avoid mutating nodes
   match path:
     isArrowFunctionExpression ?:
-      Object.assign path.node, {async: true}
+      set_props path.node, {async: true}
 
     isFunctionExpression ?:
-      Object.assign path.node, {async: true}
+      set_props path.node, {async: true}
 
     {parentPath: {}}:
       transform_async path.parentPath

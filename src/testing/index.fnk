@@ -4,10 +4,10 @@
 
 fink2js = fn source, options:
   filename = 'test.fnk'
-  [ast, {errors}] = parse source, filename
+  ast = parse source, filename
 
-  match errors:
-    {length: 0}:
+  match ast:
+    {errors: {length: 0}}:
       {code, errors} = generate ast, filename, source, options
       match errors:
         {length: 0}:
@@ -15,5 +15,5 @@ fink2js = fn source, options:
         else:
           {errors}
     else:
-      {errors}
+      {errors: ast.errors}
 

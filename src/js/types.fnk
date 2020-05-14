@@ -1,11 +1,13 @@
 {
-  variableDeclaration, variableDeclarator, arrayPattern
-  objectPattern, assignmentPattern, forOfStatement, yieldExpression
+  variableDeclaration, variableDeclarator
+  forOfStatement, yieldExpression
   expressionStatement, functionExpression
   blockStatement, identifier, arrowFunctionExpression
   logicalExpression, binaryExpression, unaryExpression
   doExpression, assignmentExpression, isIdentifier
 } = import'@babel/types'
+{ends_with} = import '@fink/std-lib/str'
+
 
 {escape_ident} = import'./identifier'
 
@@ -20,7 +22,7 @@ expr_block = fn ...exprs:
       ...pipe exprs:
         map node:
           match node:
-            {type: ?.endsWith 'Expression'}:
+            {type: ends_with ?, 'Expression'}:
               expressionStatement node
             isIdentifier ?:
               expressionStatement node

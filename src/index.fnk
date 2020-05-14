@@ -58,10 +58,11 @@ generate = fn ast, filename, source, options={}:
   js_ast = transform ast, source, filename, options
 
   match js_ast:
-    {errors: {length: 0}}:
-      babel_generate js_ast, filename, source, options
-    else:
+    {errors: [{}]}:
       {code: '', source_map: '', errors: js_ast.errors}
+    else:
+      babel_generate js_ast, filename, source, options
+
 
 
 

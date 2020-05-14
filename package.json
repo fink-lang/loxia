@@ -34,10 +34,10 @@
     }
   },
   "devDependencies": {
-    "@fink/cli": "^4.0.1",
-    "@fink/jest": "^4.0.0",
-    "@fink/larix": "^8.1.0",
-    "@fink/loxia": "^7.4.0",
+    "@fink/cli": "^5.0.0",
+    "@fink/jest": "^5.0.0",
+    "@fink/larix": "^9.0.0",
+    "@fink/loxia": "^8.0.1",
     "commitizen": "^4.1.2",
     "cz-conventional-changelog": "^3.1.0",
     "jest-cli": "^26.0.1",
@@ -45,8 +45,9 @@
     "semantic-release": "^17.0.7"
   },
   "dependencies": {
-    "@babel/generator": "^7.9.6",
+    "@babel/core": "^7.9.6",
     "@babel/traverse": "^7.9.6",
-    "@babel/types": "^7.9.6"
+    "@babel/types": "^7.9.6",
+    "@fink/std-lib": "^1.0.0"
   }
 }

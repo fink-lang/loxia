@@ -73,6 +73,7 @@ transform_with_comments = fn transform, node, ctx:
   js_node = try_transform transform, node, ctx
   match js_node:
     {error: {}}:
+      # TODO don't use mutable
       ctx.errors.push js_node
       js_node
     else:
@@ -90,6 +91,7 @@ transform_expr = fn node, ctx:
   match transform:
     false:
       err = code_frame_err 'Unknown expression.', node, ctx
+      # TODO don't use mutable
       ctx.errors.push err
       err
     else:
