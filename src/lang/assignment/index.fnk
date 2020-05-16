@@ -5,6 +5,7 @@
   numericLiteral
 } = import '@babel/types'
 {length} = import '@fink/std-lib/iter'
+{wrap_with_comment_loc} = import '../comments'
 
 
 {transform_left} = import '../../js/left'
@@ -73,14 +74,18 @@ slice = fn items, start, end=false:
     start_end
 
 
-transform_spread_right = fn {left, right}, ctx:
+transform_spread_right = fn expr, ctx:
+  {left, right} = expr
   items = ctx.unique_ident 'items'
-  items_init = variableDeclaration
-    'const'
-    list:
-      variableDeclarator
-        arrayPattern [restElement items]
-        transform_value right, ctx
+  # TODO: wrap declarator?
+  items_init = wrap_with_comment_loc
+    variableDeclaration
+      'const'
+      list:
+        variableDeclarator
+          arrayPattern [restElement items]
+          transform_value right, ctx
+    left
 
   len = (length left.exprs) - 1
   idx = find_index left.exprs, fn expr:
@@ -102,7 +107,9 @@ transform_spread_right = fn {left, right}, ctx:
     arrayExpression result_items
 
   doExpression
-    blockStatement [items_init, result]
+    wrap_with_comment_loc
+      blockStatement [items_init, result]
+      left
 
 
 transform_assign = fn node, ctx:
@@ -115,7 +122,6 @@ transform_assign = fn node, ctx:
     else:
       left = transform_left ctx.transform node.left
       right = transform_value node.right, ctx
-      # wrap with loc and comment?
       assignmentExpression '=', left, right
 
 

@@ -12,5 +12,5 @@ transform_call = fn node, ctx:
         else:
           ctx.transform expr
 
-  {...callExpression callee, args}
+  callExpression callee, args
 

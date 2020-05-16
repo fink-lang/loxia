@@ -1,9 +1,10 @@
 {
-  doExpression, blockStatement, isAssignmentExpression, expressionStatement
+  doExpression, blockStatement, isAssignmentExpression, expressionStatement,
+  variableDeclaration, variableDeclarator
 } = import '@babel/types'
 
-{consts} = import '../../js/types'
 {add, any} = import '../context'
+{wrap_with_comment_loc} = import '../comments'
 
 
 block_statement = fn expr, {transform}:
@@ -11,11 +12,19 @@ block_statement = fn expr, {transform}:
 
   match st:
     isAssignmentExpression ?:
-      decl = consts st.left, st.right
-      {...decl, leadingComments: st.leadingComments}
+      # TODO: overlap in sourcemap
+      wrap_with_comment_loc
+        variableDeclaration
+          'const'
+          [variableDeclarator st.left, st.right]
+        expr
+
     else:
       # TODO: check if isExpression ?: ...
-      expressionStatement st
+      wrap_with_comment_loc
+        expressionStatement st
+        expr
+
 
 
 transform_block = fn node, ctx:

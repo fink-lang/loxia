@@ -44,7 +44,11 @@ transform_import = fn node, {transform}:
 
   {right: {right: {exprs: [url]}}} = node
 
-  importDeclaration imports, stringLiteral url.value
+  importDeclaration
+    imports
+    wrap_with_comment_loc
+      stringLiteral url.value
+      node.right.right
 
 
 

@@ -25,12 +25,6 @@ transform = fn node, code, filename, options:
 
 
 babel_generate = fn ast, filename, source, options:
-  # TODO: do we still need this in options
-  # generatorOpts: dict:
-  #   filename
-  #   sourceFileName: filename
-  #   sourceMaps: true
-
   {use_babel_conf, module_type, source_maps, ...rest_opts} = options
   conf_opts = match true:
     use_babel_conf: {}

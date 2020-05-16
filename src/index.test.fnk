@@ -1,6 +1,8 @@
+{describe, it, expect, to_equal, to_match_snapshot} = import '@fink/jest'
+{slice} = import '@fink/std-lib/str'
+
 {generate} = import '.'
 {fink2js} = import './testing'
-{describe, it, expect, to_equal, to_match_snapshot} = import '@fink/jest'
 
 
 describe 'module types', fn:
@@ -68,11 +70,11 @@ describe 'errors', fn:
   it 'errors with bad babel options', fn:
     {errors: [{message}]} = fink2js
       `foo = bar`
-      {use_babel_conf: true, sourceMaps: 'foobar'}
+      {use_babel_conf: true, foobar: 'spam'}
 
     expect
-      message
-      to_equal `.sourceMaps must be a boolean, "inline", "both", or undefined`
+      slice message, 0, 24
+      to_equal `Unknown option: .foobar.`
 
 
   it 'errors when provided with unknown tokens', fn:
