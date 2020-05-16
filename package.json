@@ -26,7 +26,10 @@
     "test": "run jest",
     "jest": "jest --verbose --runInBand --no-cache ",
     "cd": "run clean test build release",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "sm": "run sm:*",
+    "sm:build": "fnk --src ../foo.fnk --out-dir ../ --source-maps inline --module-type 'mjs'",
+    "sm:view": "npx source-map-visualize ../foo.js"
   },
   "config": {
     "commitizen": {

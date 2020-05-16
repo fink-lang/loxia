@@ -298,7 +298,8 @@ exports[`match compiles nested pattern 2`] = `
 `;
 
 exports[`match compiles nested pattern 3`] = `
-"{
+"// spread and ignored elems
+{
   ˆmatch_2: {
     const ˆvalue_1 = shrub;
 
