@@ -1,12 +1,11 @@
 {
   variableDeclaration, variableDeclarator
-  forOfStatement, yieldExpression
+  forOfStatement, yieldExpression, nullLiteral, booleanLiteral
   expressionStatement, functionExpression
   blockStatement, identifier, arrowFunctionExpression
   logicalExpression, binaryExpression, unaryExpression
   doExpression, assignmentExpression, isIdentifier
 } = import'@babel/types'
-{ends_with} = import '@fink/std-lib/str'
 {length} = import '@fink/std-lib/iter'
 
 
@@ -48,9 +47,10 @@ eq = fn left, right: binaryExpression '===', left, right
 
 undef = fn: identifier 'undefined'
 
-nul = fn: identifier 'null'
+nul = fn: nullLiteral()
 
-true_ = fn: identifier 'true'
+true_ = fn: booleanLiteral true
+false_ = fn: booleanLiteral false
 
 
 not_nullish = fn value:
