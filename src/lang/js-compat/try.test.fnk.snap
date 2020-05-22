@@ -8,7 +8,7 @@ exports[`try compiles 1`] = `
     const bar = shrub();
     _do_result = [null, bar + ni()];
   } catch (ˆerror_1) {
-    _do_result = [ˆerror_1, null];
+    _do_result = [ˆerror_1, false];
   }
 
   const [err, item] = _do_result;
@@ -18,6 +18,6 @@ exports[`try compiles 1`] = `
 export const foo2 = () => try {
   return [null, throw new Error(\`foobar\`)];
 } catch (ˆerror_2) {
-  return [ˆerror_2, null];
+  return [ˆerror_2, false];
 };"
 `;
