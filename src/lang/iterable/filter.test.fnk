@@ -10,11 +10,11 @@ describe 'filter', fn:
           item % 2 == 0
 
         filter [a, ...b]:
-          a_alone = a && 0 == length b
+          a_alone = a and 0 == length b
           a_alone
 
         filter [...a, b]:
-          b && 0 == length a
+          b and 0 == length a
       `
       to_match_snapshot
 

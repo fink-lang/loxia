@@ -39,11 +39,11 @@ transform_value = fn node, {transform}:
 
 
 transform_partial = fn {value}, {partial_ident}:
-  name = match partial_ident || null:
-    null:
-      escape_ident value
-    else:
+  name = match partial_ident:
+    {name: {}}:
       partial_ident.name
+    else:
+      escape_ident value
 
   identifier name
 

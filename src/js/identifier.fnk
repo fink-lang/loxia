@@ -1,5 +1,7 @@
-{char_code, slice, matches} = import '@fink/std-lib/str'
+{char_code, slice} = import '@fink/std-lib/str'
+{matches} = import '@fink/std-lib/regex'
 {length} = import '@fink/std-lib/iter'
+{base_n} = import '@fink/std-lib/num'
 
 
 check_ident = rx/
@@ -179,15 +181,16 @@ check_ident = rx/
 
 var_prefix = 'ˆ'
 
-# TODO should live in std-lib
-str_36 = fn obj: obj.toString 36
+str_36 = base_n ?, 36
 
 
 replace_chars = fn name, idx=0:
   prefixed_name = `${var_prefix}${name}`
 
-  match matches prefixed_name, check_ident:
-    {length: 0}:
+  match  prefixed_name:
+    matches ?, check_ident:
+      prefixed_name
+    else:
       char_replacement = str_36 char_code name, idx
 
       start = slice name, 0, idx
@@ -195,12 +198,12 @@ replace_chars = fn name, idx=0:
       new_name = `${start}${char_replacement}${end}`
 
       replace_chars new_name, idx + length char_replacement
-    else:
-      prefixed_name
 
 
 escape_ident = fn name:
-  match matches name, check_ident:
-    {length: 0}: replace_chars name
-    else: name
+  match name:
+    matches ?, check_ident:
+      name
+    else:
+      replace_chars name
 

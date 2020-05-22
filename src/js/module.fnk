@@ -6,6 +6,8 @@
 } = import '@babel/types'
 
 
+[no_result] = []
+
 
 transform_specifiers = fn {specifiers, source}:
   init = callExpression
@@ -41,7 +43,7 @@ transform_specifiers = fn {specifiers, source}:
 module_transforms = dict:
   ImportDeclaration: fn path:
     path.replaceWith transform_specifiers path.node
-    null
+    no_result
 
   ExportDefaultDeclaration: fn path:
     id = path.node.declaration;
@@ -55,7 +57,7 @@ module_transforms = dict:
 
     path.insertAfter foo
     path.remove()
-    null
+    no_result
 
   ExportNamedDeclaration: fn path:
     {declarations: [{id}]} = path.node.declaration;
@@ -69,4 +71,4 @@ module_transforms = dict:
 
     path.insertAfter foo
     path.replaceWith path.node.declaration
-    null
+    no_result

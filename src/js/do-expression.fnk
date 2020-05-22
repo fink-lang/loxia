@@ -5,7 +5,7 @@
   isReturnStatement, arrowFunctionExpression, callExpression
 } = import '@babel/types'
 {set_props} = import '@fink/std-lib/obj'
-{for_each} = import '@fink/std-lib/iter'
+{for_each, length} = import '@fink/std-lib/iter'
 {wrap_with_comment_loc} = import '../lang/comments'
 
 
@@ -13,7 +13,9 @@
 
 get_body = fn path: path.get 'body'
 
-consume_all = for_each fn: null
+[no_result] = []
+
+consume_all = for_each fn: no_result
 
 
 simple = fn body, sl=false:
@@ -22,7 +24,7 @@ simple = fn body, sl=false:
       [stmnt, ...rest] = get_body body
 
       match rest:
-        {length: 0}:
+        0 == length ?:
           # e.g. fn arg: match ...: ...
           match {sl, stmnt}:
             {sl: true, stmnt: isLabeledStatement ?}:
@@ -74,11 +76,11 @@ last_expressions = fn path:
               else:
                 # TODO: don't use mutation
                 items.push last
-            null
+            no_result
       items
 
-    # TODO: isTryStatement ?:
     else:
+      # isTryStatement
       block = path.get'block'
       handler = path.get 'handler'
       body = get_body handler
@@ -171,4 +173,4 @@ transform_do_expr = fn path:
       path.replaceWith
         callExpression arrow, []
 
-  null
+  no_result

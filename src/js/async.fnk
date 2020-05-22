@@ -1,6 +1,8 @@
-
 {isArrowFunctionExpression, isFunctionExpression} = import '@babel/types'
 {set_props} = import '@fink/std-lib/obj'
+
+
+[no_result] = []
 
 
 transform_async = fn path:
@@ -14,4 +16,5 @@ transform_async = fn path:
 
     {parentPath: {}}:
       transform_async path.parentPath
-  null
+
+  no_result

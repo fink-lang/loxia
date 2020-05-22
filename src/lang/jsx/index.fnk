@@ -24,10 +24,10 @@ transform_jsx_attr = fn node, {transform}:
   id = jsxIdentifier node.name
 
   value = match node:
-    {value: {}}: transform node.value
-    else: null
+    {value: {}}: [transform node.value]
+    else: []
 
-  jsxAttribute id, value
+  jsxAttribute id, ...value
 
 
 transform_jsx_str = fn node:

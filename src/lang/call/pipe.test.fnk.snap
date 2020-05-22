@@ -2,7 +2,7 @@
 
 exports[`pipe compiles 1`] = `
 "{
-  let ˆpipe_result_1 = null;
+  let ˆpipe_result_1 = undefined;
   ˆpipe_result_1 = foo(ˆpipe_result_1);
 
   ˆpipe_result_1 = ((ˆ1r) => bar(ˆ1r, {

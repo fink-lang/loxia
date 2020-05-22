@@ -3,6 +3,8 @@
   expressionStatement, doExpression, nullLiteral, isDoExpression
 } = import '@babel/types'
 
+{false_} = import '../../js/types'
+
 {transform_block} = import '../block'
 
 
@@ -18,7 +20,7 @@ transform_try = fn node, ctx:
   try_block = blockStatement list:
     ...expressions
     expressionStatement
-      arrayExpression [nullLiteral(), last_expr.expression || last_expr]
+      arrayExpression [nullLiteral(), last_expr.expression or last_expr]
 
 
   catch_block = catchClause
@@ -26,7 +28,7 @@ transform_try = fn node, ctx:
     blockStatement list:
       expressionStatement
         # TODO: should return undef or better false?
-        arrayExpression [err, nullLiteral()]
+        arrayExpression [err, false_()]
 
 
   doExpression

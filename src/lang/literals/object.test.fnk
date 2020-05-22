@@ -27,7 +27,7 @@ describe 'object', fn:
       to_match_snapshot
     expect
       fink2js `
-        obj7 = {a: 123, b: 123 && 123 && 1345, c: fn a, b: 134}
+        obj7 = {a: 123, b: 123 and 123 and 1345, c: fn a, b: 134}
       `
       to_match_snapshot
 
@@ -37,8 +37,8 @@ describe 'object', fn:
           a: 123
 
           b: 123
-            && 123
-            && 1345
+            and 123
+            and 1345
 
           c: fn a, b: 134
 
@@ -52,8 +52,8 @@ describe 'object', fn:
           a: 123
 
           b: 123
-            && 123
-            && 1345
+            and 123
+            and 1345
 
           c: fn a, b: 134
 

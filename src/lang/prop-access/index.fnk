@@ -9,7 +9,7 @@ transform_member = fn {left, right}, {transform}:
     {type: 'ident'}: identifier right.value
     else: transform right
 
-  computed = (right.type == 'string' || right.type == 'group')
+  computed = right.type in ['string', 'group']
 
   memberExpression memb_left, memb_right, computed
 

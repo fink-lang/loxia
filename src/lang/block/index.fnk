@@ -2,6 +2,7 @@
   doExpression, blockStatement, isAssignmentExpression, expressionStatement,
   variableDeclaration, variableDeclarator
 } = import '@babel/types'
+{length} = import '@fink/std-lib/iter'
 
 {add, any} = import '../context'
 {wrap_with_comment_loc} = import '../comments'
@@ -12,7 +13,6 @@ block_statement = fn expr, {transform}:
 
   match st:
     isAssignmentExpression ?:
-      # TODO: overlap in sourcemap
       wrap_with_comment_loc
         variableDeclaration
           'const'
@@ -20,7 +20,6 @@ block_statement = fn expr, {transform}:
         expr
 
     else:
-      # TODO: check if isExpression ?: ...
       wrap_with_comment_loc
         expressionStatement st
         expr
@@ -31,7 +30,7 @@ transform_block = fn node, ctx:
   {exprs} = node
 
   match exprs:
-    {length: 1}:
+    1 == length ?:
       [expr] = exprs
       ctx.transform expr
     else:

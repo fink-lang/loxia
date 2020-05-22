@@ -46,7 +46,7 @@ describe 'errors', fn:
         1| foo = [
                   ^
 
-        Expected ',' or indented new line or ']'.
+        Expected ',' or indented(>=1) new line or ']'.
         `
 
   it 'errors with code snippet', fn:

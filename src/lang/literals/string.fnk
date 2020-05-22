@@ -1,14 +1,17 @@
 {templateElement, templateLiteral, taggedTemplateExpression} = import '@babel/types'
-{replace} = import '@fink/std-lib/str'
+{replace_all} = import '@fink/std-lib/regex'
+
+
+not_tagged = {tagged: false}
 
 
 transform_string = fn node, {transform}:
-  {exprs: parts, tag=null} = node
+  {exprs: parts, tag=not_tagged} = node
 
   [...quasies] = pipe parts:
     filter part: part.type == 'string:text'
     map part:
-      templateElement {raw: replace part.value, rx/\\([\s\S])|(`)/g, '\\$1$2'}
+      templateElement {raw: replace_all part.value, rx/\\([\s\S])|(`)/, '\\$1$2'}
 
   [...expressions] = pipe parts:
     filter part: part.type != 'string:text'
@@ -17,7 +20,8 @@ transform_string = fn node, {transform}:
   templ_str = templateLiteral quasies, expressions
 
   match tag:
-    null: templ_str
+    not_tagged:
+      templ_str
     else:
       taggedTemplateExpression
         transform node.tag

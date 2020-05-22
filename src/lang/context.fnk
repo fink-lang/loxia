@@ -1,9 +1,10 @@
 any = false
 
+
 add = fn type, op, transformer: fn {transformers, ...ctx}:
   next_transformers = dict:
     ...transformers
-    (type || op): transformer
+    (type or op): transformer
 
   {transformers: next_transformers, ...ctx}
 
