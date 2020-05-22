@@ -1,4 +1,5 @@
 {callExpression} = import'@babel/types'
+{length} = import'@fink/std-lib/iter'
 
 {assign, lets, expr_block, nul} = import '../../js/types'
 {transform_value} = import '../partial'
@@ -10,7 +11,7 @@ transform_pipe = fn node, ctx:
   {exprs} = node
 
   start_value = match node.args:
-    {length: 0}:
+    0 == length ?:
       # TODO: should be undef or no arg passed to first call
       nul()
     else:

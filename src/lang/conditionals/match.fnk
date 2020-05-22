@@ -4,6 +4,7 @@
   doExpression, stringLiteral, memberExpression, restElement
   identifier
 } = import '@babel/types'
+{length} = import '@fink/std-lib/iter'
 
 {and, eq, not_nullish, typof, consts} = import '../../js/types'
 
@@ -46,7 +47,7 @@ match_props = fn props, emit_result, ctx, cond:
       prop.right
 
   emit = match props:
-    {length: 1}: emit_result
+    1 == length ?: emit_result
     else: fn: match_props rest, emit_result, ctx, cond
 
   match_condition id, value, emit, ctx, cond
@@ -71,7 +72,7 @@ match_obj = fn value, obj, emit_result, ctx, cond:
   ifStatement
     not_nullish value
     match id_props:
-      {length: 0}:
+      0 == length ?:
         emit_result()
       else:
         blockStatement list:
@@ -84,7 +85,7 @@ match_elems = fn elems, emit_result, ctx, cond:
   [{id, value}, ...rest] = elems
 
   emit = match elems:
-    {length: 1}: emit_result
+    1 == length ?: emit_result
     else: fn: match_elems rest, emit_result, ctx, cond
 
   match_condition id, value, emit, ctx, cond
@@ -143,7 +144,7 @@ match_array = fn value, arr, emit_result, ctx, cond:
   ifStatement
     is_iterable value
     match id_elems:
-      {length: 0}:
+      0 == length ?:
         emit_result()
       else:
         blockStatement list:

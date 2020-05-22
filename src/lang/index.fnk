@@ -1,7 +1,9 @@
+{count} = import '@fink/std-lib/iter'
+
 {ident, wrap} = import '../js/types'
 {var_prefix} = import '../js/identifier'
 
-{code_frame_err} = import './errors'
+{transform_error} = import './errors'
 {get_transformer} = import './context'
 
 {add_assignment} = import './assignment'
@@ -51,7 +53,6 @@ add_transformers = fn ctx:
 
 
 wrap_node = fn ctx, js_node, node:
-  # TODO: some nodes have location data
   match ctx:
     {wrap: 'loc'}:
       wrap node, js_node
@@ -63,10 +64,11 @@ try_transform = fn transform, node, ctx:
   [err, js_node] = try: transform node, ctx
 
   match err:
+    # TODO: don't use null
     null:
       js_node
     else:
-      code_frame_err err, node, ctx
+      transform_error err, node, ctx
 
 
 transform_with_comments = fn transform, node, ctx:
@@ -83,14 +85,14 @@ transform_with_comments = fn transform, node, ctx:
 transform_expr = fn node, ctx:
   transform_ctx = dict:
     ...ctx
-    transform: fn next_node, next_ctx:
-      transform_expr next_node, next_ctx || transform_ctx
+    transform: fn next_node, next_ctx=transform_ctx:
+      transform_expr next_node, next_ctx
 
   transform = get_transformer node, ctx
 
   match transform:
     false:
-      err = code_frame_err 'Unknown expression.', node, ctx
+      err = transform_error 'Unknown expression.', node, ctx
       # TODO don't use mutable
       ctx.errors.push err
       err
@@ -99,9 +101,7 @@ transform_expr = fn node, ctx:
 
 
 init_ctx = fn code, filename:
-  id_cntr = pipe 0:
-    unfold id:
-      id + 1
+  id_cntr = count 1
 
   ctx = dict:
     filename

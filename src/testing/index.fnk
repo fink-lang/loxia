@@ -1,4 +1,6 @@
 {parse} = import '@fink/larix'
+{length} = import '@fink/std-lib/iter'
+
 {generate} = import '..'
 
 
@@ -7,10 +9,10 @@ fink2js = fn source, options:
   ast = parse source, filename
 
   match ast:
-    {errors: {length: 0}}:
+    {errors: 0 == length ?}:
       {code, errors} = generate ast, filename, source, options
       match errors:
-        {length: 0}:
+        0 == length ?:
           code
         else:
           {errors}

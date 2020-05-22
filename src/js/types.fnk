@@ -7,6 +7,7 @@
   doExpression, assignmentExpression, isIdentifier
 } = import'@babel/types'
 {ends_with} = import '@fink/std-lib/str'
+{length} = import '@fink/std-lib/iter'
 
 
 {escape_ident} = import'./identifier'
@@ -22,8 +23,9 @@ expr_block = fn ...exprs:
       ...pipe exprs:
         map node:
           match node:
-            {type: ends_with ?, 'Expression'}:
-              expressionStatement node
+            # TODO: was used, why not anymore?
+            # {type: ends_with ?, 'Expression'}:
+            #   expressionStatement node
             isIdentifier ?:
               expressionStatement node
             else: node
@@ -34,7 +36,7 @@ typof = fn value: unaryExpression 'typeof', value
 
 and = fn left, ...rest:
   match rest:
-    {length: ? > 0}:
+    0 < length ?:
       logicalExpression '&&', left, and ...rest
     else:
       left
@@ -57,33 +59,19 @@ not_nullish = fn value:
   and not_undef, not_null
 
 
-ident = fn name:
-  match name:
-    # TODO: typeof name == 'string': identifier escape_ident name or
-    {constructor: String}: identifier escape_ident name
-    else:
-      # {type: 'Identifier'}
-      # {type: 'ObjectPattern'}
-      # {type: 'ArrayPattern'}
-      # {type: 'AssignmentPattern'}
-      name
+ident = fn name: identifier escape_ident name
 
 
-declarator = fn id, init:
-  decl_id = ident id
-  variableDeclarator decl_id, init
-
-
-consts = fn id, init:
+consts = fn left, init:
   variableDeclaration
     'const'
-    [declarator id, init]
+    [variableDeclarator left, init]
 
 
-lets = fn id, init:
+lets = fn left, init:
   variableDeclaration
     'let'
-    [declarator id, init]
+    [variableDeclarator left, init]
 
 
 assign = fn left, right:

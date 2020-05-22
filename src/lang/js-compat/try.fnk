@@ -18,7 +18,7 @@ transform_try = fn node, ctx:
   try_block = blockStatement list:
     ...expressions
     expressionStatement
-      arrayExpression [nullLiteral(), last_expr.expression || last_expr]
+      arrayExpression [nullLiteral(), last_expr.expression or last_expr]
 
 
   catch_block = catchClause

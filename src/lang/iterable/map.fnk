@@ -1,3 +1,5 @@
+{length} = import '@fink/std-lib/iter'
+
 {generator, for_of, lets, assign} = import '../../js/types'
 
 {block_statement} = import '../block'
@@ -9,7 +11,7 @@ get_accs = fn node, last_expr, ctx:
   [, acc_arg] = node.args
 
   match node.args:
-    {length: 2}:
+    2 == length ?:
       acc = unique_ident 'accu'
       acc_init = lets acc, transform acc_arg.right
 

@@ -1,4 +1,7 @@
 {whileStatement, blockStatement} = import '@babel/types'
+{length} = import '@fink/std-lib/iter'
+
+
 {assign, generator, true_, lets} = import '../../js/types'
 
 {block_statement} = import '../block'
@@ -30,7 +33,7 @@ get_acc_exprs = fn node, next_value, ctx:
 
 get_accs = fn node, next_value, ctx:
   match node.args:
-    {length: 0}:
+    0 == length ?:
       [[], [], [], []]
     else:
       get_acc_exprs node, next_value, ctx

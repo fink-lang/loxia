@@ -66,6 +66,7 @@ describe 'match', fn:
       to_match_snapshot
 
     expect
+      # TODO: example without JS API
       fink2js `
         # spread and ignored elems
         match shrub:
@@ -95,7 +96,7 @@ describe 'match', fn:
       fink2js `
         match {spam: 123}:
           # simple unary
-          !?: ni
+          not ?: ni
 
           # simple binary
           ? > 123: ni
@@ -108,7 +109,7 @@ describe 'match', fn:
 
 
           # nested unary
-          {spam: !?}: ni
+          {spam: not ?}: ni
 
           # nested binary
           {spam: ? > 123}: ni
@@ -124,7 +125,7 @@ describe 'match', fn:
 
 
           # nested unary
-          [!?]: ni
+          [not ?]: ni
 
           # nested binary
           [? > 123]: ni
