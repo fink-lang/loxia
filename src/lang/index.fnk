@@ -67,6 +67,7 @@ try_transform = fn transform, node, ctx:
     # TODO: don't use null
     null:
       js_node
+    # istanbul ignore next
     false:
       js_node
     else:
