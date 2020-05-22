@@ -67,6 +67,8 @@ try_transform = fn transform, node, ctx:
     # TODO: don't use null
     null:
       js_node
+    false:
+      js_node
     else:
       transform_error err, node, ctx
 

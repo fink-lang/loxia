@@ -39,7 +39,7 @@ transform_spread_left = fn {left}, {transform}:
           [before, expr.right, end]
 
         {type: 'spread'}:
-          [before, null, end]
+          [before, {type: 'empty'}, end]
 
         else:
           match middle:

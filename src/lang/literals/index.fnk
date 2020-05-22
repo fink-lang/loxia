@@ -18,3 +18,4 @@ add_literals = fn ctx:
     add 'object', any, transform_object
     add 'object:prop', any, transform_prop
     add 'literal', any, transform_keyword
+    add 'literal', any, transform_keyword

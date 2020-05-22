@@ -43,7 +43,10 @@ babel_generate = fn ast, filename, source, options:
     {code, source_map, errors: []}
 
   match error:
+    # TODO remove once using next release
     null:
+      result
+    false:
       result
     else:
       {code: '', source_map: '', errors: [error]}

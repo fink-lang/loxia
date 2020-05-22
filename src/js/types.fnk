@@ -47,14 +47,13 @@ eq = fn left, right: binaryExpression '===', left, right
 
 undef = fn: identifier 'undefined'
 
-nul = fn: nullLiteral()
 
 true_ = fn: booleanLiteral true
 false_ = fn: booleanLiteral false
 
 
 not_nullish = fn value:
-  not_null = neq value, nul()
+  not_null = neq value, nullLiteral()
   not_undef = neq value, undef()
   and not_undef, not_null
 

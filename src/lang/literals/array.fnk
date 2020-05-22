@@ -5,7 +5,6 @@ transform_array = fn node, {transform}:
   [...elems] = pipe node.exprs:
     map elem:
       match elem:
-        null: null
         {type: 'empty'}: null
         else: transform elem
 

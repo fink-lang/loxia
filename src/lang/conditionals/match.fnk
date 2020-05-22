@@ -91,13 +91,14 @@ match_elems = fn elems, emit_result, ctx, cond:
   match_condition id, value, emit, ctx, cond
 
 
+
 get_array_decl = fn arr, id_elems, right, ctx:
   [...exprs] = pipe id_elems:
     map {id, value}:
       match value:
         # e.g. empty elems in [,, foo, bar]
         {type: 'empty'}:
-          null
+          value
 
         # e.g. spread in [foo, ...bar, spam]
         {type: 'spread', right: {}}:

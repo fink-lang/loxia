@@ -13,7 +13,9 @@
 
 get_body = fn path: path.get 'body'
 
-consume_all = for_each fn: null
+[no_result] = []
+
+consume_all = for_each fn: no_result
 
 
 simple = fn body, sl=false:
@@ -74,7 +76,7 @@ last_expressions = fn path:
               else:
                 # TODO: don't use mutation
                 items.push last
-            null
+            no_result
       items
 
     else:
@@ -171,4 +173,4 @@ transform_do_expr = fn path:
       path.replaceWith
         callExpression arrow, []
 
-  null
+  no_result
