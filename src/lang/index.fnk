@@ -64,10 +64,6 @@ try_transform = fn transform, node, ctx:
   [err, js_node] = try: transform node, ctx
 
   match err:
-    # TODO: don't use null
-    null:
-      js_node
-    # istanbul ignore next
     false:
       js_node
     else:
