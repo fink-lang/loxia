@@ -6,9 +6,9 @@ exports[`try compiles 1`] = `
 
   try {
     const bar = shrub();
-    _do_result = [null, bar + ni()];
+    _do_result = [false, bar + ni()];
   } catch (ˆerror_1) {
-    _do_result = [ˆerror_1, false];
+    _do_result = [ˆerror_1];
   }
 
   const [err, item] = _do_result;
@@ -16,8 +16,8 @@ exports[`try compiles 1`] = `
   return [item, err];
 };
 export const foo2 = () => try {
-  return [null, throw new Error(\`foobar\`)];
+  return [false, throw new Error(\`foobar\`)];
 } catch (ˆerror_2) {
-  return [ˆerror_2, false];
+  return [ˆerror_2];
 };"
 `;
