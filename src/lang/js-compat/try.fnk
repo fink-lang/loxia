@@ -1,6 +1,6 @@
 {
   tryStatement, blockStatement, catchClause, arrayExpression
-  expressionStatement, doExpression, nullLiteral, isDoExpression
+  expressionStatement, doExpression, isDoExpression
 } = import '@babel/types'
 
 {false_} = import '../../js/types'
@@ -20,15 +20,14 @@ transform_try = fn node, ctx:
   try_block = blockStatement list:
     ...expressions
     expressionStatement
-      arrayExpression [nullLiteral(), last_expr.expression or last_expr]
+      arrayExpression [false_(), last_expr.expression or last_expr]
 
 
   catch_block = catchClause
     err
     blockStatement list:
       expressionStatement
-        # TODO: should return undef or better false?
-        arrayExpression [err, false_()]
+        arrayExpression [err]
 
 
   doExpression
