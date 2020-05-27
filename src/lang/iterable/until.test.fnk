@@ -1,0 +1,26 @@
+{fink2js} = import '../../testing'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest'
+
+
+describe 'while', fn:
+  it 'compiles', fn:
+    expect
+      fink2js `
+        until item:
+          item < 10
+      `
+      to_match_snapshot
+
+
+  it 'compiles destructuring', fn:
+    expect
+      fink2js `
+        until [foo, ...bar]:
+          foo_alone = foo and 0 == length bar
+          foo_alone
+
+        until [...foo, bar]:
+          bar and 0 == length foo
+      `
+      to_match_snapshot
+

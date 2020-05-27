@@ -4,6 +4,7 @@
 {transform_map} = import './map'
 {transform_filter} = import './filter'
 {transform_while} = import './while'
+{transform_until} = import './until'
 {transform_find} = import './find'
 
 
@@ -14,4 +15,5 @@ add_iterables = fn ctx:
     add any, 'map', transform_map
     add any, 'filter', transform_filter
     add any, 'while', transform_while
+    add any, 'until', transform_until
     add any, 'find', transform_find
