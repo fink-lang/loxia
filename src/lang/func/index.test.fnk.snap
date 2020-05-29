@@ -1,11 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`func compiles 1`] = `
-"export const fun1 = (a, b = 12, ...d) => a + b + c;
-export const fun2 = (b) => b * 2;
-export const fun3 = () => \`shrub\`;
-export const fun4 = () => \`shrub\`;
-export const fun5 = (c) => (d, e) => {
+exports[`func compiles defaults 1`] = `
+"export const fun = (a, b = 12, c) => {
+  shrub(...a);
+  foo();
+  return bar();
+};"
+`;
+
+exports[`func compiles empty arg 1`] = `"export const fun = (a, ˆ, b) => b;"`;
+
+exports[`func compiles func of func 1`] = `
+"export const fun5 = (c) => (d, e) => {
   const ˆvalue_1 = [d, e];
 
   if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
@@ -21,25 +27,26 @@ export const fun5 = (c) => (d, e) => {
       return 1 / c;
     }
   }
-};
-export const fun6 = (c, d) => {
+};"
+`;
+
+exports[`func compiles other 1`] = `
+"export const fun = (c, d) => {
   const x = 123;
   {
-    const ˆvalue_7 = ni;
+    const ˆvalue_1 = ni;
 
-    if (ˆvalue_7 === c + x) {
+    if (ˆvalue_1 === c + x) {
       return d;
     }
 
-    if (ˆvalue_7 === c + 1) {
+    if (ˆvalue_1 === c + 1) {
       return d + 1;
     }
   }
-};
-export const fun7 = (a, b = 12, c) => {
-  shrub(...a);
-  foo();
-  return bar();
-};
-export const fun8 = (a, ˆ, b) => b;"
+};"
 `;
+
+exports[`func compiles single line 1`] = `"export const fun = () => \`shrub\`;"`;
+
+exports[`func compiles spread 1`] = `"export const fun = (a, b = 12, ...d) => a + b + c;"`;

@@ -10,6 +10,7 @@ transform_func = fn node, ctx:
     map arg:
       match arg:
         {type: 'empty'}:
+          # TODO should we be consistent with object destruct using unique_ident
           identifier 'ˆ'
         else:
           transform_left ctx.transform arg

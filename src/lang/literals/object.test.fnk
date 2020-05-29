@@ -25,11 +25,13 @@ describe 'object', fn:
     expect
       fink2js `obj = {a: 1, b: 123, 'c-d-e': cde}`
       to_match_snapshot
+
     expect
       fink2js `
         obj7 = {a: 123, b: 123 and 123 and 1345, c: fn a, b: 134}
       `
       to_match_snapshot
+
 
   it 'compiles multiline', fn:
     expect
@@ -81,15 +83,24 @@ describe 'destructuring object', fn:
       fink2js `{a, b, c} = ni`
       to_match_snapshot
 
+
   it 'compiles spread', fn:
     expect
       fink2js `{e, ...f} = {e: 0, foo: 12, bar: 34}`
       to_match_snapshot
 
+
+  it 'compiles empty', fn:
+    expect
+      fink2js `{foo: _ , bar} = {foo: 12, bar: 34}`
+      to_match_snapshot
+
+
   it 'compiles defaults', fn:
     expect
       fink2js `{x=1, ni: {y, z}} = {ni: {y: 1, z: 2}}`
       to_match_snapshot
+
 
   it 'compiles computed keys', fn:
     expect

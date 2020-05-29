@@ -388,6 +388,11 @@ exports[`match compiles patial application 1`] = `
       break ˆmatch_2;
     }
 
+    if (ˆvalue_1()) {
+      ni;
+      break ˆmatch_2;
+    }
+
     // simple as call arg
     if (shrub(ˆvalue_1)) {
       ni;
@@ -433,14 +438,36 @@ exports[`match compiles patial application 1`] = `
       }
     }
 
-    // nested member call
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
         \\"spam\\": ˆp_6
       } = ˆvalue_1;
 
+      if (ˆp_6()) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    // nested member call
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        \\"spam\\": ˆp_7
+      } = ˆvalue_1;
+
       // nested member call
-      if (ˆp_6.is_foo()) {
+      if (ˆp_7.is_foo()) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        \\"spam\\": ˆp_8
+      } = ˆvalue_1;
+
+      if (ˆp_8.is_foo()) {
         ni;
         break ˆmatch_2;
       }
@@ -449,11 +476,11 @@ exports[`match compiles patial application 1`] = `
     // nested as call arg
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"spam\\": ˆp_7
+        \\"spam\\": ˆp_9
       } = ˆvalue_1;
 
       // nested as call arg
-      if (is_foo(ˆp_7)) {
+      if (is_foo(ˆp_9)) {
         ni;
         break ˆmatch_2;
       }
@@ -461,10 +488,10 @@ exports[`match compiles patial application 1`] = `
 
     // nested unary
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_8] = ˆvalue_1;
+      const [ˆa_10] = ˆvalue_1;
 
       // nested unary
-      if (!ˆa_8) {
+      if (!ˆa_10) {
         ni;
         break ˆmatch_2;
       }
@@ -472,10 +499,10 @@ exports[`match compiles patial application 1`] = `
 
     // nested binary
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_9] = ˆvalue_1;
+      const [ˆa_11] = ˆvalue_1;
 
       // nested binary
-      if (ˆa_9 > 123) {
+      if (ˆa_11 > 123) {
         ni;
         break ˆmatch_2;
       }
@@ -483,10 +510,19 @@ exports[`match compiles patial application 1`] = `
 
     // nested call
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_10] = ˆvalue_1;
+      const [ˆa_12] = ˆvalue_1;
 
       // nested call
-      if (ˆa_10()) {
+      if (ˆa_12()) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_13] = ˆvalue_1;
+
+      if (ˆa_13()) {
         ni;
         break ˆmatch_2;
       }
@@ -494,10 +530,19 @@ exports[`match compiles patial application 1`] = `
 
     // nested member call
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_11] = ˆvalue_1;
+      const [ˆa_14] = ˆvalue_1;
 
       // nested member call
-      if (ˆa_11.is_foo()) {
+      if (ˆa_14.is_foo()) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_15] = ˆvalue_1;
+
+      if (ˆa_15.is_foo()) {
         ni;
         break ˆmatch_2;
       }
@@ -505,10 +550,10 @@ exports[`match compiles patial application 1`] = `
 
     // nested as call arg
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_12] = ˆvalue_1;
+      const [ˆa_16] = ˆvalue_1;
 
       // nested as call arg
-      if (is_foo(ˆa_12)) {
+      if (is_foo(ˆa_16)) {
         ni;
         break ˆmatch_2;
       }

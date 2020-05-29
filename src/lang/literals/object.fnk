@@ -23,13 +23,21 @@ get_key = fn {left: key}, ctx:
       [false, str_key key]
 
 
+get_value = fn {right}, ctx:
+  match right:
+    {type: 'empty'}:
+      ctx.unique_ident 'unused'
+    else:
+      ctx.transform right
+
+
 transform_prop = fn node, ctx:
   match node:
     {left: {type: 'spread'}}:
       ctx.transform node.left
     else:
       [computed, key] = get_key node, ctx
-      value = ctx.transform node.right
+      value = get_value node, ctx
 
       shorthand = node.left == node.right
 
