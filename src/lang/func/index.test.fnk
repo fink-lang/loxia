@@ -3,38 +3,64 @@
 
 
 describe 'func', fn:
-  it 'compiles', fn:
+  it 'compiles spread', fn:
     expect
       fink2js `
-        fun1 = fn a, b=12, ...d: a + b + c
+        fun = fn a, b=12, ...d: a + b + c
+        `
+      to_match_snapshot
 
-        fun2 = fn b:
-          b * 2
 
-        fun3 = fn: 'shrub'
-        fun4 = fn:
-          'shrub'
+  it 'compiles single line', fn:
+    expect
+      fink2js `
+        fun = fn: 'shrub'
+        `
+      to_match_snapshot
 
+
+  it 'compiles func of func', fn:
+    expect
+      fink2js `
         fun5 = fn c: fn d, e:
           match [d, e]:
             [1, 2]: c
             [2, 1]: 1/c
+        `
+      to_match_snapshot
 
-        fun6 = fn c, d:
+
+  it 'compiles other', fn:
+    expect
+      fink2js `
+        fun = fn c, d:
           x = 123
           match ni:
             c + x: d
             c + 1: d + 1
+        `
+      to_match_snapshot
 
-        fun7 = fn a, b=12, c:
+
+  it 'compiles defaults', fn:
+    expect
+      fink2js `
+        fun = fn a, b=12, c:
           shrub ...a
           foo ()
           bar _
-
-        fun8 = fn a,,b:
-          b
-      `
+        `
       to_match_snapshot
+
+
+  it 'compiles empty arg', fn:
+    expect
+      fink2js `
+        fun = fn a, ,b:
+          b
+        `
+      to_match_snapshot
+
 
 
 
