@@ -63,7 +63,7 @@ last_expressions = fn path:
       body.traverse
         dict:
           LabeledStatement: fn nested_match:
-            nested_match.skip()
+            nested_match.skip ()
 
           BreakStatement: fn brk:
             last = brk.getSibling brk.key - 1
@@ -72,7 +72,7 @@ last_expressions = fn path:
               {expression: {operator: 'throw'}}:
                 last.replaceWith
                   expressionStatement last.node.expression
-                brk.remove()
+                brk.remove ()
               else:
                 # TODO: don't use mutation
                 items.push last
@@ -109,7 +109,7 @@ replace_with_return = fn path:
       match {sibl}:
         # istanbul ignore else
         {sibl: {}}:
-          sibl.remove()
+          sibl.remove ()
 
     consume_all
 
@@ -122,7 +122,7 @@ replace_with_assign = fn target, path:
   # TODO: needs loc
   target.parentPath.insertBefore lets id
   target.parentPath.insertBefore simple get_body path
-  target.parentPath.insertAfter assign id, undef()
+  target.parentPath.insertAfter assign id, undef ()
 
   pipe last_expressions path:
     map expr:

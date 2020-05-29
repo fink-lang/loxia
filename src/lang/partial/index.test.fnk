@@ -9,15 +9,9 @@ describe 'partial', fn:
         foo1 = a * ? + 1
         foo2 = bar ?
         foo3 = ?.bar spam
-        foo4 = ?()
-        foo5 = ? bar, spam
-      `
-      to_match_snapshot
-
-    expect
-      fink2js `
-        foo1 = bar(?)
-        foo2 = ?(bar, spam)
+        foo4 = ? ()
+        foo5 = ? _
+        foo6 = ? bar, spam
       `
       to_match_snapshot
 

@@ -5,6 +5,7 @@ exports[`await compiles 1`] = `
 export const task2 = async (foo) => await (foo + 4);
 export const task3 = async (foo) => {
   const bar = await foo();
+  const spam = await foo();
   return bar + 123;
 };
 export const a_gen = async function* unfold(ˆinitial_2) {

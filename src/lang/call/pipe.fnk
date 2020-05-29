@@ -12,7 +12,7 @@ transform_pipe = fn node, ctx:
 
   start_value = match node.args:
     0 == length ?:
-      undef()
+      undef ()
     else:
       [arg] = node.args
       transform arg

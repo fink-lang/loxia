@@ -53,8 +53,8 @@ false_ = fn: booleanLiteral false
 
 
 not_nullish = fn value:
-  not_null = neq value, nullLiteral()
-  not_undef = neq value, undef()
+  not_null = neq value, nullLiteral ()
+  not_undef = neq value, undef ()
   and not_undef, not_null
 
 

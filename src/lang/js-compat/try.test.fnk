@@ -9,8 +9,8 @@ describe 'try', fn:
       fink2js `
         foo1 = fn:
           [err, item] = try:
-            bar = shrub()
-            bar + ni()
+            bar = shrub ()
+            bar + ni _
           [item, err]
 
         foo2 = fn: try: throw new Error 'foobar'

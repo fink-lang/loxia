@@ -32,8 +32,8 @@ transform_until = fn node, ctx:
       consts result, transform last_expr
 
       ifStatement
-        eq result, true_()
-        returnStatement()
+        eq result, true_ ()
+        returnStatement ()
 
 
 

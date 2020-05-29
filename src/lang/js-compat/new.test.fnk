@@ -6,8 +6,9 @@ describe 'new', fn:
   it 'compiles', fn:
     expect
       fink2js `
-        foo = new Set()
-        bar = new Set 'abca'
+        foo = new Set ()
+        bar = new Set _
+        spam = new Set 'abca'
       `
       to_match_snapshot
 

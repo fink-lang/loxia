@@ -6,4 +6,4 @@ transform_keyword = fn node:
     {'value': 'true'}: booleanLiteral true
     {'value': 'false'}: booleanLiteral false
     # TODO: move to js-compat
-    {'value': 'null'}: nullLiteral()
+    {'value': 'null'}: nullLiteral ()

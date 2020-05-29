@@ -12,7 +12,8 @@ describe 'await', fn:
         task2 = fn foo: await (foo + 4)
 
         task3 = fn foo:
-          bar = await foo()
+          bar = await foo ()
+          spam = await foo _
           bar + 123
 
         a_gen = unfold curr=0:

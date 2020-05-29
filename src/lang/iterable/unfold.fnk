@@ -9,7 +9,9 @@
 
 
 loop = fn ...body:
-  whileStatement true_(), blockStatement body
+  whileStatement
+    true_ ()
+    blockStatement body
 
 
 get_acc_exprs = fn node, next_value, ctx:
