@@ -185,7 +185,7 @@ match_all = fn value, matches, emit, ctx:
     map expr:
       match expr:
         {type: 'block', op: 'else'}:
-          {op, ...block} = expr
+          {op:_, ...block} = expr
           js_expr = emit block
           wrap_with_comment_loc js_expr, block
         else:
