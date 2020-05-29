@@ -108,7 +108,7 @@ init_ctx = fn code, filename:
     errors: []
     unique_ident: fn name:
       # TODO: return ident and new ctx to make it not stateful
-      {value} = id_cntr.next()
+      {value} = id_cntr.next ()
       ident `${var_prefix}${name}_${value}`
 
   pipe ctx:

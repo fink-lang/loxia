@@ -2,5 +2,6 @@
 
 exports[`new compiles 1`] = `
 "export const foo = new Set();
-export const bar = new Set(\`abca\`);"
+export const bar = new Set();
+export const spam = new Set(\`abca\`);"
 `;

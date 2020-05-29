@@ -1,16 +1,43 @@
 {callExpression, identifier} = import '@babel/types'
+{length} = import '@fink/std-lib/iter'
 
 
-transform_call = fn node, ctx:
-  callee = ctx.transform node.callee
-
-  [...args] = pipe node.args:
+transform_args = fn args, {transform}:
+  pipe args:
     map expr:
       match expr:
         {type: 'empty'}:
           identifier 'undefined'
         else:
-          ctx.transform expr
+          transform expr
 
-  callExpression callee, args
+
+
+transform_single_arg = fn [expr], {transform}:
+  match expr:
+    # forward compat for addition of _ as empty in larix
+    # istanbul ignore next
+    {type: 'empty'}:
+      []
+
+    # TODO: remove once larix treats _ as empty
+    {type: 'ident', value: '_'}: []
+
+    # forward compat to allow () to be treaded as empty
+    # istanbul ignore next
+    {type: 'group', exprs: 0 == length ?}: []
+
+    else: [transform expr]
+
+
+transform_call = fn node, ctx:
+  callee = ctx.transform node.callee
+
+  args = match node.args:
+    1 == length ?:
+      transform_single_arg node.args, ctx
+    else:
+      transform_args node.args, ctx
+
+  callExpression callee, [...args]
 

@@ -20,7 +20,9 @@ transform_try = fn node, ctx:
   try_block = blockStatement list:
     ...expressions
     expressionStatement
-      arrayExpression [false_(), last_expr.expression or last_expr]
+      arrayExpression list:
+        false_ ()
+        last_expr.expression or last_expr
 
   catch_block = catchClause
     err

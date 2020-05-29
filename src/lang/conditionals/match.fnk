@@ -73,7 +73,7 @@ match_obj = fn value, obj, emit_result, ctx, cond:
     not_nullish value
     match id_props:
       0 == length ?:
-        emit_result()
+        emit_result ()
       else:
         blockStatement list:
           consts decl, value
@@ -146,7 +146,7 @@ match_array = fn value, arr, emit_result, ctx, cond:
     is_iterable value
     match id_elems:
       0 == length ?:
-        emit_result()
+        emit_result ()
       else:
         blockStatement list:
           array_decl
@@ -156,7 +156,7 @@ match_array = fn value, arr, emit_result, ctx, cond:
 match_simple = fn value, expr, emit_result, ctx:
   ifStatement
     comp value, expr, {...ctx, wrap: 'loc'}
-    emit_result()
+    emit_result ()
 
 
 match_condition = fn value, expr, emit_result, ctx, cond:

@@ -56,7 +56,7 @@ module_transforms = dict:
         id
 
     path.insertAfter foo
-    path.remove()
+    path.remove ()
     no_result
 
   ExportNamedDeclaration: fn path:

@@ -28,8 +28,8 @@ describe 'func', fn:
 
         fun7 = fn a, b=12, c:
           shrub ...a
-          foo()
-          bar()
+          foo ()
+          bar _
 
         fun8 = fn a,,b:
           b
