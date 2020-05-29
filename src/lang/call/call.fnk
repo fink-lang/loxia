@@ -15,19 +15,11 @@ transform_args = fn args, {transform}:
 
 transform_single_arg = fn [expr], {transform}:
   match expr:
-    # forward compat for addition of _ as empty in larix
-    # istanbul ignore next
-    {type: 'empty'}:
-      []
-
-    # TODO: remove once larix treats _ as empty
-    {type: 'ident', value: '_'}: []
-
-    # forward compat to allow () to be treaded as empty
-    # istanbul ignore next
+    {type: 'empty'}: []
+    # remove in favour of using _ as empty?
     {type: 'group', exprs: 0 == length ?}: []
-
     else: [transform expr]
+
 
 
 transform_call = fn node, ctx:
