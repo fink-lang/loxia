@@ -32,7 +32,7 @@ exports[`destructuring object compiles defaults 1`] = `
 
 exports[`destructuring object compiles empty 1`] = `
 "const {
-  \\"foo\\": ˆignore_1,
+  \\"foo\\": ˆunused_1,
   \\"bar\\": bar
 } = {
   \\"foo\\": 12,
