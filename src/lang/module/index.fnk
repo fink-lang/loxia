@@ -77,7 +77,7 @@ transform_module = fn node, ctx:
 
         {type: 'assign', left: {type: 'ident'}}:
           # we don't want to double up on comments?
-          {comments, ...decl} = expr
+          {comments: _, ...decl} = expr
           wrap_with_comment_loc
             exportNamedDeclaration block_statement decl, ctx
             expr
