@@ -1,1 +1,0 @@
-sed 's/loxia-dev/loxia/' package.json > build/pkg/package.json
