@@ -21,7 +21,7 @@
     "build": "run build:*",
     "build:dir": "mkdir -p ./build/pkg/",
     "build:fnk": "fnk --src ./src --out-dir ./build/pkg --ignore '**/*.test.fnk'",
-    "build:files": "cp ./README.md ./LICENSE ./build/pkg/",
+    "build:files": "cp package.json ./README.md ./LICENSE ./build/pkg/",
     "test": "run jest",
     "jest": "jest --verbose --runInBand --no-cache ",
     "cd": "run clean test build release",
