@@ -48,9 +48,9 @@
     "semantic-release": "^17.0.8"
   },
   "dependencies": {
-    "@babel/core": "^7.10.1",
+    "@babel/core": "^7.10.2",
     "@babel/traverse": "^7.10.1",
-    "@babel/types": "^7.10.1",
+    "@babel/types": "^7.10.2",
     "@fink/std-lib": "^2.1.0"
   }
 }
