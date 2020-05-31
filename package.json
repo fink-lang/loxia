@@ -1,5 +1,5 @@
 {
-  "name": "@fink/loxia-dev",
+  "name": "@fink/loxia",
   "version": "0.0.0-semantically-released",
   "license": "MIT",
   "engines": {
@@ -22,7 +22,6 @@
     "build:dir": "mkdir -p ./build/pkg/",
     "build:fnk": "fnk --src ./src --out-dir ./build/pkg --ignore '**/*.test.fnk'",
     "build:files": "cp ./README.md ./LICENSE ./build/pkg/",
-    "build:pkg": "./scripts/build-pkg-json",
     "test": "run jest",
     "jest": "jest --verbose --runInBand --no-cache ",
     "cd": "run clean test build release",
@@ -39,8 +38,8 @@
   "devDependencies": {
     "@fink/cli": "^6.0.0",
     "@fink/jest": "^5.0.2",
-    "@fink/larix": "^10.0.0",
-    "@fink/loxia": "^10.0.1",
+    "@fink/larix": "^10.0.1",
+    "@fink/loxia": "^10.1.0",
     "commitizen": "^4.1.2",
     "cz-conventional-changelog": "^3.1.0",
     "jest-cli": "^26.0.1",
