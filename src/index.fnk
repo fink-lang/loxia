@@ -27,6 +27,7 @@ transform = fn node, code, filename, options:
 
 babel_generate = fn ast, filename, source, options:
   {use_babel_conf, module_type: _, source_maps, ...rest_opts} = options
+
   conf_opts = match true:
     use_babel_conf: {}
     else: {babelrc: false, configFile: false}
