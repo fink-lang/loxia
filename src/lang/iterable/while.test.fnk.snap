@@ -38,3 +38,42 @@ exports[`while compiles destructuring 1`] = `
   }
 });"
 `;
+
+exports[`while compiles with accu 1`] = `
+"(function* filter_while(ˆitems_3) {
+  let ˆaccu_2 = 0;
+
+  for (const ˆitem_1 of ˆitems_3) {
+    const cntr = ˆaccu_2;
+    const ˆresult_4 = cntr < 2;
+    if (ˆresult_4 !== true) return;
+    yield ˆitem_1;
+    ˆaccu_2 = cntr + 1;
+  }
+});
+
+(function* filter_while(ˆitems_7) {
+  let ˆaccu_6 = 0;
+
+  for (const ˆitem_5 of ˆitems_7) {
+    const cntr = ˆaccu_6;
+    const ˆresult_8 = cntr < 2;
+    if (ˆresult_8 !== true) return;
+    yield ˆitem_5;
+    ˆaccu_6 = cntr + 1;
+  }
+});
+
+(function* filter_while(ˆitems_11) {
+  let ˆaccu_10 = 0;
+
+  for (const ˆitem_9 of ˆitems_11) {
+    const item = ˆitem_9;
+    const cntr = ˆaccu_10;
+    const ˆresult_12 = item && cntr < 2;
+    if (ˆresult_12 !== true) return;
+    yield ˆitem_9;
+    ˆaccu_10 = cntr + 1;
+  }
+});"
+`;

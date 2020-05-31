@@ -30,5 +30,11 @@ describe 'find', fn:
       to_match_snapshot
 
 
-
+  it 'compiles find with accu', fn:
+    expect
+      fink2js `
+        find item, is_even_elem=false:
+          (item > 123 and is_even_elem, not is_even_elem)
+      `
+      to_match_snapshot
 

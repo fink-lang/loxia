@@ -72,6 +72,13 @@ describe 'map', fn:
       `
       to_match_snapshot
 
+    expect
+      fink2js `
+        map {foo}, acc=0:
+          (...[acc, foo], acc+1)
+      `
+      to_match_snapshot
+
 
   it 'compiles destructuring', fn:
     expect
