@@ -11,7 +11,7 @@ transform_fold = fn node, ctx:
   item = unique_ident 'item'
   item_init = transform_init item_arg, item, ctx
 
-  acc = unique_ident 'acc'
+  acc = unique_ident 'accu'
   acc_assign = transform_init acc_arg.left, acc, ctx
 
   items = unique_ident 'items'

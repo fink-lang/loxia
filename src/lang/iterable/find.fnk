@@ -1,36 +1,34 @@
 {returnStatement, ifStatement} = import'@babel/types'
 
-{for_of, func, consts, undef} = import '../../js/types'
+{func, for_of, undef} = import '../../js/types'
 
-{block_statement} = import '../block'
-{transform_init} = import './common'
+{get_iter_helpers} = import './common'
 
 
 transform_find = fn node, ctx:
-  {transform, unique_ident} = ctx
+  {
+    acc_init
+    item, items
+    item_acc_assign
+    expressions
+    result
+    next_accu
+  } = get_iter_helpers node, ctx
 
-  item = unique_ident 'item'
-  [item_val] = node.args;
-  item_init = transform_init item_val, item, ctx
-
-  items = unique_ident 'items'
-  found = unique_ident 'found'
-
-  [...expressions, last_expr] = node.exprs
 
   func [items],
+    ...acc_init
 
     for_of [item, items],
-      item_init
+      ...item_acc_assign
 
-      ...pipe expressions:
-        map expr: block_statement expr, ctx
-
-      consts found, transform last_expr
+      ...expressions
 
       ifStatement
-        found
+        result
         returnStatement item
+
+      ...next_accu
 
     undef ()
 

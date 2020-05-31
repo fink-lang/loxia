@@ -33,3 +33,43 @@ exports[`filter compiles 1`] = `
   }
 });"
 `;
+
+exports[`filter compiles with accu 1`] = `
+"(function* filter(ˆitems_3) {
+  let ˆaccu_2 = 0;
+
+  for (const ˆitem_1 of ˆitems_3) {
+    const item = ˆitem_1;
+    const cntr = ˆaccu_2;
+    const ˆresult_4 = item < 1 && cntr % 2 === 0;
+    if (ˆresult_4) yield ˆitem_1;
+    ˆaccu_2 = cntr + 1;
+  }
+});"
+`;
+
+exports[`filter compiles with accu 2`] = `
+"(function* filter(ˆitems_3) {
+  let ˆaccu_2 = false;
+
+  for (const ˆitem_1 of ˆitems_3) {
+    const is_even = ˆaccu_2;
+    const ˆresult_4 = is_even;
+    if (ˆresult_4) yield ˆitem_1;
+    ˆaccu_2 = !is_even;
+  }
+});"
+`;
+
+exports[`filter compiles with accu 3`] = `
+"(function* filter(ˆitems_3) {
+  let ˆaccu_2 = false;
+
+  for (const ˆitem_1 of ˆitems_3) {
+    const is_even = ˆaccu_2;
+    const ˆresult_4 = is_even;
+    if (ˆresult_4) yield ˆitem_1;
+    ˆaccu_2 = !is_even;
+  }
+});"
+`;

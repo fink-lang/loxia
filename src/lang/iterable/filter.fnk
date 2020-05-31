@@ -1,32 +1,31 @@
 {ifStatement} = import'@babel/types'
 
-{generator, for_of, yields, consts} = import '../../js/types'
+{generator, for_of, yields} = import '../../js/types'
 
-{block_statement} = import '../block'
-{transform_init} = import './common'
+{get_iter_helpers} = import './common'
 
 
 transform_filter = fn node, ctx:
-  {transform, unique_ident} = ctx
+  {
+    acc_init
+    item, items
+    item_acc_assign
+    expressions
+    result
+    next_accu
+  } = get_iter_helpers node, ctx
 
-  item = unique_ident 'item'
-  [item_val] = node.args
-  item_init = transform_init item_val, item, ctx
-
-  items = unique_ident 'items'
-  result = unique_ident 'result'
-
-  [...expressions, last_expr] = node.exprs
 
   generator 'filter', [items],
+    ...acc_init
+
     for_of [item, items],
-      item_init
+      ...item_acc_assign
 
-      ...pipe expressions:
-        map expr: block_statement expr, ctx
-
-      consts result, transform last_expr
+      ...expressions
 
       ifStatement
         result
         yields item
+
+      ...next_accu

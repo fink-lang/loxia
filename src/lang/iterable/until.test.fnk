@@ -12,6 +12,18 @@ describe 'while', fn:
       to_match_snapshot
 
 
+  it 'compiles with accu', fn:
+    expect
+      fink2js `
+        until _, cntr=0:
+          (cntr > 2, cntr + 1)
+
+        until , cntr=0:
+          (cntr > 2, cntr + 1)
+      `
+      to_match_snapshot
+
+
   it 'compiles destructuring', fn:
     expect
       fink2js `

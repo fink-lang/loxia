@@ -104,6 +104,22 @@ exports[`map compiles with acc 1`] = `
 });"
 `;
 
+exports[`map compiles with acc 2`] = `
+"(function* map(ˆitems_3) {
+  let ˆaccu_2 = 0;
+
+  for (const ˆitem_1 of ˆitems_3) {
+    const {
+      \\"foo\\": foo
+    } = ˆitem_1;
+    const acc = ˆaccu_2;
+    const ˆresult_4 = [acc, foo];
+    yield* ˆresult_4;
+    ˆaccu_2 = acc + 1;
+  }
+});"
+`;
+
 exports[`map compiles with foo 1`] = `
 "(function* map(ˆitems_2) {
   for (const ˆitem_1 of ˆitems_2) {
