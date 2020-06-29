@@ -1,17 +1,18 @@
 {char_code, slice} = import '@fink/std-lib/str'
-{matches} = import '@fink/std-lib/regex'
+{rx , matches} = import '@fink/std-lib/regex'
+
 {length} = import '@fink/std-lib/iter'
 {base_n} = import '@fink/std-lib/num'
 
 
-check_ident = rx/
+check_ident = rx'
   ^(?!(?:
     do|if|in|for|let|new|try|var|case|enum|void|with|break|catch|class|const|super|while|yield|delete|export|import|public|return|static|switch|
     typeof|default|extends|finally|package|private|continue|function|
     arguments|interface|protected|implements|instanceof
   )$)
   [
-    $A-Z\_a-z
+    $A-Z_a-z
     \xaa\xb5\xba\xc0-\xd6\xd8-\xf6\xf8-\u02c1\u02c6-\u02d1\u02e0-\u02e4
     \u02ec\u02ee\u0370-\u0374\u0376\u0377\u037a-\u037d\u0386\u0388-\u038a
     \u038c\u038e-\u03a1\u03a3-\u03f5\u03f7-\u0481\u048a-\u0527\u0531-\u0556
@@ -75,7 +76,7 @@ check_ident = rx/
     \ufdf0-\ufdfb\ufe70-\ufe74\ufe76-\ufefc\uff21-\uff3a\uff41-\uff5a
     \uff66-\uffbe\uffc2-\uffc7\uffca-\uffcf\uffd2-\uffd7\uffda-\uffdc
   ][
-    $A-Z\_a-z
+    $A-Z_a-z
     \xaa\xb5\xba\xc0-\xd6\xd8-\xf6\xf8-\u02c1\u02c6-\u02d1\u02e0-\u02e4
     \u02ec\u02ee\u0370-\u0374\u0376\u0377\u037a-\u037d\u0386\u0388-\u038a
     \u038c\u038e-\u03a1\u03a3-\u03f5\u03f7-\u0481\u048a-\u0527\u0531-\u0556
@@ -176,7 +177,7 @@ check_ident = rx/
     \uaa50-\uaa59\uaa7b\uaab0\uaab2-\uaab4\uaab7\uaab8\uaabe\uaabf\uaac1
     \uaaeb-\uaaef\uaaf5\uaaf6\uabe3-\uabea\uabec\uabed\uabf0-\uabf9\ufb1e
     \ufe00-\ufe0f\ufe20-\ufe26\ufe33\ufe34\ufe4d-\ufe4f\uff10-\uff19\uff3f
-  ]*$/
+  ]*$'
 
 
 var_prefix = 'ˆ'
