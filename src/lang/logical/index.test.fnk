@@ -4,15 +4,6 @@
 
 describe 'logical', fn:
   it 'compiles', fn:
-
-    expect
-      fink2js `
-        foo = a || b || c
-        bar = a && b && c
-        spam = !a
-      `
-      to_match_snapshot
-
     expect
       fink2js `
         foo = a or b or c

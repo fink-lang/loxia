@@ -5,9 +5,3 @@ exports[`logical compiles 1`] = `
 export const bar = a && b && c;
 export const spam = !a;"
 `;
-
-exports[`logical compiles 2`] = `
-"export const foo = a || b || c;
-export const bar = a && b && c;
-export const spam = !a;"
-`;
