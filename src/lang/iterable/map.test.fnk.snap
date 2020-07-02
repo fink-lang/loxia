@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`map async compiles 1`] = `
+"(async function* map(ˆitems_2) {
+  for await (const ˆitem_1 of ˆitems_2) {
+    const item = ˆitem_1;
+    const ˆresult_3 = (await item) * 2;
+    yield ˆresult_3;
+  }
+});"
+`;
+
 exports[`map compiles as flat map 1`] = `
 "(function* map(ˆitems_2) {
   for (const ˆitem_1 of ˆitems_2) {

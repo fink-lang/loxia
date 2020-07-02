@@ -88,6 +88,16 @@ describe 'map', fn:
 
         map [...ignored, last]:
          last
+      '
+      to_match_snapshot
 
+
+
+describe 'map async', fn:
+  it 'compiles', fn:
+    expect
+      fink2js '
+        map item:
+          await item * 2
       '
       to_match_snapshot

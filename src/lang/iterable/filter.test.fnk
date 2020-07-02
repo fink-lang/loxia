@@ -41,3 +41,15 @@ describe 'filter', fn:
       '
       to_match_snapshot
 
+
+
+describe 'filter async', fn:
+  it 'compiles', fn:
+    expect
+      fink2js '
+        filter item:
+          await item % 2 == 0
+      '
+      to_match_snapshot
+
+

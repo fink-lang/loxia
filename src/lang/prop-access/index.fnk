@@ -25,4 +25,3 @@ transform_member = fn {left, right}, {transform}:
 add_member = fn ctx:
   pipe ctx:
     add any, '.', transform_member
-

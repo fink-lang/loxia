@@ -1,5 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`fold async compiles 1`] = `
+"async ˆitems_3 => {
+  let ˆaccu_2 = 0;
+
+  for await (const ˆitem_1 of ˆitems_3) {
+    const acc = ˆaccu_2;
+    const item = ˆitem_1;
+    const ni = (await item) + acc;
+    ˆaccu_2 = item * acc;
+  }
+
+  return ˆaccu_2;
+};"
+`;
+
 exports[`fold compiles 1`] = `
 "ˆitems_3 => {
   let ˆaccu_2 = 0;
