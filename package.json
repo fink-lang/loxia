@@ -38,7 +38,7 @@
   "devDependencies": {
     "@fink/cli": "^6.0.0",
     "@fink/jest": "^5.0.2",
-    "@fink/larix": "^11.1.0",
+    "@fink/larix": "^11.2.0",
     "@fink/loxia": "^10.1.1",
     "@fink/std-lib": "^2.4.0",
     "commitizen": "^4.1.2",
@@ -48,8 +48,8 @@
     "semantic-release": "^17.1.1"
   },
   "dependencies": {
-    "@babel/core": "^7.10.3",
-    "@babel/traverse": "^7.10.3",
-    "@babel/types": "^7.10.3"
+    "@babel/core": "^7.10.4",
+    "@babel/traverse": "^7.10.4",
+    "@babel/types": "^7.10.4"
   }
 }
