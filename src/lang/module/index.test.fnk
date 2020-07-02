@@ -6,7 +6,7 @@ describe 'module', fn:
   it 'handles comments', fn:
 
     expect
-      fink2js `
+      fink2js "
         #!/usr/bin/env node
 
         # leading comment
@@ -26,7 +26,7 @@ describe 'module', fn:
         ni = await import spam
 
         # trailing comment
-      `
+      "
       to_match_snapshot
 
 

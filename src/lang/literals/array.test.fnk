@@ -5,7 +5,7 @@
 describe 'array', fn:
   it 'compiles', fn:
     expect
-      fink2js `
+      fink2js '
         array1 = []
         array2 = [1]
         array3 = [1, 2, 4, (a ()), (a _), ...b]
@@ -14,14 +14,14 @@ describe 'array', fn:
             b + c
           [1, 2]
           (3 + 3) * 2
-      `
+      '
       to_match_snapshot
 
 
 describe 'destructuring array', fn:
   it 'compiles', fn:
     expect
-      fink2js `
+      fink2js "
         [a, b, c] = ni
         [,, d] = ni
         [head, ...tail] = ni
@@ -29,7 +29,7 @@ describe 'destructuring array', fn:
         [first, second, ...middle, penultimate, end] = '123'
         [ni, ..., nu] = '123'
         [..., nuna] = '123'
-      `
+      "
       to_match_snapshot
 
 

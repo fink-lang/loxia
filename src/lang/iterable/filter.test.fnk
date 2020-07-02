@@ -5,7 +5,7 @@
 describe 'filter', fn:
   it 'compiles', fn:
     expect
-      fink2js `
+      fink2js '
         filter item:
           item % 2 == 0
 
@@ -15,29 +15,29 @@ describe 'filter', fn:
 
         filter [...a, b]:
           b and 0 == length a
-      `
+      '
       to_match_snapshot
 
 
   it 'compiles with accu', fn:
     expect
-      fink2js `
+      fink2js '
         filter item, cntr=0:
           (item < 1 and cntr % 2 == 0, cntr + 1)
-      `
+      '
       to_match_snapshot
 
     expect
-      fink2js `
+      fink2js '
         filter _, is_even=false:
           (is_even, not is_even)
-      `
+      '
       to_match_snapshot
 
     expect
-      fink2js `
+      fink2js '
         filter , is_even=false:
           (is_even, not is_even)
-      `
+      '
       to_match_snapshot
 

@@ -5,7 +5,7 @@
 describe 'binary', fn:
   it 'compiles', fn:
     expect
-      fink2js `
+      fink2js '
         math_precedence1 = -1 + 0 + 1 + 2 * 3 % 1
         math_precedence2 = -1 + 0 + (1 + 2) * 3 / 2
 
@@ -16,6 +16,6 @@ describe 'binary', fn:
 
         group1 = (1 + 2) * 3
         group2 = (34234^-34234) + 1
-      `
+      '
       to_match_snapshot
 

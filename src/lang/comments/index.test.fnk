@@ -6,7 +6,7 @@ describe 'comment', fn:
   it 'compiles', fn:
 
     expect
-      fink2js `
+      fink2js '
         # leading expression
         spam = ni
 
@@ -18,6 +18,6 @@ describe 'comment', fn:
           spam
 
         # trailing module
-      `
+      '
       to_match_snapshot
 

@@ -6,12 +6,12 @@ describe 'member', fn:
   it 'compiles', fn:
 
     expect
-      fink2js `
+      fink2js "
         foo = spam.shrub
         computed_member = item.'bar spam'
         computed_member2 = item.(Symbol.iterator)
         reserved_prop = item.arguments
         js_safe_unicode = [item.π, item.∑]
-      `
+      "
       to_match_snapshot
 

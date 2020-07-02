@@ -5,20 +5,20 @@
 describe 'partial', fn:
   it 'compiles assignment', fn:
     expect
-      fink2js `
+      fink2js '
         foo1 = a * ? + 1
         foo2 = bar ?
         foo3 = ?.bar spam
         foo4 = ? ()
         foo5 = ? _
         foo6 = ? bar, spam
-      `
+      '
       to_match_snapshot
 
     expect
-      fink2js `
+      fink2js '
         foo1 = [1, ...?, 9]
         foo2 = {foo, ...?}
-      `
+      '
       to_match_snapshot
 

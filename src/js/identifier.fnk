@@ -21,7 +21,7 @@ str_36 = base_n ?, 36
 
 
 replace_chars = fn name, idx=0:
-  prefixed_name = `${var_prefix}${name}`
+  prefixed_name = '${var_prefix}${name}'
 
   match  prefixed_name:
     matches ?, check_ident:
@@ -31,7 +31,7 @@ replace_chars = fn name, idx=0:
 
       start = slice name, 0, idx
       end = slice name, idx + 1
-      new_name = `${start}${char_replacement}${end}`
+      new_name = '${start}${char_replacement}${end}'
 
       replace_chars new_name, idx + length char_replacement
 

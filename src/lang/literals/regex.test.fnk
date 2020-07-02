@@ -7,30 +7,30 @@
 describe 'regex', fn:
   it 'compiles single line', fn:
     expect
-      fink2js raw`
+      fink2js raw"
         regex = rx'(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})'
-      `
+      "
       to_match_snapshot
 
 
   it 'compiles multiline', fn:
     # TODO: loxia should handle this instead of runtime std-lib
     expect
-      fink2js raw`
+      fink2js raw"
         regex = rx'
           (?<year>\d{4})-    # year part of a date
           (?<month>\d{2})-   # month part of a date
           (?<day>\d{2})      # day part of a date
         '
-      `
+      "
       to_match_snapshot
 
 
   it 'compiles escape char', fn:
     expect
-      fink2js raw`
+      fink2js raw"
         regex = rx'.+/\#.+\\'
-      `
+      "
       to_match_snapshot
 
 
