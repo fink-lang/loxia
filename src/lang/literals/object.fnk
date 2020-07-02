@@ -1,4 +1,6 @@
-{objectExpression, objectProperty, stringLiteral, assignmentPattern} = import '@babel/types'
+{objectExpression, objectProperty, assignmentPattern} = import '@babel/types'
+
+{raw_str} = import '../../js/types'
 
 
 transform_object = fn node, {transform}:
@@ -9,7 +11,7 @@ transform_object = fn node, {transform}:
 
 
 str_key = fn {value, loc}:
-  str = stringLiteral value
+  str = raw_str value
   {...str, loc}
 
 

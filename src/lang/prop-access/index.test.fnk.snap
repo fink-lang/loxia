@@ -4,5 +4,6 @@ exports[`member compiles 1`] = `
 "export const foo = spam.shrub;
 export const computed_member = item[\`bar spam\`];
 export const computed_member2 = item[Symbol.iterator];
-export const reserved_prop = item.arguments;"
+export const reserved_prop = item.arguments;
+export const js_safe_unicode = [item.π, item[\\"∑\\"]];"
 `;

@@ -61,6 +61,15 @@ not_nullish = fn value:
 ident = fn name: identifier escape_ident name
 
 
+raw_str = fn value:
+  dict:
+    type: 'StringLiteral',
+    value,
+    extra: dict:
+      raw: '"${value}"'
+      rawValue: value
+
+
 consts = fn left, init:
   variableDeclaration
     'const'

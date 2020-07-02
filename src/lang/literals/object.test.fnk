@@ -8,18 +8,26 @@ describe 'object', fn:
       fink2js `obj = {}`
       to_match_snapshot
 
+
   it 'compiles shorthand', fn:
     expect
-      fink2js `obj = {a}`
+      fink2js `obj = {foo, π, ƒ, ∑}`
       to_match_snapshot
+
     expect
       fink2js `obj = {a, delete, true, false}`
       to_match_snapshot
+
+    expect
+      fink2js `obj = {'foo'}`
+      to_match_snapshot
+
 
   it 'compiles spread', fn:
     expect
       fink2js `obj = {a, b, ...c}`
       to_match_snapshot
+
 
   it 'compiles key:val', fn:
     expect
