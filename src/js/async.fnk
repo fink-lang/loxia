@@ -1,4 +1,4 @@
-{isArrowFunctionExpression, isFunctionExpression} = import '@babel/types'
+{isArrowFunctionExpression, isFunctionExpression, isForOfStatement} = import '@babel/types'
 {set_props} = import '@fink/std-lib/obj'
 
 
@@ -13,6 +13,10 @@ transform_async = fn path:
 
     isFunctionExpression ?:
       set_props path.node, {async: true}
+
+    isForOfStatement ?:
+      set_props path.node, {await: true}
+      transform_async path.parentPath
 
     {parentPath: {}}:
       transform_async path.parentPath

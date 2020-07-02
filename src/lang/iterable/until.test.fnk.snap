@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`while async compiles 1`] = `
+"(async function* filter_until(ˆitems_2) {
+  for await (const ˆitem_1 of ˆitems_2) {
+    yield ˆitem_1;
+    const item = ˆitem_1;
+    const ˆresult_3 = (await item) < 10;
+    if (ˆresult_3 === true) return;
+  }
+});"
+`;
+
 exports[`while compiles 1`] = `
 "(function* filter_until(ˆitems_2) {
   for (const ˆitem_1 of ˆitems_2) {

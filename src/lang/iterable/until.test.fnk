@@ -36,3 +36,13 @@ describe 'while', fn:
       '
       to_match_snapshot
 
+
+
+describe 'while async', fn:
+  it 'compiles', fn:
+    expect
+      fink2js '
+        until item:
+          await item < 10
+      '
+      to_match_snapshot

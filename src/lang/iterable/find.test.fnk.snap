@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`find async compiles 1`] = `
+"async ˆitems_2 => {
+  for await (const ˆitem_1 of ˆitems_2) {
+    const item = ˆitem_1;
+    const ˆresult_3 = (await item) > 3;
+    if (ˆresult_3) return ˆitem_1;
+  }
+
+  return undefined;
+};"
+`;
+
 exports[`find compiles complex find 1`] = `
 "ˆitems_2 => {
   for (const ˆitem_1 of ˆitems_2) {

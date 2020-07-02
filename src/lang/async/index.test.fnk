@@ -24,6 +24,3 @@ describe 'await', fn:
         await ni
       '
       to_match_snapshot
-
-
-

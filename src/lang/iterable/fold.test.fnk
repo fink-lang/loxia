@@ -37,3 +37,13 @@ describe 'fold', fn:
       to_match_snapshot
 
 
+
+describe 'fold async', fn:
+  it 'compiles', fn:
+    expect
+      fink2js '
+        fold item, acc=0:
+          ni = await item + acc
+          item * acc
+      '
+      to_match_snapshot
