@@ -1,15 +1,23 @@
 {memberExpression, identifier} = import '@babel/types'
+{rx, matches} = import '@fink/std-lib/regex'
+
+{raw_str} = import '../../js/types'
+
 {add, any} = import '../context'
+
 
 
 transform_member = fn {left, right}, {transform}:
   memb_left = transform left
+  {loc, value} = right
 
-  memb_right = match right:
-    {type: 'ident'}: identifier right.value
-    else: transform right
-
-  computed = right.type in ['string', 'group']
+  [computed, memb_right] = match right:
+    {type: 'ident', value: matches ?, rx'^[$_\p{L}][$_\p{L}\p{N}]*'}:
+      [false, {loc, ...identifier value}]
+    {type: 'ident'}:
+      [true, {loc, ...raw_str value}]
+    else:
+      [true, transform right]
 
   memberExpression memb_left, memb_right, computed
 

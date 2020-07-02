@@ -5,9 +5,6 @@
 
 
 transform_op = dict:
-  '&&': '&&'
-  '||': '||'
-  '!': '!'
   'and': '&&'
   'or': '||'
   'not': '!'
@@ -30,10 +27,6 @@ transform_logical = fn node, {transform}:
 
 add_logical = fn ctx:
   pipe ctx:
-    add any, '&&', transform_logical
-    add any, '||', transform_logical
-    add any, '!', transform_not
-
     add any, 'and', transform_logical
     add any, 'or', transform_logical
     add any, 'not', transform_not

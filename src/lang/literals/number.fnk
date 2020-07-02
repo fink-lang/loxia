@@ -1,16 +1,16 @@
 {numericLiteral} = import '@babel/types'
-{matches} = import '@fink/std-lib/regex'
+{rx, matches} = import '@fink/std-lib/regex'
 {parse_float, parse_int} = import '@fink/std-lib/num'
-{set_props} = import '@fink/std-lib/obj'
 
 
 transform_number = fn {value}:
   match value:
-    matches ?, rx/\./:
+    matches ?, rx'\.':
       numericLiteral parse_float value
     else:
       num = parse_int value
-      js = numericLiteral num
-      set_props js, {extra: {raw: value, rawValue: num}}
+      dict:
+        ...numericLiteral num
+        extra: {raw: value, rawValue: num}
 
 

@@ -1,7 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`regex compiles escape char 1`] = `"export const regex = /.+\\\\/.+\\\\\\\\/;"`;
+exports[`regex compiles escape char 1`] = `"export const regex = rx\`.+/\\\\#.+\\\\\\\\\`;"`;
 
-exports[`regex compiles multiline 1`] = `"export const regex = /(?<year>\\\\d{4})-(?<month>\\\\d{2})-(?<day>\\\\d{2})/gm;"`;
+exports[`regex compiles multiline 1`] = `
+"export const regex = rx\`(?<year>\\\\d{4})-    # year part of a date
+(?<month>\\\\d{2})-   # month part of a date
+(?<day>\\\\d{2})      # day part of a date
+\`;"
+`;
 
-exports[`regex compiles single line 1`] = `"export const regex = /(?<year>\\\\d{4})-(?<month>\\\\d{2})-(?<day>\\\\d{2})/;"`;
+exports[`regex compiles single line 1`] = `"export const regex = rx\`(?<year>\\\\d{4})-(?<month>\\\\d{2})-(?<day>\\\\d{2})\`;"`;

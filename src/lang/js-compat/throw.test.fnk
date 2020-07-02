@@ -5,12 +5,12 @@
 describe 'throw', fn:
   it 'compiles', fn:
     expect
-      fink2js `
+      fink2js "
         fn bar:
           match bar:
             has_err ?: throw err 'spam'
             else: bar
-      `
+      "
       to_match_snapshot
 
 

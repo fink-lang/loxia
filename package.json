@@ -38,18 +38,18 @@
   "devDependencies": {
     "@fink/cli": "^6.0.0",
     "@fink/jest": "^5.0.2",
-    "@fink/larix": "^10.0.1",
-    "@fink/loxia": "^10.1.0",
+    "@fink/larix": "^11.2.0",
+    "@fink/loxia": "^10.1.1",
+    "@fink/std-lib": "^2.4.0",
     "commitizen": "^4.1.2",
     "cz-conventional-changelog": "^3.1.0",
-    "jest-cli": "^26.0.1",
+    "jest-cli": "^26.1.0",
     "npx-run": "^2.1.2",
-    "semantic-release": "^17.0.8"
+    "semantic-release": "^17.1.1"
   },
   "dependencies": {
-    "@babel/core": "^7.10.2",
-    "@babel/traverse": "^7.10.1",
-    "@babel/types": "^7.10.2",
-    "@fink/std-lib": "^2.1.0"
+    "@babel/core": "^7.10.4",
+    "@babel/traverse": "^7.10.4",
+    "@babel/types": "^7.10.4"
   }
 }

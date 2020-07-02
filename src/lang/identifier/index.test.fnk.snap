@@ -4,7 +4,8 @@ exports[`identifiers does not escape true, false, null 1`] = `"export const foo 
 
 exports[`identifiers escapes identifiers incompatible with JS 1`] = `
 "export const ˆ1s = spam;
-export const ˆ6pu = shrub;"
+export const ˆ6pu = shrub;
+export const ˆ6q9 = ni;"
 `;
 
 exports[`identifiers escapes reserved JS identifiers 1`] = `

@@ -95,7 +95,10 @@ exports[`object compiles multiline 2`] = `
 
 exports[`object compiles shorthand 1`] = `
 "export const obj = {
-  \\"a\\": a
+  \\"foo\\": foo,
+  \\"π\\": π,
+  \\"ƒ\\": ƒ,
+  \\"∑\\": ˆ6q9
 };"
 `;
 
@@ -105,6 +108,12 @@ exports[`object compiles shorthand 2`] = `
   \\"delete\\": ˆdelete,
   \\"true\\": true,
   \\"false\\": false
+};"
+`;
+
+exports[`object compiles shorthand 3`] = `
+"export const obj = {
+  [\`foo\`]: \`foo\`
 };"
 `;
 

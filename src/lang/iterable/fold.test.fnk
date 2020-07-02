@@ -5,35 +5,35 @@
 describe 'fold', fn:
   it 'compiles', fn:
     expect
-      fink2js `
+      fink2js '
         fold item, acc=0:
           ni = item + acc
           item * acc
-      `
+      '
       to_match_snapshot
 
 
   it 'destructuring item', fn:
     expect
-      fink2js `
+      fink2js '
         fold [foo, ...bar], acc=[]:
           [[foo, bar], ...acc]
 
         fold [...foo, bar], acc=[]:
           [[foo, bar], ...acc]
-      `
+      '
       to_match_snapshot
 
 
   it 'destructuring accu', fn:
     expect
-      fink2js `
+      fink2js '
         fold item, [foo, ...bar]=[]:
           [item, bar, foo]
 
         fold item, [...foo, bar]=[]:
           [item, bar, foo]
-      `
+      '
       to_match_snapshot
 
 

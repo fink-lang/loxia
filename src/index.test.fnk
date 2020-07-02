@@ -6,7 +6,7 @@
 
 
 describe 'module types', fn:
-  code = `
+  code = "
     import 'foobar'
     foo = import 'shrub'
     {bar: spam, ni} = import 'ni'
@@ -19,7 +19,7 @@ describe 'module types', fn:
     case = ni
 
     default = shrub
-    `
+    "
 
   it 'compiles to mjs', fn:
     expect
@@ -36,28 +36,28 @@ describe 'module types', fn:
 
 describe 'errors', fn:
   it 'handles parse errors', fn:
-    {errors: [{error}]} = fink2js `
-      foo = [`
+    {errors: [{error}]} = fink2js '
+      foo = ['
 
     expect
       error
-      to_equal `
+      to_equal "
         test.fnk:1:7
         1| foo = [
                   ^
 
         Expected ',' or indented(>=1) new line or ']'.
-        `
+        "
 
   it 'errors with code snippet', fn:
-    {errors: [{error}]} = fink2js `
+    {errors: [{error}]} = fink2js '
       foo = bar
       123 = foo
-      shrub = ni`
+      shrub = ni'
 
     expect
       error
-      to_equal `
+      to_equal "
         test.fnk:2:0
         1| foo = bar
         2| 123 = foo
@@ -65,16 +65,16 @@ describe 'errors', fn:
         3| shrub = ni
 
         Unable to transform 'assign ='.
-        `
+        "
 
   it 'errors with bad babel options', fn:
     {errors: [{message}]} = fink2js
-      `foo = bar`
+      'foo = bar'
       {use_babel_conf: true, foobar: 'spam'}
 
     expect
       slice message, 0, 24
-      to_equal `Unknown option: .foobar.`
+      to_equal 'Unknown option: .foobar.'
 
 
   it 'errors when provided with unknown tokens', fn:
@@ -90,10 +90,10 @@ describe 'errors', fn:
 
     expect
       error
-      to_equal `
+      to_equal "
         test.fnk:1:0
         1| foobar
            ^
 
         Unable to transform 'test foobar'.
-        `
+        "

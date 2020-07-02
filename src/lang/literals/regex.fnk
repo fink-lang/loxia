@@ -1,8 +1,0 @@
-{regExpLiteral} = import '@babel/types'
-{replace_all} = import '@fink/std-lib/regex'
-
-
-transform_regex = fn node:
-  pattern = replace_all node.value, rx/(\#.*\n)|[\n\s]/, ''
-
-  regExpLiteral pattern, node.flags

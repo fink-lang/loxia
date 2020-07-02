@@ -6,7 +6,7 @@ describe 'await', fn:
   it 'compiles', fn:
 
     expect
-      fink2js `
+      fink2js '
         task1 = fn foo: - await foo
 
         task2 = fn foo: await (foo + 4)
@@ -22,7 +22,7 @@ describe 'await', fn:
             else: curr + 1
 
         await ni
-      `
+      '
       to_match_snapshot
 
 

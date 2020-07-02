@@ -6,7 +6,7 @@ describe 'try', fn:
   it 'compiles', fn:
 
     expect
-      fink2js `
+      fink2js "
         foo1 = fn:
           [err, item] = try:
             bar = shrub ()
@@ -14,7 +14,7 @@ describe 'try', fn:
           [item, err]
 
         foo2 = fn: try: throw new Error 'foobar'
-      `
+      "
       to_match_snapshot
 
 

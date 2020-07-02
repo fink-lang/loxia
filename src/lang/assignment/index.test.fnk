@@ -5,7 +5,7 @@
 describe 'assignment', fn:
   it 'compiles', fn:
     expect
-      fink2js `
+      fink2js '
         assign = 1
         # simple
         assign2 = assign
@@ -19,24 +19,24 @@ describe 'assignment', fn:
           + 234 +
           -567
           - 1111
-      `
+      '
       to_match_snapshot
 
 
   it 'compiles destructuring', fn:
     expect
-      fink2js `
+      fink2js "
         # standard JS destructuring
         [...head, last] = '1234'
-      `
+      "
       to_match_snapshot
 
 
     expect
-      fink2js `
+      fink2js "
         # enhanced destructuring
         [foo, bar, ...spam, ni, shrub] = '123'
 
         [a, , ..., b, c] = '123'
-      `
+      "
       to_match_snapshot
