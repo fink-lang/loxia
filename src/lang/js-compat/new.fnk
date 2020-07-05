@@ -1,9 +1,0 @@
-{newExpression} = import '@babel/types'
-{wrap} = import '../../js/types'
-
-
-transform_new = fn node, {transform}:
-  {callee, arguments} = transform node.right
-
-  wrap node, newExpression callee, arguments
-

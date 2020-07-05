@@ -13,7 +13,7 @@ describe 'try', fn:
             bar + ni _
           [item, err]
 
-        foo2 = fn: try: throw new Error 'foobar'
+        foo2 = fn: try: throw error 'foobar'
       "
       to_match_snapshot
 
