@@ -45,9 +45,9 @@ transform_jsx_expr_container = fn node, {transform}:
 
 add_jsx = fn ctx:
   pipe ctx:
-    add 'jsx-elem', any, transform_jsx_elem
-    add 'jsx-attr', any, transform_jsx_attr
-    add 'jsx-string', any, transform_jsx_str
-    add 'jsx-text', any, transform_jsx_text
-    add 'jsx-expr-container', any, transform_jsx_expr_container
+    add 'jsx:elem', any, transform_jsx_elem
+    add 'jsx:attr', any, transform_jsx_attr
+    add 'jsx:string', any, transform_jsx_str
+    add 'jsx:text', any, transform_jsx_text
+    add 'jsx:expr', any, transform_jsx_expr_container
 
