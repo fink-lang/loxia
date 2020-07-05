@@ -11,14 +11,15 @@ describe 'identifiers', fn:
         {export, import, public, return, static, switch, typeof, default} = ham
         {extends, finally, package, private, continue, function} = ni
         {arguments, interface, protected, implements, instanceof} = nu
+        {undefined, null} = nu
       '
       to_match_snapshot
 
 
-  it 'does not escape true, false, null', fn:
+  it 'does not escape true, false', fn:
     expect
       fink2js '
-        foo = [true, false, null]
+        foo = [true, false]
       '
       to_match_snapshot
 
