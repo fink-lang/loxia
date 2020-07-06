@@ -2,8 +2,7 @@
 
 exports[`string compiles escape chars 1`] = `
 "export const str1 = \`foo\\\\\`bar\\\\nspam\\\\\`ni\`;
-export const str2 = \`foo\\\\\`bar\`;
-export const str3 = \`foo\\\\\\\\\`;"
+export const str2 = \`foo\\\\\\\\\`;"
 `;
 
 exports[`string compiles multiline 1`] = `

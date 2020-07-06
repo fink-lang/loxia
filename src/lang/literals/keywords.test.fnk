@@ -8,6 +8,5 @@ describe 'keywords', fn:
       fink2js '
         x = false
         y = true
-        z = null
       '
       to_match_snapshot

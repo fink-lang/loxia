@@ -16,7 +16,7 @@ exports[`try compiles 1`] = `
   return [item, err];
 };
 export const foo2 = () => try {
-  return [false, throw new Error(\`foobar\`)];
+  return [false, throw error(\`foobar\`)];
 } catch (ˆerror_2) {
   return [ˆerror_2];
 };"

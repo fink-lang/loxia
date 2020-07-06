@@ -2,6 +2,5 @@
 
 exports[`keywords transforms literals 1`] = `
 "export const x = false;
-export const y = true;
-export const z = null;"
+export const y = true;"
 `;

@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`new compiles 1`] = `
-"export const foo = new Set();
-export const bar = new Set();
-export const spam = new Set(\`abca\`);"
-`;

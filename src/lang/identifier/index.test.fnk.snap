@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`identifiers does not escape true, false, null 1`] = `"export const foo = [true, false, null];"`;
+exports[`identifiers does not escape true, false 1`] = `"export const foo = [true, false];"`;
 
 exports[`identifiers escapes identifiers incompatible with JS 1`] = `
 "export const ˆ1s = spam;
@@ -57,5 +57,9 @@ const {
   \\"protected\\": ˆprotected,
   \\"implements\\": ˆimplements,
   \\"instanceof\\": ˆinstanceof
+} = nu;
+const {
+  \\"undefined\\": ˆundefined,
+  \\"null\\": ˆnull
 } = nu;"
 `;
