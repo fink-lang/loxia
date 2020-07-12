@@ -4,7 +4,7 @@
   isVariableDeclarator, isArrowFunctionExpression, isExpressionStatement
   isReturnStatement, arrowFunctionExpression, callExpression
 } = import '@babel/types'
-{set_props} = import '@fink/std-lib/obj'
+{set_props} = import '@fink/js-interop/reflect'
 {for_each, length} = import '@fink/std-lib/iter'
 {wrap_with_comment_loc} = import '../lang/comments'
 
