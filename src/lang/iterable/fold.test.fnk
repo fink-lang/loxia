@@ -13,6 +13,15 @@ describe 'fold', fn:
       to_match_snapshot
 
 
+  it 'compiles without accu', fn:
+    expect
+      fink2js '
+        fold item:
+          item
+      '
+      to_match_snapshot
+
+
   it 'destructuring item', fn:
     expect
       fink2js '

@@ -1,0 +1,29 @@
+{fink2js} = import '../../testing'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest'
+
+
+describe 'comparison', fn:
+  it 'compiles simple', fn:
+    expect
+      fink2js "
+        lt = a < b
+        gt = a > b
+        eq = a == b
+        neq = a != b
+        gteq = a >= b
+        lteq = a <= b
+      "
+      to_match_snapshot
+
+
+  it 'compiles combined', fn:
+    expect
+      fink2js "
+        lt = a < b < c
+        gt = a > b > c
+        eq = a == b == c
+        neq = a != b != c
+        gteq = a >= b >= c
+        lteq = a <= b <= c
+      "
+      to_match_snapshot

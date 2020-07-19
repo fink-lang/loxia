@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`comparison compiles combined 1`] = `
+"export const lt = a < b && b < c;
+export const gt = a > b && b > c;
+export const eq = a === b && b === c;
+export const neq = a !== b && b !== c;
+export const gteq = a >= b && b >= c;
+export const lteq = a <= b && b <= c;"
+`;
+
+exports[`comparison compiles simple 1`] = `
+"export const lt = a < b;
+export const gt = a > b;
+export const eq = a === b;
+export const neq = a !== b;
+export const gteq = a >= b;
+export const lteq = a <= b;"
+`;
