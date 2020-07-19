@@ -27,8 +27,7 @@ has_spread_not_last = fn {left}:
           else: false
 
       exprs_len = length left.exprs
-      # TODO: add support for  -1 < idx < exprs_len - 1
-      -1 < idx and idx < exprs_len - 1
+      -1 < idx < exprs_len - 1
     else:
       false
 
