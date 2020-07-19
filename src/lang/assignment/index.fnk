@@ -17,7 +17,7 @@ find_index = fn iterable, func:
   iterable.findIndex func
 
 
-is_spread_not_last = fn {left}:
+has_spread_not_last = fn {left}:
   match left:
     {type: 'array', exprs: 1 < length ?}:
       idx = find_index left.exprs, fn expr:
@@ -26,6 +26,7 @@ is_spread_not_last = fn {left}:
           else: false
 
       exprs_len = length left.exprs
+      # TODO: add support for  -1 < idx < exprs_len - 1
       idx > -1 and idx < exprs_len - 1
     else:
       false
@@ -114,7 +115,7 @@ transform_spread_right = fn expr, ctx:
 
 transform_assign = fn node, ctx:
   match node:
-    is_spread_not_last ?:
+    has_spread_not_last ?:
       left = transform_spread_left node, ctx
       right = transform_spread_right node, ctx
       assignmentExpression '=', left, right
