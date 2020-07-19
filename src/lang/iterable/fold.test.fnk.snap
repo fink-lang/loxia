@@ -30,6 +30,19 @@ exports[`fold compiles 1`] = `
 };"
 `;
 
+exports[`fold compiles without accu 1`] = `
+"ˆitems_3 => {
+  let ˆaccu_2 = undefined;
+
+  for (const ˆitem_1 of ˆitems_3) {
+    const item = ˆitem_1;
+    ˆaccu_2 = item;
+  }
+
+  return ˆaccu_2;
+};"
+`;
+
 exports[`fold destructuring accu 1`] = `
 "ˆitems_3 => {
   let ˆaccu_2 = [];

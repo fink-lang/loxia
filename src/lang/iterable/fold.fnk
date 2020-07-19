@@ -1,6 +1,7 @@
-{assign, for_of, func, lets} = import '../../js/types'
+{assign, for_of, func, lets, undef} = import '../../js/types'
 {block_statement} = import '../block'
 {transform_init} = import './common'
+
 
 
 transform_fold = fn node, ctx:
@@ -12,16 +13,24 @@ transform_fold = fn node, ctx:
   item_init = transform_init item_arg, item, ctx
 
   acc = unique_ident 'accu'
-  acc_assign = transform_init acc_arg.left, acc, ctx
+
+  acc_init = match acc_arg:
+    {}: transform acc_arg.right
+    else: undef _
+
+  acc_assign = match acc_arg:
+    {}: [transform_init acc_arg.left, acc, ctx]
+    else: []
+
 
   items = unique_ident 'items'
   [...expressions, last_expr] = node.exprs
 
   func [items],
-    lets acc, transform acc_arg.right
+    lets acc, acc_init
 
     for_of [item, items],
-      acc_assign
+      ...acc_assign
       item_init
 
       ...pipe expressions:
