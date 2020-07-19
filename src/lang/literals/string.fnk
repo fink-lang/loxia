@@ -23,7 +23,6 @@ transform_string = fn node, {transform}:
 
   templ_str = templateLiteral quasies, expressions
 
-  # TODO: use simple string if no exprs and not tagged
   match tag:
     not_tagged:
       templ_str
