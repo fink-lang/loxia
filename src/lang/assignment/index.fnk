@@ -12,6 +12,7 @@
 {add, any} = import '../context'
 {transform_value} = import '../partial'
 
+
 # TODO: std-lib
 find_index = fn iterable, func:
   iterable.findIndex func
@@ -27,7 +28,7 @@ has_spread_not_last = fn {left}:
 
       exprs_len = length left.exprs
       # TODO: add support for  -1 < idx < exprs_len - 1
-      idx > -1 and idx < exprs_len - 1
+      -1 < idx and idx < exprs_len - 1
     else:
       false
 
