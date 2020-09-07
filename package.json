@@ -39,7 +39,7 @@
     "@fink/cli": "^6.1.0",
     "@fink/jest": "^5.1.0",
     "@fink/larix": "^12.1.0",
-    "@fink/loxia": "^12.1.0",
+    "@fink/loxia": "^12.1.1",
     "commitizen": "^4.1.2",
     "cz-conventional-changelog": "^3.1.0",
     "jest-cli": "^26.1.0",
@@ -51,6 +51,6 @@
     "@babel/traverse": "^7.10.5",
     "@babel/types": "^7.10.5",
     "@fink/js-interop": "^1.1.0",
-    "@fink/std-lib": "3.1.1"
+    "@fink/std-lib": "^4.0.0"
   }
 }
