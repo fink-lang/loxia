@@ -5,7 +5,7 @@
   isReturnStatement, arrowFunctionExpression, callExpression
 } = import '@babel/types'
 {set_props} = import '@fink/js-interop/reflect'
-{for_each, length} = import '@fink/std-lib/iter'
+{length} = import '@fink/std-lib/iter'
 {wrap_with_comment_loc} = import '../lang/comments'
 
 
@@ -15,7 +15,8 @@ get_body = fn path: path.get 'body'
 
 [no_result] = []
 
-consume_all = for_each fn: no_result
+# TODO: suport _ or nothing instead of having to use item
+consume_all = fold item: no_result
 
 
 simple = fn body, sl=false:
