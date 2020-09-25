@@ -4,5 +4,5 @@
 transform_import = fn node, {transform}:
   right = transform node.right
   callExpression
-    async_import ()
+    async_import _
     [right]

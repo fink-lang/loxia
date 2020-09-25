@@ -23,7 +23,7 @@ str_36 = base_n ?, 36
 replace_chars = fn name, idx=0:
   prefixed_name = '${var_prefix}${name}'
 
-  match  prefixed_name:
+  match prefixed_name:
     matches ?, check_ident:
       prefixed_name
     else:

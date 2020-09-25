@@ -1,5 +1,5 @@
 {callExpression, identifier} = import '@babel/types'
-{length} = import '@fink/std-lib/iter'
+{is_empty, length} = import '@fink/std-lib/iter'
 
 
 transform_args = fn args, {transform}:
@@ -17,7 +17,7 @@ transform_single_arg = fn [expr], {transform}:
   match expr:
     {type: 'empty'}: []
     # remove in favour of using _ as empty?
-    {type: 'group', exprs: 0 == length ?}: []
+    {type: 'group', exprs: is_empty ?}: []
     else: [transform expr]
 
 

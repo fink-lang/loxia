@@ -52,7 +52,7 @@ exports[`find compiles complex find 1`] = `
 ˆitems_8 => {
   for (const ˆitem_7 of ˆitems_8) {
     const [foo, ...bar] = ˆitem_7;
-    const foo_alone = foo && 0 === length(bar);
+    const foo_alone = foo && is_empty(bar);
     const ˆresult_9 = foo_alone;
     if (ˆresult_9) return ˆitem_7;
   }
@@ -70,7 +70,7 @@ exports[`find compiles complex find 1`] = `
     }
     const [foo, [bar]] = _do_result2;
     _do_result2 = undefined;
-    const ˆresult_13 = bar && 0 === length(foo);
+    const ˆresult_13 = bar && is_empty(foo);
     if (ˆresult_13) return ˆitem_10;
   }
 

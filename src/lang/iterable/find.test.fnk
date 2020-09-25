@@ -21,11 +21,11 @@ describe 'find', fn:
             else: ni
 
         find [foo, ...bar]:
-          foo_alone = foo and 0 == length bar
+          foo_alone = foo and is_empty bar
           foo_alone
 
         find [...foo, bar]:
-          bar and 0 == length foo
+          bar and is_empty foo
       '
       to_match_snapshot
 

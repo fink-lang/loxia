@@ -1,5 +1,5 @@
 {
-  identifier, assignmentExpression, expressionStatement,
+  identifier, assignmentExpression, expressionStatement
   memberExpression, callExpression, objectProperty, objectPattern
   variableDeclaration, variableDeclarator
   isImportDefaultSpecifier, isImportSpecifier
@@ -56,7 +56,7 @@ module_transforms = dict:
         id
 
     path.insertAfter foo
-    path.remove ()
+    path.remove _
     no_result
 
   ExportNamedDeclaration: fn path:

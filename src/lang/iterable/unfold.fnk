@@ -1,5 +1,5 @@
 {whileStatement, blockStatement} = import '@babel/types'
-{length} = import '@fink/std-lib/iter'
+{is_empty} = import '@fink/std-lib/iter'
 
 
 {assign, generator, true_, lets} = import '../../js/types'
@@ -10,7 +10,7 @@
 
 loop = fn ...body:
   whileStatement
-    true_ ()
+    true_ _
     blockStatement body
 
 
@@ -35,7 +35,7 @@ get_acc_exprs = fn node, next_value, ctx:
 
 get_accs = fn node, next_value, ctx:
   match node.args:
-    0 == length ?:
+    is_empty ?:
       [[], [], [], []]
     else:
       get_acc_exprs node, next_value, ctx
