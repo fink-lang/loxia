@@ -1,5 +1,5 @@
 {
-  doExpression, blockStatement, isAssignmentExpression, expressionStatement,
+  doExpression, blockStatement, isAssignmentExpression, expressionStatement
   variableDeclaration, variableDeclarator
 } = import '@babel/types'
 {length} = import '@fink/std-lib/iter'

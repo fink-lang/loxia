@@ -1,4 +1,4 @@
-{arrowFunctionExpression, identifier} = import '@babel/types'
+{arrowFunctionExpression} = import '@babel/types'
 
 {transform_left} = import '../../js/left'
 {add, any} = import '../context'
@@ -6,12 +6,13 @@
 
 
 transform_func = fn node, ctx:
+  {unique_ident} = ctx
+
   [...params] = pipe node.args:
     map arg:
       match arg:
         {type: 'empty'}:
-          # TODO should we be consistent with object destruct using unique_ident
-          identifier 'ˆ'
+          unique_ident ''
         else:
           transform_left ctx.transform arg
 

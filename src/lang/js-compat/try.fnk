@@ -21,7 +21,7 @@ transform_try = fn node, ctx:
     ...expressions
     expressionStatement
       arrayExpression list:
-        false_ ()
+        false_ _
         last_expr.expression or last_expr
 
   catch_block = catchClause

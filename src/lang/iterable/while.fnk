@@ -25,8 +25,8 @@ transform_while = fn node, ctx:
       ...expressions
 
       ifStatement
-        neq result, true_ ()
-        returnStatement ()
+        neq result, true_ _
+        returnStatement _
 
       yields item
 

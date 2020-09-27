@@ -5,7 +5,7 @@
   isReturnStatement, arrowFunctionExpression, callExpression
 } = import '@babel/types'
 {set_props} = import '@fink/js-interop/reflect'
-{length} = import '@fink/std-lib/iter'
+{is_empty} = import '@fink/std-lib/iter'
 {wrap_with_comment_loc} = import '../lang/comments'
 
 
@@ -25,7 +25,7 @@ simple = fn body, sl=false:
       [stmnt, ...rest] = get_body body
 
       match rest:
-        0 == length ?:
+        is_empty ?:
           # e.g. fn arg: match ...: ...
           match {sl, stmnt}:
             {sl: true, stmnt: isLabeledStatement ?}:
@@ -64,7 +64,7 @@ last_expressions = fn path:
       body.traverse
         dict:
           LabeledStatement: fn nested_match:
-            nested_match.skip ()
+            nested_match.skip _
 
           BreakStatement: fn brk:
             last = brk.getSibling brk.key - 1
@@ -73,7 +73,7 @@ last_expressions = fn path:
               {expression: {operator: 'throw'}}:
                 last.replaceWith
                   expressionStatement last.node.expression
-                brk.remove ()
+                brk.remove _
               else:
                 # TODO: don't use mutation
                 items.push last
@@ -94,7 +94,7 @@ replace_with_return = fn path:
   pipe last_expressions path:
     map expr:
       match expr:
-        {node: {expression: {operator:'throw'}}}:
+        {node: {expression: {operator: 'throw'}}}:
           expr.replaceWith
             wrap_with_comment_loc
               expressionStatement expr.node.expression
@@ -110,7 +110,7 @@ replace_with_return = fn path:
       match {sibl}:
         # istanbul ignore else
         {sibl: {}}:
-          sibl.remove ()
+          sibl.remove _
 
     consume_all
 
@@ -123,7 +123,7 @@ replace_with_assign = fn target, path:
   # TODO: needs loc
   target.parentPath.insertBefore lets id
   target.parentPath.insertBefore simple get_body path
-  target.parentPath.insertAfter assign id, undef ()
+  target.parentPath.insertAfter assign id, undef _
 
   pipe last_expressions path:
     map expr:

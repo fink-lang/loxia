@@ -8,7 +8,7 @@ exports[`func compiles defaults 1`] = `
 };"
 `;
 
-exports[`func compiles empty arg 1`] = `"export const fun = (a, ˆ, b) => b;"`;
+exports[`func compiles empty arg 1`] = `"export const fun = (a, ˆ_1, ˆ_2, b) => b;"`;
 
 exports[`func compiles func of func 1`] = `
 "export const fun5 = (c) => (d, e) => {

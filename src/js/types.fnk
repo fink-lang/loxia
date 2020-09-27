@@ -6,7 +6,7 @@
   logicalExpression, binaryExpression, unaryExpression
   doExpression, assignmentExpression, isIdentifier
 } = import'@babel/types'
-{length} = import '@fink/std-lib/iter'
+{is_empty} = import '@fink/std-lib/iter'
 
 
 {escape_ident} = import'./identifier'
@@ -35,10 +35,10 @@ typof = fn value: unaryExpression 'typeof', value
 
 and = fn left, ...rest:
   match rest:
-    0 < length ?:
-      logicalExpression '&&', left, and ...rest
-    else:
+    is_empty ?:
       left
+    else:
+      logicalExpression '&&', left, and ...rest
 
 
 neq = fn left, right: binaryExpression '!==', left, right
@@ -53,8 +53,8 @@ false_ = fn: booleanLiteral false
 
 
 not_nullish = fn value:
-  not_null = neq value, nullLiteral ()
-  not_undef = neq value, undef ()
+  not_null = neq value, nullLiteral _
+  not_undef = neq value, undef _
   and not_undef, not_null
 
 
@@ -63,8 +63,8 @@ ident = fn name: identifier escape_ident name
 
 raw_str = fn value:
   dict:
-    type: 'StringLiteral',
-    value,
+    type: 'StringLiteral'
+    value
     extra: dict:
       raw: '"${value}"'
       rawValue: value
@@ -101,7 +101,7 @@ func = fn args, ...expressions:
 generator = fn name, args, ...statements:
   func_name = ident name
   body = blockStatement statements
-  functionExpression func_name, args,  body,  true
+  functionExpression func_name, args,  body, true
 
 
 for_of = fn [item, items], ...expressions:

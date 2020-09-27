@@ -30,6 +30,6 @@ transform_find = fn node, ctx:
 
       ...next_accu
 
-    undef ()
+    undef _
 
 

@@ -4,7 +4,7 @@
   memberExpression, identifier, expressionStatement, arrayPattern, restElement
   numericLiteral
 } = import '@babel/types'
-{length} = import '@fink/std-lib/iter'
+{length, is_empty} = import '@fink/std-lib/iter'
 {wrap_with_comment_loc} = import '../comments'
 
 
@@ -48,7 +48,7 @@ transform_spread_left = fn {left}, {transform}:
             else: [before, middle, [...end, expr]]
 
   exprs = match before:
-    0 == length ?:
+    is_empty ?:
       # TODO missing loc
       [middle, {type: 'array', exprs: end}]
     else:

@@ -1,6 +1,6 @@
 {default: traverse} = import '@babel/traverse'
 {transformFromAstSync} = import '@babel/core'
-{length} = import '@fink/std-lib/iter'
+{is_empty} = import '@fink/std-lib/iter'
 
 {transform_ast} = import './lang'
 
@@ -17,7 +17,7 @@ transform = fn node, code, filename, options:
     else: {}
 
   match ast:
-    {errors: 0 == length ?}:
+    {errors: is_empty ?}:
       traverse ast, dict:
         DoExpression: transform_do_expr
         AwaitExpression: {enter: transform_async}

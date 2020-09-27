@@ -28,8 +28,8 @@ transform_until = fn node, ctx:
       ...expressions
 
       ifStatement
-        eq result, true_ ()
-        returnStatement ()
+        eq result, true_ _
+        returnStatement _
 
       ...next_accu
 

@@ -56,7 +56,7 @@ describe 'func', fn:
   it 'compiles empty arg', fn:
     expect
       fink2js '
-        fun = fn a, ,b:
+        fun = fn a, , , b:
           b
         '
       to_match_snapshot

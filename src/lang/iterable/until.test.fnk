@@ -2,7 +2,7 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest'
 
 
-describe 'while', fn:
+describe 'until', fn:
   it 'compiles', fn:
     expect
       fink2js '
@@ -28,11 +28,11 @@ describe 'while', fn:
     expect
       fink2js '
         until [foo, ...bar]:
-          foo_alone = foo and 0 == length bar
+          foo_alone = foo and is_empty bar
           foo_alone
 
         until [...foo, bar]:
-          bar and 0 == length foo
+          bar and is_empty foo
       '
       to_match_snapshot
 
