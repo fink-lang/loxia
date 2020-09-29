@@ -1,16 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx compiles 1`] = `
-"export const jsx1 = <a />;
-export const jsx2 = <b></b>;
-export const jsx3 = <a foo bar=\\"ni\\" />;
-export const jsx4 = <a foo bar=\\"ni\\" />;
-export const jsx5 = <a foo bar={1234} />;
-export const jsx6 = <a>
-    foo {ni}
-    <b /> ham
-    spam
-    <c />
-    ni
-  </a>;"
+exports[`jsx compiles empty elem 1`] = `"export const elem = <b></b>;"`;
+
+exports[`jsx compiles fragment 1`] = `"export const elem = <></>;"`;
+
+exports[`jsx compiles fragment with children 1`] = `
+"export const elem = <>
+  foo
+  <p>bar</p>
+</>;"
 `;
+
+exports[`jsx compiles shorthand 1`] = `"export const elem = <a />;"`;
+
+exports[`jsx compiles with children and expr 1`] = `
+"export const elem = <a>
+  foo {ni}
+  <b /> ham
+  spam
+  <c />
+  ni
+</a>;"
+`;
+
+exports[`jsx compiles with expr params 1`] = `"export const elem = <a foo bar={1234} />;"`;
+
+exports[`jsx compiles with expr params 2`] = `"export const elem = <a foo bar=\\"ni\\" />;"`;
+
+exports[`jsx compiles with str params 1`] = `"export const elem = <a foo bar=\\"ni\\" />;"`;
+
+exports[`jsx compiles with str params 2`] = `"export const elem = <a foo bar=\\"ni\\" />;"`;
