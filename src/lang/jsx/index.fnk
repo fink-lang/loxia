@@ -1,8 +1,10 @@
 {
   jsxElement, jsxOpeningElement, jsxIdentifier, jsxClosingElement, jsxAttribute
-  stringLiteral, jsxExpressionContainer, jsxText
+  stringLiteral, jsxExpressionContainer, jsxText, jsxFragment, jsxOpeningFragment
+  jsxClosingFragment
 } = import '@babel/types'
 {add, any} = import '../context'
+
 
 
 transform_jsx_elem = fn node, {transform}:
@@ -20,6 +22,17 @@ transform_jsx_elem = fn node, {transform}:
 
 
 
+transform_jsx_frag = fn node, {transform}:
+  [...children] = pipe node.children:
+    map expr: transform expr
+
+  jsxFragment
+    jsxOpeningFragment _
+    jsxClosingFragment _
+    children
+
+
+
 transform_jsx_attr = fn node, {transform}:
   id = jsxIdentifier node.name
 
@@ -30,8 +43,10 @@ transform_jsx_attr = fn node, {transform}:
   jsxAttribute id, ...value
 
 
+
 transform_jsx_str = fn node:
   stringLiteral node.value
+
 
 
 transform_jsx_text = fn node:
@@ -45,6 +60,7 @@ transform_jsx_expr_container = fn node, {transform}:
 
 add_jsx = fn ctx:
   pipe ctx:
+    add 'jsx:frag', any, transform_jsx_frag
     add 'jsx:elem', any, transform_jsx_elem
     add 'jsx:attr', any, transform_jsx_attr
     add 'jsx:string', any, transform_jsx_str

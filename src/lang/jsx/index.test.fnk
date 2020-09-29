@@ -3,24 +3,64 @@
 
 
 describe 'jsx', fn:
-  it 'compiles', fn:
+  it 'compiles shorthand', fn:
     expect
-      fink2js '
-        jsx1 = <a/>
-        jsx2 = <b></b>
-        jsx3 = <a foo bar="ni" />
-        jsx4 = <a foo bar=\'ni\' />
-        jsx5 = <a foo bar={1234} />
-        jsx6 =
-          <a>
-            foo {ni}
-            <b /> ham
-            spam
-            <c />
-            ni
-          </a>
-        '
+      fink2js 'elem = <a/>'
       to_match_snapshot
 
+
+  it 'compiles with str params', fn:
+    expect
+      fink2js 'elem = <a foo bar="ni" />'
+      to_match_snapshot
+
+    expect
+      fink2js "elem = <a foo bar='ni' />"
+      to_match_snapshot
+
+
+  it 'compiles with expr params', fn:
+    expect
+      fink2js 'elem = <a foo bar={1234} />'
+      to_match_snapshot
+
+    expect
+      fink2js "elem = <a foo bar='ni' />"
+      to_match_snapshot
+
+
+  it 'compiles empty elem', fn:
+    expect
+      fink2js 'elem = <b></b>'
+      to_match_snapshot
+
+
+  it 'compiles with children and expr', fn:
+    expect
+      fink2js 'elem =
+        <a>
+          foo {ni}
+          <b /> ham
+          spam
+          <c />
+          ni
+        </a>'
+      to_match_snapshot
+
+
+  it 'compiles fragment', fn:
+    expect
+      fink2js 'elem = <></>'
+      to_match_snapshot
+
+
+  it 'compiles fragment with children', fn:
+    expect
+      fink2js 'elem =
+        <>
+          foo
+          <p>bar</p>
+        </>'
+      to_match_snapshot
 
 
