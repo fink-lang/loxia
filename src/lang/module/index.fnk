@@ -9,7 +9,8 @@
 
 {wrap_with_comment_loc} = import '../comments'
 {block_statement} = import '../block'
-{transform_import: transform_async_import} = import './import'
+{transform_import: transform_async_import, resolve_ext} = import './import'
+
 
 
 # TODO should larix handle shebang as special expr?
@@ -22,6 +23,7 @@ get_shebang = fn expr:
       [[shebang], {...expr, comments: {...comments, leading: rest}}]
     else:
       [[], expr]
+
 
 
 transform_import = fn node, {transform}:
@@ -47,7 +49,7 @@ transform_import = fn node, {transform}:
   importDeclaration
     imports
     wrap_with_comment_loc
-      stringLiteral url.value
+      stringLiteral resolve_ext url.value
       node.right.right
 
 
@@ -62,7 +64,7 @@ transform_module = fn node, ctx:
         {op: 'import'}:
           {right: {exprs: [url]}} = expr
           wrap_with_comment_loc
-            importDeclaration [], stringLiteral url.value
+            importDeclaration [], stringLiteral resolve_ext url.value
             expr
 
         {right: {op: 'import'}}:
