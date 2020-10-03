@@ -5,6 +5,7 @@
   isReturnStatement, arrowFunctionExpression, callExpression
 } = import '@babel/types'
 {set_props} = import '@fink/js-interop/reflect'
+{undefined} = import '@fink/js-interop/nullish'
 {is_empty} = import '@fink/std-lib/iter'
 {wrap_with_comment_loc} = import '../lang/comments'
 
@@ -13,10 +14,9 @@
 
 get_body = fn path: path.get 'body'
 
-[no_result] = []
 
 # TODO: suport _ or nothing instead of having to use item
-consume_all = fold item: no_result
+consume_all = fold item: undefined
 
 
 simple = fn body, sl=false:
@@ -77,7 +77,7 @@ last_expressions = fn path:
               else:
                 # TODO: don't use mutation
                 items.push last
-            no_result
+            undefined
       items
 
     else:
@@ -174,4 +174,4 @@ transform_do_expr = fn path:
       path.replaceWith
         callExpression arrow, []
 
-  no_result
+  undefined

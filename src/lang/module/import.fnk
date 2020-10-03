@@ -1,8 +1,28 @@
 {callExpression, Import: async_import} = import '@babel/types'
+{ends_with, slice} = import '@fink/std-lib/str'
+
+
+
+resolve_ext = fn import_url:
+  match import_url:
+    ends_with ?, '.fnk':
+      '${slice import_url, 0, -4}.js'
+    else:
+      import_url
+
 
 
 transform_import = fn node, {transform}:
-  right = transform node.right
+  right = match node.right:
+    {type: 'string', exprs: [..., {type: 'string:text'}]}:
+      [...exprs, url] = node.right.exprs
+
+      transform dict:
+        ...node.right
+        exprs: [...exprs, {...url, value: resolve_ext url.value}]
+    else:
+      transform node.right
+
   callExpression
     async_import _
     [right]

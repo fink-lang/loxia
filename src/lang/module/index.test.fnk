@@ -11,20 +11,25 @@ describe 'module', fn:
 
         # leading comment
 
-        # imp comment
+        # static imports
         import 'shrub'
+        import '@fink/foo/bar.fnk'
 
-        # imp comment 2
-        foo = import './foo'
+        # default import
+        foo = import './foo.fnk'
 
-        # imp comment 3
-        {bar} = import './spam'
-        {foo: spam} = import './shrub'
+        # import exported values
+        {bar} = import './spam.fnk'
+        {foo: spam} = import './shrub.fnk'
 
-        # expr comment
+        # dynamic imports with static URL
+        ni = await import './shrub.fnk'
+
+        # dynamic imports with dynamic URLs
         shrub = foo + bar
-        ni = await import spam
-
+        ni2 = await import shrub
+        ni3 = await import '\${shrub}'
+        ni4 = await import './\${shrub}.fnk'
         # trailing comment
       "
       to_match_snapshot

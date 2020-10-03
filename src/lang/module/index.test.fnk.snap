@@ -3,15 +3,20 @@
 exports[`module handles comments 1`] = `
 "#!/usr/bin/env node
 // leading comment
-// imp comment
+// static imports
 import \\"shrub\\";
-// imp comment 2
-import foo from \\"./foo\\";
-// imp comment 3
-import { bar } from \\"./spam\\";
-import { foo as spam } from \\"./shrub\\";
-// expr comment
+import \\"@fink/foo/bar.js\\";
+// default import
+import foo from \\"./foo.js\\";
+// import exported values
+import { bar } from \\"./spam.js\\";
+import { foo as spam } from \\"./shrub.js\\";
+// dynamic imports with static URL
+export const ni = await import(\`./shrub.js\`);
+// dynamic imports with dynamic URLs
 export const shrub = foo + bar;
-export const ni = await import(spam);
+export const ni2 = await import(shrub);
+export const ni3 = await import(\`\${shrub}\`);
+export const ni4 = await import(\`./\${shrub}.js\`);
 // trailing comment"
 `;
