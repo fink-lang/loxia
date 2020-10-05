@@ -115,9 +115,9 @@ init_ctx = fn code, filename:
     add_transformers
 
 
-transform_ast = fn expr, code, filename:
+transform_ast = fn expr, code, filename, options:
   ctx = init_ctx code, filename
-  js_ast = transform_expr expr, ctx
+  js_ast = transform_expr expr, {...ctx, options}
 
   match js_ast:
     {error: {}}:
