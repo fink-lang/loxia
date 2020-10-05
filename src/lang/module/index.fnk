@@ -26,7 +26,7 @@ get_shebang = fn expr:
 
 
 
-transform_import = fn node, {transform}:
+transform_import = fn node, {transform, options}:
   [...imports] = match node.left:
     {type: 'ident'}:
       [importDefaultSpecifier transform node.left]
@@ -49,7 +49,7 @@ transform_import = fn node, {transform}:
   importDeclaration
     imports
     wrap_with_comment_loc
-      stringLiteral resolve_ext url.value
+      stringLiteral resolve_ext url.value, options
       node.right.right
 
 
@@ -64,7 +64,7 @@ transform_module = fn node, ctx:
         {op: 'import'}:
           {right: {exprs: [url]}} = expr
           wrap_with_comment_loc
-            importDeclaration [], stringLiteral resolve_ext url.value
+            importDeclaration [], stringLiteral resolve_ext url.value, ctx.options
             expr
 
         {right: {op: 'import'}}:

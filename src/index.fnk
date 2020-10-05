@@ -9,8 +9,9 @@
 {module_transforms} = import './js/module'
 
 
+
 transform = fn node, code, filename, options:
-  ast = transform_ast node, code, filename
+  ast = transform_ast node, code, filename, options
 
   extras = match options:
     {module_type: 'cjs'}: module_transforms
@@ -25,19 +26,15 @@ transform = fn node, code, filename, options:
   ast
 
 
-babel_generate = fn ast, filename, source, options:
-  {use_babel_conf, module_type: _, source_maps, ...rest_opts} = options
 
-  conf_opts = match true:
-    use_babel_conf: {}
-    else: {babelrc: false, configFile: false}
+babel_generate = fn ast, filename, source, options:
+  {babel={babelrc: false, configFile: false}, source_maps} = options
 
   babel_opts = dict:
     filename
     sourceFileName: filename
     sourceMaps: source_maps
-    ...conf_opts
-    ...rest_opts
+    ...babel
 
   [error, result] = try:
     {code, map: source_map} = transformFromAstSync ast, source, babel_opts
@@ -48,6 +45,7 @@ babel_generate = fn ast, filename, source, options:
       result
     else:
       {code: '', source_map: '', errors: [error]}
+
 
 
 generate = fn ast, filename, source, options={}:

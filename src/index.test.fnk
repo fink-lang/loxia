@@ -70,7 +70,7 @@ describe 'errors', fn:
   it 'errors with bad babel options', fn:
     {errors: [{message}]} = fink2js
       'foo = bar'
-      {use_babel_conf: true, foobar: 'spam'}
+      {babel: {foobar: 'spam'}}
 
     expect
       slice message, 0, 24
