@@ -1,6 +1,7 @@
-{add, any} = import '../context'
-{transform_throw} = import './throw'
-{transform_try} = import './try'
+{add, any} = import '../context.fnk'
+{transform_throw} = import './throw.fnk'
+{transform_try} = import './try.fnk'
+
 
 
 add_js_compat = fn ctx:

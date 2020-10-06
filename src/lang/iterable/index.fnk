@@ -1,11 +1,12 @@
-{add, any} = import '../context'
-{transform_fold} = import './fold'
-{transform_unfold} = import './unfold'
-{transform_map} = import './map'
-{transform_filter} = import './filter'
-{transform_while} = import './while'
-{transform_until} = import './until'
-{transform_find} = import './find'
+{add, any} = import '../context.fnk'
+{transform_fold} = import './fold.fnk'
+{transform_unfold} = import './unfold.fnk'
+{transform_map} = import './map.fnk'
+{transform_filter} = import './filter.fnk'
+{transform_while} = import './while.fnk'
+{transform_until} = import './until.fnk'
+{transform_find} = import './find.fnk'
+
 
 
 add_iterables = fn ctx:

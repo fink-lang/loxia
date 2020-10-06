@@ -6,10 +6,10 @@
   logicalExpression, binaryExpression, unaryExpression
   doExpression, assignmentExpression, isIdentifier
 } = import'@babel/types'
-{is_empty} = import '@fink/std-lib/iter'
+{is_empty} = import '@fink/std-lib/iter.fnk'
 
 
-{escape_ident} = import'./identifier'
+{escape_ident} = import'./identifier.fnk'
 
 
 wrap = fn larix_node, js_node:

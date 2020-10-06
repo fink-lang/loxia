@@ -1,7 +1,8 @@
-{length} = import '@fink/std-lib/iter'
+{length} = import '@fink/std-lib/iter.fnk'
 
-{consts, yields, lets, assign} = import '../../js/types'
-{block_statement} = import '../block'
+{consts, yields, lets, assign} = import '../../js/types.fnk'
+{block_statement} = import '../block/index.fnk'
+
 
 
 transform_init = fn left, right, {transform}:
@@ -48,6 +49,7 @@ get_accs = fn node, last_expr, ctx:
 
     else:
       [[], [], last_expr, []]
+
 
 
 get_item = fn node, ctx:

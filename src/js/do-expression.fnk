@@ -4,19 +4,21 @@
   isVariableDeclarator, isArrowFunctionExpression, isExpressionStatement
   isReturnStatement, arrowFunctionExpression, callExpression
 } = import '@babel/types'
-{set_props} = import '@fink/js-interop/reflect'
-{undefined} = import '@fink/js-interop/nullish'
-{is_empty} = import '@fink/std-lib/iter'
-{wrap_with_comment_loc} = import '../lang/comments'
+{set_props} = import '@fink/js-interop/reflect.fnk'
+{undefined} = import '@fink/js-interop/nullish.fnk'
+{is_empty} = import '@fink/std-lib/iter.fnk'
+{wrap_with_comment_loc} = import '../lang/comments/index.fnk'
 
+{lets, assign, undef} = import './types.fnk'
 
-{lets, assign, undef} = import './types'
 
 get_body = fn path: path.get 'body'
 
 
+
 # TODO: suport _ or nothing instead of having to use item
 consume_all = fold item: undefined
+
 
 
 simple = fn body, sl=false:
@@ -39,6 +41,7 @@ simple = fn body, sl=false:
           body.node
     else:
       body.node
+
 
 
 last_expressions = fn path:
@@ -90,6 +93,7 @@ last_expressions = fn path:
         ...last_expressions body
 
 
+
 replace_with_return = fn path:
   pipe last_expressions path:
     map expr:
@@ -115,6 +119,7 @@ replace_with_return = fn path:
     consume_all
 
 
+
 replace_with_assign = fn target, path:
   id = path.parentPath.scope.generateUidIdentifier 'do_result'
   #TODO: don't mutate
@@ -133,6 +138,7 @@ replace_with_assign = fn target, path:
           expr.node.expression
 
     consume_all
+
 
 
 transform_do_expr = fn path:

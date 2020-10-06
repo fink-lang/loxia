@@ -1,5 +1,5 @@
 {awaitExpression} = import '@babel/types'
-{add, any} = import '../context'
+{add, any} = import '../context.fnk'
 
 
 transform_await = fn node, {transform}:

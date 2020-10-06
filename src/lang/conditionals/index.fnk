@@ -1,5 +1,6 @@
-{add, any} = import '../context'
-{transform_match} = import './match'
+{add, any} = import '../context.fnk'
+{transform_match} = import './match.fnk'
+
 
 
 add_conditionals = fn ctx:

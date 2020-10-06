@@ -3,9 +3,10 @@
   expressionStatement, doExpression, isDoExpression
 } = import '@babel/types'
 
-{false_} = import '../../js/types'
+{false_} = import '../../js/types.fnk'
 
-{transform_block} = import '../block'
+{transform_block} = import '../block/index.fnk'
+
 
 
 transform_try = fn node, ctx:

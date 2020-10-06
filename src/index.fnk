@@ -1,12 +1,12 @@
 {default: traverse} = import '@babel/traverse'
 {transformFromAstSync} = import '@babel/core'
-{is_empty} = import '@fink/std-lib/iter'
+{is_empty} = import '@fink/std-lib/iter.fnk'
 
-{transform_ast} = import './lang'
+{transform_ast} = import './lang/index.fnk'
 
-{transform_do_expr} = import './js/do-expression'
-{transform_async} = import './js/async'
-{module_transforms} = import './js/module'
+{transform_do_expr} = import './js/do-expression.fnk'
+{transform_async} = import './js/async.fnk'
+{module_transforms} = import './js/module.fnk'
 
 
 

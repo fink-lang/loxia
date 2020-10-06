@@ -3,13 +3,12 @@
   importDeclaration, importSpecifier, importDefaultSpecifier
   exportNamedDeclaration, exportDefaultDeclaration, identifier
 } = import '@babel/types'
-{starts_with, slice} = import '@fink/std-lib/str'
+{starts_with, slice} = import '@fink/std-lib/str.fnk'
 
-{add, any} = import '../context'
-
-{wrap_with_comment_loc} = import '../comments'
-{block_statement} = import '../block'
-{transform_import: transform_async_import, resolve_ext} = import './import'
+{add, any} = import '../context.fnk'
+{wrap_with_comment_loc} = import '../comments/index.fnk'
+{block_statement} = import '../block/index.fnk'
+{transform_import: transform_async_import, resolve_ext} = import './import.fnk'
 
 
 
@@ -31,7 +30,7 @@ transform_import = fn node, {transform, options}:
     {type: 'ident'}:
       [importDefaultSpecifier transform node.left]
 
-    {type: 'object'}:
+    {type: ? in ['object', 'rec']}:
       pipe node.left.exprs:
         map prop:
           match prop:
@@ -92,6 +91,7 @@ transform_module = fn node, ctx:
       []
       'module'
       ...interpreter
+
 
 
 add_module = fn ctx:

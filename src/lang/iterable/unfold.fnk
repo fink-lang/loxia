@@ -1,17 +1,19 @@
 {whileStatement, blockStatement} = import '@babel/types'
-{is_empty} = import '@fink/std-lib/iter'
+{is_empty} = import '@fink/std-lib/iter.fnk'
 
 
-{assign, generator, true_, lets} = import '../../js/types'
+{assign, generator, true_, lets} = import '../../js/types.fnk'
 
-{block_statement} = import '../block'
-{transform_init, yield_expr} = import './common'
+{block_statement} = import '../block/index.fnk'
+{transform_init, yield_expr} = import './common.fnk'
+
 
 
 loop = fn ...body:
   whileStatement
     true_ _
     blockStatement body
+
 
 
 get_acc_exprs = fn node, next_value, ctx:
@@ -33,12 +35,14 @@ get_acc_exprs = fn node, next_value, ctx:
   [[initial], [acc_init], [acc_assign], [acc_result]]
 
 
+
 get_accs = fn node, next_value, ctx:
   match node.args:
     is_empty ?:
       [[], [], [], []]
     else:
       get_acc_exprs node, next_value, ctx
+
 
 
 transform_unfold = fn node, ctx:

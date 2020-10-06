@@ -1,5 +1,5 @@
 {binaryExpression, unaryExpression} = import '@babel/types'
-{add, any} = import '../context'
+{add, any} = import '../context.fnk'
 
 
 transform_op = dict:

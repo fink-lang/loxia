@@ -1,10 +1,10 @@
-{any, add} = import '../context'
+{any, add} = import '../context.fnk'
 
-{transform_number} = import './number'
-{transform_string} = import './string'
-{transform_array} = import './array'
-{transform_object, transform_prop} = import './object'
-{transform_keyword} = import './keywords'
+{transform_number} = import './number.fnk'
+{transform_string} = import './string.fnk'
+{transform_array} = import './array.fnk'
+{transform_object, transform_prop} = import './object.fnk'
+{transform_keyword} = import './keywords.fnk'
 
 
 
@@ -13,7 +13,10 @@ add_literals = fn ctx:
     add 'number', any, transform_number
     add 'string', any, transform_string
     add 'array', any, transform_array
+    add 'list', any, transform_array
     add 'object', any, transform_object
     add 'object:prop', any, transform_prop
+    add 'rec', any, transform_object
+    add 'rec:kv', any, transform_prop
     add 'literal', any, transform_keyword
     add 'literal', any, transform_keyword

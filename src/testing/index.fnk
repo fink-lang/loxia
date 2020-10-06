@@ -1,7 +1,7 @@
 {parse} = import '@fink/larix'
-{is_empty} = import '@fink/std-lib/iter'
+{is_empty} = import '@fink/std-lib/iter.fnk'
 
-{generate} = import '..'
+{generate} = import '../index.fnk'
 
 
 fink2js = fn source, options:
