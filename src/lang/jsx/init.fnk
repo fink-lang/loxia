@@ -1,8 +1,9 @@
+babel_types = import '@babel/types'
 {
   jsxElement, jsxOpeningElement, jsxIdentifier, jsxClosingElement, jsxAttribute
   stringLiteral, jsxExpressionContainer, jsxText, jsxFragment, jsxOpeningFragment
   jsxClosingFragment
-} = import '@babel/types'
+} = babel_types
 {add, any} = import '../context.fnk'
 
 

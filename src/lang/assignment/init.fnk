@@ -1,9 +1,10 @@
+babel_types = import '@babel/types'
 {
   blockStatement, variableDeclaration, variableDeclarator, doExpression
   arrayExpression, assignmentExpression, callExpression
   memberExpression, identifier, expressionStatement, arrayPattern, restElement
   numericLiteral
-} = import '@babel/types'
+} = babel_types
 {length, is_empty} = import '@fink/std-lib/iter.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
 

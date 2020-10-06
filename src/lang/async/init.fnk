@@ -1,4 +1,5 @@
-{awaitExpression} = import '@babel/types'
+babel_types = import '@babel/types'
+{awaitExpression} = babel_types
 {add, any} = import '../context.fnk'
 
 

@@ -1,4 +1,5 @@
-{logicalExpression, unaryExpression} = import '@babel/types'
+babel_types = import '@babel/types'
+{logicalExpression, unaryExpression} = babel_types
 {add, any} = import '../context.fnk'
 {transform_in} = import './in.fnk'
 

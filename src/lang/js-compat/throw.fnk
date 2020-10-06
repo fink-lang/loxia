@@ -1,4 +1,5 @@
-{unaryExpression} = import '@babel/types'
+babel_types = import '@babel/types'
+{unaryExpression} = babel_types
 {wrap} = import '../../js/types.fnk'
 
 

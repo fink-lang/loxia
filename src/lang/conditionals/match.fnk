@@ -1,9 +1,10 @@
+babel_types = import '@babel/types'
 {
   blockStatement, breakStatement, labeledStatement, objectPattern
   objectProperty, expressionStatement, ifStatement
   doExpression, stringLiteral, memberExpression, restElement
   identifier
-} = import '@babel/types'
+} = babel_types
 {length, is_empty} = import '@fink/std-lib/iter.fnk'
 
 {and, eq, not_nullish, typof, consts} = import '../../js/types.fnk'

@@ -1,4 +1,5 @@
-{booleanLiteral} = import '@babel/types'
+babel_types = import '@babel/types'
+{booleanLiteral} = babel_types
 
 
 transform_keyword = fn node:

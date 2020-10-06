@@ -1,9 +1,10 @@
+babel_types = import '@babel/types'
 {
   identifier, assignmentExpression, expressionStatement
   memberExpression, callExpression, objectProperty, objectPattern
   variableDeclaration, variableDeclarator
   isImportDefaultSpecifier, isImportSpecifier
-} = import '@babel/types'
+} = babel_types
 
 
 [no_result] = []

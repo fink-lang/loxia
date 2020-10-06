@@ -1,3 +1,9 @@
+babe_types = import '@babel/types'
+{is_empty} = import '@fink/std-lib/iter.fnk'
+
+
+{escape_ident} = import'./identifier.fnk'
+
 {
   variableDeclaration, variableDeclarator
   forOfStatement, yieldExpression, nullLiteral, booleanLiteral
@@ -5,11 +11,8 @@
   blockStatement, identifier, arrowFunctionExpression
   logicalExpression, binaryExpression, unaryExpression
   doExpression, assignmentExpression, isIdentifier
-} = import'@babel/types'
-{is_empty} = import '@fink/std-lib/iter.fnk'
+} = babe_types
 
-
-{escape_ident} = import'./identifier.fnk'
 
 
 wrap = fn larix_node, js_node:

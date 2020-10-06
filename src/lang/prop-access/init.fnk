@@ -1,4 +1,5 @@
-{memberExpression, identifier} = import '@babel/types'
+babel_types = import '@babel/types'
+{memberExpression, identifier} = babel_types
 {rx, matches} = import '@fink/std-lib/regex.fnk'
 
 {raw_str} = import '../../js/types.fnk'

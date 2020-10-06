@@ -1,4 +1,5 @@
-{whileStatement, blockStatement} = import '@babel/types'
+babel_types = import '@babel/types'
+{whileStatement, blockStatement} = babel_types
 {is_empty} = import '@fink/std-lib/iter.fnk'
 
 
