@@ -9,8 +9,8 @@
 {and, eq, not_nullish, typof, consts} = import '../../js/types.fnk'
 
 {get_key} = import '../literals/object.fnk'
-{is_partial} = import '../partial/index.fnk'
-{wrap_with_comment_loc} = import'../comments/index.fnk'
+{is_partial} = import '../partial/init.fnk'
+{wrap_with_comment_loc} = import '../comments/init.fnk'
 
 
 iter = fn value:

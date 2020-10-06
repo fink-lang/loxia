@@ -4,7 +4,7 @@
 
 {assign, generator, true_, lets} = import '../../js/types.fnk'
 
-{block_statement} = import '../block/index.fnk'
+{block_statement} = import '../block/init.fnk'
 {transform_init, yield_expr} = import './common.fnk'
 
 

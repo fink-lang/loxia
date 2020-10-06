@@ -5,7 +5,7 @@
 
 {false_} = import '../../js/types.fnk'
 
-{transform_block} = import '../block/index.fnk'
+{transform_block} = import '../block/init.fnk'
 
 
 

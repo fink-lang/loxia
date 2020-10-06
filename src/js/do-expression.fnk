@@ -7,7 +7,7 @@
 {set_props} = import '@fink/js-interop/reflect.fnk'
 {undefined} = import '@fink/js-interop/nullish.fnk'
 {is_empty} = import '@fink/std-lib/iter.fnk'
-{wrap_with_comment_loc} = import '../lang/comments/index.fnk'
+{wrap_with_comment_loc} = import '../lang/comments/init.fnk'
 
 {lets, assign, undef} = import './types.fnk'
 

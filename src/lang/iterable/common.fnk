@@ -1,7 +1,7 @@
 {length} = import '@fink/std-lib/iter.fnk'
 
 {consts, yields, lets, assign} = import '../../js/types.fnk'
-{block_statement} = import '../block/index.fnk'
+{block_statement} = import '../block/init.fnk'
 
 
 
