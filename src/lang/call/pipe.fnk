@@ -1,4 +1,5 @@
-{callExpression} = import '@babel/types'
+babel_types = import '@babel/types'
+{callExpression} = babel_types
 {is_empty} = import '@fink/std-lib/iter.fnk'
 
 {assign, lets, expr_block, undef} = import '../../js/types.fnk'

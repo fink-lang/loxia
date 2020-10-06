@@ -1,4 +1,5 @@
-{isArrowFunctionExpression, isFunctionExpression, isForOfStatement} = import '@babel/types'
+babel_types = import '@babel/types'
+{isArrowFunctionExpression, isFunctionExpression, isForOfStatement} = babel_types
 {set_props} = import '@fink/js-interop/reflect.fnk'
 
 

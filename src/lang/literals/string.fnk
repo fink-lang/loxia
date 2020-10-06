@@ -1,4 +1,5 @@
-{templateElement, templateLiteral, taggedTemplateExpression} = import '@babel/types'
+babel_types = import '@babel/types'
+{templateElement, templateLiteral, taggedTemplateExpression} = babel_types
 {rx, replace_all} = import '@fink/std-lib/regex.fnk'
 
 

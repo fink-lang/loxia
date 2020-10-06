@@ -1,4 +1,5 @@
-{callExpression, identifier} = import '@babel/types'
+babel_types = import '@babel/types'
+{callExpression, identifier} = babel_types
 {is_empty, length} = import '@fink/std-lib/iter.fnk'
 
 

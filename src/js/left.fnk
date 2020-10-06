@@ -1,7 +1,8 @@
+babel_types = import '@babel/types'
 {
   isAssignmentExpression, assignmentPattern, isSpreadElement, restElement
   isArrayExpression, arrayPattern, isObjectExpression, objectPattern
-} = import '@babel/types'
+} = babel_types
 
 
 transform_left = fn val:

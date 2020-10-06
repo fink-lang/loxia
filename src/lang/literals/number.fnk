@@ -1,4 +1,5 @@
-{numericLiteral} = import '@babel/types'
+babel_types = import '@babel/types'
+{numericLiteral} = babel_types
 {rx, matches} = import '@fink/std-lib/regex.fnk'
 {parse_float, parse_int} = import '@fink/std-lib/num.fnk'
 

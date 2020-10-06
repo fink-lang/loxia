@@ -1,4 +1,5 @@
-{objectExpression, objectProperty, assignmentPattern} = import '@babel/types'
+babel_types = import '@babel/types'
+{objectExpression, objectProperty, assignmentPattern} = babel_types
 
 {raw_str} = import '../../js/types.fnk'
 

@@ -1,7 +1,8 @@
+babel_types = import '@babel/types'
 {
   doExpression, blockStatement, isAssignmentExpression, expressionStatement
   variableDeclaration, variableDeclarator
-} = import '@babel/types'
+} = babel_types
 {length} = import '@fink/std-lib/iter.fnk'
 
 {add, any} = import '../context.fnk'

@@ -1,7 +1,8 @@
+babel_types = import '@babel/types'
 {
   tryStatement, blockStatement, catchClause, arrayExpression
   expressionStatement, doExpression, isDoExpression
-} = import '@babel/types'
+} = babel_types
 
 {false_} = import '../../js/types.fnk'
 

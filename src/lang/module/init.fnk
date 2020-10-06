@@ -1,8 +1,9 @@
+babel_types = import '@babel/types'
 {
   file, program, interpreterDirective, stringLiteral
   importDeclaration, importSpecifier, importDefaultSpecifier
   exportNamedDeclaration, exportDefaultDeclaration, identifier
-} = import '@babel/types'
+} = babel_types
 {starts_with, slice} = import '@fink/std-lib/str.fnk'
 
 {add, any} = import '../context.fnk'

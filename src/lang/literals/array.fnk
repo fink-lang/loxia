@@ -1,4 +1,5 @@
-{arrayExpression} = import '@babel/types'
+babel_types = import '@babel/types'
+{arrayExpression} = babel_types
 {null} = import '@fink/js-interop/nullish.fnk'
 
 

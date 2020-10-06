@@ -1,4 +1,6 @@
-{default: traverse} = import '@babel/traverse'
+babel_traverse = import '@babel/traverse'
+{default: traverse} = babel_traverse
+
 {transformFromAstSync} = import '@babel/core'
 {is_empty} = import '@fink/std-lib/iter.fnk'
 
