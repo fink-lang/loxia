@@ -1,5 +1,5 @@
 {assign, for_of, func, lets, undef} = import '../../js/types.fnk'
-{block_statement} = import '../block/index.fnk'
+{block_statement} = import '../block/init.fnk'
 {transform_init} = import './common.fnk'
 
 

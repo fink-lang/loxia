@@ -1,7 +1,7 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 {raw} = import '@fink/std-lib/str.fnk'
 
-{fink2js} = import '../../testing/index.fnk'
+{fink2js} = import '../../testing/generate.fnk'
 
 
 

@@ -1,8 +1,8 @@
 {describe, it, expect, to_equal, to_match_snapshot} = import '@fink/jest/test.fnk'
 {slice} = import '@fink/std-lib/str.fnk'
 
-{generate} = import './index.fnk'
-{fink2js} = import './testing/index.fnk'
+{generate} = import './generate.fnk'
+{fink2js} = import './testing/generate.fnk'
 
 
 

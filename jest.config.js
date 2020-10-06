@@ -1,12 +1,10 @@
 
-module.exports = {
+export default {
   testEnvironment: 'node',
   setupFiles: [],
   moduleFileExtensions: ['js', 'fnk'],
-  transform: {
-    '^.+\\.js$': 'babel-jest',
-    '^.+\\.fnk$': ['@fink/jest/transform.js']
-  },
+
+  transform: {'^.+\\.fnk$': ['@fink/jest/transform.js']},
   transformIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
 
   resolver: '@fink/jest/cjs/module-resolver.js',
@@ -14,9 +12,7 @@ module.exports = {
 
   modulePathIgnorePatterns: ['<rootDir>/build/'],
 
-  testMatch: [
-    '<rootDir>/**/*.test.fnk'
-  ],
+  testMatch: ['<rootDir>/**/*.test.fnk'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
   watchPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
 
@@ -26,9 +22,7 @@ module.exports = {
   resetMocks: false,
 
   collectCoverage: true,
-  collectCoverageFrom: [
-    '<rootDir>/src/**/*.fnk'
-  ],
+  collectCoverageFrom: ['<rootDir>/src/**/*.fnk'],
   coveragePathIgnorePatterns: [
     '/node_modules/',
     '<rootDir>/src/testing/resolver.fnk'

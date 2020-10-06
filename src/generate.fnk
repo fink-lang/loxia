@@ -2,7 +2,7 @@
 {transformFromAstSync} = import '@babel/core'
 {is_empty} = import '@fink/std-lib/iter.fnk'
 
-{transform_ast} = import './lang/index.fnk'
+{transform_ast} = import './lang/init.fnk'
 
 {transform_do_expr} = import './js/do-expression.fnk'
 {transform_async} = import './js/async.fnk'

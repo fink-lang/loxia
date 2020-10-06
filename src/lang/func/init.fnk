@@ -2,7 +2,7 @@
 
 {transform_left} = import '../../js/left.fnk'
 {add, any} = import '../context.fnk'
-{transform_block} = import '../block/index.fnk'
+{transform_block} = import '../block/init.fnk'
 
 
 

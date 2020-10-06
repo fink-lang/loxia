@@ -2,8 +2,8 @@
 {is_empty} = import'@fink/std-lib/iter'
 
 {assign, lets, expr_block, undef} = import '../../js/types.fnk'
-{transform_value} = import '../partial/index.fnk'
-{wrap_with_comment_loc} = import '../comments/index.fnk'
+{transform_value} = import '../partial/init.fnk'
+{wrap_with_comment_loc} = import '../comments/init.fnk'
 
 
 
