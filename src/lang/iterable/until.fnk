@@ -1,4 +1,4 @@
-{returnStatement, ifStatement} = import'@babel/types'
+{returnStatement, ifStatement} = import '@babel/types'
 
 {generator, for_of, yields, eq, true_} = import '../../js/types.fnk'
 
