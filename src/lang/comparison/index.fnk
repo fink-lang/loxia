@@ -1,11 +1,13 @@
 {binaryExpression, logicalExpression} = import '@babel/types'
 
-{add, any} = import '../context'
+{add, any} = import '../context.fnk'
+
 
 
 transform_op = dict:
   '==': '==='
   '!=': '!=='
+
 
 
 transform_comp = fn {op, left, right}, {transform}:
@@ -24,6 +26,7 @@ transform_comp = fn {op, left, right}, {transform}:
     else:
       bin_right = transform right
       binaryExpression operator, bin_left, bin_right
+
 
 
 add_comparison = fn ctx:

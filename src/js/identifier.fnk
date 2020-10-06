@@ -1,8 +1,8 @@
-{char_code, slice} = import '@fink/std-lib/str'
-{rx , matches} = import '@fink/std-lib/regex'
+{char_code, slice} = import '@fink/std-lib/str.fnk'
+{rx , matches} = import '@fink/std-lib/regex.fnk'
+{length} = import '@fink/std-lib/iter.fnk'
+{base_n} = import '@fink/std-lib/num.fnk'
 
-{length} = import '@fink/std-lib/iter'
-{base_n} = import '@fink/std-lib/num'
 
 
 check_ident = rx'
@@ -15,9 +15,11 @@ check_ident = rx'
   [_$\p{L}][_$\p{L}\p{N}]*$'
 
 
+
 var_prefix = 'ˆ'
 
 str_36 = base_n ?, 36
+
 
 
 replace_chars = fn name, idx=0:
@@ -34,6 +36,7 @@ replace_chars = fn name, idx=0:
       new_name = '${start}${char_replacement}${end}'
 
       replace_chars new_name, idx + length char_replacement
+
 
 
 escape_ident = fn name:

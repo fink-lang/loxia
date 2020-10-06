@@ -1,8 +1,8 @@
 {returnStatement, ifStatement} = import'@babel/types'
 
-{generator, for_of, yields, neq, true_} = import '../../js/types'
+{generator, for_of, yields, neq, true_} = import '../../js/types.fnk'
 
-{get_iter_helpers} = import './common'
+{get_iter_helpers} = import './common.fnk'
 
 
 

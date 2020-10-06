@@ -1,12 +1,14 @@
 {identifier} = import '@babel/types'
 
-{escape_ident} = import '../../js/identifier'
-{add, any} = import '../context'
+{escape_ident} = import '../../js/identifier.fnk'
+{add, any} = import '../context.fnk'
+
 
 
 transform_ident = fn {value}:
   name = escape_ident value
   identifier name
+
 
 
 add_ident = fn ctx:

@@ -1,5 +1,5 @@
 {isArrowFunctionExpression, isFunctionExpression, isForOfStatement} = import '@babel/types'
-{set_props} = import '@fink/js-interop/reflect'
+{set_props} = import '@fink/js-interop/reflect.fnk'
 
 
 [no_result] = []

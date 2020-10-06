@@ -1,6 +1,7 @@
 {numericLiteral} = import '@babel/types'
-{rx, matches} = import '@fink/std-lib/regex'
-{parse_float, parse_int} = import '@fink/std-lib/num'
+{rx, matches} = import '@fink/std-lib/regex.fnk'
+{parse_float, parse_int} = import '@fink/std-lib/num.fnk'
+
 
 
 transform_number = fn {value}:

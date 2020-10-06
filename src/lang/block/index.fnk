@@ -2,10 +2,10 @@
   doExpression, blockStatement, isAssignmentExpression, expressionStatement
   variableDeclaration, variableDeclarator
 } = import '@babel/types'
-{length} = import '@fink/std-lib/iter'
+{length} = import '@fink/std-lib/iter.fnk'
 
-{add, any} = import '../context'
-{wrap_with_comment_loc} = import '../comments'
+{add, any} = import '../context.fnk'
+{wrap_with_comment_loc} = import '../comments/index.fnk'
 
 
 block_statement = fn expr, {transform}:

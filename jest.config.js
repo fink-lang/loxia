@@ -5,11 +5,12 @@ module.exports = {
   moduleFileExtensions: ['js', 'fnk'],
   transform: {
     '^.+\\.js$': 'babel-jest',
-    '^.+\\.fnk$': ['@fink/jest/transform']
+    '^.+\\.fnk$': ['@fink/jest/transform.js']
   },
   transformIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
 
-  snapshotResolver: '@fink/jest/snapshot-resolver',
+  resolver: '@fink/jest/cjs/module-resolver.js',
+  snapshotResolver: '@fink/jest/snapshot-resolver.js',
 
   modulePathIgnorePatterns: ['<rootDir>/build/'],
 

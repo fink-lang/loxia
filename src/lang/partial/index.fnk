@@ -1,13 +1,15 @@
 {identifier} = import '@babel/types'
 
-{escape_ident} = import '../../js/identifier'
-{add} = import '../context'
+{escape_ident} = import '../../js/identifier.fnk'
+{add} = import '../context.fnk'
+
 
 
 has_partial = fn exprs:
   pipe exprs:
     map expr: is_partial expr
     find partial: partial
+
 
 
 is_partial = fn node:
@@ -17,9 +19,10 @@ is_partial = fn node:
     {right: is_partial ?}: true
     {type: 'call', callee: is_partial ?}: true
     {type: 'call'}: has_partial node.args
-    {type: 'array'}: has_partial node.exprs
-    {type: 'object'}: has_partial node.exprs
+    {type: ? in ['array', 'list']}: has_partial node.exprs
+    {type: ? in ['object', 'rec']}: has_partial node.exprs
     else: false
+
 
 
 transform_value = fn node, {transform}:
@@ -38,6 +41,7 @@ transform_value = fn node, {transform}:
   transform partial_or_node
 
 
+
 transform_partial = fn {value}, {partial_ident}:
   name = match partial_ident:
     {name: {}}:
@@ -46,6 +50,7 @@ transform_partial = fn {value}, {partial_ident}:
       escape_ident value
 
   identifier name
+
 
 
 add_partial = fn ctx:

@@ -1,9 +1,10 @@
 {callExpression} = import'@babel/types'
 {is_empty} = import'@fink/std-lib/iter'
 
-{assign, lets, expr_block, undef} = import '../../js/types'
-{transform_value} = import '../partial'
-{wrap_with_comment_loc} = import '../comments'
+{assign, lets, expr_block, undef} = import '../../js/types.fnk'
+{transform_value} = import '../partial/index.fnk'
+{wrap_with_comment_loc} = import '../comments/index.fnk'
+
 
 
 transform_pipe = fn node, ctx:

@@ -1,8 +1,9 @@
 {arrowFunctionExpression} = import '@babel/types'
 
-{transform_left} = import '../../js/left'
-{add, any} = import '../context'
-{transform_block} = import '../block'
+{transform_left} = import '../../js/left.fnk'
+{add, any} = import '../context.fnk'
+{transform_block} = import '../block/index.fnk'
+
 
 
 transform_func = fn node, ctx:
@@ -18,6 +19,7 @@ transform_func = fn node, ctx:
 
   body = transform_block node, ctx
   arrowFunctionExpression params, body
+
 
 
 add_func = fn ctx:

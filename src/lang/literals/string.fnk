@@ -1,8 +1,10 @@
 {templateElement, templateLiteral, taggedTemplateExpression} = import '@babel/types'
-{rx, replace_all} = import '@fink/std-lib/regex'
+{rx, replace_all} = import '@fink/std-lib/regex.fnk'
+
 
 
 not_tagged = {tagged: false}
+
 
 
 transform_string = fn node, {transform}:

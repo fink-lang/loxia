@@ -1,8 +1,9 @@
 {returnStatement, ifStatement} = import'@babel/types'
 
-{func, for_of, undef} = import '../../js/types'
+{func, for_of, undef} = import '../../js/types.fnk'
 
-{get_iter_helpers} = import './common'
+{get_iter_helpers} = import './common.fnk'
+
 
 
 transform_find = fn node, ctx:

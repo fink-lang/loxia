@@ -4,13 +4,13 @@
   doExpression, stringLiteral, memberExpression, restElement
   identifier
 } = import '@babel/types'
-{length, is_empty} = import '@fink/std-lib/iter'
+{length, is_empty} = import '@fink/std-lib/iter.fnk'
 
-{and, eq, not_nullish, typof, consts} = import '../../js/types'
+{and, eq, not_nullish, typof, consts} = import '../../js/types.fnk'
 
-{get_key} = import '../literals/object'
-{is_partial} = import '../partial'
-{wrap_with_comment_loc} = import'../comments'
+{get_key} = import '../literals/object.fnk'
+{is_partial} = import '../partial/index.fnk'
+{wrap_with_comment_loc} = import'../comments/index.fnk'
 
 
 iter = fn value:
@@ -112,7 +112,7 @@ get_array_decl = fn arr, id_elems, right, ctx:
         else:
           {type: 'ident', value: id.name}
 
-  left = {type: 'array', exprs, loc: arr.loc}
+  left = {type: 'list', exprs, loc: arr.loc}
 
   decl = ctx.transform dict:
     type: 'assign'
@@ -161,10 +161,10 @@ match_simple = fn value, expr, emit_result, ctx:
 
 match_condition = fn value, expr, emit_result, ctx, cond:
   js_expr = match expr:
-    {type: 'object'}:
+    {type: ? in ['object', 'rec']}:
       match_obj value, expr, emit_result, ctx, cond
 
-    {type: 'array'}:
+    {type: ? in ['array', 'list']}:
       match_array value, expr, emit_result, ctx, cond
 
     {type: 'spread', right: {}}:

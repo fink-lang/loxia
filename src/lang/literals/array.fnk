@@ -1,5 +1,6 @@
 {arrayExpression} = import '@babel/types'
-{null} = import '@fink/js-interop/nullish'
+{null} = import '@fink/js-interop/nullish.fnk'
+
 
 
 transform_array = fn node, {transform}:

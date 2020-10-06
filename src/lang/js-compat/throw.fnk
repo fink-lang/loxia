@@ -1,5 +1,6 @@
 {unaryExpression} = import '@babel/types'
-{wrap} = import '../../js/types'
+{wrap} = import '../../js/types.fnk'
+
 
 
 transform_throw = fn node, {transform}:

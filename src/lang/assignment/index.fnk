@@ -4,13 +4,13 @@
   memberExpression, identifier, expressionStatement, arrayPattern, restElement
   numericLiteral
 } = import '@babel/types'
-{length, is_empty} = import '@fink/std-lib/iter'
-{wrap_with_comment_loc} = import '../comments'
+{length, is_empty} = import '@fink/std-lib/iter.fnk'
+{wrap_with_comment_loc} = import '../comments/index.fnk'
 
 
-{transform_left} = import '../../js/left'
-{add, any} = import '../context'
-{transform_value} = import '../partial'
+{transform_left} = import '../../js/left.fnk'
+{add, any} = import '../context.fnk'
+{transform_value} = import '../partial/index.fnk'
 
 
 # TODO: std-lib
@@ -20,7 +20,7 @@ find_index = fn iterable, func:
 
 has_spread_not_last = fn {left}:
   match left:
-    {type: 'array', exprs: 1 < length ?}:
+    {type: ? in ['array', 'list'], exprs: 1 < length ?}:
       idx = find_index left.exprs, fn expr:
         match expr:
           {type: 'spread'}: true
@@ -50,10 +50,10 @@ transform_spread_left = fn {left}, {transform}:
   exprs = match before:
     is_empty ?:
       # TODO missing loc
-      [middle, {type: 'array', exprs: end}]
+      [middle, {type: 'list', exprs: end}]
     else:
       # TODO missing loc
-      [{type: 'array', exprs: before}, middle, {type: 'array', exprs: end}]
+      [{type: 'list', exprs: before}, middle, {type: 'list', exprs: end}]
 
   transform_left transform {...left, exprs}
 

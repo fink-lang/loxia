@@ -1,9 +1,9 @@
 {memberExpression, identifier} = import '@babel/types'
-{rx, matches} = import '@fink/std-lib/regex'
+{rx, matches} = import '@fink/std-lib/regex.fnk'
 
-{raw_str} = import '../../js/types'
+{raw_str} = import '../../js/types.fnk'
 
-{add, any} = import '../context'
+{add, any} = import '../context.fnk'
 
 
 
@@ -20,6 +20,7 @@ transform_member = fn {left, right}, {transform}:
       [true, transform right]
 
   memberExpression memb_left, memb_right, computed
+
 
 
 add_member = fn ctx:

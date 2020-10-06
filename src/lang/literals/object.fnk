@@ -1,6 +1,7 @@
 {objectExpression, objectProperty, assignmentPattern} = import '@babel/types'
 
-{raw_str} = import '../../js/types'
+{raw_str} = import '../../js/types.fnk'
+
 
 
 transform_object = fn node, {transform}:
@@ -15,6 +16,7 @@ str_key = fn {value, loc}:
   {...str, loc}
 
 
+
 get_key = fn {left: key}, ctx:
   match key:
     {type: 'group'}:
@@ -25,12 +27,14 @@ get_key = fn {left: key}, ctx:
       [false, str_key key]
 
 
+
 get_value = fn {right}, ctx:
   match right:
     {type: 'empty'}:
       ctx.unique_ident 'unused'
     else:
       ctx.transform right
+
 
 
 transform_prop = fn node, ctx:

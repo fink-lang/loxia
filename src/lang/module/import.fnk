@@ -1,5 +1,5 @@
 {callExpression, Import: async_import} = import '@babel/types'
-{ends_with, starts_with, slice, is_str} = import '@fink/std-lib/str'
+{ends_with, starts_with, slice, is_str} = import '@fink/std-lib/str.fnk'
 
 
 
