@@ -64,7 +64,7 @@
     "@babel/traverse": "^7.10.5",
     "@babel/types": "^7.10.5",
     "@fink/js-interop": "^2.0.0",
-    "@fink/std-lib": "^5.0.0",
-    "@fink/snippet": "^2.0.0"
+    "@fink/snippet": "^2.0.1",
+    "@fink/std-lib": "^5.0.0"
   }
 }
