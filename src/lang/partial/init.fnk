@@ -7,9 +7,10 @@ babel_types = import '@babel/types'
 
 
 has_partial = fn exprs:
-  pipe exprs:
+  [partial=false] = pipe exprs:
     map expr: is_partial expr
-    find partial: partial
+    filter partial: partial
+  partial
 
 
 
