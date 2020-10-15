@@ -12,11 +12,11 @@ describe 'match', fn:
             # result
             spam
 
-          # object matching
+          # record matching
           {foo: 4, ni}:
             spam + ni
 
-          # array matching
+          # iterable matching
           [1, 2, ni]:
             ni
 
@@ -57,7 +57,7 @@ describe 'match', fn:
     expect
       fink2js '
         match shrub:
-          # deep array comparison
+          # deep iterable comparison
           [1, 2, [ni]]: ni
           [1, 2, [], {}]: foo
           [1, [2, 3], 4]: bar

@@ -37,7 +37,7 @@ describe 'map', fn:
       to_match_snapshot
 
 
-  it 'compiles single line with destructured array', fn:
+  it 'compiles single line with destructured list', fn:
     expect
       fink2js '
         map [x, y]: x + y

@@ -4,7 +4,7 @@ babel_types = import '@babel/types'
 
 
 
-transform_array = fn node, {transform}:
+transform_list = fn node, {transform}:
   [...elems] = pipe node.exprs:
     map elem:
       match elem:

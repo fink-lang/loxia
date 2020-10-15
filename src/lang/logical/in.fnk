@@ -7,7 +7,7 @@ transform_in = fn node, ctx:
 
   {left, right} = node
   match right:
-    {type: ? in ['array', 'list']}:
+    {type: 'list'}:
       callExpression
         memberExpression
           transform right
@@ -21,7 +21,7 @@ transform_in = fn node, ctx:
           identifier 'includes'
         [transform left]
 
-    {type: ? in ['object', 'rec']}:
+    {type: 'rec'}:
       callExpression
         memberExpression
           transform right

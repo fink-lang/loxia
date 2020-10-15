@@ -31,7 +31,7 @@ transform_import = fn node, {transform, options}:
     {type: 'ident'}:
       [importDefaultSpecifier transform node.left]
 
-    {type: ? in ['object', 'rec']}:
+    {type: 'rec'}:
       pipe node.left.exprs:
         map prop:
           match prop:

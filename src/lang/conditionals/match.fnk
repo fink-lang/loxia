@@ -9,7 +9,7 @@ babel_types = import '@babel/types'
 
 {and, eq, not_nullish, typof, consts} = import '../../js/types.fnk'
 
-{get_key} = import '../literals/object.fnk'
+{get_key} = import '../literals/record.fnk'
 {is_partial} = import '../partial/init.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
 
@@ -162,10 +162,10 @@ match_simple = fn value, expr, emit_result, ctx:
 
 match_condition = fn value, expr, emit_result, ctx, cond:
   js_expr = match expr:
-    {type: ? in ['object', 'rec']}:
+    {type: 'rec'}:
       match_obj value, expr, emit_result, ctx, cond
 
-    {type: ? in ['array', 'list']}:
+    {type: 'list'}:
       match_array value, expr, emit_result, ctx, cond
 
     {type: 'spread', right: {}}:

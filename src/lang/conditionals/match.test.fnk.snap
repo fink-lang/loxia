@@ -11,26 +11,26 @@ exports[`match compiles 1`] = `
       break ˆmatch_2;
     }
 
-    // object matching
+    // record matching
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
         \\"foo\\": ˆp_3,
         \\"ni\\": ˆp_4
       } = ˆvalue_1;
-      // object matching
-      if (ˆp_3 === 4) // object matching
+      // record matching
+      if (ˆp_3 === 4) // record matching
         if (ˆp_4 === ni) {
           spam + ni;
           break ˆmatch_2;
         }
     }
 
-    // array matching
+    // iterable matching
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
       const [ˆa_5, ˆa_6, ˆa_7] = ˆvalue_1;
-      // array matching
-      if (ˆa_5 === 1) // array matching
-        if (ˆa_6 === 2) // array matching
+      // iterable matching
+      if (ˆa_5 === 1) // iterable matching
+        if (ˆa_6 === 2) // iterable matching
           if (ˆa_7 === ni) {
             ni;
             break ˆmatch_2;
@@ -241,16 +241,16 @@ exports[`match compiles nested pattern 2`] = `
   ˆmatch_2: {
     const ˆvalue_1 = shrub;
 
-    // deep array comparison
+    // deep iterable comparison
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
       const [ˆa_3, ˆa_4, ˆa_5] = ˆvalue_1;
-      // deep array comparison
-      if (ˆa_3 === 1) // deep array comparison
-        if (ˆa_4 === 2) // deep array comparison
+      // deep iterable comparison
+      if (ˆa_3 === 1) // deep iterable comparison
+        if (ˆa_4 === 2) // deep iterable comparison
           if (ˆa_5 !== undefined && ˆa_5 !== null && typeof ˆa_5[Symbol.iterator] === \\"function\\") {
             const [ˆa_6] = ˆa_5;
 
-            // deep array comparison
+            // deep iterable comparison
             if (ˆa_6 === ni) {
               ni;
               break ˆmatch_2;
