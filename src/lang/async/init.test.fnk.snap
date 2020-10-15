@@ -38,3 +38,32 @@ export const a_gen = async function* unfold(ˆinitial_2) {
 };
 await ni;"
 `;
+
+exports[`await handles awaiting async iterables 1`] = `
+"let _do_result;
+
+{
+  let _do_result2;
+
+  {
+    let ˆpipe_result_3 = undefined;
+
+    _do_result2 = ˆpipe_result_3 = async function* unfold(ˆinitial_5) {
+      let ˆaccu_6 = 0;
+
+      while (true) {
+        const cntr = ˆaccu_6;
+        const ˆresult_4 = (await cntr) + 1;
+        yield ˆresult_4;
+        ˆaccu_6 = ˆresult_4;
+      }
+    }(ˆpipe_result_3);
+  }
+  const ˆitems_1 = _do_result2;
+  _do_result2 = undefined;
+  const ˆiter_2 = (ˆitems_1[Symbol.asyncIterator] || ˆitems_1[Symbol.iterator]).call(ˆitems_1);
+  _do_result = [(await ˆiter_2.next()).value, (await ˆiter_2.next()).value];
+}
+const [foo, bar] = _do_result;
+_do_result = undefined;"
+`;

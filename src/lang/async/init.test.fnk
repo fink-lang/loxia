@@ -24,3 +24,15 @@ describe 'await', fn:
         await ni
       '
       to_match_snapshot
+
+
+  it 'handles awaiting async iterables', fn:
+
+    expect
+      fink2js '
+        [await foo, bar] = pipe:
+          unfold cntr=0:
+            await cntr + 1
+      '
+      to_match_snapshot
+
