@@ -9,13 +9,13 @@ exports[`calculated props compiles 1`] = `
 };"
 `;
 
-exports[`destructuring object compiles computed keys 1`] = `
+exports[`destructuring record compiles computed keys 1`] = `
 "const {
   [\`n i\`]: ni
 } = foo;"
 `;
 
-exports[`destructuring object compiles defaults 1`] = `
+exports[`destructuring record compiles defaults 1`] = `
 "const {
   \\"x\\": x = 1,
   \\"ni\\": {
@@ -30,7 +30,7 @@ exports[`destructuring object compiles defaults 1`] = `
 };"
 `;
 
-exports[`destructuring object compiles empty 1`] = `
+exports[`destructuring record compiles empty 1`] = `
 "const {
   \\"foo\\": ˆunused_1,
   \\"bar\\": bar
@@ -40,7 +40,7 @@ exports[`destructuring object compiles empty 1`] = `
 };"
 `;
 
-exports[`destructuring object compiles simple 1`] = `
+exports[`destructuring record compiles simple 1`] = `
 "const {
   \\"a\\": a,
   \\"b\\": b,
@@ -48,7 +48,7 @@ exports[`destructuring object compiles simple 1`] = `
 } = ni;"
 `;
 
-exports[`destructuring object compiles spread 1`] = `
+exports[`destructuring record compiles spread 1`] = `
 "const {
   \\"e\\": e,
   ...f
@@ -59,7 +59,7 @@ exports[`destructuring object compiles spread 1`] = `
 };"
 `;
 
-exports[`object compiles key:val 1`] = `
+exports[`record compiles key:val 1`] = `
 "export const obj = {
   \\"a\\": 1,
   \\"b\\": 123,
@@ -67,7 +67,7 @@ exports[`object compiles key:val 1`] = `
 };"
 `;
 
-exports[`object compiles key:val 2`] = `
+exports[`record compiles key:val 2`] = `
 "export const obj7 = {
   \\"a\\": 123,
   \\"b\\": 123 && 123 && 1345,
@@ -75,7 +75,7 @@ exports[`object compiles key:val 2`] = `
 };"
 `;
 
-exports[`object compiles multiline 1`] = `
+exports[`record compiles multiline 1`] = `
 "export const obj = {
   \\"a\\": 123,
   \\"b\\": 123 && 123 && 1345,
@@ -84,7 +84,7 @@ exports[`object compiles multiline 1`] = `
 };"
 `;
 
-exports[`object compiles multiline 2`] = `
+exports[`record compiles multiline 2`] = `
 "export const obj = {
   \\"a\\": 123,
   \\"b\\": 123 && 123 && 1345,
@@ -93,7 +93,7 @@ exports[`object compiles multiline 2`] = `
 };"
 `;
 
-exports[`object compiles shorthand 1`] = `
+exports[`record compiles shorthand 1`] = `
 "export const obj = {
   \\"foo\\": foo,
   \\"π\\": π,
@@ -102,7 +102,7 @@ exports[`object compiles shorthand 1`] = `
 };"
 `;
 
-exports[`object compiles shorthand 2`] = `
+exports[`record compiles shorthand 2`] = `
 "export const obj = {
   \\"a\\": a,
   \\"delete\\": ˆdelete,
@@ -111,15 +111,15 @@ exports[`object compiles shorthand 2`] = `
 };"
 `;
 
-exports[`object compiles shorthand 3`] = `
+exports[`record compiles shorthand 3`] = `
 "export const obj = {
   [\`foo\`]: \`foo\`
 };"
 `;
 
-exports[`object compiles simple 1`] = `"export const obj = {};"`;
+exports[`record compiles simple 1`] = `"export const obj = {};"`;
 
-exports[`object compiles spread 1`] = `
+exports[`record compiles spread 1`] = `
 "export const obj = {
   \\"a\\": a,
   \\"b\\": b,

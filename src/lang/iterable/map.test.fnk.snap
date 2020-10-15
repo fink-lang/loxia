@@ -76,7 +76,7 @@ exports[`map compiles single line with default value 1`] = `
 });"
 `;
 
-exports[`map compiles single line with destructured array 1`] = `
+exports[`map compiles single line with destructured list 1`] = `
 "(function* map(ˆitems_2) {
   for (const ˆitem_1 of ˆitems_2) {
     const [x, y] = ˆitem_1;

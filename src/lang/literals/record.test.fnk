@@ -2,7 +2,7 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
-describe 'object', fn:
+describe 'record', fn:
   it 'compiles simple', fn:
     expect
       fink2js 'obj = {}'
@@ -85,7 +85,7 @@ describe 'calculated props', fn:
       to_match_snapshot
 
 
-describe 'destructuring object', fn:
+describe 'destructuring record', fn:
   it 'compiles simple', fn:
     expect
       fink2js '{a, b, c} = ni'

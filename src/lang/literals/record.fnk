@@ -5,9 +5,9 @@ babel_types = import '@babel/types'
 
 
 
-transform_object = fn node, {transform}:
+transform_record = fn node, {transform}:
   [...props] = pipe node.exprs:
-    map prop: transform prop
+    map key_value: transform key_value
 
   objectExpression props
 
@@ -38,7 +38,7 @@ get_value = fn {right}, ctx:
 
 
 
-transform_prop = fn node, ctx:
+transform_kv = fn node, ctx:
   match node:
     {left: {type: 'spread'}}:
       ctx.transform node.left

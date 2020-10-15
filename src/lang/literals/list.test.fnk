@@ -2,7 +2,7 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
-describe 'array', fn:
+describe 'list', fn:
   it 'compiles', fn:
     expect
       fink2js '
@@ -18,7 +18,7 @@ describe 'array', fn:
       to_match_snapshot
 
 
-describe 'destructuring array', fn:
+describe 'destructuring list', fn:
   it 'compiles', fn:
     expect
       fink2js "
