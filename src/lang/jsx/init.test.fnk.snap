@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JSX extensions compiles expr group with call for attr value 1`] = `"<Foobar spam={ham(ni)} shrub={1234} />;"`;
+
+exports[`JSX extensions compiles fink expr as attr values 1`] = `"<Foobar spam={ham} shrub={1234} ni={-123}> foo </Foobar>;"`;
+
+exports[`JSX extensions compiles fink expr with gt comparison 1`] = `"<Foobar spam={foo > 123} shrub={1234}> ni </Foobar>;"`;
+
+exports[`JSX extensions compiles spread 1`] = `"<Foobar spam={spam} {...ham} shrub={shrub} />;"`;
+
+exports[`JSX extensions compiles template str attr 1`] = `"<Foobar spam={\`ni: \${1 + 2}\`} />;"`;
+
 exports[`jsx compiles empty elem 1`] = `"export const elem = <b></b>;"`;
 
 exports[`jsx compiles fragment 1`] = `"export const elem = <></>;"`;
@@ -23,10 +33,10 @@ exports[`jsx compiles with children and expr 1`] = `
 </a>;"
 `;
 
-exports[`jsx compiles with expr params 1`] = `"export const elem = <a foo bar={1234} />;"`;
+exports[`jsx compiles with expr params 1`] = `"export const elem = <a foo={foo} bar={1234} />;"`;
 
-exports[`jsx compiles with expr params 2`] = `"export const elem = <a foo bar=\\"ni\\" />;"`;
+exports[`jsx compiles with expr params 2`] = `"export const elem = <a foo={foo} bar=\\"ni\\" />;"`;
 
-exports[`jsx compiles with str params 1`] = `"export const elem = <a foo bar=\\"ni\\" />;"`;
+exports[`jsx compiles with str params 1`] = `"export const elem = <a foo={foo} bar=\\"ni\\" />;"`;
 
-exports[`jsx compiles with str params 2`] = `"export const elem = <a foo bar=\\"ni\\" />;"`;
+exports[`jsx compiles with str params 2`] = `"export const elem = <a foo={foo} bar=\\"ni\\" />;"`;

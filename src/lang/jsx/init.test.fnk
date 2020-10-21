@@ -64,3 +64,34 @@ describe 'jsx', fn:
       to_match_snapshot
 
 
+
+describe 'JSX extensions',  fn:
+  it 'compiles spread', fn:
+    expect
+      fink2js '<Foobar spam ...ham shrub />'
+      to_match_snapshot
+
+
+  it "compiles template str attr", fn:
+    expect
+      fink2js "<Foobar spam='ni: \${1 + 2}' />"
+      to_match_snapshot
+
+
+  it "compiles fink expr as attr values", fn:
+    expect
+      fink2js "<Foobar spam=ham shrub=1234 ni=-123> foo </Foobar>"
+      to_match_snapshot
+
+
+  it "compiles fink expr with gt comparison", fn:
+    expect
+      fink2js "<Foobar spam=(foo > 123) shrub=1234> ni </Foobar>"
+      to_match_snapshot
+
+
+  it "compiles expr group with call for attr value", fn:
+    expect
+      fink2js "<Foobar spam=(ham ni) shrub=1234 />"
+      to_match_snapshot
+

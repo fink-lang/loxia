@@ -2,16 +2,25 @@ babel_types = import '@babel/types'
 {
   jsxElement, jsxOpeningElement, jsxIdentifier, jsxClosingElement, jsxAttribute
   stringLiteral, jsxExpressionContainer, jsxText, jsxFragment, jsxOpeningFragment
-  jsxClosingFragment
+  jsxClosingFragment, jsxSpreadAttribute
 } = babel_types
+
+{length} = import '@fink/std-lib/iter.fnk'
+
 {add, any} = import '../context.fnk'
 
 
 
 transform_jsx_elem = fn node, {transform}:
   id = jsxIdentifier node.name
+
   [...attrs] = pipe node.props:
-    map expr: transform expr
+    map expr:
+      match expr:
+        {type: 'spread'}:
+          jsxSpreadAttribute transform expr.right
+        else:
+          transform expr
 
   [...children] = pipe node.children:
     map expr: transform expr
@@ -35,18 +44,24 @@ transform_jsx_frag = fn node, {transform}:
 
 
 transform_jsx_attr = fn node, {transform}:
-  id = jsxIdentifier node.name
+  {loc, name} = node
 
   value = match node:
-    {value: {}}: [transform node.value]
-    else: []
+    {value: {type: 'string', exprs: 1 == length ?}}:
+      {exprs: [str]} = node.value
+      [stringLiteral str.value]
 
+    {value: {type: 'jsx:expr'}}:
+      [transform node.value]
+
+    {value: {}}:
+      [jsxExpressionContainer transform node.value]
+
+    else:
+      [jsxExpressionContainer transform {type: 'ident', value: name, loc}]
+
+  id = jsxIdentifier name
   jsxAttribute id, ...value
-
-
-
-transform_jsx_str = fn node:
-  stringLiteral node.value
 
 
 
@@ -65,7 +80,6 @@ add_jsx = fn ctx:
     add 'jsx:frag', any, transform_jsx_frag
     add 'jsx:elem', any, transform_jsx_elem
     add 'jsx:attr', any, transform_jsx_attr
-    add 'jsx:string', any, transform_jsx_str
     add 'jsx:text', any, transform_jsx_text
     add 'jsx:expr', any, transform_jsx_expr_container
 

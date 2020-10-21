@@ -42,13 +42,13 @@ describe 'errors', fn:
 
     expect
       error
-      to_equal "
+      to_equal '
         test.fnk:1:7
         1| foo = [
                   ^
 
-        Expected ',' or indented(>=1) new line or ']'.
-        "
+        Expected `,` or indented(>=1) new line or `]`.
+        '
 
   it 'errors with code snippet', fn:
     {errors: [{error}]} = fink2js '
@@ -58,15 +58,15 @@ describe 'errors', fn:
 
     expect
       error
-      to_equal "
+      to_equal '
         test.fnk:2:0
         1| foo = bar
         2| 123 = foo
            ^
         3| shrub = ni
 
-        Unable to transform 'assign ='.
-        "
+        Unable to transform `assign =`.
+        '
 
   it 'errors with bad babel options', fn:
     {errors: [{message}]} = fink2js
@@ -91,10 +91,10 @@ describe 'errors', fn:
 
     expect
       error
-      to_equal "
+      to_equal '
         test.fnk:1:0
         1| foobar
            ^
 
-        Unable to transform 'test foobar'.
-        "
+        Unable to transform `test foobar`.
+        '

@@ -26,3 +26,10 @@ exports[`pipe compiles 1`] = `
   }(ˆpipe_result_2);
 }"
 `;
+
+exports[`small pipe | handles precedence 1`] = `
+"export const foo = (ˆ1r) => matches(rx\`[a-z]\`, ˆ1r)(\`foo\`);
+export const bar = [ham(spam), ni(shrub)];"
+`;
+
+exports[`small pipe | pipes 1`] = `"export const foo = is_int(134);"`;
