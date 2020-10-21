@@ -19,3 +19,19 @@ describe 'pipe', fn:
       '
       to_match_snapshot
 
+
+describe 'small pipe |', fn:
+  it 'pipes', fn:
+    expect
+      fink2js '
+        foo = 134 | is_int
+      '
+      to_match_snapshot
+
+  it 'handles precedence', fn:
+    expect
+      fink2js '
+        foo = "foo" | matches rx"[a-z]", ?
+        bar = [spam | ham, shrub | ni]
+      '
+      to_match_snapshot
