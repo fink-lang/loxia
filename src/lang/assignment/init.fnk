@@ -150,20 +150,22 @@ transform_await_right = fn expr, ctx:
           iter
           callExpression
             memberExpression
-              logicalExpression
-                '||'
-                memberExpression
-                  items
+              dict:
+                ...logicalExpression
+                  '||'
                   memberExpression
-                    identifier 'Symbol'
-                    identifier 'asyncIterator'
-                  true
-                memberExpression
-                  items
+                    items
+                    memberExpression
+                      identifier 'Symbol'
+                      identifier 'asyncIterator'
+                    true
                   memberExpression
-                    identifier 'Symbol'
-                    identifier 'iterator'
-                  true
+                    items
+                    memberExpression
+                      identifier 'Symbol'
+                      identifier 'iterator'
+                    true
+                leadingComments: [{type: 'CommentBlock', value: 'istanbul ignore next'}]
               identifier 'call'
             [items]
     right

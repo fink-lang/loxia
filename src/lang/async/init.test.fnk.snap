@@ -61,7 +61,9 @@ exports[`await handles awaiting async iterables 1`] = `
   }
   const ˆitems_1 = _do_result2;
   _do_result2 = undefined;
-  const ˆiter_2 = (ˆitems_1[Symbol.asyncIterator] || ˆitems_1[Symbol.iterator]).call(ˆitems_1);
+  const ˆiter_2 = (
+  /*istanbul ignore next*/
+  ˆitems_1[Symbol.asyncIterator] || ˆitems_1[Symbol.iterator]).call(ˆitems_1);
   _do_result = [(await ˆiter_2.next()).value, (await ˆiter_2.next()).value];
 }
 const [foo, bar] = _do_result;
