@@ -8,12 +8,12 @@ transform_error = fn {message}, expr, {code, filename}:
   type_op = '${expr.type} ${expr.op}'
 
   error = dict:
-    error: "
+    error: '
       ${filename}:${line}:${column}
       ${highlight_code_loc code, expr.loc}
 
-      Unable to transform '${type_op}'.
-      "
+      Unable to transform `${type_op}`.
+      '
     expr
     message
     stack: stack_trace transform_error
