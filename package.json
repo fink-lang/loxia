@@ -1,21 +1,22 @@
 {
   "name": "@fink/loxia",
-  "version": "0.0.0-semantically-released",
+  "keywords": [
+    "fink",
+    "fink-lang",
+    "compiler"
+  ],
   "license": "MIT",
   "engines": {
     "node": ">=14.0.0"
   },
   "type": "module",
   "exports": {
-    ".": {
-      "import": "./generate.js",
-      "require": "./cjs/generate.js"
-    },
     "./": {
       "import": "./",
       "require": "./cjs/"
     }
   },
+  "version": "0.0.0-semantically-released",
   "private": false,
   "publishConfig": {
     "access": "public"
@@ -43,15 +44,10 @@
     "sm:build": "fnk --src ../foo.fnk --out-dir ../ --source-maps inline --module-type 'mjs'",
     "sm:view": "npx source-map-visualize ../foo.js"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
   "devDependencies": {
     "@fink/cli": "^8.0.0",
     "@fink/jest": "^7.0.0",
-    "@fink/larix": "^13.1.0",
+    "@fink/larix": "^14.0.0",
     "@fink/loxia": "^14.0.2",
     "commitizen": "^4.1.2",
     "cz-conventional-changelog": "^3.1.0",
@@ -66,5 +62,10 @@
     "@fink/js-interop": "^2.0.1",
     "@fink/snippet": "^2.0.1",
     "@fink/std-lib": "^5.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
