@@ -1,99 +1,134 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`unfold compiles destructured accus 1`] = `
-"(function* unfold(ˆinitial_2) {
-  let ˆaccu_3 = ˆinitial_2;
+"(function unfold(ˆinitial_2) {
+  return {
+    *[Symbol.iterator]() {
+      let ˆaccu_3 = ˆinitial_2;
 
-  while (true) {
-    const [foo, ...bar] = ˆaccu_3;
-    const ˆresult_1 = foo;
-    yield ˆresult_1;
-    ˆaccu_3 = bar;
-  }
+      while (true) {
+        const [foo, ...bar] = ˆaccu_3;
+        const ˆresult_1 = foo;
+        yield ˆresult_1;
+        ˆaccu_3 = bar;
+      }
+    }
+
+  };
 });"
 `;
 
 exports[`unfold compiles destructured accus 2`] = `
-"(function* unfold(ˆinitial_2) {
-  let ˆaccu_3 = ˆinitial_2;
+"(function unfold(ˆinitial_2) {
+  return {
+    *[Symbol.iterator]() {
+      let ˆaccu_3 = ˆinitial_2;
 
-  while (true) {
-    let _do_result;
+      while (true) {
+        let _do_result;
 
-    {
-      const [...ˆitems_4] = ˆaccu_3;
-      _do_result = [ˆitems_4.slice(0, -1), ˆitems_4.slice(-1)];
+        {
+          const [...ˆitems_4] = ˆaccu_3;
+          _do_result = [ˆitems_4.slice(0, -1), ˆitems_4.slice(-1)];
+        }
+        const [foo, [bar]] = _do_result;
+        _do_result = undefined;
+        const ˆresult_1 = bar;
+        yield ˆresult_1;
+        ˆaccu_3 = foo;
+      }
     }
-    const [foo, [bar]] = _do_result;
-    _do_result = undefined;
-    const ˆresult_1 = bar;
-    yield ˆresult_1;
-    ˆaccu_3 = foo;
-  }
+
+  };
 });"
 `;
 
 exports[`unfold compiles destructured accus 3`] = `
-"(function* unfold(ˆinitial_2) {
-  let ˆaccu_3 = ˆinitial_2;
+"(function unfold(ˆinitial_2) {
+  return {
+    *[Symbol.iterator]() {
+      let ˆaccu_3 = ˆinitial_2;
 
-  while (true) {
-    const [foo, ...bar] = ˆaccu_3;
-    const ˆresult_1 = foo;
-    yield* ˆresult_1;
-    ˆaccu_3 = bar;
-  }
+      while (true) {
+        const [foo, ...bar] = ˆaccu_3;
+        const ˆresult_1 = foo;
+        yield* ˆresult_1;
+        ˆaccu_3 = bar;
+      }
+    }
+
+  };
 });"
 `;
 
 exports[`unfold compiles item is accu 1`] = `
-"(function* unfold(ˆinitial_2) {
-  let ˆaccu_3 = 0;
+"(function unfold(ˆinitial_2) {
+  return {
+    *[Symbol.iterator]() {
+      let ˆaccu_3 = 0;
 
-  while (true) {
-    const prev = ˆaccu_3;
-    const ˆresult_1 = prev + 1;
-    yield ˆresult_1;
-    ˆaccu_3 = ˆresult_1;
-  }
+      while (true) {
+        const prev = ˆaccu_3;
+        const ˆresult_1 = prev + 1;
+        yield ˆresult_1;
+        ˆaccu_3 = ˆresult_1;
+      }
+    }
+
+  };
 });"
 `;
 
 exports[`unfold compiles with separate item and accu result 1`] = `
-"(function* unfold(ˆinitial_2) {
-  let ˆaccu_3 = {};
+"(function unfold(ˆinitial_2) {
+  return {
+    *[Symbol.iterator]() {
+      let ˆaccu_3 = {};
 
-  while (true) {
-    const {
-      \\"prev\\": prev = 0,
-      \\"acc\\": acc = 0
-    } = ˆaccu_3;
-    const item = prev + accu;
-    const ˆresult_1 = item;
-    yield ˆresult_1;
-    ˆaccu_3 = {
-      \\"prev\\": item,
-      \\"accu\\": accu + 1
-    };
-  }
+      while (true) {
+        const {
+          \\"prev\\": prev = 0,
+          \\"acc\\": acc = 0
+        } = ˆaccu_3;
+        const item = prev + accu;
+        const ˆresult_1 = item;
+        yield ˆresult_1;
+        ˆaccu_3 = {
+          \\"prev\\": item,
+          \\"accu\\": accu + 1
+        };
+      }
+    }
+
+  };
 });"
 `;
 
 exports[`unfold compiles with spread 1`] = `
-"(function* unfold() {
-  while (true) {
-    const ˆresult_1 = [1, 2, 3];
-    yield* ˆresult_1;
-  }
+"(function unfold() {
+  return {
+    *[Symbol.iterator]() {
+      while (true) {
+        const ˆresult_1 = [1, 2, 3];
+        yield* ˆresult_1;
+      }
+    }
+
+  };
 });"
 `;
 
 exports[`unfold compiles without accus 1`] = `
-"(function* unfold() {
-  while (true) {
-    const ˆresult_1 = 1234;
-    yield ˆresult_1;
-  }
+"(function unfold() {
+  return {
+    *[Symbol.iterator]() {
+      while (true) {
+        const ˆresult_1 = 1234;
+        yield ˆresult_1;
+      }
+    }
+
+  };
 });"
 `;
 
@@ -101,15 +136,20 @@ exports[`unfold compiles without default assignment 1`] = `
 "{
   let ˆpipe_result_1 = 0;
 
-  ˆpipe_result_1 = function* unfold(ˆinitial_3) {
-    let ˆaccu_4 = ˆinitial_3;
+  ˆpipe_result_1 = function unfold(ˆinitial_3) {
+    return {
+      *[Symbol.iterator]() {
+        let ˆaccu_4 = ˆinitial_3;
 
-    while (true) {
-      const prev = ˆaccu_4;
-      const ˆresult_2 = prev + 1;
-      yield ˆresult_2;
-      ˆaccu_4 = ˆresult_2;
-    }
+        while (true) {
+          const prev = ˆaccu_4;
+          const ˆresult_2 = prev + 1;
+          yield ˆresult_2;
+          ˆaccu_4 = ˆresult_2;
+        }
+      }
+
+    };
   }(ˆpipe_result_1);
 }"
 `;

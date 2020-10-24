@@ -8,33 +8,38 @@ export const task3 = async (foo) => {
   const spam = await foo();
   return bar + 123;
 };
-export const a_gen = async function* unfold(ˆinitial_2) {
-  let ˆaccu_3 = 0;
+export const a_gen = function unfold(ˆinitial_2) {
+  return {
+    async *[Symbol.asyncIterator]() {
+      let ˆaccu_3 = 0;
 
-  while (true) {
-    const curr = ˆaccu_3;
+      while (true) {
+        const curr = ˆaccu_3;
 
-    let _do_result;
+        let _do_result;
 
-    ˆmatch_5: {
-      const ˆvalue_4 = shrub;
+        ˆmatch_5: {
+          const ˆvalue_4 = shrub;
 
-      if (ˆvalue_4 === spam) {
-        _do_result = await ni(curr);
-        break ˆmatch_5;
-      }
+          if (ˆvalue_4 === spam) {
+            _do_result = await ni(curr);
+            break ˆmatch_5;
+          }
 
-      {
-        _do_result = curr + 1;
-        break ˆmatch_5;
+          {
+            _do_result = curr + 1;
+            break ˆmatch_5;
+          }
+        }
+
+        const ˆresult_1 = _do_result;
+        _do_result = undefined;
+        yield ˆresult_1;
+        ˆaccu_3 = ˆresult_1;
       }
     }
 
-    const ˆresult_1 = _do_result;
-    _do_result = undefined;
-    yield ˆresult_1;
-    ˆaccu_3 = ˆresult_1;
-  }
+  };
 };
 await ni;"
 `;
@@ -48,15 +53,20 @@ exports[`await handles awaiting async iterables 1`] = `
   {
     let ˆpipe_result_3 = undefined;
 
-    _do_result2 = ˆpipe_result_3 = async function* unfold(ˆinitial_5) {
-      let ˆaccu_6 = 0;
+    _do_result2 = ˆpipe_result_3 = function unfold(ˆinitial_5) {
+      return {
+        async *[Symbol.asyncIterator]() {
+          let ˆaccu_6 = 0;
 
-      while (true) {
-        const cntr = ˆaccu_6;
-        const ˆresult_4 = (await cntr) + 1;
-        yield ˆresult_4;
-        ˆaccu_6 = ˆresult_4;
-      }
+          while (true) {
+            const cntr = ˆaccu_6;
+            const ˆresult_4 = (await cntr) + 1;
+            yield ˆresult_4;
+            ˆaccu_6 = ˆresult_4;
+          }
+        }
+
+      };
     }(ˆpipe_result_3);
   }
   const ˆitems_1 = _do_result2;

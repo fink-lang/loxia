@@ -13,11 +13,11 @@ describe 'pipe', fn:
           spam
           [...?]
 
-
         pipe [1, 2, 3]:
           map item: item * 2
       '
       to_match_snapshot
+
 
 
 describe 'small pipe |', fn:

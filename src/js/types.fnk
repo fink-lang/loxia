@@ -10,7 +10,8 @@ babe_types = import '@babel/types'
   expressionStatement, functionExpression
   blockStatement, identifier, arrowFunctionExpression
   logicalExpression, binaryExpression, unaryExpression
-  doExpression, assignmentExpression, isIdentifier
+  doExpression, assignmentExpression, isIdentifier, objectExpression,
+  returnStatement, objectMethod, memberExpression
 } = babe_types
 
 
@@ -101,10 +102,29 @@ func = fn args, ...expressions:
     expr_block ...expressions
 
 
+symbol = fn symb:
+  memberExpression
+    identifier 'Symbol'
+    identifier symb
+
+
+computed = true
+async = true
+
+
 generator = fn name, args, ...statements:
   func_name = ident name
-  body = blockStatement statements
-  functionExpression func_name, args,  body, true
+
+  functionExpression func_name, args,
+    blockStatement list:
+      returnStatement
+        objectExpression list:
+          objectMethod
+            'method', (symbol 'iterator'), []
+            blockStatement list:
+              ...statements
+            computed
+            async
 
 
 for_of = fn [item, items], ...expressions:
