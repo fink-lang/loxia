@@ -5,7 +5,6 @@
 {transform_filter} = import './filter.fnk'
 {transform_while} = import './while.fnk'
 {transform_until} = import './until.fnk'
-{transform_find} = import './find.fnk'
 
 
 
@@ -17,4 +16,3 @@ add_iterables = fn ctx:
     add any, 'filter', transform_filter
     add any, 'while', transform_while
     add any, 'until', transform_until
-    add any, 'find', transform_find
