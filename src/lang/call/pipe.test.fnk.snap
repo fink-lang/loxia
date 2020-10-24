@@ -17,12 +17,17 @@ exports[`pipe compiles 1`] = `
 {
   let ˆpipe_result_2 = [1, 2, 3];
 
-  ˆpipe_result_2 = function* map(ˆitems_4) {
-    for (const ˆitem_3 of ˆitems_4) {
-      const item = ˆitem_3;
-      const ˆresult_5 = item * 2;
-      yield ˆresult_5;
-    }
+  ˆpipe_result_2 = function map(ˆitems_4) {
+    return {
+      *[Symbol.iterator]() {
+        for (const ˆitem_3 of ˆitems_4) {
+          const item = ˆitem_3;
+          const ˆresult_5 = item * 2;
+          yield ˆresult_5;
+        }
+      }
+
+    };
   }(ˆpipe_result_2);
 }"
 `;

@@ -1,5 +1,7 @@
 babel_types = import '@babel/types'
-{isArrowFunctionExpression, isFunctionExpression, isForOfStatement} = babel_types
+{
+  isArrowFunctionExpression, isForOfStatement, isObjectMethod
+} = babel_types
 {set_props} = import '@fink/js-interop/reflect.fnk'
 
 
@@ -12,8 +14,12 @@ transform_async = fn path:
     isArrowFunctionExpression ?:
       set_props path.node, {async: true}
 
-    isFunctionExpression ?:
+    # generators for iterables
+    isObjectMethod ?:
       set_props path.node, {async: true}
+      match path.node:
+        {key: {property: {name: 'iterator'}}}:
+          set_props path.node.key.property, {name: 'asyncIterator'}
 
     isForOfStatement ?:
       set_props path.node, {await: true}
