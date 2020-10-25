@@ -1,0 +1,68 @@
+{stack_trace} = import '@fink/std-lib/stack-trace.js'
+
+{wrap} = import '../js/types.fnk'
+
+{transform_error} = import './errors.fnk'
+{get_transformer} = import './context.fnk'
+
+{wrap_with_comment_loc} = import './comments/init.fnk'
+
+
+
+wrap_node = fn ctx, js_node, node:
+  match ctx:
+    {wrap: 'loc'}:
+      wrap node, js_node
+    else:
+      wrap_with_comment_loc js_node, node
+
+
+
+collect_with_ctx = fn ctx: fn expr_ctx_items:
+  expr_ctx_items | fold [expr, next_ctx], [exprs]=[[], ctx]:
+    [[...exprs, expr], next_ctx]
+
+
+
+try_transform = fn transform, node, ctx:
+  [err, result] = try: transform node, ctx
+
+  match err:
+    false:
+      result
+    else:
+      transform_error err, node, ctx
+
+
+
+transform_with_comments = fn transform, node, ctx:
+  [err, result] = try:
+    transform node, ctx
+
+  match err:
+    false:
+      [js_node, next_ctx] = result
+      js = wrap_node next_ctx, js_node, node
+      [js, next_ctx]
+    else:
+      xform_error = transform_error err, node, ctx
+      # TODO don't use mutable
+      ctx.errors.push xform_error
+      # TODO: don't return error?
+      [xform_error, {...ctx, errors: [...ctx.errors, xform_error]}]
+
+
+
+
+transform = fn node, ctx:
+  transform = get_transformer node, ctx
+
+  [js, next_ctx] = match transform:
+    false:
+      err = transform_error 'Unknown expression.', node, ctx
+      # TODO: don't return err as ast
+      [err, {...ctx, errors: [...ctx.errors, err]}]
+    else:
+      transform_with_comments transform, node, ctx
+
+  [js, next_ctx]

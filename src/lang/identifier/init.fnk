@@ -6,9 +6,10 @@ babel_types = import '@babel/types'
 
 
 
-transform_ident = fn {value}:
-  name = escape_ident value
-  identifier name
+transform_ident = fn {value}, ctx:
+  name = escape_ident value, ctx
+  js = identifier name
+  [js, ctx]
 
 
 

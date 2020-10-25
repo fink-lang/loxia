@@ -11,7 +11,8 @@ babel_types = import '@babel/types'
 
 
 transform_try = fn node, ctx:
-  block = transform_block node, ctx
+  [block, end_ctx] = transform_block node, ctx
+
   body = match block:
     isDoExpression ?: block.body.body
     else: [block]
@@ -32,11 +33,11 @@ transform_try = fn node, ctx:
       expressionStatement
         arrayExpression [err]
 
-
-  doExpression
+  js = doExpression
     blockStatement list:
       tryStatement
         try_block
         catch_block
 
+  [js, end_ctx]
 

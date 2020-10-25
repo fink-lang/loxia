@@ -2,7 +2,8 @@ babel_types = import '@babel/types'
 {booleanLiteral} = babel_types
 
 
-transform_keyword = fn node:
-  match node:
+transform_keyword = fn node, ctx:
+  js = match node:
     {'value': 'true'}: booleanLiteral true
     {'value': 'false'}: booleanLiteral false
+  [js, ctx]

@@ -5,22 +5,26 @@ babel_types = import '@babel/types'
 {raw_str} = import '../../js/types.fnk'
 
 {add, any} = import '../context.fnk'
+{transform} = import '../transform.fnk'
 
 
 
-transform_member = fn {left, right}, {transform}:
-  memb_left = transform left
+transform_member = fn {left, right}, ctx:
+  [memb_left, next_ctx] = transform left, ctx
+
   {loc, value} = right
 
-  [computed, memb_right] = match right:
+  [computed, memb_right, end_ctx] = match right:
     {type: 'ident', value: matches ?, rx'^[$_\p{L}][$_\p{L}\p{N}]*'}:
-      [false, {loc, ...identifier value}]
+      [false, {loc, ...identifier value}, next_ctx]
     {type: 'ident'}:
-      [true, {loc, ...raw_str value}]
+      [true, {loc, ...raw_str value}, next_ctx]
     else:
-      [true, transform right]
+      [true, ...transform right, next_ctx]
 
-  memberExpression memb_left, memb_right, computed
+  js = memberExpression memb_left, memb_right, computed
+
+  [js, end_ctx]
 
 
 

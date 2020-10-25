@@ -1,22 +1,31 @@
 babel_types = import '@babel/types'
 {binaryExpression, unaryExpression} = babel_types
+
 {add, any} = import '../context.fnk'
+{transform} = import '../transform.fnk'
 
 
 transform_op = dict:
   '^': '**'
 
 
-transform_arithmitic = fn {op, left, right}, {transform}:
+
+transform_arithmitic = fn {op, left, right}, ctx:
   {(op): operator=op} = transform_op
 
-  binaryExpression operator,
-    transform left
-    transform right
+  [left_js, right_ctx] = transform left, ctx
+  [right_js, end_ctx] = transform right, right_ctx
+  js = binaryExpression operator, left_js, right_js
+
+  [js, end_ctx]
 
 
-transform_unary = fn {op, right}, {transform}:
-  unaryExpression op, transform right
+
+transform_unary = fn {op, right}, ctx:
+  [right_js, next_ctx] = transform right, ctx
+  js = unaryExpression op, right_js
+
+  [js, next_ctx]
 
 
 

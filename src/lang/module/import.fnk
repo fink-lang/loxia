@@ -2,6 +2,8 @@ babel_types = import '@babel/types'
 {callExpression, Import: async_import} = babel_types
 {ends_with, starts_with, slice, is_str} = import '@fink/std-lib/str.fnk'
 
+{transform} = import '../transform.fnk'
+
 
 
 resolve_ext = fn import_url, options:
@@ -23,18 +25,23 @@ resolve_ext = fn import_url, options:
 
 
 
-transform_import = fn node, {transform, options}:
+transform_import = fn node, ctx:
+  {options} = ctx
 
-  right = match node.right:
+  [right, next_ctx] = match node.right:
     {type: 'string', exprs: [..., {type: 'string:text'}]}:
       [...exprs, url] = node.right.exprs
 
-      transform dict:
-        ...node.right
-        exprs: [...exprs, {...url, value: resolve_ext url.value, options}]
+      transform
+        dict:
+          ...node.right
+          exprs: [...exprs, {...url, value: resolve_ext url.value, options}]
+        ctx
     else:
-      transform node.right
+      transform node.right, ctx
 
-  callExpression
+  js = callExpression
     async_import _
     [right]
+
+  [js, next_ctx]

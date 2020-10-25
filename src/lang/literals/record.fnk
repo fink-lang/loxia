@@ -2,49 +2,56 @@ babel_types = import '@babel/types'
 {objectExpression, objectProperty, assignmentPattern} = babel_types
 
 {raw_str} = import '../../js/types.fnk'
+{transform, collect_with_ctx} = import '../transform.fnk'
 
 
+transform_record = fn node, ctx:
+  [props, next_ctx] = pipe node.exprs:
+    map key_value, prop_ctx=ctx:
+      [prop, next_ctx] = transform key_value, prop_ctx
+      ([prop, next_ctx], next_ctx)
 
-transform_record = fn node, {transform}:
-  [...props] = pipe node.exprs:
-    map key_value: transform key_value
+    collect_with_ctx ctx
 
-  objectExpression props
+  js = objectExpression props
+
+  [js, next_ctx]
 
 
-str_key = fn {value, loc}:
+str_key = fn {value, loc}, ctx:
   str = raw_str value
-  {...str, loc}
+  [{...str, loc}, ctx]
 
 
 
 get_key = fn {left: key}, ctx:
   match key:
     {type: 'group'}:
-      [true, ctx.transform key]
+      [true, ...transform key, ctx]
     {type: 'string'}:
-      [true, ctx.transform key]
+      [true, ...transform key, ctx]
     else:
-      [false, str_key key]
+      [false, ...str_key key, ctx]
 
 
 
 get_value = fn {right}, ctx:
   match right:
     {type: 'empty'}:
-      ctx.unique_ident 'unused'
+      ident = ctx.unique_ident 'unused'
+      [ident, ctx]
     else:
-      ctx.transform right
+      transform right, ctx
 
 
 
 transform_kv = fn node, ctx:
   match node:
     {left: {type: 'spread'}}:
-      ctx.transform node.left
+      transform node.left, ctx
     else:
-      [computed, key] = get_key node, ctx
-      value = get_value node, ctx
+      [computed, key, next_ctx] = get_key node, ctx
+      [value, end_ctx] = get_value node, next_ctx
 
       shorthand = node.left == node.right
 
@@ -54,6 +61,7 @@ transform_kv = fn node, ctx:
         else:
           value
 
-      objectProperty key, final_value, computed, shorthand
+      js = objectProperty key, final_value, computed, shorthand
+      [js, end_ctx]
 
 

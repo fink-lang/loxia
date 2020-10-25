@@ -2,6 +2,7 @@ babel_types = import '@babel/types'
 {binaryExpression, logicalExpression} = babel_types
 
 {add, any} = import '../context.fnk'
+{transform} = import '../transform.fnk'
 
 
 
@@ -11,22 +12,21 @@ transform_op = dict:
 
 
 
-transform_comp = fn {op, left, right}, {transform}:
+transform_comp = fn {op, left, right}, ctx:
   {(op): operator=op} = transform_op
 
-  bin_left = transform left
+  [bin_left, next_ctx] = transform left, ctx
+  [bin_right, end_ctx] = transform right, next_ctx
 
-  match left:
+  js = match left:
     {op: ? in ['<', '>', '<=', '>=', '==', '!=']}:
-      bin_right = binaryExpression
-        operator
-        bin_left.right
-        transform right
-
-      logicalExpression '&&', bin_left, bin_right
+      logicalExpression '&&',
+        bin_left
+        binaryExpression operator, bin_left.right, bin_right
     else:
-      bin_right = transform right
       binaryExpression operator, bin_left, bin_right
+
+  [js, end_ctx]
 
 
 

@@ -15,15 +15,15 @@ check_ident = rx'
   [_$\p{L}][_$\p{L}\p{N}]*$'
 
 
-
+# TODO: move into ctx
 var_prefix = 'ˆ'
 
 str_36 = base_n ?, 36
 
 
 
-replace_chars = fn name, idx=0:
-  prefixed_name = '${var_prefix}${name}'
+replace_chars = fn name, idx, prefix:
+  prefixed_name = '${prefix}${name}'
 
   match prefixed_name:
     matches ?, check_ident:
@@ -35,14 +35,17 @@ replace_chars = fn name, idx=0:
       end = slice name, idx + 1
       new_name = '${start}${char_replacement}${end}'
 
-      replace_chars new_name, idx + length char_replacement
+      replace_chars
+        new_name
+        idx + length char_replacement
+        prefix
 
 
 
-escape_ident = fn name:
+escape_ident = fn name, {ident_prefix}:
   match name:
     matches ?, check_ident:
       name
     else:
-      replace_chars name
+      replace_chars name, 0, ident_prefix
 

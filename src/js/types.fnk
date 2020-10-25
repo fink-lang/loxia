@@ -62,7 +62,16 @@ not_nullish = fn value:
   and not_undef, not_null
 
 
-ident = fn name: identifier escape_ident name
+ident = fn name, ctx:
+  identifier escape_ident name, ctx
+
+
+
+unique_ident = fn name, ctx:
+  {unique_id, ident_prefix} = ctx
+  js = ident '${ident_prefix}${name}_${unique_id}', ctx
+  [js, {...ctx, unique_id: unique_id + 1}]
+
 
 
 raw_str = fn value:
@@ -113,9 +122,7 @@ async = true
 
 
 generator = fn name, args, ...statements:
-  func_name = ident name
-
-  functionExpression func_name, args,
+  functionExpression name, args,
     blockStatement list:
       returnStatement
         objectExpression list:

@@ -2,35 +2,51 @@ babel_types = import '@babel/types'
 {callExpression, identifier} = babel_types
 {is_empty, length} = import '@fink/std-lib/iter.fnk'
 
+{transform, collect_with_ctx} = import '../transform.fnk'
 
-transform_args = fn args, {transform}:
-  pipe args:
-    map expr:
-      match expr:
+
+
+transform_args = fn args, ctx:
+  [js_args, next_ctx] = pipe args:
+    map expr, arg_ctx=ctx:
+      [arg, next_ctx] = match expr:
         {type: 'empty'}:
-          identifier 'undefined'
+          undef = identifier 'undefined'
+          [undef, ctx]
         else:
-          transform expr
+          transform expr, arg_ctx
+
+      ([arg, next_ctx], next_ctx)
+
+    collect_with_ctx ctx
+
+  [js_args, next_ctx]
 
 
 
-transform_single_arg = fn [expr], {transform}:
+transform_single_arg = fn [expr], ctx:
   match expr:
-    {type: 'empty'}: []
+    {type: 'empty'}:
+      [[], ctx]
     # remove in favour of using _ as empty?
-    {type: 'group', exprs: is_empty ?}: []
-    else: [transform expr]
+    {type: 'group', exprs: is_empty ?}:
+      [[], ctx]
+    else:
+      [arg, next_ctx] = transform expr, ctx
+      [[arg], next_ctx]
 
 
 
 transform_call = fn node, ctx:
-  callee = ctx.transform node.callee
+  [callee, args_ctx] = transform node.callee, ctx
 
-  args = match node.args:
+  [args, end_ctx] = match node.args:
     1 == length ?:
-      transform_single_arg node.args, ctx
+      transform_single_arg node.args, args_ctx
     else:
-      transform_args node.args, ctx
+      transform_args node.args, args_ctx
 
-  callExpression callee, [...args]
+  js = callExpression callee, args
+
+  [js, end_ctx]
 

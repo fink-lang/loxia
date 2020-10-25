@@ -1,65 +1,71 @@
 babel_types = import '@babel/types'
 {identifier, optionalCallExpression, optionalMemberExpression, memberExpression, callExpression, logicalExpression} = babel_types
 
+{transform} = import '../transform.fnk'
+
+
 
 transform_in = fn node, ctx:
-  {transform} = ctx
-
   {left, right} = node
-  match right:
+  [js_right, next_ctx] = transform right, ctx
+  [js_left, end_ctx] = transform left, next_ctx
+
+
+  js = match right:
     {type: 'list'}:
       callExpression
         memberExpression
-          transform right
+          js_right
           identifier 'includes'
-        [transform left]
+        [js_left]
 
     {type: 'string'}:
       callExpression
         memberExpression
-          transform right
+          js_right
           identifier 'includes'
-        [transform left]
+        [js_left]
 
     {type: 'rec'}:
       callExpression
         memberExpression
-          transform right
+          js_right
           identifier 'hasOwnProperty'
-        [transform left]
+        [js_left]
 
     else:
       logicalExpression
         '??'
         optionalCallExpression
           optionalMemberExpression
-            transform right
+            js_right
             identifier 'includes'
             false
             true
-          [transform left]
+          [js_left]
           true
 
         logicalExpression
           '??'
           optionalCallExpression
             optionalMemberExpression
-              transform right
+              js_right
               identifier 'has'
               false
               true
-            [transform left]
+            [js_left]
             true
 
           logicalExpression
             '??'
             optionalCallExpression
               optionalMemberExpression
-                transform right
+                js_right
                 identifier 'hasOwnProperty'
                 false
                 true
-              [transform left]
+              [js_left]
               true
             identifier 'false'
 
+  [js, end_ctx]

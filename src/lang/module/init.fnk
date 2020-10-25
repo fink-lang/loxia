@@ -9,6 +9,8 @@ babel_types = import '@babel/types'
 {add, any} = import '../context.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
 {block_statement} = import '../block/init.fnk'
+{transform, collect_with_ctx} = import '../transform.fnk'
+
 {transform_import: transform_async_import, resolve_ext} = import './import.fnk'
 
 
@@ -26,31 +28,42 @@ get_shebang = fn expr:
 
 
 
-transform_import = fn node, {transform, options}:
-  [...imports] = match node.left:
+transform_import = fn node, ctx:
+  {options} = ctx
+
+  [imports, end_ctx] = match node.left:
     {type: 'ident'}:
-      [importDefaultSpecifier transform node.left]
+      [imp, next_ctx] = transform node.left, ctx
+      [[importDefaultSpecifier imp], next_ctx]
 
     {type: 'rec'}:
       pipe node.left.exprs:
-        map prop:
-          match prop:
+        map prop, imp_ctx=ctx:
+          [right, left_ctx] = transform prop.right, imp_ctx
+
+          [imp, next_ctx] = match prop:
             {left: {value: 'default'}}:
-              importSpecifier
-                transform prop.right
-                identifier prop.left.value
+              imp = importSpecifier right, identifier prop.left.value
+              [imp, left_ctx]
+
             else:
-              importSpecifier
-                transform prop.right
-                transform prop.left
+              [left, next_ctx] = transform prop.left, left_ctx
+              imp = importSpecifier right, left
+              [imp, next_ctx]
+
+          ([imp, next_ctx], next_ctx)
+
+        collect_with_ctx ctx
 
   {right: {right: {exprs: [url]}}} = node
 
-  importDeclaration
+  js = importDeclaration
     imports
     wrap_with_comment_loc
       stringLiteral resolve_ext url.value, options
       node.right.right
+
+  [js, end_ctx]
 
 
 
@@ -58,40 +71,55 @@ transform_module = fn node, ctx:
   [maybe_shebang, ...rest] = node.exprs
   [interpreter, first] = get_shebang maybe_shebang
 
-  [...body] = pipe [first, ...rest]:
-    map expr:
-      match expr:
+  [body, end_ctx] = pipe [first, ...rest]:
+    map expr, expr_ctx=ctx:
+
+      [js, next_ctx] = match expr:
         {op: 'import'}:
           {right: {exprs: [url]}} = expr
-          wrap_with_comment_loc
-            importDeclaration [], stringLiteral resolve_ext url.value, ctx.options
+          js = wrap_with_comment_loc
+            importDeclaration
+              [], stringLiteral resolve_ext url.value, expr_ctx.options
             expr
+          [js, expr_ctx]
 
         {right: {op: 'import'}}:
-          wrap_with_comment_loc
-            transform_import expr, ctx
-            expr
+          [imp, next_ctx] = transform_import expr, expr_ctx
+          js = wrap_with_comment_loc imp, expr
+          [js, next_ctx]
 
         {type: 'assign', left: {type: 'ident', value: 'default'}}:
-          wrap_with_comment_loc
-            exportDefaultDeclaration ctx.transform expr.right
+          [decl, next_ctx] = transform expr.right, expr_ctx
+          js = wrap_with_comment_loc
+            exportDefaultDeclaration decl
             expr
+          [js, next_ctx]
 
         {type: 'assign', left: {type: 'ident'}}:
           # we don't want to double up on comments?
           {comments: _, ...decl} = expr
-          wrap_with_comment_loc
-            exportNamedDeclaration block_statement decl, ctx
+          [decl_st, next_ctx] = block_statement decl, expr_ctx
+          js = wrap_with_comment_loc
+            exportNamedDeclaration decl_st
             expr
-        else:
-          block_statement expr, ctx
+          [js, next_ctx]
 
-  file
+        else:
+          block_statement expr, expr_ctx
+
+      ([js, next_ctx], next_ctx)
+
+    collect_with_ctx ctx
+
+
+  js = file
     program
       body
       []
       'module'
       ...interpreter
+
+  [js, end_ctx]
 
 
 

@@ -3,6 +3,7 @@ babel_types = import '@babel/types'
 
 {escape_ident} = import '../../js/identifier.fnk'
 {add} = import '../context.fnk'
+{transform} = import '../transform.fnk'
 
 
 
@@ -27,7 +28,8 @@ is_partial = fn node:
 
 
 
-transform_value = fn node, {transform}:
+transform_value = fn node, ctx:
+
   partial_or_node = match node:
     is_partial ?:
       dict:
@@ -40,18 +42,22 @@ transform_value = fn node, {transform}:
     else:
       node
 
-  transform partial_or_node
+  transform partial_or_node, ctx
 
 
 
-transform_partial = fn {value}, {partial_ident}:
+transform_partial = fn {value}, ctx:
+  {partial_ident} = ctx
+
   name = match partial_ident:
     {name: {}}:
       partial_ident.name
     else:
-      escape_ident value
+      escape_ident value, ctx
 
-  identifier name
+  js = identifier name
+
+  [js, ctx]
 
 
 

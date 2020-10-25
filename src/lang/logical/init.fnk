@@ -1,6 +1,9 @@
 babel_types = import '@babel/types'
 {logicalExpression, unaryExpression} = babel_types
+
 {add, any} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+
 {transform_in} = import './in.fnk'
 
 
@@ -12,20 +15,22 @@ transform_op = dict:
 
 
 
-transform_not = fn node, {transform}:
+transform_not = fn node, ctx:
   {(node.op): op} = transform_op
-  right = transform node.right
+  [right, next_ctx] = transform node.right, ctx
+  js = unaryExpression op, right
+  [js, next_ctx]
 
-  unaryExpression op, right
 
 
-
-transform_logical = fn node, {transform}:
+transform_logical = fn node, ctx:
   {(node.op): op} = transform_op
-  left = transform node.left
-  right = transform node.right
 
-  logicalExpression op, left, right
+  [left, next_ctx] = transform node.left, ctx
+  [right, end_ctx] = transform node.right, next_ctx
+  js = logicalExpression op, left, right
+
+  [js, end_ctx]
 
 
 

@@ -1,54 +1,61 @@
 {length} = import '@fink/std-lib/iter.fnk'
 
 {consts, yields, lets, assign} = import '../../js/types.fnk'
-{block_statement} = import '../block/init.fnk'
+{exprs_block} = import '../block/init.fnk'
+{transform} = import '../transform.fnk'
 
 
 
-transform_init = fn left, right, {transform}:
+transform_init = fn left, right, ctx:
+  [item_init, next_ctx] = transform
+    dict:
+      type: 'assign'
+      op: '='
+      left
+      right: {type: 'ident', value: right.name, loc: left.loc}
+      loc: left.loc
+    ctx
 
-  item_init = transform dict:
-    type: 'assign'
-    op: '='
-    left
-    right: {type: 'ident', value: right.name, loc: left.loc}
-    loc: left.loc
-
-  consts item_init.left, item_init.right
+  js = consts item_init.left, item_init.right
+  [js, next_ctx]
 
 
 
-yield_expr = fn result, expr, {transform}:
+yield_expr = fn result, expr, ctx:
   [yield_value, is_spread] = match expr:
     {type: 'spread'}: [expr.right, true]
     else: [expr, false]
 
-  list:
-    consts result, transform yield_value
-    yields
-      result
-      is_spread
+  [result_value, next_ctx] = transform yield_value, ctx
+
+  exprs = list:
+    consts result, result_value
+    yields result, is_spread
+
+  [exprs, next_ctx]
 
 
 
 get_accs = fn node, last_expr, ctx:
-  {unique_ident, transform} = ctx
+  {unique_ident} = ctx
   [, acc_arg] = node.args
 
   match node.args:
     2 == length ?:
       acc = unique_ident 'accu'
-      acc_init = lets acc, transform acc_arg.right
+      [acc_init_value, init_ctx] = transform acc_arg.right, ctx
+      acc_init = lets acc, acc_init_value
 
-      acc_assign = transform_init acc_arg.left, acc, ctx
+      [acc_assign, acc_ctx] = transform_init acc_arg.left, acc, init_ctx
 
       [result_expr, acc_expr] = last_expr.exprs
-      next_acc_assign = assign acc, transform acc_expr
+      [acc_val, next_ctx] = transform acc_expr, acc_ctx
+      next_acc_assign = assign acc, acc_val
 
-      [[acc_init], [acc_assign], result_expr, [next_acc_assign], acc]
+      [[acc_init], [acc_assign], result_expr, [next_acc_assign], acc, next_ctx]
 
     else:
-      [[], [], last_expr, []]
+      [[], [], last_expr, [], , ctx]
 
 
 
@@ -60,21 +67,22 @@ get_item = fn node, ctx:
 
   match item_arg:
     {type: 'empty'}:
-      [item, []]
+      [item, [], ctx]
     else:
-      item_init = transform_init item_arg, item, ctx
-      [item, [item_init]]
+      [item_init, next_ctx] = transform_init item_arg, item, ctx
+      [item, [item_init], next_ctx]
 
 
 
 get_iter_helpers = fn node, ctx:
-  {unique_ident, transform} = ctx
+  {unique_ident} = ctx
 
-  [item, item_init] = get_item node, ctx
+  [item, item_init, acc_ctx] = get_item node, ctx
 
   # TODO move next line into get_accs?
   [...exprs, last_expr] = node.exprs
-  [acc_init, acc_assign, result_expr1, next_accu, accu] = get_accs node, last_expr, ctx
+  [acc_init, acc_assign, result_expr1, next_accu, accu, exprs_ctx] = get_accs
+    node, last_expr, acc_ctx
 
   items = unique_ident 'items'
   result = unique_ident 'result'
@@ -85,9 +93,13 @@ get_iter_helpers = fn node, ctx:
     {type: 'spread'}: [result_expr1.right, true]
     else: [result_expr1, false]
 
-  expressions = pipe exprs:
-    map expr: block_statement expr, ctx
-    [...?, consts result, transform result_expr]
+  [expressions, next_ctx] = pipe exprs:
+    exprs_block ?, exprs_ctx
+
+    fn [exprs, result_ctx]:
+      [result_value, next_ctx] = transform result_expr, result_ctx
+      result_const = consts result, result_value
+      [[...exprs, result_const], next_ctx]
 
   dict:
     accu, acc_init
@@ -96,5 +108,6 @@ get_iter_helpers = fn node, ctx:
     expressions
     result, result_is_spread
     next_accu
+    next_ctx
 
 
