@@ -7,6 +7,7 @@ babel_types = import '@babel/types'
 } = babel_types
 {length, is_empty} = import '@fink/std-lib/iter.fnk'
 
+{unique_ident} = import '../../js/types.fnk'
 {transform_left: xform_left} = import '../../js/left.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
 {add, any} = import '../context.fnk'
@@ -85,9 +86,9 @@ slice = fn items, start, end=false:
 
 transform_spread_right = fn expr, ctx:
   {left, right} = expr
-  items = ctx.unique_ident 'items'
+  [items, init_ctx] = unique_ident 'items', ctx
   # TODO: wrap declarator?
-  [init, next_ctx] = transform_value right, ctx
+  [init, next_ctx] = transform_value right, init_ctx
 
   items_init = wrap_with_comment_loc
     variableDeclaration
@@ -141,10 +142,10 @@ transform_await_left = fn node, ctx:
 
 transform_await_right = fn expr, ctx:
   {left, right} = expr
-  items = ctx.unique_ident 'items'
-  iter = ctx.unique_ident 'iter'
+  [items, iter_ctx] = unique_ident 'items', ctx
+  [iter, init_ctx] = unique_ident 'iter', iter_ctx
 
-  [init, next_ctx] = transform_value right, ctx
+  [init, next_ctx] = transform_value right, init_ctx
 
   items_init = wrap_with_comment_loc
     variableDeclaration 'const', [variableDeclarator items, init]

@@ -4,21 +4,21 @@ babel_types = import '@babel/types'
   expressionStatement, doExpression, isDoExpression
 } = babel_types
 
-{false_} = import '../../js/types.fnk'
+{false_, unique_ident} = import '../../js/types.fnk'
 
 {transform_block} = import '../block/init.fnk'
 
 
 
 transform_try = fn node, ctx:
-  [block, end_ctx] = transform_block node, ctx
+  [block, next_ctx] = transform_block node, ctx
 
   body = match block:
     isDoExpression ?: block.body.body
     else: [block]
 
   [...expressions, last_expr] = body
-  err = ctx.unique_ident 'error'
+  [err, end_ctx] = unique_ident 'error', next_ctx
 
   try_block = blockStatement list:
     ...expressions

@@ -2,9 +2,9 @@ babel_traverse = import '@babel/traverse'
 {default: traverse} = babel_traverse
 
 {transformFromAstSync} = import '@babel/core'
-{is_empty} = import '@fink/std-lib/iter.fnk'
 
-{transform_ast} = import './lang/init.fnk'
+{transform} = import './lang/transform.fnk'
+{init_ctx} = import './lang/init.fnk'
 
 {transform_do_expr} = import './js/do-expression.fnk'
 {transform_async} = import './js/async.fnk'
@@ -12,20 +12,25 @@ babel_traverse = import '@babel/traverse'
 
 
 
-transform = fn node, code, filename, options:
-  ast = transform_ast node, code, filename, options
+transform_file = fn fink_ast, code, filename, options:
+  ctx = init_ctx code, filename
+
+  [error, [js_ast]=[]] = try:
+    transform fink_ast, {...ctx, options}
 
   extras = match options:
     {module_type: 'cjs'}: module_transforms
     else: {}
 
-  match ast:
-    {errors: is_empty ?}:
-      traverse ast, dict:
+  match error:
+    false:
+      traverse js_ast, dict:
         DoExpression: transform_do_expr
         AwaitExpression: {enter: transform_async}
         ...extras
-  ast
+      {...js_ast, errors: []}
+    else:
+      {errors: [error]}
 
 
 
@@ -51,17 +56,10 @@ babel_generate = fn ast, filename, source, options:
 
 
 generate = fn ast, filename, source, options={}:
-  js_ast = transform ast, source, filename, options
+  js_ast = transform_file ast, source, filename, options
 
   match js_ast:
     {errors: [{}]}:
       {code: '', source_map: '', errors: js_ast.errors}
     else:
       babel_generate js_ast, filename, source, options
-
-
-
-
-
-
-

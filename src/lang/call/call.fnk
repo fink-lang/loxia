@@ -2,25 +2,18 @@ babel_types = import '@babel/types'
 {callExpression, identifier} = babel_types
 {is_empty, length} = import '@fink/std-lib/iter.fnk'
 
-{transform, collect_with_ctx} = import '../transform.fnk'
+{transform, map_with_ctx} = import '../transform.fnk'
 
 
 
 transform_args = fn args, ctx:
-  [js_args, next_ctx] = pipe args:
-    map expr, arg_ctx=ctx:
-      [arg, next_ctx] = match expr:
+  pipe args:
+    map_with_ctx ctx, fn expr, arg_ctx:
+      match expr:
         {type: 'empty'}:
-          undef = identifier 'undefined'
-          [undef, ctx]
+          [(identifier 'undefined'), ctx]
         else:
           transform expr, arg_ctx
-
-      ([arg, next_ctx], next_ctx)
-
-    collect_with_ctx ctx
-
-  [js_args, next_ctx]
 
 
 

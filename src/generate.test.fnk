@@ -51,13 +51,13 @@ describe 'errors', fn:
         '
 
   it 'errors with code snippet', fn:
-    {errors: [{error}]} = fink2js '
+    {errors: [{message}]} = fink2js '
       foo = bar
       123 = foo
       shrub = ni'
 
     expect
-      error
+      message
       to_equal '
         test.fnk:2:0
         1| foo = bar
@@ -66,6 +66,8 @@ describe 'errors', fn:
         3| shrub = ni
 
         Unable to transform `assign =`.
+
+        TypeError: Property left of AssignmentExpression expected node to be of a type ["LVal"] but instead got "NumericLiteral"
         '
 
   it 'errors with bad babel options', fn:
@@ -79,7 +81,7 @@ describe 'errors', fn:
 
 
   it 'errors when provided with unknown tokens', fn:
-    {errors: [{error}]} = generate
+    {errors: [{message}]} = generate
       dict:
         type: 'test'
         op: 'foobar'
@@ -90,11 +92,13 @@ describe 'errors', fn:
       'test.fnk', 'foobar'
 
     expect
-      error
+      message
       to_equal '
         test.fnk:1:0
         1| foobar
            ^
 
         Unable to transform `test foobar`.
+
+        Unknown expression.
         '

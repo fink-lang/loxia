@@ -2,7 +2,7 @@ babel_types = import '@babel/types'
 {templateElement, templateLiteral, taggedTemplateExpression} = babel_types
 {rx, replace_all} = import '@fink/std-lib/regex.fnk'
 
-{transform, collect_with_ctx} = import '../transform.fnk'
+{transform, map_with_ctx} = import '../transform.fnk'
 
 
 
@@ -14,7 +14,9 @@ transform_string = fn node, ctx:
   {exprs: parts, tag=not_tagged} = node
 
   [...quasies] = pipe parts:
-    filter part: part.type == 'string:text'
+    filter part:
+      part.type == 'string:text'
+
     map part:
       templateElement dict:
         raw: replace_all
@@ -26,11 +28,8 @@ transform_string = fn node, ctx:
     filter part:
       part.type != 'string:text'
 
-    map part, part_ctx=ctx:
-      [js, next_ctx] = transform part, part_ctx
-      ([js, next_ctx], next_ctx)
+    map_with_ctx ctx, transform
 
-    collect_with_ctx ctx
 
   templ_str = templateLiteral quasies, expressions
 

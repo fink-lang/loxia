@@ -12,6 +12,7 @@ transform_map = fn node, ctx:
     expressions
     result, result_is_spread
     next_accu
+    next_ctx
   } = get_iter_helpers node, ctx
 
   name = ident 'map', ctx
@@ -21,13 +22,8 @@ transform_map = fn node, ctx:
 
     for_of [item, items],
       ...item_acc_assign
-
       ...expressions
-
-      yields
-        result
-        result_is_spread
-
+      yields result, result_is_spread
       ...next_accu
 
-  [js, ctx]
+  [js, next_ctx]

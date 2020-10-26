@@ -1,6 +1,6 @@
 {length} = import '@fink/std-lib/iter.fnk'
 
-{consts, yields, lets, assign} = import '../../js/types.fnk'
+{consts, yields, lets, assign, unique_ident} = import '../../js/types.fnk'
 {exprs_block} = import '../block/init.fnk'
 {transform} = import '../transform.fnk'
 
@@ -37,13 +37,12 @@ yield_expr = fn result, expr, ctx:
 
 
 get_accs = fn node, last_expr, ctx:
-  {unique_ident} = ctx
   [, acc_arg] = node.args
 
   match node.args:
     2 == length ?:
-      acc = unique_ident 'accu'
-      [acc_init_value, init_ctx] = transform acc_arg.right, ctx
+      [acc, acc_init_ctx] = unique_ident 'accu', ctx
+      [acc_init_value, init_ctx] = transform acc_arg.right, acc_init_ctx
       acc_init = lets acc, acc_init_value
 
       [acc_assign, acc_ctx] = transform_init acc_arg.left, acc, init_ctx
@@ -55,43 +54,41 @@ get_accs = fn node, last_expr, ctx:
       [[acc_init], [acc_assign], result_expr, [next_acc_assign], acc, next_ctx]
 
     else:
-      [[], [], last_expr, [], , ctx]
+      [[], [], last_expr, [], false, ctx]
 
 
 
 get_item = fn node, ctx:
-  {unique_ident} = ctx
-
   [item_arg] = node.args
-  item = unique_ident 'item'
+  [item, init_ctx] = unique_ident 'item', ctx
 
   match item_arg:
     {type: 'empty'}:
-      [item, [], ctx]
+      [item, [], init_ctx]
     else:
-      [item_init, next_ctx] = transform_init item_arg, item, ctx
+      [item_init, next_ctx] = transform_init item_arg, item, init_ctx
       [item, [item_init], next_ctx]
 
 
 
 get_iter_helpers = fn node, ctx:
-  {unique_ident} = ctx
-
   [item, item_init, acc_ctx] = get_item node, ctx
 
   # TODO move next line into get_accs?
   [...exprs, last_expr] = node.exprs
-  [acc_init, acc_assign, result_expr1, next_accu, accu, exprs_ctx] = get_accs
+  [acc_init, acc_assign, result_expr1, next_accu, accu, items_ctx] = get_accs
     node, last_expr, acc_ctx
 
-  items = unique_ident 'items'
-  result = unique_ident 'result'
+  [items, result_ctx] = unique_ident 'items', items_ctx
+  [result, exprs_ctx] = unique_ident 'result', result_ctx
 
   item_acc_assign = [...item_init, ...acc_assign]
 
   [result_expr, result_is_spread] = match result_expr1:
-    {type: 'spread'}: [result_expr1.right, true]
-    else: [result_expr1, false]
+    {type: 'spread'}:
+      [result_expr1.right, true]
+    else:
+      [result_expr1, false]
 
   [expressions, next_ctx] = pipe exprs:
     exprs_block ?, exprs_ctx

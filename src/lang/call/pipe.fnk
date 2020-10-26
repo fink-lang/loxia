@@ -2,37 +2,35 @@ babel_types = import '@babel/types'
 {callExpression} = babel_types
 {is_empty} = import '@fink/std-lib/iter.fnk'
 
-{assign, lets, expr_block, undef} = import '../../js/types.fnk'
+{assign, lets, expr_block, undef, unique_ident} = import '../../js/types.fnk'
 {transform_value} = import '../partial/init.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
-{transform, collect_with_ctx} = import '../transform.fnk'
+{transform, map_with_ctx} = import '../transform.fnk'
 
 
 
 transform_pipe = fn node, ctx:
-  {unique_ident} = ctx
   {exprs} = node
 
-  [start_value, pipe_ctx] = match node.args:
+  [start_value, id_ctx] = match node.args:
     is_empty ?:
       [(undef _), ctx]
     else:
       [arg] = node.args
       transform arg, ctx
 
-  result = unique_ident 'pipe_result'
+  [result, pipe_ctx] = unique_ident 'pipe_result', id_ctx
 
   [pipe_calls, next_ctx] = pipe exprs:
-    map expr, callee_ctx=pipe_ctx:
+    map_with_ctx pipe_ctx, fn expr, callee_ctx:
       [callee, next_ctx] = transform_value expr, callee_ctx
 
       js = wrap_with_comment_loc
         assign result, callExpression callee, [result]
         expr
 
-      ([js, next_ctx], next_ctx)
+      [js, next_ctx]
 
-    collect_with_ctx ctx
 
   js = expr_block
     wrap_with_comment_loc

@@ -15,9 +15,10 @@ transform_while = fn node, ctx:
     expressions
     result
     next_accu
+    next_ctx
   } = get_iter_helpers node, ctx
 
-  name = ident 'filter_while', ctx
+  name = ident 'filter_while', next_ctx
 
   js = generator name, [items],
     ...acc_init
@@ -35,4 +36,4 @@ transform_while = fn node, ctx:
 
       ...next_accu
 
-  [js, ctx]
+  [js, next_ctx]

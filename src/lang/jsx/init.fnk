@@ -8,37 +8,25 @@ babel_types = import '@babel/types'
 {length} = import '@fink/std-lib/iter.fnk'
 
 {add, any} = import '../context.fnk'
-{transform, collect_with_ctx} = import '../transform.fnk'
-
-
-
-transform_exprs = fn exprs, ctx:
-  pipe exprs:
-    map expr, expr_ctx=ctx:
-      [result, next_ctx] = transform expr, expr_ctx
-      ([result, next_ctx], next_ctx)
-    collect_with_ctx ctx
+{transform, map_with_ctx} = import '../transform.fnk'
 
 
 
 transform_jsx_elem = fn node, ctx:
   id = jsxIdentifier node.name
 
-  # TODO: use transform_exprs with extra mapping func
   [attrs, children_ctx] = pipe node.props:
-    map expr, expr_ctx= ctx:
-      [attr, next_ctx] = match expr:
+    map_with_ctx ctx, fn expr, expr_ctx:
+      match expr:
         {type: 'spread'}:
           [attr, next_ctx] = transform expr.right, expr_ctx
           spread = jsxSpreadAttribute attr
           [spread, next_ctx]
         else:
           transform expr, expr_ctx
-      ([attr, next_ctx], next_ctx)
 
-    collect_with_ctx ctx
-
-  [children, next_ctx] = transform_exprs node.children, children_ctx
+  [children, next_ctx] = pipe node.children:
+    map_with_ctx children_ctx, transform
 
   js = jsxElement
     jsxOpeningElement id, attrs, node.self_closing
@@ -50,7 +38,8 @@ transform_jsx_elem = fn node, ctx:
 
 
 transform_jsx_frag = fn node, ctx:
-  [children, next_ctx] = transform_exprs node.children,  ctx
+  [children, next_ctx] = pipe node.children:
+    map_with_ctx ctx, transform
 
   js = jsxFragment
     jsxOpeningFragment _

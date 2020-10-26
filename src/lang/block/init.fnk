@@ -7,7 +7,7 @@ babel_types = import '@babel/types'
 
 {add, any} = import '../context.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
-{transform, collect_with_ctx} = import '../transform.fnk'
+{transform, map_with_ctx} = import '../transform.fnk'
 
 
 
@@ -33,12 +33,7 @@ block_statement = fn expr, ctx:
 
 exprs_block = fn exprs, ctx:
   pipe exprs:
-    # TODO: duplicate in other modules
-    map expr, expr_ctx=ctx:
-      [js_expr, next_ctx] = block_statement expr, expr_ctx
-      ([js_expr, next_ctx], next_ctx)
-
-    collect_with_ctx ctx
+    map_with_ctx ctx, block_statement
 
 
 

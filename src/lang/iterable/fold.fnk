@@ -1,4 +1,4 @@
-{assign, for_of, func, lets, undef} = import '../../js/types.fnk'
+{assign, for_of, func, lets, undef, unique_ident} = import '../../js/types.fnk'
 {exprs_block} = import '../block/init.fnk'
 {transform} = import '../transform.fnk'
 {transform_init} = import './common.fnk'
@@ -6,15 +6,13 @@
 
 
 get_acc = fn acc_arg, ctx:
-  {unique_ident} = ctx
-
-  acc = unique_ident 'accu'
+  [acc, init_ctx] = unique_ident 'accu', ctx
 
   [acc_init, acc_ctx] = match acc_arg:
     {}:
-      transform acc_arg.right, ctx
+      transform acc_arg.right, init_ctx
     else:
-      [(undef _), ctx]
+      [(undef _), init_ctx]
 
   [acc_assign, next_ctx] = match acc_arg:
     {}:
@@ -28,16 +26,14 @@ get_acc = fn acc_arg, ctx:
 
 
 transform_fold = fn node, ctx:
-  {unique_ident} = ctx
-
   [item_arg, acc_arg] = node.args
   [...expressions, last_expr] = node.exprs
 
-  item = unique_ident 'item'
-  [item_init, acc_ctx] = transform_init item_arg, item, ctx
-  [acc, acc_init, acc_assign, block_ctx] = get_acc acc_arg, acc_ctx
+  [item, init_ctx] = unique_ident 'item', ctx
+  [item_init, acc_ctx] = transform_init item_arg, item, init_ctx
+  [acc, acc_init, acc_assign, items_ctx] = get_acc acc_arg, acc_ctx
 
-  items = unique_ident 'items'
+  [items, block_ctx] = unique_ident 'items', items_ctx
   [body, result_ctx] = exprs_block expressions, block_ctx
   [result, end_ctx] = transform last_expr, result_ctx
 

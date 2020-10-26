@@ -1,9 +1,3 @@
-{count} = import '@fink/std-lib/iter.fnk'
-
-{unique_ident} = import '../js/types.fnk'
-
-{transform} = import './transform.fnk'
-
 {add_assignment} = import './assignment/init.fnk'
 {add_func} = import './func/init.fnk'
 {add_conditionals} = import './conditionals/init.fnk'
@@ -23,6 +17,7 @@
 {add_arithmitic} = import './arithmitic/init.fnk'
 {add_block} = import './block/init.fnk'
 {add_partial} = import './partial/init.fnk'
+
 
 
 add_transformers = fn ctx:
@@ -49,39 +44,17 @@ add_transformers = fn ctx:
     add_js_compat
 
 
-init_ctx = fn code, filename:
-  id_cntr = count 1
 
+init_ctx = fn code, filename:
   ctx = dict:
     filename
     code
     errors: []
 
-    unique_id: 0
+    unique_id: 1
     ident_prefix: 'ˆ'
-
-    unique_ident: fn name:
-      # console.log 'unique_ident', name
-      # TODO: return ident and new ctx to make it not stateful
-      {ident_prefix} = ctx
-      {value: unique_id} = id_cntr.next _
-      [ident] = unique_ident name, {ident_prefix, unique_id}
-      ident
 
   pipe ctx:
     add_transformers
-
-
-
-transform_ast = fn expr, code, filename, options:
-  ctx = init_ctx code, filename
-  [js_ast, end_ctx] = transform expr, {...ctx, options}
-
-  # TODO: why can js_ast be an error, why not just use end_ctx?
-  match js_ast:
-    {error: {}}:
-      {errors: end_ctx.errors}
-    else:
-      {...js_ast, errors: []}
 
 

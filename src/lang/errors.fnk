@@ -1,22 +1,24 @@
 {highlight_code_loc} = import '@fink/snippet/highlight.fnk'
-{stack_trace} = import '@fink/std-lib/stack-trace.fnk'
+{new, set_props} = import '@fink/js-interop/reflect.fnk'
+{Error} = import '@fink/js-interop/globals.fnk'
 
 
 
-transform_error = fn {message}, expr, {code, filename}:
+transform_error = fn message, expr, ctx:
+  {code, filename} = ctx
   {start: {line, column}} = expr.loc
   type_op = '${expr.type} ${expr.op}'
 
-  error = dict:
-    error: '
-      ${filename}:${line}:${column}
-      ${highlight_code_loc code, expr.loc}
+  # TODO: use std-lib/error.fnk
+  err = new Error, '
+    ${filename}:${line}:${column}
+    ${highlight_code_loc code, expr.loc}
 
-      Unable to transform `${type_op}`.
-      '
-    expr
-    message
-    stack: stack_trace transform_error
+    Unable to transform `${type_op}`.
 
-  error
+    ${message}
+  '
+
+  set_props err, {transform_error: true}
+
 

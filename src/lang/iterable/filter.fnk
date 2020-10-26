@@ -15,6 +15,7 @@ transform_filter = fn node, ctx:
     expressions
     result
     next_accu
+    next_ctx
   } = get_iter_helpers node, ctx
 
   name = ident 'filter', ctx
@@ -33,4 +34,4 @@ transform_filter = fn node, ctx:
 
       ...next_accu
 
-  [js, ctx]
+  [js, next_ctx]

@@ -1,3 +1,6 @@
+{get_type} = import '@fink/js-interop/reflect.fnk'
+
+
 any = false
 
 
@@ -9,16 +12,19 @@ add = fn type, op, transformer: fn {transformers, ...ctx}:
   {transformers: next_transformers, ...ctx}
 
 
+is_fn = fn obj:
+  'function' == get_type obj
+
+
 get_transformer = fn {op, type}, {transformers}:
-
   match transformers:
-    # TODO: why copy with spread instead of op in ?
-    op in {...?}:
-      transformers.(op)
+    {(op): is_fn ?}:
+      {(op): transform} = transformers
+      transform
 
-    # TODO: why copy with spread instead of op in ?
-    type in {...?}:
-      transformers.(type)
+    {(type): is_fn ?}:
+      {(type): transform} = transformers
+      transform
 
     else:
       false

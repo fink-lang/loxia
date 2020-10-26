@@ -1,21 +1,17 @@
 babel_types = import '@babel/types'
 {objectExpression, objectProperty, assignmentPattern} = babel_types
 
-{raw_str} = import '../../js/types.fnk'
-{transform, collect_with_ctx} = import '../transform.fnk'
+{raw_str, unique_ident} = import '../../js/types.fnk'
+{transform, map_with_ctx} = import '../transform.fnk'
 
 
 transform_record = fn node, ctx:
   [props, next_ctx] = pipe node.exprs:
-    map key_value, prop_ctx=ctx:
-      [prop, next_ctx] = transform key_value, prop_ctx
-      ([prop, next_ctx], next_ctx)
-
-    collect_with_ctx ctx
+    map_with_ctx ctx, transform
 
   js = objectExpression props
-
   [js, next_ctx]
+
 
 
 str_key = fn {value, loc}, ctx:
@@ -38,8 +34,7 @@ get_key = fn {left: key}, ctx:
 get_value = fn {right}, ctx:
   match right:
     {type: 'empty'}:
-      ident = ctx.unique_ident 'unused'
-      [ident, ctx]
+      unique_ident 'unused', ctx
     else:
       transform right, ctx
 

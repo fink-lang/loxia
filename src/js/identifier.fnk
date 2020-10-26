@@ -15,9 +15,6 @@ check_ident = rx'
   [_$\p{L}][_$\p{L}\p{N}]*$'
 
 
-# TODO: move into ctx
-var_prefix = 'ˆ'
-
 str_36 = base_n ?, 36
 
 

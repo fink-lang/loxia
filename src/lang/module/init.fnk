@@ -9,14 +9,14 @@ babel_types = import '@babel/types'
 {add, any} = import '../context.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
 {block_statement} = import '../block/init.fnk'
-{transform, collect_with_ctx} = import '../transform.fnk'
+{transform, map_with_ctx} = import '../transform.fnk'
 
 {transform_import: transform_async_import, resolve_ext} = import './import.fnk'
 
 
 
 # TODO should larix handle shebang as special expr?
-get_shebang = fn expr:
+get_hashbang = fn expr:
   {comments} = expr
   match comments:
     {leading: [{op: '#', loc: {start: {line: 1}}, value: starts_with ?, '!'}]}:
@@ -38,10 +38,10 @@ transform_import = fn node, ctx:
 
     {type: 'rec'}:
       pipe node.left.exprs:
-        map prop, imp_ctx=ctx:
+        map_with_ctx ctx, fn prop, imp_ctx:
           [right, left_ctx] = transform prop.right, imp_ctx
 
-          [imp, next_ctx] = match prop:
+          match prop:
             {left: {value: 'default'}}:
               imp = importSpecifier right, identifier prop.left.value
               [imp, left_ctx]
@@ -50,10 +50,6 @@ transform_import = fn node, ctx:
               [left, next_ctx] = transform prop.left, left_ctx
               imp = importSpecifier right, left
               [imp, next_ctx]
-
-          ([imp, next_ctx], next_ctx)
-
-        collect_with_ctx ctx
 
   {right: {right: {exprs: [url]}}} = node
 
@@ -69,12 +65,11 @@ transform_import = fn node, ctx:
 
 transform_module = fn node, ctx:
   [maybe_shebang, ...rest] = node.exprs
-  [interpreter, first] = get_shebang maybe_shebang
+  [interpreter, first] = get_hashbang maybe_shebang
 
   [body, end_ctx] = pipe [first, ...rest]:
-    map expr, expr_ctx=ctx:
-
-      [js, next_ctx] = match expr:
+    map_with_ctx ctx, fn expr, expr_ctx:
+      match expr:
         {op: 'import'}:
           {right: {exprs: [url]}} = expr
           js = wrap_with_comment_loc
@@ -106,11 +101,6 @@ transform_module = fn node, ctx:
 
         else:
           block_statement expr, expr_ctx
-
-      ([js, next_ctx], next_ctx)
-
-    collect_with_ctx ctx
-
 
   js = file
     program
