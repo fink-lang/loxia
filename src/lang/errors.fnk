@@ -1,6 +1,5 @@
 {highlight_code_loc} = import '@fink/snippet/highlight.fnk'
-{new, set_props} = import '@fink/js-interop/reflect.fnk'
-{Error} = import '@fink/js-interop/globals.fnk'
+{error} = import '@fink/std-lib/error.fnk'
 
 
 
@@ -9,16 +8,14 @@ transform_error = fn message, expr, ctx:
   {start: {line, column}} = expr.loc
   type_op = '${expr.type} ${expr.op}'
 
-  # TODO: use std-lib/error.fnk
-  err = new Error, '
+  error '
     ${filename}:${line}:${column}
     ${highlight_code_loc code, expr.loc}
 
     Unable to transform `${type_op}`.
 
     ${message}
-  '
-
-  set_props err, {transform_error: true}
+    '
+    {transform_error: true}
 
 
