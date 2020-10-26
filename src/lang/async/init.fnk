@@ -1,11 +1,17 @@
 babel_types = import '@babel/types'
 {awaitExpression} = babel_types
+
 {add, any} = import '../context.fnk'
+{transform} = import '../transform.fnk'
 
 
-transform_await = fn node, {transform}:
-  right = transform node.right
-  awaitExpression right
+
+transform_await = fn node, ctx:
+  [right, next_ctx] = transform node.right, ctx
+  js = awaitExpression right
+
+  [js, next_ctx]
+
 
 
 add_async = fn ctx:

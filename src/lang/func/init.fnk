@@ -1,26 +1,33 @@
 babel_types = import '@babel/types'
 {arrowFunctionExpression} = babel_types
 
+{unique_ident} = import '../../js/types.fnk'
 {transform_left} = import '../../js/left.fnk'
 {add, any} = import '../context.fnk'
 {transform_block} = import '../block/init.fnk'
+{transform, map_with_ctx} = import '../transform.fnk'
+
+
+
+transform_arg = fn arg, ctx:
+  match arg:
+    {type: 'empty'}:
+      unique_ident '', ctx
+    else:
+      [t_arg, next_ctx] = transform arg, ctx
+      js_arg = transform_left t_arg
+      [js_arg, next_ctx]
 
 
 
 transform_func = fn node, ctx:
-  {unique_ident} = ctx
+  [params, next_ctx] = pipe node.args:
+    map_with_ctx ctx, transform_arg
 
-  [...params] = pipe node.args:
-    map arg:
-      match arg:
-        {type: 'empty'}:
-          unique_ident ''
-        else:
-          transform_left ctx.transform arg
+  [body, end_ctx] = transform_block node, next_ctx
+  js = arrowFunctionExpression params, body
 
-  body = transform_block node, ctx
-  arrowFunctionExpression params, body
-
+  [js, end_ctx]
 
 
 add_func = fn ctx:

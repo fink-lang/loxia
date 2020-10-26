@@ -1,7 +1,7 @@
 babel_types = import '@babel/types'
 {returnStatement, ifStatement} = babel_types
 
-{generator, for_of, yields, neq, true_} = import '../../js/types.fnk'
+{generator, for_of, yields, neq, true_, ident} = import '../../js/types.fnk'
 
 {get_iter_helpers} = import './common.fnk'
 
@@ -15,9 +15,12 @@ transform_while = fn node, ctx:
     expressions
     result
     next_accu
+    next_ctx
   } = get_iter_helpers node, ctx
 
-  generator 'filter_while', [items],
+  name = ident 'filter_while', next_ctx
+
+  js = generator name, [items],
     ...acc_init
 
     for_of [item, items],
@@ -32,3 +35,5 @@ transform_while = fn node, ctx:
       yields item
 
       ...next_accu
+
+  [js, next_ctx]

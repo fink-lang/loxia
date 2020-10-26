@@ -1,11 +1,15 @@
 babel_types = import '@babel/types'
 {spreadElement} = babel_types
+
 {add, any} = import '../context.fnk'
+{transform} = import '../transform.fnk'
 
 
-transform_spread = fn node, {transform}:
-  right = transform node.right
-  spreadElement right
+transform_spread = fn node, ctx:
+  [right, next_ctx] = transform node.right, ctx
+  js = spreadElement right
+  [js, next_ctx]
+
 
 
 add_spread = fn ctx:

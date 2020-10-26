@@ -1,4 +1,4 @@
-{generator, for_of, yields} = import '../../js/types.fnk'
+{generator, for_of, yields, ident} = import '../../js/types.fnk'
 
 {get_iter_helpers} = import './common.fnk'
 
@@ -12,18 +12,18 @@ transform_map = fn node, ctx:
     expressions
     result, result_is_spread
     next_accu
+    next_ctx
   } = get_iter_helpers node, ctx
 
-  generator 'map', [items],
+  name = ident 'map', ctx
+
+  js = generator name, [items],
     ...acc_init
 
     for_of [item, items],
       ...item_acc_assign
-
       ...expressions
-
-      yields
-        result
-        result_is_spread
-
+      yields result, result_is_spread
       ...next_accu
+
+  [js, next_ctx]

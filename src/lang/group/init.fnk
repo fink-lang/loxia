@@ -1,11 +1,12 @@
 {add, any} = import '../context.fnk'
+{transform} = import '../transform.fnk'
 
 
 
-transform_group = fn node, {transform}:
+transform_group = fn node, ctx:
   # TODO: what if group has multiple expr
   [expr] = node.exprs
-  transform expr
+  transform expr, ctx
 
 
 

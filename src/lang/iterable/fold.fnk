@@ -1,41 +1,50 @@
-{assign, for_of, func, lets, undef} = import '../../js/types.fnk'
-{block_statement} = import '../block/init.fnk'
+{assign, for_of, func, lets, undef, unique_ident} = import '../../js/types.fnk'
+{exprs_block} = import '../block/init.fnk'
+{transform} = import '../transform.fnk'
 {transform_init} = import './common.fnk'
 
 
 
+get_acc = fn acc_arg, ctx:
+  [acc, init_ctx] = unique_ident 'accu', ctx
+
+  [acc_init, acc_ctx] = match acc_arg:
+    {}:
+      transform acc_arg.right, init_ctx
+    else:
+      [(undef _), init_ctx]
+
+  [acc_assign, next_ctx] = match acc_arg:
+    {}:
+      [init, next_ctx] = transform_init acc_arg.left, acc, acc_ctx
+      [[init], next_ctx]
+    else:
+      [[], acc_ctx]
+
+  [acc, acc_init, acc_assign, next_ctx]
+
+
+
 transform_fold = fn node, ctx:
-  {transform, unique_ident} = ctx
-
   [item_arg, acc_arg] = node.args
-
-  item = unique_ident 'item'
-  item_init = transform_init item_arg, item, ctx
-
-  acc = unique_ident 'accu'
-
-  acc_init = match acc_arg:
-    {}: transform acc_arg.right
-    else: undef _
-
-  acc_assign = match acc_arg:
-    {}: [transform_init acc_arg.left, acc, ctx]
-    else: []
-
-
-  items = unique_ident 'items'
   [...expressions, last_expr] = node.exprs
 
-  func [items],
+  [item, init_ctx] = unique_ident 'item', ctx
+  [item_init, acc_ctx] = transform_init item_arg, item, init_ctx
+  [acc, acc_init, acc_assign, items_ctx] = get_acc acc_arg, acc_ctx
+
+  [items, block_ctx] = unique_ident 'items', items_ctx
+  [body, result_ctx] = exprs_block expressions, block_ctx
+  [result, end_ctx] = transform last_expr, result_ctx
+
+  js = func [items],
     lets acc, acc_init
 
     for_of [item, items],
       ...acc_assign
       item_init
-
-      ...pipe expressions:
-        map expr: block_statement expr, ctx
-
-      assign acc, transform last_expr
+      ...body
+      assign acc, result
     acc
 
+  [js, end_ctx]

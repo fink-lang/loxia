@@ -7,12 +7,14 @@ babel_types = import '@babel/types'
 
 {add, any} = import '../context.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
+{transform, map_with_ctx} = import '../transform.fnk'
 
 
-block_statement = fn expr, {transform}:
-  st = transform expr
 
-  match st:
+block_statement = fn expr, ctx:
+  [st, next_ctx] = transform expr, ctx
+
+  js = match st:
     isAssignmentExpression ?:
       wrap_with_comment_loc
         variableDeclaration
@@ -25,6 +27,15 @@ block_statement = fn expr, {transform}:
         expressionStatement st
         expr
 
+  [js, next_ctx]
+
+
+
+exprs_block = fn exprs, ctx:
+  pipe exprs:
+    map_with_ctx ctx, block_statement
+
+
 
 transform_block = fn node, ctx:
   {exprs} = node
@@ -32,12 +43,12 @@ transform_block = fn node, ctx:
   match exprs:
     1 == length ?:
       [expr] = exprs
-      ctx.transform expr
+      transform expr, ctx
     else:
-      doExpression
-        blockStatement list:
-          ...pipe exprs:
-            map expr: block_statement expr, ctx
+      [js_exprs, next_ctx] = exprs_block exprs, ctx
+      js = doExpression blockStatement js_exprs
+      [js, next_ctx]
+
 
 
 add_block = fn ctx:

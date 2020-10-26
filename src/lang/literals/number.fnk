@@ -5,8 +5,8 @@ babel_types = import '@babel/types'
 
 
 
-transform_number = fn {value}:
-  match value:
+transform_number = fn {value}, ctx:
+  js = match value:
     matches ?, rx'\.':
       numericLiteral parse_float value
     else:
@@ -15,4 +15,5 @@ transform_number = fn {value}:
         ...numericLiteral num
         extra: {raw: value, rawValue: num}
 
+  [js, ctx]
 

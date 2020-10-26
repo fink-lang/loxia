@@ -1,0 +1,59 @@
+{wrap} = import '../js/types.fnk'
+
+{transform_error} = import './errors.fnk'
+{get_transformer} = import './context.fnk'
+
+{wrap_with_comment_loc} = import './comments/init.fnk'
+
+
+
+wrap_node = fn ctx, js_node, node:
+  match ctx:
+    {wrap: 'loc'}:
+      wrap node, js_node
+    else:
+      wrap_with_comment_loc js_node, node
+
+
+
+collect_with_ctx = fn ctx: fn expr_ctx_items:
+  expr_ctx_items | fold [expr, next_ctx], [exprs]=[[], ctx]:
+    [[...exprs, expr], next_ctx]
+
+
+
+map_with_ctx = fn ctx, tf: fn items:
+  pipe items:
+    map item, item_ctx=ctx:
+      [result, next_ctx] = tf item, item_ctx
+      ([result, next_ctx], next_ctx)
+
+    collect_with_ctx ctx
+
+
+
+transform_with_comments = fn transform_expr, node, ctx:
+  [err, result] = try:
+    transform_expr node, ctx
+
+  match err:
+    false:
+      [js_node, next_ctx] = result
+      js = wrap_node next_ctx, js_node, node
+      [js, next_ctx]
+    {transform_error: {}}:
+      throw err
+    else:
+      throw transform_error err, node, ctx
+
+
+
+transform = fn node, ctx:
+  transform_expr = get_transformer node, ctx
+
+  match transform_expr:
+    false:
+      throw transform_error 'Unknown expression.', node, ctx
+    else:
+      transform_with_comments transform_expr, node, ctx
+

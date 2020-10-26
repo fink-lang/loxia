@@ -8,70 +8,85 @@ babel_types = import '@babel/types'
 {length} = import '@fink/std-lib/iter.fnk'
 
 {add, any} = import '../context.fnk'
+{transform, map_with_ctx} = import '../transform.fnk'
 
 
 
-transform_jsx_elem = fn node, {transform}:
+transform_jsx_elem = fn node, ctx:
   id = jsxIdentifier node.name
 
-  [...attrs] = pipe node.props:
-    map expr:
+  [attrs, children_ctx] = pipe node.props:
+    map_with_ctx ctx, fn expr, expr_ctx:
       match expr:
         {type: 'spread'}:
-          jsxSpreadAttribute transform expr.right
+          [attr, next_ctx] = transform expr.right, expr_ctx
+          spread = jsxSpreadAttribute attr
+          [spread, next_ctx]
         else:
-          transform expr
+          transform expr, expr_ctx
 
-  [...children] = pipe node.children:
-    map expr: transform expr
+  [children, next_ctx] = pipe node.children:
+    map_with_ctx children_ctx, transform
 
-  jsxElement
+  js = jsxElement
     jsxOpeningElement id, attrs, node.self_closing
     jsxClosingElement id
     children
 
+  [js, next_ctx]
 
 
-transform_jsx_frag = fn node, {transform}:
-  [...children] = pipe node.children:
-    map expr: transform expr
 
-  jsxFragment
+transform_jsx_frag = fn node, ctx:
+  [children, next_ctx] = pipe node.children:
+    map_with_ctx ctx, transform
+
+  js = jsxFragment
     jsxOpeningFragment _
     jsxClosingFragment _
     children
 
+  [js, next_ctx]
 
 
-transform_jsx_attr = fn node, {transform}:
+
+transform_jsx_attr = fn node, ctx:
   {loc, name} = node
 
-  value = match node:
+  [value, next_ctx] = match node:
     {value: {type: 'string', exprs: 1 == length ?}}:
       {exprs: [str]} = node.value
-      [stringLiteral str.value]
+      [[stringLiteral str.value], ctx]
 
     {value: {type: 'jsx:expr'}}:
-      [transform node.value]
+      [val, next_ctx] = transform node.value, ctx
+      [[val], next_ctx]
 
     {value: {}}:
-      [jsxExpressionContainer transform node.value]
+      [val, next_ctx] = transform node.value, ctx
+      [[jsxExpressionContainer val], next_ctx]
 
     else:
-      [jsxExpressionContainer transform {type: 'ident', value: name, loc}]
+      [val, next_ctx] = transform {type: 'ident', value: name, loc}, ctx
+      [[jsxExpressionContainer val], next_ctx]
 
   id = jsxIdentifier name
-  jsxAttribute id, ...value
+  js = jsxAttribute id, ...value
+
+  [js, next_ctx]
 
 
 
-transform_jsx_text = fn node:
-  jsxText node.value
+transform_jsx_text = fn node, ctx:
+  js = jsxText node.value
+  [js, ctx]
 
 
 
-transform_jsx_expr_container = fn node, {transform}:
-  jsxExpressionContainer transform node.expr
+transform_jsx_expr_container = fn node, ctx:
+  [val, next_ctx] = transform node.expr, ctx
+  js = jsxExpressionContainer val
+  [js, next_ctx]
 
 
 

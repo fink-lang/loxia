@@ -1,11 +1,3 @@
-{count} = import '@fink/std-lib/iter.fnk'
-
-{ident, wrap} = import '../js/types.fnk'
-{var_prefix} = import '../js/identifier.fnk'
-
-{transform_error} = import './errors.fnk'
-{get_transformer} = import './context.fnk'
-
 {add_assignment} = import './assignment/init.fnk'
 {add_func} = import './func/init.fnk'
 {add_conditionals} = import './conditionals/init.fnk'
@@ -25,7 +17,7 @@
 {add_arithmitic} = import './arithmitic/init.fnk'
 {add_block} = import './block/init.fnk'
 {add_partial} = import './partial/init.fnk'
-{wrap_with_comment_loc} = import './comments/init.fnk'
+
 
 
 add_transformers = fn ctx:
@@ -52,77 +44,17 @@ add_transformers = fn ctx:
     add_js_compat
 
 
-wrap_node = fn ctx, js_node, node:
-  match ctx:
-    {wrap: 'loc'}:
-      wrap node, js_node
-    else:
-      wrap_with_comment_loc js_node, node
-
-
-try_transform = fn transform, node, ctx:
-  [err, js_node] = try: transform node, ctx
-
-  match err:
-    false:
-      js_node
-    else:
-      transform_error err, node, ctx
-
-
-transform_with_comments = fn transform, node, ctx:
-  js_node = try_transform transform, node, ctx
-  match js_node:
-    {error: {}}:
-      # TODO don't use mutable
-      ctx.errors.push js_node
-      js_node
-    else:
-      wrap_node ctx, js_node, node
-
-
-transform_expr = fn node, ctx:
-  transform_ctx = dict:
-    ...ctx
-    transform: fn next_node, next_ctx=transform_ctx:
-      transform_expr next_node, next_ctx
-
-  transform = get_transformer node, ctx
-
-  match transform:
-    false:
-      err = transform_error 'Unknown expression.', node, ctx
-      # TODO don't use mutable
-      ctx.errors.push err
-      err
-    else:
-      transform_with_comments transform, node, transform_ctx
-
 
 init_ctx = fn code, filename:
-  id_cntr = count 1
-
   ctx = dict:
     filename
     code
     errors: []
-    unique_ident: fn name:
-      # TODO: return ident and new ctx to make it not stateful
-      {value} = id_cntr.next _
-      ident '${var_prefix}${name}_${value}'
+
+    unique_id: 1
+    ident_prefix: 'ˆ'
 
   pipe ctx:
     add_transformers
-
-
-transform_ast = fn expr, code, filename, options:
-  ctx = init_ctx code, filename
-  js_ast = transform_expr expr, {...ctx, options}
-
-  match js_ast:
-    {error: {}}:
-      {errors: ctx.errors}
-    else:
-      {...js_ast, errors: []}
 
 

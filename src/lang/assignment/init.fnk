@@ -7,10 +7,19 @@ babel_types = import '@babel/types'
 } = babel_types
 {length, is_empty} = import '@fink/std-lib/iter.fnk'
 
-{transform_left} = import '../../js/left.fnk'
+{unique_ident} = import '../../js/types.fnk'
+{transform_left: xform_left} = import '../../js/left.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
 {add, any} = import '../context.fnk'
 {transform_value} = import '../partial/init.fnk'
+{transform} = import '../transform.fnk'
+
+
+
+transform_left = fn node, ctx:
+  [left, next_ctx] = transform node, ctx
+  js = xform_left left
+  [js, next_ctx]
 
 
 
@@ -30,7 +39,7 @@ has_spread_not_last = fn {left}:
       false
 
 
-transform_spread_left = fn {left}, {transform}:
+transform_spread_left = fn {left}, ctx:
   [before, middle, end] = pipe left.exprs:
     fold expr, [before=[], middle=false, end=[]]=[]:
       match expr:
@@ -53,7 +62,8 @@ transform_spread_left = fn {left}, {transform}:
       # TODO missing loc
       [{type: 'list', exprs: before}, middle, {type: 'list', exprs: end}]
 
-  transform_left transform {...left, exprs}
+  transform_left {...left, exprs}, ctx
+
 
 
 slice = fn items, start, end=false:
@@ -76,15 +86,17 @@ slice = fn items, start, end=false:
 
 transform_spread_right = fn expr, ctx:
   {left, right} = expr
-  items = ctx.unique_ident 'items'
+  [items, init_ctx] = unique_ident 'items', ctx
   # TODO: wrap declarator?
+  [init, next_ctx] = transform_value right, init_ctx
+
   items_init = wrap_with_comment_loc
     variableDeclaration
       'const'
       list:
         variableDeclarator
           arrayPattern [restElement items]
-          transform_value right, ctx
+          init
     left
 
   len = (length left.exprs) - 1
@@ -102,14 +114,13 @@ transform_spread_right = fn expr, ctx:
     0: slices
     else: [items, ...slices]
 
-  result = expressionStatement
-    arrayExpression result_items
-
-  doExpression
+  js = doExpression
     wrap_with_comment_loc
-      blockStatement [items_init, result]
+      blockStatement list:
+        items_init
+        expressionStatement arrayExpression result_items
       left
-
+  [js, next_ctx]
 
 
 has_await = fn node:
@@ -124,22 +135,20 @@ has_await = fn node:
 transform_await_left = fn node, ctx:
   {left: {exprs: [{right: expr}, ...rest_exprs], ...rest_left}} = node
   left = {...rest_left, exprs: [expr, ...rest_exprs]}
-  transform_left ctx.transform left
+  transform_left left, ctx
+
 
 
 
 transform_await_right = fn expr, ctx:
   {left, right} = expr
-  items = ctx.unique_ident 'items'
-  iter = ctx.unique_ident 'iter'
+  [items, iter_ctx] = unique_ident 'items', ctx
+  [iter, init_ctx] = unique_ident 'iter', iter_ctx
+
+  [init, next_ctx] = transform_value right, init_ctx
 
   items_init = wrap_with_comment_loc
-    variableDeclaration
-      'const'
-      list:
-        variableDeclarator
-          items
-          transform_value right, ctx
+    variableDeclaration 'const', [variableDeclarator items, init]
     right
 
   iter_init = wrap_with_comment_loc
@@ -183,8 +192,7 @@ transform_await_right = fn expr, ctx:
           identifier 'value'
         expr
 
-
-  doExpression
+  js = doExpression
     wrap_with_comment_loc
       blockStatement list:
         items_init
@@ -193,24 +201,38 @@ transform_await_right = fn expr, ctx:
           arrayExpression right_exprs
       right
 
+  [js, next_ctx]
+
+
+
+transform_assign_left = fn node, ctx:
+  transform_left node.left, ctx
+
+
+
+transform_assign_right = fn node, ctx:
+   transform_value node.right, ctx
+
+
 
 
 transform_assign = fn node, ctx:
-  match node:
+  [left_transform, right_transform] = match node:
     has_await ?:
-      left = transform_await_left node, ctx
-      right = transform_await_right node, ctx
-      assignmentExpression '=', left, right
+      [transform_await_left, transform_await_right]
 
     has_spread_not_last ?:
-      left = transform_spread_left node, ctx
-      right = transform_spread_right node, ctx
-      assignmentExpression '=', left, right
+      [transform_spread_left, transform_spread_right]
 
     else:
-      left = transform_left ctx.transform node.left
-      right = transform_value node.right, ctx
-      assignmentExpression '=', left, right
+      [transform_assign_left, transform_assign_right]
+
+
+  [left, right_ctx] = left_transform node, ctx
+  [right, next_ctx] = right_transform node, right_ctx
+
+  js = assignmentExpression '=', left, right
+  [js, next_ctx]
 
 
 

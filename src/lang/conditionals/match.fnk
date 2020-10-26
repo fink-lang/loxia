@@ -7,11 +7,13 @@ babel_types = import '@babel/types'
 } = babel_types
 {length, is_empty} = import '@fink/std-lib/iter.fnk'
 
-{and, eq, not_nullish, typof, consts} = import '../../js/types.fnk'
+{and, eq, not_nullish, typof, consts, unique_ident} = import '../../js/types.fnk'
 
 {get_key} = import '../literals/record.fnk'
 {is_partial} = import '../partial/init.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
+{transform, map_with_ctx} = import '../transform.fnk'
+
 
 
 iter = fn value:
@@ -19,6 +21,7 @@ iter = fn value:
   iterator = identifier 'iterator'
   symb_iter = memberExpression symb, iterator
   memberExpression value, symb_iter, true
+
 
 
 is_iterable = fn value:
@@ -29,13 +32,18 @@ is_iterable = fn value:
       stringLiteral 'function'
 
 
-comp = fn id, expected, {transform, ...ctx}:
-  value_ctx = {...ctx, partial_ident: id}
-  value = transform expected, value_ctx
 
-  match expected:
+comp = fn id, expected, ctx:
+  value_ctx = {...ctx, partial_ident: id}
+  # TODO: test how deep `?` goes
+  [value, {partial_ident: _, ...next_ctx}] = transform expected, value_ctx
+
+  cond = match expected:
     is_partial ?: value
     else: eq id, value
+
+  [cond, next_ctx]
+
 
 
 match_props = fn props, emit_result, ctx, cond:
@@ -48,37 +56,49 @@ match_props = fn props, emit_result, ctx, cond:
       prop.right
 
   emit = match props:
-    1 == length ?: emit_result
-    else: fn: match_props rest, emit_result, ctx, cond
+    1 == length ?:
+      emit_result
+    else:
+      fn ctx: match_props rest, emit_result, ctx, cond
 
   match_condition id, value, emit, ctx, cond
 
 
+
 match_obj = fn value, obj, emit_result, ctx, cond:
-  [...id_props] = pipe obj.exprs:
-    map prop:
-      id = ctx.unique_ident 'p'
-      {id, prop}
+  [id_props, props_ctx] = pipe obj.exprs:
+    map_with_ctx ctx, fn prop, id_ctx:
+      [id, next_ctx] = unique_ident 'p', id_ctx
+      [{id, prop}, next_ctx]
 
-  decl = objectPattern list:
-    ... pipe id_props:
-      map {id, prop}:
-        match prop:
-          {left: {type: 'spread'}}:
-            restElement id
-          else:
-            [computed, key] = get_key prop, ctx
-            objectProperty key, id, computed
+  [props, result_ctx] = pipe id_props:
+    map_with_ctx props_ctx, fn {id, prop}, prop_ctx:
+      match prop:
+        {left: {type: 'spread'}}:
+          [(restElement id), prop_ctx]
+        else:
+          [computed, key, next_ctx] = get_key prop, prop_ctx
+          js = objectProperty key, id, computed
+          [js, next_ctx]
 
-  ifStatement
+  decl = objectPattern props
+
+  [result, end_ctx] = match id_props:
+    is_empty ?:
+      emit_result ctx
+    else:
+      [prop_match, next_ctx] = match_props
+        id_props, emit_result, result_ctx, cond
+      js = blockStatement list:
+        consts decl, value
+        prop_match
+      [js, next_ctx]
+
+  js = ifStatement
     not_nullish value
-    match id_props:
-      is_empty ?:
-        emit_result _
-      else:
-        blockStatement list:
-          consts decl, value
-          match_props id_props, emit_result, ctx, cond
+    result
+
+  [js, end_ctx]
 
 
 
@@ -86,8 +106,10 @@ match_elems = fn elems, emit_result, ctx, cond:
   [{id, value}, ...rest] = elems
 
   emit = match elems:
-    1 == length ?: emit_result
-    else: fn: match_elems rest, emit_result, ctx, cond
+    1 == length ?:
+      emit_result
+    else:
+      fn ctx: match_elems rest, emit_result, ctx, cond
 
   match_condition id, value, emit, ctx, cond
 
@@ -115,23 +137,28 @@ get_array_decl = fn arr, id_elems, right, ctx:
 
   left = {type: 'list', exprs, loc: arr.loc}
 
-  decl = ctx.transform dict:
-    type: 'assign'
-    op: '='
-    left
-    right: {type: 'ident', value: right.name, loc: arr.loc}
-    loc: arr.loc
+  [decl, next_ctx] = transform
+    dict:
+      type: 'assign'
+      op: '='
+      left
+      right: {type: 'ident', value: right.name, loc: arr.loc}
+      loc: arr.loc
+    ctx
 
-  consts decl.left, decl.right
+  js = consts decl.left, decl.right
+  [js, next_ctx]
+
 
 
 match_array = fn value, arr, emit_result, ctx, cond:
-  [...id_elems] = pipe arr.exprs:
-    map expr:
-      id = ctx.unique_ident 'a'
-      {id, value: expr}
+  [id_elems, elems_ctx] = pipe arr.exprs:
+    map_with_ctx ctx, fn expr, expr_ctx:
+      [id, next_ctx] = unique_ident 'a', expr_ctx
+      [{id, value: expr}, next_ctx]
 
-  array_decl = get_array_decl arr, id_elems, value, ctx
+
+  [array_decl, result_ctx] = get_array_decl arr, id_elems, value, elems_ctx
 
   [...filtered_id_elems] = pipe id_elems:
     filter {value}:
@@ -143,25 +170,33 @@ match_array = fn value, arr, emit_result, ctx, cond:
         {type: 'spread'}: false
         else: true
 
-  ifStatement
+  [result, end_ctx] = match id_elems:
+    is_empty ?:
+      emit_result result_ctx
+    else:
+      [matched, next_ctx] = match_elems
+        filtered_id_elems, emit_result, result_ctx, cond
+      js = blockStatement [array_decl, matched]
+      [js, next_ctx]
+
+  js = ifStatement
     is_iterable value
-    match id_elems:
-      is_empty ?:
-        emit_result _
-      else:
-        blockStatement list:
-          array_decl
-          match_elems filtered_id_elems, emit_result, ctx, cond
+    result
+  [js, end_ctx]
+
 
 
 match_simple = fn value, expr, emit_result, ctx:
-  ifStatement
-    comp value, expr, {...ctx, wrap: 'loc'}
-    emit_result _
+  [cond, result_ctx] = comp value, expr, {...ctx, wrap: 'loc'}
+  [result, next_ctx] = emit_result result_ctx
+  js = ifStatement cond, result
+  [js, next_ctx]
+
+
 
 
 match_condition = fn value, expr, emit_result, ctx, cond:
-  js_expr = match expr:
+  [js_expr, next_ctx] = match expr:
     {type: 'rec'}:
       match_obj value, expr, emit_result, ctx, cond
 
@@ -174,44 +209,62 @@ match_condition = fn value, expr, emit_result, ctx, cond:
     else:
       match_simple value, expr, emit_result, ctx
 
-  wrap_with_comment_loc js_expr, cond
+  js = wrap_with_comment_loc js_expr, cond
+  [js, next_ctx]
+
 
 
 split_condition = fn {left, right}:
   [left, right]
 
 
+
 match_all = fn value, matches, emit, ctx:
-  pipe matches:
-    map expr:
+  [exprs, end_ctx] = pipe matches:
+    map_with_ctx ctx, fn expr, expr_ctx:
       match expr:
         {type: 'block', op: 'else'}:
           {op:_, ...block} = expr
-          js_expr = emit block
-          wrap_with_comment_loc js_expr, block
+          [js_expr, next_ctx] = emit block, expr_ctx
+          js = wrap_with_comment_loc js_expr, block
+          [js, next_ctx]
         else:
           [condition, result] = split_condition expr
-          emit_result = fn: emit result
-          match_condition value, condition, emit_result, ctx, condition
+          emit_result = fn ctx: emit result, ctx
+          match_condition value, condition, emit_result, expr_ctx, condition
+
+  [exprs, end_ctx]
+
+
+
+result_emitter = fn break_lbl: fn result, ctx:
+  [result_js, next_ctx] = transform result, ctx
+  js = blockStatement list:
+    expressionStatement result_js
+    breakStatement break_lbl
+
+  [js, next_ctx]
+
 
 
 transform_match = fn node, ctx:
   {exprs} = node
   [inputs] = node.args
 
-  value = ctx.unique_ident 'value'
-  break_lbl = ctx.unique_ident 'match'
+  [value, match_ctx] = unique_ident 'value', ctx
+  [break_lbl, inputs_ctx] = unique_ident 'match', match_ctx
 
-  emit_result = fn result:
-    blockStatement list:
-      expressionStatement ctx.transform result
-      breakStatement break_lbl
+  emit_result = result_emitter break_lbl
 
-  doExpression
+  [inputs_js, next_ctx] = transform inputs, inputs_ctx
+  [match_exprs, end_ctx] = match_all value, exprs, emit_result, next_ctx
+
+  js = doExpression
     blockStatement list:
       labeledStatement
         break_lbl
         blockStatement list:
-          consts value, ctx.transform inputs
-          ...match_all value, exprs, emit_result, ctx
+          consts value, inputs_js
+          ...match_exprs
 
+  [js, end_ctx]
