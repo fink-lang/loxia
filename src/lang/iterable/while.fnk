@@ -14,7 +14,6 @@ transform_while = fn node, ctx:
     item_acc_assign
     expressions
     result
-    next_accu
     next_ctx
   } = get_iter_helpers node, ctx
 
@@ -33,7 +32,5 @@ transform_while = fn node, ctx:
         returnStatement _
 
       yields item
-
-      ...next_accu
 
   [js, next_ctx]

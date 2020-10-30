@@ -1,60 +1,92 @@
+babe_types = import '@babel/types'
+{
+  conditionalExpression
+} = babe_types
+
+
 {length} = import '@fink/std-lib/iter.fnk'
 
-{consts, yields, lets, assign, unique_ident} = import '../../js/types.fnk'
+{consts, lets, assign, unique_ident, undef, eq} = import '../../js/types.fnk'
 {exprs_block} = import '../block/init.fnk'
 {transform} = import '../transform.fnk'
 
 
 
 transform_init = fn left, right, ctx:
-  [item_init, next_ctx] = transform
+  true_left = match left:
+    {type: 'assign'}:
+      left.left
+    else:
+      left
+
+  [item_init, right_ctx] = transform
     dict:
       type: 'assign'
       op: '='
-      left
+      left: true_left
       right: {type: 'ident', value: right.name, loc: left.loc}
       loc: left.loc
     ctx
 
-  js = consts item_init.left, item_init.right
+  [right_js, next_ctx] = match left:
+    {type: 'assign'}:
+      [value, next_ctx] = transform left.right, right_ctx
+      cond = conditionalExpression
+        eq right, undef _
+        value
+        item_init.right
+      [cond, next_ctx]
+    else:
+      [item_init.right, right_ctx]
+
+  js = consts item_init.left, right_js
   [js, next_ctx]
 
 
 
-yield_expr = fn result, expr, ctx:
-  [yield_value, is_spread] = match expr:
-    {type: 'spread'}: [expr.right, true]
-    else: [expr, false]
-
-  [result_value, next_ctx] = transform yield_value, ctx
-
-  exprs = list:
-    consts result, result_value
-    yields result, is_spread
-
-  [exprs, next_ctx]
+unique_idents = fn names, ctx:
+  names | fold name, [ids, curr_ctx]=[[], ctx]:
+    [id, next_ctx] = unique_ident name, curr_ctx
+    next_ids = [...ids,  id]
+    [next_ids, next_ctx]
 
 
 
-get_accs = fn node, last_expr, ctx:
+get_accs = fn node, ctx:
   [, acc_arg] = node.args
+  [...exprs, last_expr] = node.exprs
+
+  [result_expr, result_is_spread] = match last_expr:
+    {type: 'spread'}:
+      [last_expr.right, true]
+    else:
+      [last_expr, false]
 
   match node.args:
     2 == length ?:
-      [acc, acc_init_ctx] = unique_ident 'accu', ctx
+      [[acc, result, next_accu], acc_init_ctx] = unique_idents
+        ['accu', 'result', 'next_accu'], ctx
+
       [acc_init_value, init_ctx] = transform acc_arg.right, acc_init_ctx
       acc_init = lets acc, acc_init_value
 
       [acc_assign, acc_ctx] = transform_init acc_arg.left, acc, init_ctx
 
-      [result_expr, acc_expr] = last_expr.exprs
-      [acc_val, next_ctx] = transform acc_expr, acc_ctx
-      next_acc_assign = assign acc, acc_val
+      [result_expr_val, next_ctx] = transform result_expr, acc_ctx
 
-      [[acc_init], [acc_assign], result_expr, [next_acc_assign], acc, next_ctx]
+      result_acc_assign = consts
+        {type: 'ArrayPattern', elements: [result, next_accu]}
+        result_expr_val
+
+      next_acc_assign = assign acc, next_accu
+
+      [[acc_init], [acc_assign], exprs, result_is_spread, [result_acc_assign, next_acc_assign], result, next_ctx]
 
     else:
-      [[], [], last_expr, [], false, ctx]
+      [result, acc_ctx] = unique_ident 'result', ctx
+      [result_expr_val, next_ctx] = transform result_expr, acc_ctx
+      result_assign = consts result, result_expr_val
+      [[], [], exprs, result_is_spread, [result_assign], result, next_ctx]
 
 
 
@@ -65,46 +97,38 @@ get_item = fn node, ctx:
   match item_arg:
     {type: 'empty'}:
       [item, [], init_ctx]
-    else:
+    {}:
       [item_init, next_ctx] = transform_init item_arg, item, init_ctx
       [item, [item_init], next_ctx]
+    else:
+      [item, [], init_ctx]
 
 
 
-get_iter_helpers = fn node, ctx:
+get_iter_helpers = fn node, ctx, input_name='items':
   [item, item_init, acc_ctx] = get_item node, ctx
 
   # TODO move next line into get_accs?
-  [...exprs, last_expr] = node.exprs
-  [acc_init, acc_assign, result_expr1, next_accu, accu, items_ctx] = get_accs
-    node, last_expr, acc_ctx
+  [acc_init, acc_assign, exprs, result_is_spread, foo, result, items_ctx] = get_accs
+    node, acc_ctx
 
-  [items, result_ctx] = unique_ident 'items', items_ctx
-  [result, exprs_ctx] = unique_ident 'result', result_ctx
+  [items, exprs_ctx] = unique_ident input_name, items_ctx
 
-  item_acc_assign = [...item_init, ...acc_assign]
-
-  [result_expr, result_is_spread] = match result_expr1:
-    {type: 'spread'}:
-      [result_expr1.right, true]
-    else:
-      [result_expr1, false]
 
   [expressions, next_ctx] = pipe exprs:
     exprs_block ?, exprs_ctx
 
     fn [exprs, result_ctx]:
-      [result_value, next_ctx] = transform result_expr, result_ctx
-      result_const = consts result, result_value
-      [[...exprs, result_const], next_ctx]
+      [[...exprs, ...foo], result_ctx]
 
   dict:
-    accu, acc_init
+    acc_init
     item, items
-    item_acc_assign
+    item_init
+    item_acc_assign: [...item_init, ...acc_assign]
     expressions
-    result, result_is_spread
-    next_accu
+    result
+    result_is_spread
     next_ctx
 
 

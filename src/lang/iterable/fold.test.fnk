@@ -6,14 +6,23 @@ describe 'fold', fn:
   it 'compiles', fn:
     expect
       fink2js '
-        fold item, acc=0:
-          ni = item + acc
-          item * acc
+        fold item, prev=0:
+          ni = item + prev
+          item * ni
       '
       to_match_snapshot
 
 
-  it 'compiles without accu', fn:
+   it 'compiles with accu', fn:
+    expect
+      fink2js '
+        fold item, prev=0, acc=1:
+          [item * acc + prev, acc + 1]
+      '
+      to_match_snapshot
+
+
+  it 'compiles without using prev result', fn:
     expect
       fink2js '
         fold item:
@@ -25,16 +34,16 @@ describe 'fold', fn:
   it 'destructuring item', fn:
     expect
       fink2js '
-        fold [foo, ...bar], acc=[]:
-          [[foo, bar], ...acc]
+        fold [foo, ...bar], prev=[]:
+          [[foo, bar], ...prev]
 
-        fold [...foo, bar], acc=[]:
-          [[foo, bar], ...acc]
+        fold [...foo, bar], prev=[]:
+          [[foo, bar], ...prev]
       '
       to_match_snapshot
 
 
-  it 'destructuring accu', fn:
+  it 'destructuring prev result', fn:
     expect
       fink2js '
         fold item, [foo, ...bar]=[]:
