@@ -17,8 +17,7 @@ get_body = fn path: path.get 'body'
 
 
 
-# TODO: suport _ or nothing instead of having to use item
-consume_all = fold item: undefined
+consume_all = fold: undefined
 
 
 

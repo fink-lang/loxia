@@ -102,7 +102,7 @@ transform_spread_right = fn expr, ctx:
   len = (length left.exprs) - 1
   [[idx]] = pipe left.exprs:
     map expr, idx=0:
-      ([idx, expr], idx + 1)
+      [[idx, expr], idx + 1]
     filter [, {type}]:
       type == 'spread'
 

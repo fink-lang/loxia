@@ -26,7 +26,7 @@ map_with_ctx = fn ctx, tf: fn items:
   pipe items:
     map item, item_ctx=ctx:
       [result, next_ctx] = tf item, item_ctx
-      ([result, next_ctx], next_ctx)
+      [[result, next_ctx], next_ctx]
 
     collect_with_ctx ctx
 
