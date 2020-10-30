@@ -16,13 +16,13 @@ describe 'while', fn:
     expect
       fink2js '
         while _, cntr=0:
-          (cntr < 2, cntr + 1)
+          [cntr < 2, cntr + 1]
 
         while , cntr=0:
-          (cntr < 2, cntr + 1)
+          [cntr < 2, cntr + 1]
 
         while item, cntr=0:
-          (item and cntr < 2, cntr + 1)
+          [item and cntr < 2, cntr + 1]
       '
       to_match_snapshot
 

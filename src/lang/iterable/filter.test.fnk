@@ -23,21 +23,21 @@ describe 'filter', fn:
     expect
       fink2js '
         filter item, cntr=0:
-          (item < 1 and cntr % 2 == 0, cntr + 1)
+          [item < 1 and cntr % 2 == 0, cntr + 1]
       '
       to_match_snapshot
 
     expect
       fink2js '
         filter _, is_even=false:
-          (is_even, not is_even)
+          [is_even, not is_even]
       '
       to_match_snapshot
 
     expect
       fink2js '
         filter , is_even=false:
-          (is_even, not is_even)
+          [is_even, not is_even]
       '
       to_match_snapshot
 

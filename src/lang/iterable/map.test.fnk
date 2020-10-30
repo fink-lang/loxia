@@ -69,14 +69,14 @@ describe 'map', fn:
     expect
       fink2js '
         map {foo}, acc=0:
-          (foo + acc, acc+1)
+          [foo + acc, acc+1]
       '
       to_match_snapshot
 
     expect
       fink2js '
         map {foo}, acc=0:
-          (...[acc, foo], acc+1)
+          ...[[acc, foo], acc+1]
       '
       to_match_snapshot
 

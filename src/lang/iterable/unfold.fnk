@@ -1,13 +1,9 @@
 babel_types = import '@babel/types'
 {whileStatement, blockStatement} = babel_types
-{is_empty} = import '@fink/std-lib/iter.fnk'
 
+{yields, assign, generator, true_, lets, ident} = import '../../js/types.fnk'
 
-{assign, generator, true_, lets, ident, unique_ident} = import '../../js/types.fnk'
-
-{exprs_block} = import '../block/init.fnk'
-{transform_init, yield_expr} = import './common.fnk'
-{transform} = import '../transform.fnk'
+{get_iter_helpers} = import './common.fnk'
 
 
 
@@ -18,63 +14,27 @@ loop = fn ...body:
 
 
 
-get_acc_exprs = fn node, next_value, ctx:
-  [initial, acc_ctx] = unique_ident 'initial', ctx
-  [acc, acc_init_ctx] = unique_ident 'accu', acc_ctx
-  [acc_arg] = node.args;
-
-  [acc_left, acc_right, init_ctx] = match acc_arg:
-    {type: 'assign'}:
-      [right, next_ctx] = transform acc_arg.right, acc_init_ctx
-      [acc_arg.left, right, next_ctx]
-    else:
-      [acc_arg, initial, acc_init_ctx]
-
-  acc_init = lets acc, acc_right
-
-  [acc_assign, next_ctx] = transform_init acc_left, acc, init_ctx
-
-  acc_result = assign acc, next_value
-  [[initial], [acc_init], [acc_assign], [acc_result], next_ctx]
-
-
-
-get_accs = fn node, next_value, ctx:
-  match node.args:
-    is_empty ?:
-      [[], [], [], [], ctx]
-    else:
-      get_acc_exprs node, next_value, ctx
-
-
-
-get_result = fn result_id, expr,  ctx:
-  match expr:
-    {type: 'group'}:
-      [result_expr, acc_expr] = expr.exprs
-      [result_expr, ...transform acc_expr, ctx]
-    else:
-      [expr, result_id, ctx]
-
-
-
 transform_unfold = fn node, ctx:
-  [...expressions, last_expr] = node.exprs
-  [result_id, result_ctx] = unique_ident 'result', ctx
+  {
+    acc_init
+    item, items
+    item_acc_assign
+    expressions
+    result, result_is_spread
+    next_ctx
+  } = get_iter_helpers node, ctx, 'initial'
 
-  [result_expr, next_accu, acc_ctx] = get_result result_id, last_expr, result_ctx
-  [initial, acc_init, acc_assign, acc_result, block_ctx] = get_accs node, next_accu, acc_ctx
+  name = ident 'unfold', ctx
 
-  name = ident 'unfold', block_ctx
-  [body, yield_ctx] = exprs_block expressions, block_ctx
-  [yield_result, end_ctx] = yield_expr result_id, result_expr, yield_ctx
-
-  js = generator name, [...initial],
+  js = generator name, [items],
     ...acc_init
-    loop
-      ...acc_assign
-      ...body
-      ...yield_result
-      ...acc_result
+    lets item, items
 
-  [js, end_ctx]
+    loop
+      ...item_acc_assign
+      ...expressions
+      yields result, result_is_spread
+      assign item, result
+
+  [js, next_ctx]
+

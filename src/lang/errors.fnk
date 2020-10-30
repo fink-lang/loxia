@@ -16,6 +16,6 @@ transform_error = fn message, expr, ctx:
 
     ${message}
     '
-    {transform_error: true}
+    {transform_error: true, expr}
 
 

@@ -4,36 +4,34 @@
 
 describe 'unfold', fn:
 
-  it 'compiles item is accu', fn:
+  it 'compiles with previous', fn:
     expect
       fink2js '
-        unfold prev=0:
+        unfold prev:
           prev + 1
       '
       to_match_snapshot
 
 
-  it 'compiles with separate item and accu result', fn:
+  it 'compiles with default', fn:
     expect
       fink2js '
-        unfold {prev=0, acc=0}={}:
-          item = prev + accu
-          (item, {prev: item, accu: accu + 1})
+        unfold prev=1:
+          prev + 1
       '
       to_match_snapshot
 
 
-  it 'compiles without default assignment', fn:
+  it 'compiles with default and accu', fn:
     expect
       fink2js '
-        pipe 0:
-          unfold prev:
-            prev + 1
+        unfold prev=1, acc=1:
+          [prev * accu, accu + 1]
       '
       to_match_snapshot
 
 
-  it 'compiles without accus', fn:
+  it 'compiles without args', fn:
     expect
       fink2js '
         unfold:
@@ -51,25 +49,4 @@ describe 'unfold', fn:
       to_match_snapshot
 
 
-  it 'compiles destructured accus', fn:
-    expect
-      fink2js '
-        unfold [foo, ...bar]:
-          (foo, bar)
-      '
-      to_match_snapshot
-
-    expect
-      fink2js '
-        unfold [...foo, bar]:
-          (bar, foo)
-      '
-      to_match_snapshot
-
-    expect
-      fink2js '
-        unfold [foo, ...bar]:
-          (...foo, bar)
-      '
-      to_match_snapshot
 

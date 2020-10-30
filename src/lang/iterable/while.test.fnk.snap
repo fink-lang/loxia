@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`while async compiles 1`] = `
-"(function filter_while(ˆitems_2) {
+"(function filter_while(ˆitems_3) {
   return {
     async *[Symbol.asyncIterator]() {
-      for await (const ˆitem_1 of ˆitems_2) {
+      for await (const ˆitem_1 of ˆitems_3) {
         const item = ˆitem_1;
-        const ˆresult_3 = (await item) < 10;
-        if (ˆresult_3 !== true) return;
+        const ˆresult_2 = (await item) < 10;
+        if (ˆresult_2 !== true) return;
         yield ˆitem_1;
       }
     }
@@ -17,13 +17,13 @@ exports[`while async compiles 1`] = `
 `;
 
 exports[`while compiles 1`] = `
-"(function filter_while(ˆitems_2) {
+"(function filter_while(ˆitems_3) {
   return {
     *[Symbol.iterator]() {
-      for (const ˆitem_1 of ˆitems_2) {
+      for (const ˆitem_1 of ˆitems_3) {
         const item = ˆitem_1;
-        const ˆresult_3 = item < 10;
-        if (ˆresult_3 !== true) return;
+        const ˆresult_2 = item < 10;
+        if (ˆresult_2 !== true) return;
         yield ˆitem_1;
       }
     }
@@ -33,55 +33,15 @@ exports[`while compiles 1`] = `
 `;
 
 exports[`while compiles destructuring 1`] = `
-"(function filter_while(ˆitems_2) {
-  return {
-    *[Symbol.iterator]() {
-      for (const ˆitem_1 of ˆitems_2) {
-        const [foo, ...bar] = ˆitem_1;
-        const foo_alone = foo && is_empty(bar);
-        const ˆresult_3 = foo_alone;
-        if (ˆresult_3 !== true) return;
-        yield ˆitem_1;
-      }
-    }
-
-  };
-});
-
-(function filter_while(ˆitems_6) {
-  return {
-    *[Symbol.iterator]() {
-      for (const ˆitem_4 of ˆitems_6) {
-        let _do_result;
-
-        {
-          const [...ˆitems_5] = ˆitem_4;
-          _do_result = [ˆitems_5.slice(0, -1), ˆitems_5.slice(-1)];
-        }
-        const [foo, [bar]] = _do_result;
-        _do_result = undefined;
-        const ˆresult_7 = bar && is_empty(foo);
-        if (ˆresult_7 !== true) return;
-        yield ˆitem_4;
-      }
-    }
-
-  };
-});"
-`;
-
-exports[`while compiles with accu 1`] = `
 "(function filter_while(ˆitems_3) {
   return {
     *[Symbol.iterator]() {
-      let ˆaccu_2 = 0;
-
       for (const ˆitem_1 of ˆitems_3) {
-        const cntr = ˆaccu_2;
-        const ˆresult_4 = cntr < 2;
-        if (ˆresult_4 !== true) return;
+        const [foo, ...bar] = ˆitem_1;
+        const foo_alone = foo && is_empty(bar);
+        const ˆresult_2 = foo_alone;
+        if (ˆresult_2 !== true) return;
         yield ˆitem_1;
-        ˆaccu_2 = cntr + 1;
       }
     }
 
@@ -91,32 +51,72 @@ exports[`while compiles with accu 1`] = `
 (function filter_while(ˆitems_7) {
   return {
     *[Symbol.iterator]() {
-      let ˆaccu_6 = 0;
+      for (const ˆitem_4 of ˆitems_7) {
+        let _do_result;
 
-      for (const ˆitem_5 of ˆitems_7) {
-        const cntr = ˆaccu_6;
-        const ˆresult_8 = cntr < 2;
-        if (ˆresult_8 !== true) return;
-        yield ˆitem_5;
-        ˆaccu_6 = cntr + 1;
+        {
+          const [...ˆitems_5] = ˆitem_4;
+          _do_result = [ˆitems_5.slice(0, -1), ˆitems_5.slice(-1)];
+        }
+        const [foo, [bar]] = _do_result;
+        _do_result = undefined;
+        const ˆresult_6 = bar && is_empty(foo);
+        if (ˆresult_6 !== true) return;
+        yield ˆitem_4;
+      }
+    }
+
+  };
+});"
+`;
+
+exports[`while compiles with accu 1`] = `
+"(function filter_while(ˆitems_5) {
+  return {
+    *[Symbol.iterator]() {
+      let ˆaccu_2 = 0;
+
+      for (const ˆitem_1 of ˆitems_5) {
+        const cntr = ˆaccu_2;
+        const [ˆresult_3, ˆnext_accu_4] = [cntr < 2, cntr + 1];
+        ˆaccu_2 = ˆnext_accu_4;
+        if (ˆresult_3 !== true) return;
+        yield ˆitem_1;
       }
     }
 
   };
 });
 
-(function filter_while(ˆitems_11) {
+(function filter_while(ˆitems_10) {
   return {
     *[Symbol.iterator]() {
-      let ˆaccu_10 = 0;
+      let ˆaccu_7 = 0;
 
-      for (const ˆitem_9 of ˆitems_11) {
-        const item = ˆitem_9;
-        const cntr = ˆaccu_10;
-        const ˆresult_12 = item && cntr < 2;
-        if (ˆresult_12 !== true) return;
-        yield ˆitem_9;
-        ˆaccu_10 = cntr + 1;
+      for (const ˆitem_6 of ˆitems_10) {
+        const cntr = ˆaccu_7;
+        const [ˆresult_8, ˆnext_accu_9] = [cntr < 2, cntr + 1];
+        ˆaccu_7 = ˆnext_accu_9;
+        if (ˆresult_8 !== true) return;
+        yield ˆitem_6;
+      }
+    }
+
+  };
+});
+
+(function filter_while(ˆitems_15) {
+  return {
+    *[Symbol.iterator]() {
+      let ˆaccu_12 = 0;
+
+      for (const ˆitem_11 of ˆitems_15) {
+        const item = ˆitem_11;
+        const cntr = ˆaccu_12;
+        const [ˆresult_13, ˆnext_accu_14] = [item && cntr < 2, cntr + 1];
+        ˆaccu_12 = ˆnext_accu_14;
+        if (ˆresult_13 !== true) return;
+        yield ˆitem_11;
       }
     }
 
