@@ -6,7 +6,7 @@ exports[`pipe compiles 1`] = `
   ˆpipe_result_1 = foo(ˆpipe_result_1);
 
   ˆpipe_result_1 = ((ˆ1r) => bar(ˆ1r, {
-    \\"foo\\": foo,
+    foo,
     ...ˆ1r
   }))(ˆpipe_result_1);
 

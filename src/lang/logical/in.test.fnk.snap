@@ -4,7 +4,7 @@ exports[`in shortcuts known with knwon right hand side 1`] = `
 "export const foo = [1, 2, 3].includes(1);
 export const bar = \`1234\`.includes(\`2\`);
 export const spam = {
-  \\"foo\\": bar
+  foo: bar
 }.hasOwnProperty(key);
 export const shrub = ni?.includes?.(item) ?? ni?.has?.(item) ?? ni?.hasOwnProperty?.(item) ?? false;"
 `;

@@ -2,10 +2,9 @@
 
 exports[`calculated props compiles 1`] = `
 "export const foo = {
-  \\"foo\\": foo,
   [Symbol(\`foo\`)]: 123,
   [\`spam\`]: 456,
-  \\"ni\\": ni
+  [\`spam-\${ham}\`]: \`ni\`
 };"
 `;
 
@@ -17,97 +16,117 @@ exports[`destructuring record compiles computed keys 1`] = `
 
 exports[`destructuring record compiles defaults 1`] = `
 "const {
-  \\"x\\": x = 1,
-  \\"ni\\": {
-    \\"y\\": y,
-    \\"z\\": z
+  x = 1,
+  \\"∑\\": ˆ6q9 = 2,
+  ni: {
+    y,
+    z
   }
 } = {
-  \\"ni\\": {
-    \\"y\\": 1,
-    \\"z\\": 2
+  ni: {
+    y: 1,
+    z: 2
   }
 };"
 `;
 
 exports[`destructuring record compiles empty 1`] = `
 "const {
-  \\"foo\\": ˆunused_1,
-  \\"bar\\": bar
+  foo: ˆunused_1,
+  bar
 } = {
-  \\"foo\\": 12,
-  \\"bar\\": 34
+  foo: 12,
+  bar: 34
 };"
+`;
+
+exports[`destructuring record compiles non js idents 1`] = `
+"const {
+  foo,
+  π,
+  ƒ,
+  \\"∑\\": ˆ6q9,
+  \\"delete\\": ˆdelete
+} = obj;"
 `;
 
 exports[`destructuring record compiles simple 1`] = `
 "const {
-  \\"a\\": a,
-  \\"b\\": b,
-  \\"c\\": c
+  a,
+  b,
+  c
 } = ni;"
 `;
 
 exports[`destructuring record compiles spread 1`] = `
 "const {
-  \\"e\\": e,
+  e,
   ...f
 } = {
-  \\"e\\": 0,
-  \\"foo\\": 12,
-  \\"bar\\": 34
+  e: 0,
+  foo: 12,
+  bar: 34
+};"
+`;
+
+exports[`record compiles idents that are not js prop-names 1`] = `
+"export const foo = {
+  foo: bar,
+  π: 3.12,
+  ƒ: \`fink\`,
+  \\"∑\\": \`sum\`
 };"
 `;
 
 exports[`record compiles key:val 1`] = `
 "export const obj = {
-  \\"a\\": 1,
-  \\"b\\": 123,
+  a: 1,
+  b: 123,
   [\`c-d-e\`]: cde
 };"
 `;
 
 exports[`record compiles key:val 2`] = `
 "export const obj7 = {
-  \\"a\\": 123,
-  \\"b\\": 123 && 123 && 1345,
-  \\"c\\": (a, b) => 134
+  a: 123,
+  b: 123 && 123 && 1345,
+  c: (a, b) => 134
 };"
 `;
 
 exports[`record compiles multiline 1`] = `
 "export const obj = {
-  \\"a\\": 123,
-  \\"b\\": 123 && 123 && 1345,
-  \\"c\\": (a, b) => 134,
-  \\"d\\": foo(a + 3)
+  a: 123,
+  b: 123 && 123 && 1345,
+  c: (a, b) => 134,
+  d: foo(a + 3)
 };"
 `;
 
 exports[`record compiles multiline 2`] = `
 "export const obj = {
-  \\"a\\": 123,
-  \\"b\\": 123 && 123 && 1345,
-  \\"c\\": (a, b) => 134,
-  \\"d\\": foo(a + 3)
+  a: 123,
+  b: 123 && 123 && 1345,
+  c: (a, b) => 134,
+  d: foo(a + 3)
 };"
 `;
 
 exports[`record compiles shorthand 1`] = `
 "export const obj = {
-  \\"foo\\": foo,
-  \\"π\\": π,
-  \\"ƒ\\": ƒ,
+  foo,
+  π,
+  ƒ,
   \\"∑\\": ˆ6q9
 };"
 `;
 
 exports[`record compiles shorthand 2`] = `
 "export const obj = {
-  \\"a\\": a,
+  a,
   \\"delete\\": ˆdelete,
-  \\"true\\": true,
-  \\"false\\": false
+  true,
+  false
 };"
 `;
 
@@ -121,8 +140,8 @@ exports[`record compiles simple 1`] = `"export const obj = {};"`;
 
 exports[`record compiles spread 1`] = `
 "export const obj = {
-  \\"a\\": a,
-  \\"b\\": b,
+  a,
+  b,
   ...c
 };"
 `;

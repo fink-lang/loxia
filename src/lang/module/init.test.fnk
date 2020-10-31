@@ -17,3 +17,12 @@ describe 'module', fn:
         # trailing comment
       "
       to_match_snapshot
+
+
+  it 'handles exports', fn:
+    expect
+      fink2js "
+        delete = fn: true
+        ∑ = fn: true
+      "
+      to_match_snapshot

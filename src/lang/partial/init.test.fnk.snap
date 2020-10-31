@@ -12,7 +12,7 @@ export const foo6 = (ˆ1r) => ˆ1r(bar, spam);"
 exports[`partial compiles assignment 2`] = `
 "export const foo1 = (ˆ1r) => [1, ...ˆ1r, 9];
 export const foo2 = (ˆ1r) => ({
-  \\"foo\\": foo,
+  foo,
   ...ˆ1r
 });"
 `;

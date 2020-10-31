@@ -8,6 +8,7 @@ describe 'import', fn:
       fink2js "
         {bar} = import './spam.fnk'
         {foo: spam} = import './shrub.fnk'
+        {∑, delete} = import './ni.fnk'
       "
       to_match_snapshot
 

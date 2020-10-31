@@ -132,7 +132,7 @@ exports[`map compiles single line with destructured obj 1`] = `
     *[Symbol.iterator]() {
       for (const ˆitem_1 of ˆitems_3) {
         const {
-          \\"item\\": item
+          item
         } = ˆitem_1;
         const ˆresult_2 = item * 2;
         yield ˆresult_2;
@@ -151,7 +151,7 @@ exports[`map compiles with acc 1`] = `
 
       for (const ˆitem_1 of ˆitems_5) {
         const {
-          \\"foo\\": foo
+          foo
         } = ˆitem_1;
         const acc = ˆaccu_2;
         const [ˆresult_3, ˆnext_accu_4] = [foo + acc, acc + 1];
@@ -172,7 +172,7 @@ exports[`map compiles with acc 2`] = `
 
       for (const ˆitem_1 of ˆitems_5) {
         const {
-          \\"foo\\": foo
+          foo
         } = ˆitem_1;
         const acc = ˆaccu_2;
         const [ˆresult_3, ˆnext_accu_4] = [[acc, foo], acc + 1];
@@ -191,7 +191,7 @@ exports[`map compiles with foo 1`] = `
     *[Symbol.iterator]() {
       for (const ˆitem_1 of ˆitems_5) {
         const {
-          \\"foo\\": foo
+          foo
         } = ˆitem_1;
 
         let _do_result;
