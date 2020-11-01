@@ -6,7 +6,8 @@ exports[`import imports dynamically with static URL 1`] = `"export const ni = aw
 
 exports[`import imports exported values 1`] = `
 "import { bar } from \\"./spam.js\\";
-import { foo as spam } from \\"./shrub.js\\";"
+import { foo as spam } from \\"./shrub.js\\";
+import { ˆ6q9, ˆdelete } from \\"./ni.js\\";"
 `;
 
 exports[`import imports module 1`] = `
@@ -26,7 +27,7 @@ exports[`import imports without transforming ext 1`] = `
 import { is_str } from \\"@fink/std-lib/str.js\\";
 import { bar } from \\"./spam.fnk\\";
 const {
-  \\"foo\\": spam
+  foo: spam
 } = await import(\`./shrub.fnk\`);
 export const na = await import(\`./\${foo}.fnk\`);
 import \\"./foo.fnk\\";

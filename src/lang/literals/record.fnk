@@ -1,7 +1,7 @@
 babel_types = import '@babel/types'
 {objectExpression, objectProperty, assignmentPattern} = babel_types
 
-{raw_str, unique_ident} = import '../../js/types.fnk'
+{raw_str, unique_ident, ident} = import '../../js/types.fnk'
 {transform, map_with_ctx} = import '../transform.fnk'
 
 
@@ -27,7 +27,12 @@ get_key = fn {left: key}, ctx:
     {type: 'string'}:
       [true, ...transform key, ctx]
     else:
-      [false, ...str_key key, ctx]
+      id = ident key.value, ctx
+      match id:
+        {name: key.value}:
+          [false, id, ctx]
+        else:
+          [false, ...str_key key, ctx]
 
 
 

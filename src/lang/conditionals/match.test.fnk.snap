@@ -14,8 +14,8 @@ exports[`match compiles 1`] = `
     // record matching
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"foo\\": ˆp_3,
-        \\"ni\\": ˆp_4
+        foo: ˆp_3,
+        ni: ˆp_4
       } = ˆvalue_1;
       // record matching
       if (ˆp_3 === 4) // record matching
@@ -105,7 +105,7 @@ exports[`match compiles nested pattern 1`] = `
     // deep obj comparison
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"foo\\": ˆp_3
+        foo: ˆp_3
       } = ˆvalue_1;
 
       // deep obj comparison
@@ -117,7 +117,7 @@ exports[`match compiles nested pattern 1`] = `
 
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"foo\\": ˆp_4
+        foo: ˆp_4
       } = ˆvalue_1;
 
       if (ˆp_4 !== undefined && ˆp_4 !== null && typeof ˆp_4[Symbol.iterator] === \\"function\\") {
@@ -128,13 +128,13 @@ exports[`match compiles nested pattern 1`] = `
 
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"foo\\": ˆp_5,
-        \\"ni\\": ˆp_6
+        foo: ˆp_5,
+        ni: ˆp_6
       } = ˆvalue_1;
       if (ˆp_5 === 4) if (ˆp_6 !== undefined && ˆp_6 !== null) {
         const {
-          \\"na\\": ˆp_7,
-          \\"nu\\": ˆp_8
+          na: ˆp_7,
+          nu: ˆp_8
         } = ˆp_6;
         if (ˆp_7 === na) if (ˆp_8 === nu) {
           spam + ni;
@@ -145,17 +145,17 @@ exports[`match compiles nested pattern 1`] = `
 
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"xx\\": ˆp_9,
-        \\"foo\\": ˆp_10,
-        \\"shrub\\": ˆp_11
+        xx: ˆp_9,
+        foo: ˆp_10,
+        shrub: ˆp_11
       } = ˆvalue_1;
       if (ˆp_9 === 1) if (ˆp_10 !== undefined && ˆp_10 !== null) {
         const {
-          \\"bar\\": ˆp_12
+          bar: ˆp_12
         } = ˆp_10;
         if (ˆp_12 === \`spam\`) if (ˆp_11 !== undefined && ˆp_11 !== null) {
           const {
-            \\"na\\": ˆp_13
+            na: ˆp_13
           } = ˆp_11;
 
           if (ˆp_13 === \`nu\`) {
@@ -168,17 +168,17 @@ exports[`match compiles nested pattern 1`] = `
 
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"ni\\": ˆp_14,
-        \\"na\\": ˆp_15
+        ni: ˆp_14,
+        na: ˆp_15
       } = ˆvalue_1;
 
       if (ˆp_14 !== undefined && ˆp_14 !== null) {
         const {
-          \\"len\\": ˆp_16
+          len: ˆp_16
         } = ˆp_14;
         if (ˆp_16 === 1) if (ˆp_15 !== undefined && ˆp_15 !== null) {
           const {
-            \\"len\\": ˆp_17
+            len: ˆp_17
           } = ˆp_15;
 
           if (ˆp_17 === 1) {
@@ -198,8 +198,8 @@ exports[`match compiles nested pattern 1`] = `
       // calculated props
       if (ˆp_18 !== undefined && ˆp_18 !== null) {
         const {
-          \\"b\\": ˆp_19,
-          \\"c\\": ˆp_20
+          b: ˆp_19,
+          c: ˆp_20
         } = ˆp_18;
         // calculated props
         if (ˆp_19 === b) // calculated props
@@ -220,8 +220,8 @@ exports[`match compiles nested pattern 1`] = `
       if (ˆp_21 !== undefined && ˆp_21 !== null) // spread
         if (ˆp_22 !== undefined && ˆp_22 !== null) {
           const {
-            \\"bar\\": ˆp_23,
-            \\"spam\\": ˆp_24
+            bar: ˆp_23,
+            spam: ˆp_24
           } = ˆp_22;
           // spread
           if (ˆp_23 === bar) // spread
@@ -314,7 +314,7 @@ exports[`match compiles nested pattern 3`] = `
       const [ˆa_6, ...ˆa_7] = ˆvalue_1;
       if (ˆa_6 === 1) if (ˆa_7 !== undefined && ˆa_7 !== null) {
         const {
-          \\"length\\": ˆp_8
+          length: ˆp_8
         } = ˆa_7;
 
         if (ˆp_8 === 0) {
@@ -350,7 +350,7 @@ exports[`match compiles nested pattern 3`] = `
       _do_result2 = undefined;
       if (ˆa_13 === 1) if (ˆa_14 !== undefined && ˆa_14 !== null) {
         const {
-          \\"length\\": ˆp_17
+          length: ˆp_17
         } = ˆa_14;
         if (ˆp_17 === 0) if (ˆa_15 === 3) {
           foo;
@@ -366,7 +366,7 @@ exports[`match compiles patial application 1`] = `
 "{
   ˆmatch_2: {
     const ˆvalue_1 = {
-      \\"spam\\": 123
+      spam: 123
     };
 
     // simple unary
@@ -401,7 +401,7 @@ exports[`match compiles patial application 1`] = `
     // nested unary
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"spam\\": ˆp_3
+        spam: ˆp_3
       } = ˆvalue_1;
 
       // nested unary
@@ -414,7 +414,7 @@ exports[`match compiles patial application 1`] = `
     // nested binary
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"spam\\": ˆp_4
+        spam: ˆp_4
       } = ˆvalue_1;
 
       // nested binary
@@ -427,7 +427,7 @@ exports[`match compiles patial application 1`] = `
     // nested call
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"spam\\": ˆp_5
+        spam: ˆp_5
       } = ˆvalue_1;
 
       // nested call
@@ -439,7 +439,7 @@ exports[`match compiles patial application 1`] = `
 
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"spam\\": ˆp_6
+        spam: ˆp_6
       } = ˆvalue_1;
 
       if (ˆp_6()) {
@@ -451,7 +451,7 @@ exports[`match compiles patial application 1`] = `
     // nested member call
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"spam\\": ˆp_7
+        spam: ˆp_7
       } = ˆvalue_1;
 
       // nested member call
@@ -463,7 +463,7 @@ exports[`match compiles patial application 1`] = `
 
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"spam\\": ˆp_8
+        spam: ˆp_8
       } = ˆvalue_1;
 
       if (ˆp_8.is_foo()) {
@@ -475,7 +475,7 @@ exports[`match compiles patial application 1`] = `
     // nested as call arg
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"spam\\": ˆp_9
+        spam: ˆp_9
       } = ˆvalue_1;
 
       // nested as call arg
@@ -568,8 +568,8 @@ exports[`match compiles without else 1`] = `
 
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
-        \\"foo\\": ˆp_3,
-        \\"ni\\": ˆp_4
+        foo: ˆp_3,
+        ni: ˆp_4
       } = ˆvalue_1;
       if (ˆp_3 === 4) if (ˆp_4 === ni) {
         spam + ni;

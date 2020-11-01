@@ -23,15 +23,16 @@ describe 'assignment', fn:
       to_match_snapshot
 
 
-  it 'compiles destructuring', fn:
+
+describe 'list destructuring', fn:
+  it 'compiles leading, last', fn:
     expect
       fink2js "
-        # standard JS destructuring
-        [...head, last] = '1234'
+        [...leading, last] = '1234'
       "
       to_match_snapshot
 
-
+  it 'compiles first, some, last', fn:
     expect
       fink2js "
         # enhanced destructuring

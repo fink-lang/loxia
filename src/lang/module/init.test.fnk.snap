@@ -7,3 +7,8 @@ exports[`module handles comments 1`] = `
 export const foo = 1234;
 // trailing comment"
 `;
+
+exports[`module handles exports 1`] = `
+"export const ˆdelete = () => true;
+export const ˆ6q9 = () => true;"
+`;
