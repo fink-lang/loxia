@@ -1,7 +1,5 @@
 babe_types = import '@babel/types'
-{
-  conditionalExpression
-} = babe_types
+{conditionalExpression} = babe_types
 
 
 {length} = import '@fink/std-lib/iter.fnk'
@@ -9,6 +7,47 @@ babe_types = import '@babel/types'
 {consts, lets, assign, unique_ident, undef, eq} = import '../../js/types.fnk'
 {exprs_block} = import '../block/init.fnk'
 {transform} = import '../transform.fnk'
+
+
+
+transform_with_std_lib = fn node, ctx:
+  iter_func = '_${node.op}_'
+
+  use_accu = match node:
+    {op: 'fold', args: 3 == length ?}:
+      {type: 'literal', value: 'true', loc: node.loc}
+    {op: 'fold'}:
+      {type: 'literal', value: 'false', loc: node.loc}
+    {args: 2 == length ?}:
+      {type: 'literal', value: 'true', loc: node.loc}
+    else:
+      {type: 'literal', value: 'false', loc: node.loc}
+
+  [use_spread, exprs] = match node.exprs:
+    [..., {type: 'spread'}]:
+      spread = {type: 'literal', value: 'true', loc: node.loc}
+      [...exprs, last] = node.exprs
+      [spread, [...exprs, last.right]]
+    else:
+      spread = {type: 'literal', value: 'false', loc: node.loc}
+      [spread, node.exprs]
+
+  [result, end_ctx] = transform
+    rec:
+      type: 'call'
+      callee: {type: 'ident', value : iter_func}
+      args: seq:
+        rec:
+          type: 'fn'
+          args: node.args
+          exprs: exprs
+          loc: node.loc
+        use_accu
+        use_spread
+
+      loc: node.loc
+    ctx
+  [result, end_ctx]
 
 
 

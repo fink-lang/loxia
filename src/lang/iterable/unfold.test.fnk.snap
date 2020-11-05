@@ -1,5 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`gen 2 compiles 1`] = `
+"import { _unfold_ } from \\"@fink/js-interop/iter.js\\";
+
+_unfold_((prev) => prev + 1, false, false);"
+`;
+
+exports[`gen 2 compiles 2`] = `
+"import { _unfold_ } from \\"@fink/js-interop/iter.js\\";
+
+_unfold_((prev = 1) => prev + 1, false, false);"
+`;
+
+exports[`gen 2 compiles 3`] = `
+"import { _unfold_ } from \\"@fink/js-interop/iter.js\\";
+
+_unfold_((prev = 1, acc = 1) => [prev * accu, accu + 1], true, false);"
+`;
+
 exports[`unfold compiles with default 1`] = `
 "(function unfold(ˆinitial_3) {
   return {

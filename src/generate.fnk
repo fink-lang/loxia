@@ -13,10 +13,10 @@ babel_traverse = import '@babel/traverse'
 
 
 transform_file = fn fink_ast, code, filename, options:
-  ctx = init_ctx code, filename
+  ctx = init_ctx code, filename, options
 
   [error, [js_ast]=[]] = try:
-    transform fink_ast, {...ctx, options}
+    transform fink_ast, ctx
 
   extras = match options:
     {module_type: 'cjs'}: module_transforms

@@ -9,9 +9,10 @@ babel_types = import '@babel/types'
 {add, any} = import '../context.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
 {block_statement} = import '../block/init.fnk'
-{transform, map_with_ctx} = import '../transform.fnk'
+{transform, collect_with_ctx, is_ignorable_import} = import '../transform.fnk'
 
 {transform_import: transform_async_import, resolve_ext} = import './import.fnk'
+{override_builtin, is_builtin, get_builtin_imports} = import '../builtins.fnk'
 
 
 
@@ -28,8 +29,86 @@ get_hashbang = fn expr:
 
 
 
+ignorable_import = fn [expr, ctx]:
+  match expr:
+    {type: 'assign', right: is_ignorable_import ?, ctx}:
+      true
+    else:
+      false
+
+
+# TODO: std-lib
+with_ctx = fn ctx:
+  map item: [item, ctx]
+
+# TODO: std-lib
+map_acc = fn map_fn:
+  foo = {}
+  # TODO: should be map [item, initial_acc], acc=initial_acc:
+  map [item, initial_acc], acc=foo:
+    ctx = match acc:
+      foo: initial_acc
+      else: acc
+    [result, next_ctx] = map_fn item, ctx
+    [[result, next_ctx], next_ctx]
+
+# TODO: std-lib
+drop_if = fn cond: filter item: not cond item
+
+
+
+
+add_builtin_overrides = fn expr, ctx:
+  match expr:
+    {type: 'assign', right: {op: 'import'}, left: {type: 'rec'}}:
+      {right: {right: {exprs: [{value: uri}]}}} = expr
+
+      next_ctx = pipe expr.left.exprs:
+        filter {right}: is_builtin right.value, ctx
+        fold {right: {value: name}}, override_ctx=ctx:
+          override_builtin name, uri, override_ctx
+
+      [expr, next_ctx]
+    else:
+      [expr, ctx]
+
+
+
+insert_imports = fn [body, ctx]:
+  [imports, end_ctx] = pipe ctx:
+    get_builtin_imports ?
+    with_ctx ctx
+    drop_if ignorable_import
+    map_acc transform_body_expr
+    collect_with_ctx ctx
+
+  [[...imports, ...body], end_ctx]
+
+
+
+imported_specs = fn exprs, ctx:
+  pipe exprs:
+    with_ctx ctx
+    map_acc fn prop, imp_ctx:
+      [right, left_ctx] = transform prop.right, imp_ctx
+
+      match prop:
+        {left: {value: 'default'}}:
+          imp = importSpecifier right, identifier prop.left.value
+          [imp, left_ctx]
+
+        else:
+          [left, next_ctx] = transform prop.left, left_ctx
+          imp = importSpecifier right, left
+          [imp, next_ctx]
+
+    collect_with_ctx ctx
+
+
+
 transform_import = fn node, ctx:
   {options} = ctx
+  {right: {right: {exprs: [{value: url}]}}} = node
 
   [imports, end_ctx] = match node.left:
     {type: 'ident'}:
@@ -37,70 +116,65 @@ transform_import = fn node, ctx:
       [[importDefaultSpecifier imp], next_ctx]
 
     {type: 'rec'}:
-      pipe node.left.exprs:
-        map_with_ctx ctx, fn prop, imp_ctx:
-          [right, left_ctx] = transform prop.right, imp_ctx
-
-          match prop:
-            {left: {value: 'default'}}:
-              imp = importSpecifier right, identifier prop.left.value
-              [imp, left_ctx]
-
-            else:
-              [left, next_ctx] = transform prop.left, left_ctx
-              imp = importSpecifier right, left
-              [imp, next_ctx]
-
-  {right: {right: {exprs: [url]}}} = node
+      imported_specs node.left.exprs, ctx
 
   js = importDeclaration
     imports
     wrap_with_comment_loc
-      stringLiteral resolve_ext url.value, options
+      stringLiteral resolve_ext url, options
       node.right.right
 
   [js, end_ctx]
 
 
 
+transform_body_expr = fn expr, expr_ctx:
+  match expr:
+    {op: 'import'}:
+      {right: {exprs: [url]}} = expr
+      js = wrap_with_comment_loc
+        importDeclaration
+          [], stringLiteral resolve_ext url.value, expr_ctx.options
+        expr
+      [js, expr_ctx]
+
+    {right: {op: 'import'}}:
+      [imp, next_ctx] = transform_import expr, expr_ctx
+      js = wrap_with_comment_loc imp, expr
+      [js, next_ctx]
+
+    {type: 'assign', left: {type: 'ident', value: 'default'}}:
+      [decl, next_ctx] = transform expr.right, expr_ctx
+      js = wrap_with_comment_loc
+        exportDefaultDeclaration decl
+        expr
+      [js, next_ctx]
+
+    {type: 'assign', left: {type: 'ident'}}:
+      # we don't want to double up on comments?
+      {comments: _, ...decl} = expr
+      [decl_st, next_ctx] = block_statement decl, expr_ctx
+      js = wrap_with_comment_loc
+        exportNamedDeclaration decl_st
+        expr
+      [js, next_ctx]
+
+    else:
+      block_statement expr, expr_ctx
+
+
+
 transform_module = fn node, ctx:
-  [maybe_shebang, ...rest] = node.exprs
-  [interpreter, first] = get_hashbang maybe_shebang
+  [maybe_shebang_or_pragmas, ...rest] = node.exprs
+  [interpreter, first] = get_hashbang maybe_shebang_or_pragmas
 
   [body, end_ctx] = pipe [first, ...rest]:
-    map_with_ctx ctx, fn expr, expr_ctx:
-      match expr:
-        {op: 'import'}:
-          {right: {exprs: [url]}} = expr
-          js = wrap_with_comment_loc
-            importDeclaration
-              [], stringLiteral resolve_ext url.value, expr_ctx.options
-            expr
-          [js, expr_ctx]
-
-        {right: {op: 'import'}}:
-          [imp, next_ctx] = transform_import expr, expr_ctx
-          js = wrap_with_comment_loc imp, expr
-          [js, next_ctx]
-
-        {type: 'assign', left: {type: 'ident', value: 'default'}}:
-          [decl, next_ctx] = transform expr.right, expr_ctx
-          js = wrap_with_comment_loc
-            exportDefaultDeclaration decl
-            expr
-          [js, next_ctx]
-
-        {type: 'assign', left: {type: 'ident'}}:
-          # we don't want to double up on comments?
-          {comments: _, ...decl} = expr
-          [decl_st, next_ctx] = block_statement decl, expr_ctx
-          js = wrap_with_comment_loc
-            exportNamedDeclaration decl_st
-            expr
-          [js, next_ctx]
-
-        else:
-          block_statement expr, expr_ctx
+    with_ctx ctx
+    map_acc add_builtin_overrides
+    drop_if ignorable_import
+    map_acc transform_body_expr
+    collect_with_ctx ctx
+    insert_imports
 
   js = file
     program

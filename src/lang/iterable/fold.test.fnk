@@ -2,6 +2,37 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
+
+describe 'gen 2', fn:
+  it 'compiles', fn:
+    expect
+      fink2js '
+        {_fold_} = import "@fink/js-interop/iter.js"
+        fold item, prev=0:
+          ni = item + prev
+          item * ni
+      '
+      to_match_snapshot
+
+    expect
+      fink2js '
+        {_fold_} = import "@fink/js-interop/iter.js"
+        fold item, prev=0, acc=1:
+          [item * acc + prev, acc + 1]
+      '
+      to_match_snapshot
+
+    expect
+      fink2js '
+        {_fold_} = import "@fink/js-interop/iter.js"
+        fold item:
+          item
+      '
+      to_match_snapshot
+
+
+
+
 describe 'fold', fn:
   it 'compiles', fn:
     expect

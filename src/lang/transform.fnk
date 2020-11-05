@@ -1,3 +1,5 @@
+{is_str} = import '@fink/std-lib/str.fnk'
+
 {wrap} = import '../js/types.fnk'
 
 {transform_error} = import './errors.fnk'
@@ -5,6 +7,20 @@
 
 {wrap_with_comment_loc} = import './comments/init.fnk'
 
+
+
+add_ignorable_import = fn uri: fn ctx:
+  {...ctx, ignoreable_imports: [...ctx.ignoreable_imports, uri]}
+
+
+
+is_ignorable_import = fn expr, ctx:
+  match expr:
+    {op: 'import', right: {exprs: [{value: is_str ?}]}}:
+      [{value: uri}] = expr.right.exprs
+      uri in [...ctx.ignoreable_imports]
+    else:
+      false
 
 
 wrap_node = fn ctx, js_node, node:
@@ -27,8 +43,6 @@ map_with_ctx = fn ctx, tf: fn items:
     map item, item_ctx=ctx:
       [result, next_ctx] = tf item, item_ctx
       [[result, next_ctx], next_ctx]
-
-    collect_with_ctx ctx
 
 
 

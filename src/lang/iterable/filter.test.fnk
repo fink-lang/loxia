@@ -2,6 +2,27 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
+
+describe 'gen 2', fn:
+  it 'compiles', fn:
+    expect
+      fink2js '
+        {_filter_} = import "@fink/js-interop/iter.js"
+        filter item:
+          item % 2 == 0
+      '
+      to_match_snapshot
+
+    expect
+      fink2js '
+        {_filter_} = import "@fink/js-interop/iter.js"
+        filter item, cntr=0:
+          [item < 1 and cntr % 2 == 0, cntr + 1]
+      '
+      to_match_snapshot
+
+
+
 describe 'filter', fn:
   it 'compiles', fn:
     expect

@@ -5,14 +5,43 @@
 {transform_filter} = import './filter.fnk'
 {transform_while} = import './while.fnk'
 {transform_until} = import './until.fnk'
+{transform_with_std_lib} = import './common.fnk'
+{use_builtin, add_builtin, add_default_builtin} = import '../builtins.fnk'
+{builtin_provider} = import '../builtins.fnk'
+{add_ignorable_import} = import '../transform.fnk'
+
+
+legacy_uri = '@fink/loxia:iter:legacy'
+
+
+
+with_legacy = fn legacy_transform: fn node, ctx:
+  built_in_name = '_${node.op}_'
+  next_ctx = use_builtin built_in_name, ctx
+
+  match next_ctx:
+    legacy_uri == builtin_provider built_in_name, ?:
+      legacy_transform node, next_ctx
+
+    else:
+      transform_with_std_lib node, next_ctx
+
+
+add_with_builtin = fn name, transform: fn ctx:
+  built_in_name = '_${name}_'
+  next_ctx = add_builtin built_in_name, ctx
+  end_ctx = add_default_builtin built_in_name, legacy_uri, next_ctx
+  (add any, name, with_legacy transform) end_ctx
+
 
 
 
 add_iterables = fn ctx:
   pipe ctx:
-    add any, 'fold', transform_fold
-    add any, 'unfold', transform_unfold
-    add any, 'map', transform_map
-    add any, 'filter', transform_filter
-    add any, 'while', transform_while
-    add any, 'until', transform_until
+    add_ignorable_import legacy_uri
+    add_with_builtin 'fold', transform_fold
+    add_with_builtin 'unfold', transform_unfold
+    add_with_builtin 'map', transform_map
+    add_with_builtin 'filter', transform_filter
+    add_with_builtin 'while', transform_while
+    add_with_builtin 'until', transform_until

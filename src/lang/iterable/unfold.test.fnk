@@ -2,6 +2,37 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
+
+describe 'gen 2', fn:
+  it 'compiles', fn:
+    expect
+      fink2js '
+        {_unfold_} = import "@fink/js-interop/iter.js"
+        unfold prev:
+          prev + 1
+      '
+      to_match_snapshot
+
+    expect
+      fink2js '
+        {_unfold_} = import "@fink/js-interop/iter.js"
+        unfold prev=1:
+          prev + 1
+      '
+      to_match_snapshot
+
+    expect
+      fink2js '
+        {_unfold_} = import "@fink/js-interop/iter.js"
+        unfold prev=1, acc=1:
+          [prev * accu, accu + 1]
+      '
+      to_match_snapshot
+
+
+
+
+
 describe 'unfold', fn:
 
   it 'compiles with previous', fn:

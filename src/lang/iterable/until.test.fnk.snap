@@ -1,5 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`gen 2 compiles 1`] = `
+"import { _until_ } from \\"@fink/js-interop/iter.js\\";
+
+_until_((item) => item < 10, false, false);"
+`;
+
+exports[`gen 2 compiles 2`] = `
+"import { _until_ } from \\"@fink/js-interop/iter.js\\";
+
+_until_((item, cntr = 0) => [cntr > 2, cntr + 1], true, false);"
+`;
+
+exports[`until async compiles 1`] = `
+"(function filter_until(ˆitems_3) {
+  return {
+    async *[Symbol.asyncIterator]() {
+      for await (const ˆitem_1 of ˆitems_3) {
+        yield ˆitem_1;
+        const item = ˆitem_1;
+        const ˆresult_2 = (await item) < 10;
+        if (ˆresult_2 === true) return;
+      }
+    }
+
+  };
+});"
+`;
+
 exports[`until compiles 1`] = `
 "(function filter_until(ˆitems_3) {
   return {
@@ -84,22 +112,6 @@ exports[`until compiles with accu 1`] = `
         const [ˆresult_8, ˆnext_accu_9] = [cntr > 2, cntr + 1];
         ˆaccu_7 = ˆnext_accu_9;
         if (ˆresult_8 === true) return;
-      }
-    }
-
-  };
-});"
-`;
-
-exports[`while async compiles 1`] = `
-"(function filter_until(ˆitems_3) {
-  return {
-    async *[Symbol.asyncIterator]() {
-      for await (const ˆitem_1 of ˆitems_3) {
-        yield ˆitem_1;
-        const item = ˆitem_1;
-        const ˆresult_2 = (await item) < 10;
-        if (ˆresult_2 === true) return;
       }
     }
 

@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`gen 2 compiles 1`] = `
+"import { _while_ } from \\"@fink/js-interop/iter.js\\";
+
+_while_((item) => item < 10, false, false);"
+`;
+
+exports[`gen 2 compiles 2`] = `
+"import { _while_ } from \\"@fink/js-interop/iter.js\\";
+
+_while_((item, cntr = 0) => [cntr > 2, cntr + 1], true, false);"
+`;
+
 exports[`while async compiles 1`] = `
 "(function filter_while(ˆitems_3) {
   return {
