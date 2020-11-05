@@ -36,7 +36,8 @@ describe 'gen 2', fn:
   it 'uses multiple custom iterable impl.', fn:
     expect
       fink2js '
-        {_map_, _filter_} = import "@fink/js-interop/iter.js"
+        {_map_} = import "./iter.fnk"
+        {_filter_} = import "./iter-filter.fnk"
         pipe [1, 2, 3]:
           map item: item * 2
           map item: item / 2
