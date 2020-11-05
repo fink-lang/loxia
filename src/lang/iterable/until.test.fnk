@@ -2,6 +2,27 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
+
+describe 'gen 2', fn:
+  it 'compiles', fn:
+    expect
+      fink2js '
+        {_until_} = import "@fink/js-interop/iter.js"
+        until item:
+          item < 10
+      '
+      to_match_snapshot
+
+    expect
+      fink2js '
+        {_until_} = import "@fink/js-interop/iter.js"
+        until item, cntr=0:
+          [cntr > 2, cntr + 1]
+      '
+      to_match_snapshot
+
+
+
 describe 'until', fn:
   it 'compiles', fn:
     expect
@@ -38,7 +59,7 @@ describe 'until', fn:
 
 
 
-describe 'while async', fn:
+describe 'until async', fn:
   it 'compiles', fn:
     expect
       fink2js '

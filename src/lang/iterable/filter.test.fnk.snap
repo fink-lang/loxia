@@ -118,3 +118,15 @@ exports[`filter compiles with accu 3`] = `
   };
 });"
 `;
+
+exports[`gen 2 compiles 1`] = `
+"import { _filter_ } from \\"@fink/js-interop/iter.js\\";
+
+_filter_((item) => item % 2 === 0, false, false);"
+`;
+
+exports[`gen 2 compiles 2`] = `
+"import { _filter_ } from \\"@fink/js-interop/iter.js\\";
+
+_filter_((item, cntr = 0) => [item < 1 && cntr % 2 === 0, cntr + 1], true, false);"
+`;

@@ -5,7 +5,7 @@ babel_types = import '@babel/types'
 {assign, lets, expr_block, undef, unique_ident} = import '../../js/types.fnk'
 {transform_value} = import '../partial/init.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
-{transform, map_with_ctx} = import '../transform.fnk'
+{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
 
 
 
@@ -30,7 +30,7 @@ transform_pipe = fn node, ctx:
         expr
 
       [js, next_ctx]
-
+    collect_with_ctx pipe_ctx
 
   js = expr_block
     wrap_with_comment_loc

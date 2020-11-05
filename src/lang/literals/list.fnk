@@ -2,7 +2,7 @@ babel_types = import '@babel/types'
 {arrayExpression} = babel_types
 {null} = import '@fink/js-interop/nullish.fnk'
 
-{transform, map_with_ctx} = import '../transform.fnk'
+{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
 
 
 
@@ -14,6 +14,7 @@ transform_list = fn node, ctx:
           [null, ctx]
         else:
           transform elem, elem_ctx
+    collect_with_ctx ctx
 
   js = arrayExpression elems
   [js, next_ctx]

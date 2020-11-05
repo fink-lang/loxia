@@ -1,5 +1,78 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`gen 2 compiles 1`] = `
+"import { _map_ } from \\"@fink/js-interop/iter.js\\";
+
+_map_((item) => item * 2, false, false);"
+`;
+
+exports[`gen 2 compiles 2`] = `
+"import { _map_ } from \\"@fink/js-interop/iter.js\\";
+
+_map_((item, acc = 0) => [item * 2 * acc, acc + 1], true, false);"
+`;
+
+exports[`gen 2 uses custom iterable impl. 1`] = `
+"import { _map_ } from \\"@fink/js-interop/iter.js\\";
+
+_map_((item) => [item, item * 2], false, true);"
+`;
+
+exports[`gen 2 uses legacy iterables 1`] = `
+"{
+  let ˆpipe_result_1 = [1, 2, 3];
+
+  ˆpipe_result_1 = function map(ˆitems_4) {
+    return {
+      *[Symbol.iterator]() {
+        for (const ˆitem_2 of ˆitems_4) {
+          const item = ˆitem_2;
+          const ˆresult_3 = item * 2;
+          yield ˆresult_3;
+        }
+      }
+
+    };
+  }(ˆpipe_result_1);
+
+  ˆpipe_result_1 = function map(ˆitems_7) {
+    return {
+      *[Symbol.iterator]() {
+        for (const ˆitem_5 of ˆitems_7) {
+          const item = ˆitem_5;
+          const ˆresult_6 = item / 2;
+          yield ˆresult_6;
+        }
+      }
+
+    };
+  }(ˆpipe_result_1);
+
+  ˆpipe_result_1 = function filter(ˆitems_10) {
+    return {
+      *[Symbol.iterator]() {
+        for (const ˆitem_8 of ˆitems_10) {
+          const item = ˆitem_8;
+          const ˆresult_9 = item % 2 === 0;
+          if (ˆresult_9) yield ˆitem_8;
+        }
+      }
+
+    };
+  }(ˆpipe_result_1);
+}"
+`;
+
+exports[`gen 2 uses multiple custom iterable impl. 1`] = `
+"import { _map_, _filter_ } from \\"@fink/js-interop/iter.js\\";
+{
+  let ˆpipe_result_1 = [1, 2, 3];
+  ˆpipe_result_1 = _map_((item) => item * 2, false, false)(ˆpipe_result_1);
+  ˆpipe_result_1 = _map_((item) => item / 2, false, false)(ˆpipe_result_1);
+  ˆpipe_result_1 = _filter_((item) => item % 2 === 0, false, false)(ˆpipe_result_1);
+}"
+`;
+
 exports[`map async compiles 1`] = `
 "(function map(ˆitems_3) {
   return {

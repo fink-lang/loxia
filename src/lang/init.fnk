@@ -17,6 +17,7 @@
 {add_arithmitic} = import './arithmitic/init.fnk'
 {add_block} = import './block/init.fnk'
 {add_partial} = import './partial/init.fnk'
+{init_builtins} = import './builtins.fnk'
 
 
 
@@ -45,16 +46,21 @@ add_transformers = fn ctx:
 
 
 
-init_ctx = fn code, filename:
+init_ctx = fn code, filename, options:
   ctx = dict:
     filename
     code
     errors: []
 
+    options
+
     unique_id: 1
     ident_prefix: 'ˆ'
 
+    ignoreable_imports: []
+
   pipe ctx:
+    init_builtins
     add_transformers
 
 

@@ -1,0 +1,100 @@
+
+
+
+add_builtin = fn name, ctx:
+  {builtins} = ctx
+  rec:
+    ...ctx
+    builtins: rec:
+      ...builtins
+      names: [...builtins.names, name]
+
+
+
+
+add_default_builtin = fn name, uri, ctx:
+  {builtins} = ctx
+  rec:
+    ...ctx
+    builtins: rec:
+      ...builtins
+      defaults: rec: ...builtins.defaults, (name): uri
+
+
+
+override_builtin = fn name, uri, ctx:
+  {builtins} = ctx
+  rec:
+    ...ctx
+    builtins: rec:
+      ...builtins
+      overrides: rec: ...builtins.overrides, (name): uri
+
+
+
+use_builtin = fn name, ctx:
+  {builtins} = ctx
+  rec:
+    ...ctx
+    builtins: rec:
+      ...builtins
+      used: seq: name, ...builtins.used | filter used_name: used_name != name
+
+
+
+has_builtin_override = fn ident, ctx:
+  match ctx:
+    {builtins: {overrides: {(ident): {}}}}: true
+    else: false
+
+
+
+builtin_provider = fn ident, ctx:
+  match ctx:
+    {builtins: {overrides: {(ident): {}}}}:
+      {builtins: {overrides: {(ident): uri}}} = ctx
+      uri
+    else:
+      {builtins: {defaults: {(ident): uri}}} = ctx
+      uri
+
+
+
+is_builtin = fn name, ctx:
+  name in [...ctx.builtins.names]
+
+
+
+get_builtin_imports = fn ctx:
+  {builtins} = ctx
+  pipe builtins.used:
+    filter name:
+      not has_builtin_override name, ctx
+
+    map name:
+      uri = builtin_provider name, ctx
+      left = {type: 'ident', value: name}
+      [uri, {type: 'rec:kv', left, right: left}]
+
+    map [uri, kv]:
+      rec:
+        type: 'assign'
+        op: '='
+        left: {type: 'rec', exprs: [kv]}
+        right: rec:
+          op: 'import'
+          right: rec:
+            type: 'string'
+            exprs: [{type: 'string:text', value: uri}]
+
+    [...?]
+
+
+
+init_builtins = fn ctx:
+  rec:
+    ...ctx
+    builtins: rec:
+      names: []
+      used: []
+      provided: []

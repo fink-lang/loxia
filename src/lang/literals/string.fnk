@@ -2,7 +2,7 @@ babel_types = import '@babel/types'
 {templateElement, templateLiteral, taggedTemplateExpression} = babel_types
 {rx, replace_all} = import '@fink/std-lib/regex.fnk'
 
-{transform, map_with_ctx} = import '../transform.fnk'
+{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
 
 
 
@@ -29,7 +29,7 @@ transform_string = fn node, ctx:
       part.type != 'string:text'
 
     map_with_ctx ctx, transform
-
+    collect_with_ctx ctx
 
   templ_str = templateLiteral quasies, expressions
 
