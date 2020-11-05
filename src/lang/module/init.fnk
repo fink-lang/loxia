@@ -37,11 +37,9 @@ ignorable_import = fn [expr, ctx]:
       false
 
 
-# TODO: std-lib
 with_ctx = fn ctx:
   map item: [item, ctx]
 
-# TODO: std-lib
 map_acc = fn map_fn:
   foo = {}
   # TODO: should be map [item, initial_acc], acc=initial_acc:
@@ -49,6 +47,7 @@ map_acc = fn map_fn:
     ctx = match acc:
       foo: initial_acc
       else: acc
+
     [result, next_ctx] = map_fn item, ctx
     [[result, next_ctx], next_ctx]
 
@@ -67,7 +66,6 @@ add_builtin_overrides = fn expr, ctx:
         filter {right}: is_builtin right.value, ctx
         fold {right: {value: name}}, override_ctx=ctx:
           override_builtin name, uri, override_ctx
-
       [expr, next_ctx]
     else:
       [expr, ctx]
@@ -169,11 +167,19 @@ transform_module = fn node, ctx:
   [interpreter, first] = get_hashbang maybe_shebang_or_pragmas
 
   [body, end_ctx] = pipe [first, ...rest]:
-    with_ctx ctx
-    map_acc add_builtin_overrides
-    drop_if ignorable_import
-    map_acc transform_body_expr
-    collect_with_ctx ctx
+    map expr, expr_ctx=ctx:
+      [body_expr, body_ctx] = add_builtin_overrides expr, expr_ctx
+      [js_expr, next_ctx] = match body_expr:
+        ignorable_import [?, body_ctx]:
+          [false, body_ctx]
+        else:
+          transform_body_expr body_expr, body_ctx
+      [[js_expr, next_ctx], next_ctx]
+
+    drop_if fn [js]: js == false
+
+    fold [js, ctx], [jss]=[[]]:
+      [[...jss, js], ctx]
     insert_imports
 
   js = file

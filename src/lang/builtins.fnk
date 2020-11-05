@@ -97,4 +97,5 @@ init_builtins = fn ctx:
     builtins: rec:
       names: []
       used: []
-      provided: []
+      overrides: {}
+      defaults: {}

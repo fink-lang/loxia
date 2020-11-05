@@ -64,7 +64,8 @@ exports[`gen 2 uses legacy iterables 1`] = `
 `;
 
 exports[`gen 2 uses multiple custom iterable impl. 1`] = `
-"import { _map_, _filter_ } from \\"@fink/js-interop/iter.js\\";
+"import { _map_ } from \\"./iter.js\\";
+import { _filter_ } from \\"./iter-filter.js\\";
 {
   let ˆpipe_result_1 = [1, 2, 3];
   ˆpipe_result_1 = _map_((item) => item * 2, false, false)(ˆpipe_result_1);
