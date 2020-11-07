@@ -10,18 +10,8 @@ babe_types = import '@babel/types'
 
 
 
-transform_with_std_lib = fn node, ctx:
-  iter_func = '_${node.op}_'
-
-  use_accu = match node:
-    {op: 'fold', args: 3 == length ?}:
-      {type: 'literal', value: 'true', loc: node.loc}
-    {op: 'fold'}:
-      {type: 'literal', value: 'false', loc: node.loc}
-    {args: 2 == length ?}:
-      {type: 'literal', value: 'true', loc: node.loc}
-    else:
-      {type: 'literal', value: 'false', loc: node.loc}
+transform_with_runtime_lib = fn iter_fn, node, ctx:
+  args_len = length node.args
 
   [use_spread, exprs] = match node.exprs:
     [..., {type: 'spread'}]:
@@ -35,14 +25,15 @@ transform_with_std_lib = fn node, ctx:
   [result, end_ctx] = transform
     rec:
       type: 'call'
-      callee: {type: 'ident', value : iter_func}
+      callee: {type: 'ident', value : iter_fn}
       args: seq:
         rec:
           type: 'fn'
           args: node.args
           exprs: exprs
           loc: node.loc
-        use_accu
+        {type: 'number', value: '${args_len}', loc: node.loc}
+        {type: 'literal', value: 'false', loc: node.loc}
         use_spread
 
       loc: node.loc

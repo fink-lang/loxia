@@ -3,13 +3,13 @@
 exports[`gen 2 compiles 1`] = `
 "import { _while_ } from \\"@fink/js-interop/iter.js\\";
 
-_while_((item) => item < 10, false, false);"
+_while_((item) => item < 10, 1, false, false);"
 `;
 
 exports[`gen 2 compiles 2`] = `
 "import { _while_ } from \\"@fink/js-interop/iter.js\\";
 
-_while_((item, cntr = 0) => [cntr > 2, cntr + 1], true, false);"
+_while_((item, cntr = 0) => [cntr > 2, cntr + 1], 2, false, false);"
 `;
 
 exports[`while async compiles 1`] = `

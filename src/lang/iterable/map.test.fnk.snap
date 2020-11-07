@@ -3,19 +3,19 @@
 exports[`gen 2 compiles 1`] = `
 "import { _map_ } from \\"@fink/js-interop/iter.js\\";
 
-_map_((item) => item * 2, false, false);"
+_map_((item) => item * 2, 1, false, false);"
 `;
 
 exports[`gen 2 compiles 2`] = `
 "import { _map_ } from \\"@fink/js-interop/iter.js\\";
 
-_map_((item, acc = 0) => [item * 2 * acc, acc + 1], true, false);"
+_map_((item, acc = 0) => [item * 2 * acc, acc + 1], 2, false, false);"
 `;
 
 exports[`gen 2 uses custom iterable impl. 1`] = `
 "import { _map_ } from \\"@fink/js-interop/iter.js\\";
 
-_map_((item) => [item, item * 2], false, true);"
+_map_((item) => [item, item * 2], 1, false, true);"
 `;
 
 exports[`gen 2 uses legacy iterables 1`] = `
@@ -68,9 +68,9 @@ exports[`gen 2 uses multiple custom iterable impl. 1`] = `
 import { _filter_ } from \\"./iter-filter.js\\";
 {
   let ˆpipe_result_1 = [1, 2, 3];
-  ˆpipe_result_1 = _map_((item) => item * 2, false, false)(ˆpipe_result_1);
-  ˆpipe_result_1 = _map_((item) => item / 2, false, false)(ˆpipe_result_1);
-  ˆpipe_result_1 = _filter_((item) => item % 2 === 0, false, false)(ˆpipe_result_1);
+  ˆpipe_result_1 = _map_((item) => item * 2, 1, false, false)(ˆpipe_result_1);
+  ˆpipe_result_1 = _map_((item) => item / 2, 1, false, false)(ˆpipe_result_1);
+  ˆpipe_result_1 = _filter_((item) => item % 2 === 0, 1, false, false)(ˆpipe_result_1);
 }"
 `;
 
