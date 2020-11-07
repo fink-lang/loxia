@@ -3,8 +3,8 @@ babel_types = import '@babel/types'
 
 {transform} = import '../transform.fnk'
 
-{use_builtin} = import '../runtime.fnk'
-{builtin_provider} = import '../runtime.fnk'
+{use_runtime_fn} = import '../runtime.fnk'
+{runtime_impl} = import '../runtime.fnk'
 
 
 
@@ -95,10 +95,10 @@ transform_with_runtime_lib = fn runtime_fn, node, ctx:
 
 transform_in = fn node, ctx:
   runtime_fn = '_${node.op}_'
-  next_ctx = use_builtin runtime_fn, ctx
+  next_ctx = use_runtime_fn runtime_fn, ctx
 
   match next_ctx:
-    legacy_uri == builtin_provider runtime_fn, ?:
+    legacy_uri == runtime_impl runtime_fn, ?:
       transform_legacy node, next_ctx
 
     else:

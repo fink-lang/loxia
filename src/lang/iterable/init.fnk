@@ -8,8 +8,8 @@
 {transform_until} = import './until.fnk'
 {transform_with_runtime_lib} = import './common.fnk'
 
-{use_builtin} = import '../runtime.fnk'
-{builtin_provider} = import '../runtime.fnk'
+{use_runtime_fn} = import '../runtime.fnk'
+{runtime_impl} = import '../runtime.fnk'
 {add_ignorable_import} = import '../transform.fnk'
 
 
@@ -19,10 +19,10 @@ legacy_uri = '@fink/loxia:iter:legacy'
 
 with_legacy = fn legacy_transform: fn node, ctx:
   runtime_fn = '_${node.op}_'
-  next_ctx = use_builtin runtime_fn, ctx
+  next_ctx = use_runtime_fn runtime_fn, ctx
 
   match next_ctx:
-    legacy_uri == builtin_provider runtime_fn, ?:
+    legacy_uri == runtime_impl runtime_fn, ?:
       legacy_transform node, next_ctx
 
     else:

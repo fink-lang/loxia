@@ -1,78 +1,78 @@
 
 
 
-add_builtin = fn name, ctx:
-  {builtins} = ctx
+add_runtime_fn = fn name, ctx:
+  {runtime} = ctx
   rec:
     ...ctx
-    builtins: rec:
-      ...builtins
-      names: [...builtins.names, name]
+    runtime: rec:
+      ...runtime
+      names: [...runtime.names, name]
 
 
 
 
-add_default_builtin = fn name, uri, ctx:
-  {builtins} = ctx
+set_default_runtime_impl = fn name, uri, ctx:
+  {runtime} = ctx
   rec:
     ...ctx
-    builtins: rec:
-      ...builtins
-      defaults: rec: ...builtins.defaults, (name): uri
+    runtime: rec:
+      ...runtime
+      defaults: rec: ...runtime.defaults, (name): uri
 
 
 
-override_builtin = fn name, uri, ctx:
-  {builtins} = ctx
+set_runtime_impl = fn name, uri, ctx:
+  {runtime} = ctx
   rec:
     ...ctx
-    builtins: rec:
-      ...builtins
-      overrides: rec: ...builtins.overrides, (name): uri
+    runtime: rec:
+      ...runtime
+      overrides: rec: ...runtime.overrides, (name): uri
 
 
 
-use_builtin = fn name, ctx:
-  {builtins} = ctx
+use_runtime_fn = fn name, ctx:
+  {runtime} = ctx
   rec:
     ...ctx
-    builtins: rec:
-      ...builtins
-      used: seq: name, ...builtins.used | filter used_name: used_name != name
+    runtime: rec:
+      ...runtime
+      used: seq: name, ...runtime.used | filter used_name: used_name != name
 
 
 
-has_builtin_override = fn ident, ctx:
+has_runtime_override = fn ident, ctx:
   match ctx:
-    {builtins: {overrides: {(ident): {}}}}: true
+    {runtime: {overrides: {(ident): {}}}}: true
     else: false
 
 
 
-builtin_provider = fn ident, ctx:
+runtime_impl = fn ident, ctx:
   match ctx:
-    {builtins: {overrides: {(ident): {}}}}:
-      {builtins: {overrides: {(ident): uri}}} = ctx
+    {runtime: {overrides: {(ident): {}}}}:
+      {runtime: {overrides: {(ident): uri}}} = ctx
       uri
     else:
-      {builtins: {defaults: {(ident): uri}}} = ctx
+      {runtime: {defaults: {(ident): uri}}} = ctx
       uri
 
 
 
-is_builtin = fn name, ctx:
-  name in [...ctx.builtins.names]
+is_runtime_fn = fn name, ctx:
+  name in [...ctx.runtime.names]
 
 
 
-get_builtin_imports = fn ctx:
-  {builtins} = ctx
-  pipe builtins.used:
+get_runtime_imports = fn ctx:
+  {runtime} = ctx
+  pipe runtime.used:
     filter name:
-      not has_builtin_override name, ctx
+      not has_runtime_override name, ctx
 
     map name:
-      uri = builtin_provider name, ctx
+      uri = runtime_impl name, ctx
       left = {type: 'ident', value: name}
       [uri, {type: 'rec:kv', left, right: left}]
 
@@ -86,7 +86,6 @@ get_builtin_imports = fn ctx:
           right: rec:
             type: 'string'
             exprs: [{type: 'string:text', value: uri}]
-
     [...?]
 
 
@@ -94,7 +93,7 @@ get_builtin_imports = fn ctx:
 init_builtins = fn ctx:
   rec:
     ...ctx
-    builtins: rec:
+    runtime: rec:
       names: []
       used: []
       overrides: {}
