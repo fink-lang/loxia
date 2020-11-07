@@ -12,7 +12,7 @@ babel_types = import '@babel/types'
 {transform, collect_with_ctx, is_ignorable_import} = import '../transform.fnk'
 
 {transform_import: transform_async_import, resolve_ext} = import './import.fnk'
-{override_builtin, is_builtin, get_builtin_imports} = import '../builtins.fnk'
+{set_runtime_impl, is_runtime_fn, get_runtime_imports} = import '../runtime.fnk'
 
 
 
@@ -57,15 +57,15 @@ drop_if = fn cond: filter item: not cond item
 
 
 
-add_builtin_overrides = fn expr, ctx:
+add_runtime_fn_overrides = fn expr, ctx:
   match expr:
     {type: 'assign', right: {op: 'import'}, left: {type: 'rec'}}:
       {right: {right: {exprs: [{value: uri}]}}} = expr
 
       next_ctx = pipe expr.left.exprs:
-        filter {right}: is_builtin right.value, ctx
+        filter {right}: is_runtime_fn right.value, ctx
         fold {right: {value: name}}, override_ctx=ctx:
-          override_builtin name, uri, override_ctx
+          set_runtime_impl name, uri, override_ctx
       [expr, next_ctx]
     else:
       [expr, ctx]
@@ -74,7 +74,7 @@ add_builtin_overrides = fn expr, ctx:
 
 insert_imports = fn [body, ctx]:
   [imports, end_ctx] = pipe ctx:
-    get_builtin_imports ?
+    get_runtime_imports ?
     with_ctx ctx
     drop_if ignorable_import
     map_acc transform_body_expr
@@ -168,7 +168,7 @@ transform_module = fn node, ctx:
 
   [body, end_ctx] = pipe [first, ...rest]:
     map expr, expr_ctx=ctx:
-      [body_expr, body_ctx] = add_builtin_overrides expr, expr_ctx
+      [body_expr, body_ctx] = add_runtime_fn_overrides expr, expr_ctx
       [js_expr, next_ctx] = match body_expr:
         ignorable_import [?, body_ctx]:
           [false, body_ctx]

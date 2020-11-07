@@ -1,0 +1,92 @@
+{is_str} = import '@fink/std-lib/str.fnk'
+
+
+
+add_runtime_fn = fn name, ctx:
+  {runtime} = ctx
+  rec:
+    ...ctx
+    runtime: rec:
+      ...runtime
+      names: [...runtime.names, name]
+
+
+
+set_runtime_impl = fn name, uri, ctx:
+  {runtime} = ctx
+
+  overrides = match runtime:
+    {impl: {(name): is_str ?}}:
+      [...runtime.overrides, name]
+    else:
+      runtime.overrides
+
+  rec:
+    ...ctx
+    runtime: rec:
+      ...runtime
+      overrides
+      impl: rec:
+        ...runtime.impl
+        (name): uri
+
+
+
+use_runtime_fn = fn name, ctx:
+  {runtime} = ctx
+  rec:
+    ...ctx
+    runtime: rec:
+      ...runtime
+      used: seq:
+        name,
+        ...runtime.used | filter used_name: used_name != name
+
+
+
+runtime_impl = fn ident, ctx:
+  {runtime: {impl: {(ident): uri}}} = ctx
+  uri
+
+
+
+is_runtime_fn = fn name, ctx:
+  name in [...ctx.runtime.names]
+
+
+
+get_runtime_imports = fn ctx:
+  {runtime} = ctx
+
+  pipe runtime.used:
+    # If it was overridden it was imported, no need to create an extra import
+    filter name:
+      not name in [...runtime.overrides]
+
+    map name:
+      uri = runtime_impl name, ctx
+      left = {type: 'ident', value: name}
+      [uri, {type: 'rec:kv', left, right: left}]
+
+    map [uri, kv]:
+      rec:
+        type: 'assign'
+        op: '='
+        left: {type: 'rec', exprs: [kv]}
+        right: rec:
+          op: 'import'
+          right: rec:
+            type: 'string'
+            exprs: [{type: 'string:text', value: uri}]
+    [...?]
+
+
+
+init_builtins = fn ctx:
+  rec:
+    ...ctx
+    runtime: rec:
+      names: []
+      used: []
+      overrides: []
+      impl: {}

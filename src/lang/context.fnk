@@ -1,4 +1,6 @@
-{get_type} = import '@fink/js-interop/reflect.fnk'
+{is_fn} = import '@fink/std-lib/fn.fnk'
+
+{add_runtime_fn, set_runtime_impl} = import './runtime.fnk'
 
 
 any = false
@@ -12,8 +14,14 @@ add = fn type, op, transformer: fn {transformers, ...ctx}:
   {transformers: next_transformers, ...ctx}
 
 
-is_fn = fn obj:
-  'function' == get_type obj
+
+add_with_builtin = fn type, op, impl_uri, transformer: fn ctx:
+  built_in_name = '_${op}_'
+  pipe ctx:
+    add_runtime_fn built_in_name, ?
+    set_runtime_impl built_in_name, impl_uri, ?
+    add type, op, transformer
+
 
 
 get_transformer = fn {op, type}, {transformers}:

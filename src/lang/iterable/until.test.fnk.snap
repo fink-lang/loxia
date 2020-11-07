@@ -3,13 +3,13 @@
 exports[`gen 2 compiles 1`] = `
 "import { _until_ } from \\"@fink/js-interop/iter.js\\";
 
-_until_((item) => item < 10, false, false);"
+_until_((item) => item < 10, 1, false, false);"
 `;
 
 exports[`gen 2 compiles 2`] = `
 "import { _until_ } from \\"@fink/js-interop/iter.js\\";
 
-_until_((item, cntr = 0) => [cntr > 2, cntr + 1], true, false);"
+_until_((item, cntr = 0) => [cntr > 2, cntr + 1], 2, false, false);"
 `;
 
 exports[`until async compiles 1`] = `

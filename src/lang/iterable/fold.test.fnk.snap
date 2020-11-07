@@ -141,17 +141,17 @@ exports[`gen 2 compiles 1`] = `
 _fold_((item, prev = 0) => {
   const ni = item + prev;
   return item * ni;
-}, false, false);"
+}, 2, false, false);"
 `;
 
 exports[`gen 2 compiles 2`] = `
 "import { _fold_ } from \\"@fink/js-interop/iter.js\\";
 
-_fold_((item, prev = 0, acc = 1) => [item * acc + prev, acc + 1], true, false);"
+_fold_((item, prev = 0, acc = 1) => [item * acc + prev, acc + 1], 3, false, false);"
 `;
 
 exports[`gen 2 compiles 3`] = `
 "import { _fold_ } from \\"@fink/js-interop/iter.js\\";
 
-_fold_((item) => item, false, false);"
+_fold_((item) => item, 1, false, false);"
 `;
