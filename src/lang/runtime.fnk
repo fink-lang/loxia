@@ -1,3 +1,4 @@
+{is_str} = import '@fink/std-lib/str.fnk'
 
 
 
@@ -11,24 +12,23 @@ add_runtime_fn = fn name, ctx:
 
 
 
-
-set_default_runtime_impl = fn name, uri, ctx:
-  {runtime} = ctx
-  rec:
-    ...ctx
-    runtime: rec:
-      ...runtime
-      defaults: rec: ...runtime.defaults, (name): uri
-
-
-
 set_runtime_impl = fn name, uri, ctx:
   {runtime} = ctx
+
+  overrides = match runtime:
+    {impl: {(name): is_str ?}}:
+      [...runtime.overrides, name]
+    else:
+      runtime.overrides
+
   rec:
     ...ctx
     runtime: rec:
       ...runtime
-      overrides: rec: ...runtime.overrides, (name): uri
+      overrides
+      impl: rec:
+        ...runtime.impl
+        (name): uri
 
 
 
@@ -38,25 +38,15 @@ use_runtime_fn = fn name, ctx:
     ...ctx
     runtime: rec:
       ...runtime
-      used: seq: name, ...runtime.used | filter used_name: used_name != name
-
-
-
-has_runtime_override = fn ident, ctx:
-  match ctx:
-    {runtime: {overrides: {(ident): {}}}}: true
-    else: false
+      used: seq:
+        name,
+        ...runtime.used | filter used_name: used_name != name
 
 
 
 runtime_impl = fn ident, ctx:
-  match ctx:
-    {runtime: {overrides: {(ident): {}}}}:
-      {runtime: {overrides: {(ident): uri}}} = ctx
-      uri
-    else:
-      {runtime: {defaults: {(ident): uri}}} = ctx
-      uri
+  {runtime: {impl: {(ident): uri}}} = ctx
+  uri
 
 
 
@@ -67,9 +57,11 @@ is_runtime_fn = fn name, ctx:
 
 get_runtime_imports = fn ctx:
   {runtime} = ctx
+
   pipe runtime.used:
+    # If it was overridden it was imported, no need to create an extra import
     filter name:
-      not has_runtime_override name, ctx
+      not name in [...runtime.overrides]
 
     map name:
       uri = runtime_impl name, ctx
@@ -96,5 +88,5 @@ init_builtins = fn ctx:
     runtime: rec:
       names: []
       used: []
-      overrides: {}
-      defaults: {}
+      overrides: []
+      impl: {}
