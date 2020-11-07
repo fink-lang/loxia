@@ -8,8 +8,8 @@
 {transform_until} = import './until.fnk'
 {transform_with_runtime_lib} = import './common.fnk'
 
-{use_builtin} = import '../builtins.fnk'
-{builtin_provider} = import '../builtins.fnk'
+{use_builtin} = import '../runtime.fnk'
+{builtin_provider} = import '../runtime.fnk'
 {add_ignorable_import} = import '../transform.fnk'
 
 

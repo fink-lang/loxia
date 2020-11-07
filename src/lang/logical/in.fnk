@@ -3,8 +3,8 @@ babel_types = import '@babel/types'
 
 {transform} = import '../transform.fnk'
 
-{use_builtin} = import '../builtins.fnk'
-{builtin_provider} = import '../builtins.fnk'
+{use_builtin} = import '../runtime.fnk'
+{builtin_provider} = import '../runtime.fnk'
 
 
 

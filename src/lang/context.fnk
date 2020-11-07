@@ -1,6 +1,6 @@
 {is_fn} = import '@fink/std-lib/fn.fnk'
 
-{add_builtin, add_default_builtin} = import './builtins.fnk'
+{add_builtin, add_default_builtin} = import './runtime.fnk'
 
 
 any = false

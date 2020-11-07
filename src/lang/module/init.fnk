@@ -12,7 +12,7 @@ babel_types = import '@babel/types'
 {transform, collect_with_ctx, is_ignorable_import} = import '../transform.fnk'
 
 {transform_import: transform_async_import, resolve_ext} = import './import.fnk'
-{override_builtin, is_builtin, get_builtin_imports} = import '../builtins.fnk'
+{override_builtin, is_builtin, get_builtin_imports} = import '../runtime.fnk'
 
 
 

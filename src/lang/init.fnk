@@ -17,7 +17,7 @@
 {add_arithmitic} = import './arithmitic/init.fnk'
 {add_block} = import './block/init.fnk'
 {add_partial} = import './partial/init.fnk'
-{init_builtins} = import './builtins.fnk'
+{init_builtins} = import './runtime.fnk'
 
 
 
