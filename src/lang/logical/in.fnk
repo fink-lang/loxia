@@ -3,9 +3,18 @@ babel_types = import '@babel/types'
 
 {transform} = import '../transform.fnk'
 
+{use_builtin} = import '../builtins.fnk'
+{builtin_provider} = import '../builtins.fnk'
 
 
-transform_in = fn node, ctx:
+
+legacy_uri = '@fink/loxia:iter:legacy'
+
+default_in_impl_uri = legacy_uri
+
+
+
+transform_legacy = fn node, ctx:
   {left, right} = node
   [js_right, next_ctx] = transform right, ctx
   [js_left, end_ctx] = transform left, next_ctx
@@ -69,3 +78,32 @@ transform_in = fn node, ctx:
             identifier 'false'
 
   [js, end_ctx]
+
+
+
+transform_with_runtime_lib = fn runtime_fn, node, ctx:
+  [right, next_ctx] = transform node.right, ctx
+  [left, end_ctx] = transform node.left, next_ctx
+
+  js = callExpression
+    identifier runtime_fn
+    [left, right]
+
+  [js, end_ctx]
+
+
+
+transform_in = fn node, ctx:
+  runtime_fn = '_${node.op}_'
+  next_ctx = use_builtin runtime_fn, ctx
+
+  match next_ctx:
+    legacy_uri == builtin_provider runtime_fn, ?:
+      transform_legacy node, next_ctx
+
+    else:
+      transform_with_runtime_lib runtime_fn, node, next_ctx
+
+
+
+

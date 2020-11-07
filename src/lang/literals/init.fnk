@@ -16,4 +16,3 @@ add_literals = fn ctx:
     add 'rec', any, transform_record
     add 'rec:kv', any, transform_kv
     add 'literal', any, transform_keyword
-    add 'literal', any, transform_keyword
