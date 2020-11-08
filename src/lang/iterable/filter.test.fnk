@@ -3,11 +3,10 @@
 
 
 
-describe 'gen 2', fn:
-  it 'compiles', fn:
+describe 'filter', fn:
+  it 'compiles with default runtime', fn:
     expect
       fink2js '
-        {_filter_} = import "@fink/js-interop/iter.js"
         filter item:
           item % 2 == 0
       '
@@ -15,7 +14,23 @@ describe 'gen 2', fn:
 
     expect
       fink2js '
-        {_filter_} = import "@fink/js-interop/iter.js"
+        filter item, cntr=0:
+          [item < 1 and cntr % 2 == 0, cntr + 1]
+      '
+      to_match_snapshot
+
+
+  it 'compiles with custom runtime', fn:
+    expect
+      fink2js '
+        {_filter_} = import "./filter.fnk"
+        filter item:
+          item % 2 == 0
+      '
+      to_match_snapshot
+
+    expect
+      fink2js '
         filter item, cntr=0:
           [item < 1 and cntr % 2 == 0, cntr + 1]
       '
@@ -23,10 +38,11 @@ describe 'gen 2', fn:
 
 
 
-describe 'filter', fn:
+describe 'filter legacy', fn:
   it 'compiles', fn:
     expect
       fink2js '
+        {_filter_} = import "@fink/loxia:iter:legacy"
         filter item:
           item % 2 == 0
 
@@ -43,6 +59,7 @@ describe 'filter', fn:
   it 'compiles with accu', fn:
     expect
       fink2js '
+        {_filter_} = import "@fink/loxia:iter:legacy"
         filter item, cntr=0:
           [item < 1 and cntr % 2 == 0, cntr + 1]
       '
@@ -50,6 +67,7 @@ describe 'filter', fn:
 
     expect
       fink2js '
+        {_filter_} = import "@fink/loxia:iter:legacy"
         filter _, is_even=false:
           [is_even, not is_even]
       '
@@ -57,6 +75,7 @@ describe 'filter', fn:
 
     expect
       fink2js '
+        {_filter_} = import "@fink/loxia:iter:legacy"
         filter , is_even=false:
           [is_even, not is_even]
       '
@@ -68,6 +87,7 @@ describe 'filter async', fn:
   it 'compiles', fn:
     expect
       fink2js '
+        {_filter_} = import "@fink/loxia:iter:legacy"
         filter item:
           await item % 2 == 0
       '

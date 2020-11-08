@@ -3,7 +3,7 @@
 
 
 describe 'in', fn:
-  it 'shortcuts known with knwon right hand side', fn:
+  it 'compiles with default runtime', fn:
     expect
       fink2js "
         foo = 1 in [1, 2, 3]
@@ -14,7 +14,19 @@ describe 'in', fn:
       to_match_snapshot
 
 
-  it 'compiles with explicit legacy impl', fn:
+  it 'compiles with custom runtime', fn:
+    expect
+      fink2js "
+        {_in_} = import './foo.fnk'
+        foo = 1 in [1, 2, 3]
+        bar = '2' in '1234'
+        spam = key in {foo: bar}
+        shrub = item in ni
+      "
+      to_match_snapshot
+
+
+  it 'compiles with legacy', fn:
     expect
       fink2js "
         {_in_} = import '@fink/loxia:iter:legacy'
@@ -26,13 +38,4 @@ describe 'in', fn:
       to_match_snapshot
 
 
-  it 'compiles with custom builin lib', fn:
-    expect
-      fink2js "
-        {_in_} = import './foo.fnk'
-        foo = 1 in [1, 2, 3]
-        bar = '2' in '1234'
-        spam = key in {foo: bar}
-        shrub = item in ni
-      "
-      to_match_snapshot
+

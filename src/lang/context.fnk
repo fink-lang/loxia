@@ -15,7 +15,7 @@ add = fn type, op, transformer: fn {transformers, ...ctx}:
 
 
 
-add_with_builtin = fn type, op, impl_uri, transformer: fn ctx:
+add_with_runtime = fn type, op, transformer, impl_uri: fn ctx:
   built_in_name = '_${op}_'
   pipe ctx:
     add_runtime_fn built_in_name, ?
