@@ -3,11 +3,17 @@
 
 
 
-describe 'gen 2', fn:
-  it 'compiles', fn:
+describe 'unfold', fn:
+  it 'compiles with default runtime', fn:
     expect
       fink2js '
-        {_unfold_} = import "@fink/js-interop/iter.js"
+        unfold :
+          123
+      '
+      to_match_snapshot
+
+    expect
+      fink2js '
         unfold prev:
           prev + 1
       '
@@ -15,7 +21,6 @@ describe 'gen 2', fn:
 
     expect
       fink2js '
-        {_unfold_} = import "@fink/js-interop/iter.js"
         unfold prev=1:
           prev + 1
       '
@@ -23,21 +28,37 @@ describe 'gen 2', fn:
 
     expect
       fink2js '
-        {_unfold_} = import "@fink/js-interop/iter.js"
         unfold prev=1, acc=1:
           [prev * accu, accu + 1]
+      '
+      to_match_snapshot
+
+    expect
+      fink2js '
+        unfold prev=1, acc=1, shared_accu:
+          [prev * accu, accu + 1, shared_accu + 1]
+      '
+      to_match_snapshot
+
+
+  it 'compiles with custom runtime', fn:
+    expect
+      fink2js '
+        {_unfold_} = import "./iter.fnk"
+        unfold prev:
+          prev + 1
       '
       to_match_snapshot
 
 
 
 
-
-describe 'unfold', fn:
+describe 'unfold legacy', fn:
 
   it 'compiles with previous', fn:
     expect
       fink2js '
+        {_unfold_} = import "@fink/loxia:iter:legacy"
         unfold prev:
           prev + 1
       '
@@ -47,6 +68,7 @@ describe 'unfold', fn:
   it 'compiles with default', fn:
     expect
       fink2js '
+        {_unfold_} = import "@fink/loxia:iter:legacy"
         unfold prev=1:
           prev + 1
       '
@@ -56,6 +78,7 @@ describe 'unfold', fn:
   it 'compiles with default and accu', fn:
     expect
       fink2js '
+        {_unfold_} = import "@fink/loxia:iter:legacy"
         unfold prev=1, acc=1:
           [prev * accu, accu + 1]
       '
@@ -65,6 +88,7 @@ describe 'unfold', fn:
   it 'compiles without args', fn:
     expect
       fink2js '
+        {_unfold_} = import "@fink/loxia:iter:legacy"
         unfold:
           1234
       '
@@ -74,6 +98,7 @@ describe 'unfold', fn:
   it 'compiles with spread', fn:
     expect
       fink2js '
+        {_unfold_} = import "@fink/loxia:iter:legacy"
         unfold:
           ...[1, 2, 3]
       '

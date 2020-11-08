@@ -3,11 +3,10 @@
 
 
 
-describe 'gen 2', fn:
-  it 'compiles', fn:
+describe 'until', fn:
+  it 'compiles with default runtime', fn:
     expect
       fink2js '
-        {_until_} = import "@fink/js-interop/iter.js"
         until item:
           item < 10
       '
@@ -15,18 +14,34 @@ describe 'gen 2', fn:
 
     expect
       fink2js '
-        {_until_} = import "@fink/js-interop/iter.js"
         until item, cntr=0:
           [cntr > 2, cntr + 1]
       '
       to_match_snapshot
 
+    expect
+      fink2js '
+        until item, cntr=0, shared_accu:
+          [cntr > 2, cntr + 1, shared_accu + 1]
+      '
+      to_match_snapshot
 
 
-describe 'until', fn:
+  it 'compiles with custom runtime', fn:
+    fink2js '
+        {_until_} = import "./iter.fnk"
+        until item:
+          item < 10
+      '
+      to_match_snapshot
+
+
+
+describe 'until legacy', fn:
   it 'compiles', fn:
     expect
       fink2js '
+        {_until_} = import "@fink/loxia:iter:legacy"
         until item:
           item < 10
       '
@@ -36,6 +51,7 @@ describe 'until', fn:
   it 'compiles with accu', fn:
     expect
       fink2js '
+        {_until_} = import "@fink/loxia:iter:legacy"
         until _, cntr=0:
           [cntr > 2, cntr + 1]
 
@@ -48,6 +64,7 @@ describe 'until', fn:
   it 'compiles destructuring', fn:
     expect
       fink2js '
+        {_until_} = import "@fink/loxia:iter:legacy"
         until [foo, ...bar]:
           foo_alone = foo and is_empty bar
           foo_alone
@@ -63,6 +80,7 @@ describe 'until async', fn:
   it 'compiles', fn:
     expect
       fink2js '
+        {_until_} = import "@fink/loxia:iter:legacy"
         until item:
           await item < 10
       '

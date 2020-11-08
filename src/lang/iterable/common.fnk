@@ -13,14 +13,33 @@ babe_types = import '@babel/types'
 transform_with_runtime_lib = fn iter_fn, node, ctx:
   args_len = length node.args
 
-  [use_spread, exprs] = match node.exprs:
-    [..., {type: 'spread'}]:
+  [use_spread, exprs] = match node:
+    {op: not ? in ['map', 'unfold']}:
+      [[], node.exprs]
+    {exprs: [..., {type: 'spread'}]}:
       spread = {type: 'literal', value: 'true', loc: node.loc}
       [...exprs, last] = node.exprs
-      [spread, [...exprs, last.right]]
+      [[spread], [...exprs, last.right]]
     else:
       spread = {type: 'literal', value: 'false', loc: node.loc}
-      [spread, node.exprs]
+      [[spread], node.exprs]
+
+  [is_async, args] = match node.args:
+    --- istanbul ignore else ---
+    [{op: 'await'}]:
+      async = {type: 'literal', value: 'true', loc: node.loc}
+      [{right}, ...rest] = node.args
+      [async, [right, ...rest]]
+    else:
+      async = {type: 'literal', value: 'false', loc: node.loc}
+      [async, node.args]
+
+  [fold_initial, final_args] = match node:
+    {op: 'fold', args: [, {type: 'assign'}]}:
+      [first, {left, right}, ...rest] = args
+      [[right], [first, left, ...rest]]
+    else:
+      [[], args]
 
   [result, end_ctx] = transform
     rec:
@@ -29,13 +48,13 @@ transform_with_runtime_lib = fn iter_fn, node, ctx:
       args: seq:
         rec:
           type: 'fn'
-          args: node.args
+          args: final_args
           exprs: exprs
           loc: node.loc
         {type: 'number', value: '${args_len}', loc: node.loc}
-        {type: 'literal', value: 'false', loc: node.loc}
-        use_spread
-
+        is_async
+        ...use_spread
+        ...fold_initial
       loc: node.loc
     ctx
   [result, end_ctx]

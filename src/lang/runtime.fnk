@@ -1,6 +1,8 @@
 {is_str} = import '@fink/std-lib/str.fnk'
 
 
+default_in_runtime = '@fink/js-interop/runtime.js'
+
 
 add_runtime_fn = fn name, ctx:
   {runtime} = ctx
@@ -12,7 +14,7 @@ add_runtime_fn = fn name, ctx:
 
 
 
-set_runtime_impl = fn name, uri, ctx:
+set_runtime_impl = fn name, uri=default_in_runtime, ctx:
   {runtime} = ctx
 
   overrides = match runtime:
@@ -82,7 +84,7 @@ get_runtime_imports = fn ctx:
 
 
 
-init_builtins = fn ctx:
+init_runtimes = fn ctx:
   rec:
     ...ctx
     runtime: rec:
