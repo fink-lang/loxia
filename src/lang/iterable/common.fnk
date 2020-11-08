@@ -25,6 +25,7 @@ transform_with_runtime_lib = fn iter_fn, node, ctx:
       [[spread], node.exprs]
 
   [is_async, args] = match node.args:
+    --- istanbul ignore else ---
     [{op: 'await'}]:
       async = {type: 'literal', value: 'true', loc: node.loc}
       [{right}, ...rest] = node.args

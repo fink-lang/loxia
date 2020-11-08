@@ -18,25 +18,25 @@ exports[`filter async compiles 1`] = `
 exports[`filter compiles with custom runtime 1`] = `
 "import { _filter_ } from \\"./filter.js\\";
 
-_filter_((item) => item % 2 === 0, 1, false, false);"
+_filter_((item) => item % 2 === 0, 1, false);"
 `;
 
 exports[`filter compiles with custom runtime 2`] = `
 "import { _filter_ } from \\"@fink/js-interop/runtime.js\\";
 
-_filter_((item, cntr = 0) => [item < 1 && cntr % 2 === 0, cntr + 1], 2, false, false);"
+_filter_((item, cntr = 0) => [item < 1 && cntr % 2 === 0, cntr + 1], 2, false);"
 `;
 
 exports[`filter compiles with default runtime 1`] = `
 "import { _filter_ } from \\"@fink/js-interop/runtime.js\\";
 
-_filter_((item) => item % 2 === 0, 1, false, false);"
+_filter_((item) => item % 2 === 0, 1, false);"
 `;
 
 exports[`filter compiles with default runtime 2`] = `
 "import { _filter_ } from \\"@fink/js-interop/runtime.js\\";
 
-_filter_((item, cntr = 0) => [item < 1 && cntr % 2 === 0, cntr + 1], 2, false, false);"
+_filter_((item, cntr = 0) => [item < 1 && cntr % 2 === 0, cntr + 1], 2, false);"
 `;
 
 exports[`filter legacy compiles 1`] = `

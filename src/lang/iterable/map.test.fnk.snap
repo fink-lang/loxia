@@ -7,7 +7,7 @@ import { _filter_ } from \\"./iter-filter.js\\";
   let ˆpipe_result_1 = [1, 2, 3];
   ˆpipe_result_1 = _map_((item) => item * 2, 1, false, false)(ˆpipe_result_1);
   ˆpipe_result_1 = _map_((item) => item / 2, 1, false, false)(ˆpipe_result_1);
-  ˆpipe_result_1 = _filter_((item) => item % 2 === 0, 1, false, false)(ˆpipe_result_1);
+  ˆpipe_result_1 = _filter_((item) => item % 2 === 0, 1, false)(ˆpipe_result_1);
 }"
 `;
 
