@@ -1,4 +1,4 @@
-{add_with_builtin, any} = import '../context.fnk'
+{add_with_runtime, any} = import '../context.fnk'
 
 {transform_fold} = import './fold.fnk'
 {transform_unfold} = import './unfold.fnk'
@@ -31,7 +31,7 @@ with_legacy = fn legacy_transform: fn node, ctx:
 
 add = fn op, legacy_transform: fn ctx:
   pipe ctx:
-    add_with_builtin any, op, legacy_uri, with_legacy legacy_transform
+    add_with_runtime any, op, with_legacy legacy_transform
 
 
 
