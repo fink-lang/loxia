@@ -18,7 +18,7 @@ is_ignorable_import = fn expr, ctx:
   match expr:
     {op: 'import', right: {exprs: [{value: is_str ?}]}}:
       [{value: uri}] = expr.right.exprs
-      uri in [...ctx.ignoreable_imports]
+      uri in ctx.ignoreable_imports
     else:
       false
 
