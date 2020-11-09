@@ -8,7 +8,7 @@ babel_types = import '@babel/types'
 {length} = import '@fink/std-lib/iter.fnk'
 
 {add, any} = import '../context.fnk'
-{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
+{transform, with_ctx, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
 
 
 
@@ -16,7 +16,8 @@ transform_jsx_elem = fn node, ctx:
   id = jsxIdentifier node.name
 
   [attrs, children_ctx] = pipe node.props:
-    map_with_ctx ctx, fn expr, expr_ctx:
+    with_ctx ctx
+    map_with_ctx fn expr, expr_ctx:
       match expr:
         {type: 'spread'}:
           [attr, next_ctx] = transform expr.right, expr_ctx
@@ -27,7 +28,8 @@ transform_jsx_elem = fn node, ctx:
     collect_with_ctx ctx
 
   [children, next_ctx] = pipe node.children:
-    map_with_ctx children_ctx, transform
+    with_ctx children_ctx
+    map_with_ctx transform
     collect_with_ctx children_ctx
 
   js = jsxElement
@@ -41,7 +43,8 @@ transform_jsx_elem = fn node, ctx:
 
 transform_jsx_frag = fn node, ctx:
   [children, next_ctx] = pipe node.children:
-    map_with_ctx ctx, transform
+    with_ctx ctx
+    map_with_ctx transform
     collect_with_ctx ctx
 
   js = jsxFragment

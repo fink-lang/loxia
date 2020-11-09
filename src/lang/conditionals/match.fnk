@@ -12,7 +12,7 @@ babel_types = import '@babel/types'
 {get_key} = import '../literals/record.fnk'
 {is_partial} = import '../partial/init.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
-{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
+{transform, with_ctx, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
 
 
 
@@ -67,13 +67,15 @@ match_props = fn props, emit_result, ctx, cond:
 
 match_obj = fn value, obj, emit_result, ctx, cond:
   [id_props, props_ctx] = pipe obj.exprs:
-    map_with_ctx ctx, fn prop, id_ctx:
+    with_ctx ctx
+    map_with_ctx fn prop, id_ctx:
       [id, next_ctx] = unique_ident 'p', id_ctx
       [{id, prop}, next_ctx]
     collect_with_ctx ctx
 
   [props, result_ctx] = pipe id_props:
-    map_with_ctx props_ctx, fn {id, prop}, prop_ctx:
+    with_ctx props_ctx
+    map_with_ctx fn {id, prop}, prop_ctx:
       match prop:
         {left: {type: 'spread'}}:
           [(restElement id), prop_ctx]
@@ -81,7 +83,7 @@ match_obj = fn value, obj, emit_result, ctx, cond:
           [computed, key, next_ctx] = get_key prop, prop_ctx
           js = objectProperty key, id, computed
           [js, next_ctx]
-    collect_with_ctx ctx
+    collect_with_ctx props_ctx
 
   decl = objectPattern props
 
@@ -155,7 +157,8 @@ get_array_decl = fn arr, id_elems, right, ctx:
 
 match_array = fn value, arr, emit_result, ctx, cond:
   [id_elems, elems_ctx] = pipe arr.exprs:
-    map_with_ctx ctx, fn expr, expr_ctx:
+    with_ctx ctx
+    map_with_ctx fn expr, expr_ctx:
       [id, next_ctx] = unique_ident 'a', expr_ctx
       [{id, value: expr}, next_ctx]
     collect_with_ctx ctx
@@ -223,7 +226,8 @@ split_condition = fn {left, right}:
 
 match_all = fn value, matches, emit, ctx:
   [exprs, end_ctx] = pipe matches:
-    map_with_ctx ctx, fn expr, expr_ctx:
+    with_ctx ctx
+    map_with_ctx fn expr, expr_ctx:
       match expr:
         {type: 'block', op: 'else'}:
           {op:_, ...block} = expr

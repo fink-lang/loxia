@@ -2,12 +2,13 @@ babel_types = import '@babel/types'
 {objectExpression, objectProperty, assignmentPattern} = babel_types
 
 {raw_str, unique_ident, ident} = import '../../js/types.fnk'
-{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
+{transform, with_ctx, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
 
 
 transform_record = fn node, ctx:
   [props, next_ctx] = pipe node.exprs:
-    map_with_ctx ctx, transform
+    with_ctx ctx
+    map_with_ctx transform
     collect_with_ctx ctx
 
   js = objectExpression props

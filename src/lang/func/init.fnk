@@ -5,7 +5,7 @@ babel_types = import '@babel/types'
 {transform_left} = import '../../js/left.fnk'
 {add, any} = import '../context.fnk'
 {transform_block} = import '../block/init.fnk'
-{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
+{transform, with_ctx, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
 
 
 
@@ -22,7 +22,8 @@ transform_arg = fn arg, ctx:
 
 transform_func = fn node, ctx:
   [params, next_ctx] = pipe node.args:
-    map_with_ctx ctx, transform_arg
+    with_ctx ctx
+    map_with_ctx transform_arg
     collect_with_ctx ctx
 
   [body, end_ctx] = transform_block node, next_ctx
