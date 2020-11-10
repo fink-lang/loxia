@@ -62,7 +62,7 @@ insert_imports = fn [body, ctx]:
     with_ctx ctx
     drop_if ignorable_import
     map_with_ctx transform_body_expr
-    collect_with_ctx _
+    collect_with_ctx ctx
 
   [[...imports, ...body], end_ctx]
 
@@ -84,7 +84,7 @@ imported_specs = fn exprs, ctx:
           imp = importSpecifier right, left
           [imp, , next_ctx]
 
-    collect_with_ctx _
+    collect_with_ctx ctx
 
 
 
@@ -155,7 +155,7 @@ transform_module = fn node, ctx:
     map_with_ctx add_runtime_fn_overrides
     drop_if ignorable_import
     map_with_ctx transform_body_expr
-    collect_with_ctx _
+    collect_with_ctx ctx
     insert_imports
 
   js = file

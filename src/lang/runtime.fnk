@@ -80,7 +80,6 @@ get_runtime_imports = fn ctx:
           right: rec:
             type: 'string'
             exprs: [{type: 'string:text', value: uri}]
-    [...?]
 
 
 
