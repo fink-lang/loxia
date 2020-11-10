@@ -51,10 +51,19 @@ drop_if = fn cond: filter item, , ctx:
 
 
 
-collect_with_ctx = fn fallback_ctx:
-  # TODO: loxa+runtime should allow setting initial (shared)accu values
-  fold item, [items]=[[], fallback_ctx], , ctx:
-    [[[...items, item], ctx], , ctx]
+collect_with_ctx = fn fallback_ctx: fn items:
+  [result, ctx, workaround] = items | fold item, [items]=[[], fallback_ctx, true], , ctx=fallback_ctx:
+    [[[...items, item], ctx, true], , ctx]
+
+  match workaround:
+    --- istanbul ignore else ---
+    true:
+      [result, ctx]
+    --- istanbul ignore next ---
+    else:
+      [foo] = result
+      [foo, ctx]
+
 
 
 
