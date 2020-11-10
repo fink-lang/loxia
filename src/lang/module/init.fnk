@@ -10,7 +10,7 @@ babel_types = import '@babel/types'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
 {block_statement} = import '../block/init.fnk'
 {transform, is_ignorable_import} = import '../transform.fnk'
-{with_ctx, map_with_ctx, drop_if, collect_with_ctx} = import '../transform.fnk'
+{map_with_ctx, drop_if, collect_with_ctx} = import '../transform.fnk'
 
 {transform_import: transform_async_import, resolve_ext} = import './import.fnk'
 {set_runtime_impl, is_runtime_fn, get_runtime_imports} = import '../runtime.fnk'
@@ -55,11 +55,9 @@ add_runtime_fn_overrides = fn expr, ctx:
 
 
 
-
 insert_imports = fn [body, ctx]:
   [imports, end_ctx] = pipe ctx:
     get_runtime_imports ?
-    with_ctx ctx
     drop_if ignorable_import
     map_with_ctx transform_body_expr
     collect_with_ctx ctx
@@ -70,7 +68,6 @@ insert_imports = fn [body, ctx]:
 
 imported_specs = fn exprs, ctx:
   pipe exprs:
-    with_ctx ctx
     map prop, , imp_ctx:
       [right, left_ctx] = transform prop.right, imp_ctx
 
@@ -151,7 +148,6 @@ transform_module = fn node, ctx:
   [interpreter, first] = get_hashbang maybe_shebang_or_pragmas
 
   [body, end_ctx] = pipe [first, ...rest]:
-    with_ctx ctx
     map_with_ctx add_runtime_fn_overrides
     drop_if ignorable_import
     map_with_ctx transform_body_expr
