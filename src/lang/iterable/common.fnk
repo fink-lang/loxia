@@ -2,11 +2,32 @@ babe_types = import '@babel/types'
 {conditionalExpression} = babe_types
 
 
-{length} = import '@fink/std-lib/iter.fnk'
+{length, zip} = import '@fink/std-lib/iter.fnk'
 
 {consts, lets, assign, unique_ident, undef, eq} = import '../../js/types.fnk'
 {exprs_block} = import '../block/init.fnk'
 {transform} = import '../transform.fnk'
+
+
+
+get_initial_values = fn node, args:
+  [plain_args, initial_args] = match node:
+    {args: 0 == length ?}:
+      [[], []]
+    else:
+      [item_arg, ...rest] = args
+      [[item_arg], rest]
+
+  [rest_args, initial_values] = pipe initial_args:
+    map arg: match arg:
+      {type: 'assign'}:
+        {left, right} = arg
+        [left, right]
+      else:
+        [arg, {type: 'empty', loc: arg.loc}]
+    zip ...?
+
+  [[...plain_args, ...rest_args], initial_values]
 
 
 
@@ -34,12 +55,7 @@ transform_with_runtime_lib = fn iter_fn, node, ctx:
       async = {type: 'literal', value: 'false', loc: node.loc}
       [async, node.args]
 
-  [fold_initial, final_args] = match node:
-    {op: 'fold', args: [, {type: 'assign'}]}:
-      [first, {left, right}, ...rest] = args
-      [[right], [first, left, ...rest]]
-    else:
-      [[], args]
+  [final_args, initial_values] = get_initial_values node, args
 
   [result, end_ctx] = transform
     rec:
@@ -54,7 +70,7 @@ transform_with_runtime_lib = fn iter_fn, node, ctx:
         {type: 'number', value: '${args_len}', loc: node.loc}
         is_async
         ...use_spread
-        ...fold_initial
+        ...initial_values
       loc: node.loc
     ctx
   [result, end_ctx]

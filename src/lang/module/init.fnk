@@ -9,10 +9,12 @@ babel_types = import '@babel/types'
 {add, any} = import '../context.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
 {block_statement} = import '../block/init.fnk'
-{transform, collect_with_ctx, is_ignorable_import} = import '../transform.fnk'
+{transform, is_ignorable_import} = import '../transform.fnk'
+{with_ctx, map_with_ctx, drop_if, collect_with_ctx} = import '../transform.fnk'
 
 {transform_import: transform_async_import, resolve_ext} = import './import.fnk'
 {set_runtime_impl, is_runtime_fn, get_runtime_imports} = import '../runtime.fnk'
+
 
 
 
@@ -29,31 +31,12 @@ get_hashbang = fn expr:
 
 
 
-ignorable_import = fn [expr, ctx]:
+ignorable_import = fn expr, ctx:
   match expr:
     {type: 'assign', right: is_ignorable_import ?, ctx}:
       true
     else:
       false
-
-
-with_ctx = fn ctx:
-  map item: [item, ctx]
-
-map_acc = fn map_fn:
-  foo = {}
-  # TODO: should be map [item, initial_acc], acc=initial_acc:
-  map [item, initial_acc], acc=foo:
-    ctx = match acc:
-      foo: initial_acc
-      else: acc
-
-    [result, next_ctx] = map_fn item, ctx
-    [[result, next_ctx], next_ctx]
-
-# TODO: std-lib
-drop_if = fn cond: filter item: not cond item
-
 
 
 
@@ -72,12 +55,13 @@ add_runtime_fn_overrides = fn expr, ctx:
 
 
 
+
 insert_imports = fn [body, ctx]:
   [imports, end_ctx] = pipe ctx:
     get_runtime_imports ?
     with_ctx ctx
     drop_if ignorable_import
-    map_acc transform_body_expr
+    map_with_ctx transform_body_expr
     collect_with_ctx ctx
 
   [[...imports, ...body], end_ctx]
@@ -87,18 +71,18 @@ insert_imports = fn [body, ctx]:
 imported_specs = fn exprs, ctx:
   pipe exprs:
     with_ctx ctx
-    map_acc fn prop, imp_ctx:
+    map prop, , imp_ctx:
       [right, left_ctx] = transform prop.right, imp_ctx
 
       match prop:
         {left: {value: 'default'}}:
           imp = importSpecifier right, identifier prop.left.value
-          [imp, left_ctx]
+          [imp, ,left_ctx]
 
         else:
           [left, next_ctx] = transform prop.left, left_ctx
           imp = importSpecifier right, left
-          [imp, next_ctx]
+          [imp, , next_ctx]
 
     collect_with_ctx ctx
 
@@ -167,19 +151,11 @@ transform_module = fn node, ctx:
   [interpreter, first] = get_hashbang maybe_shebang_or_pragmas
 
   [body, end_ctx] = pipe [first, ...rest]:
-    map expr, expr_ctx=ctx:
-      [body_expr, body_ctx] = add_runtime_fn_overrides expr, expr_ctx
-      [js_expr, next_ctx] = match body_expr:
-        ignorable_import [?, body_ctx]:
-          [false, body_ctx]
-        else:
-          transform_body_expr body_expr, body_ctx
-      [[js_expr, next_ctx], next_ctx]
-
-    drop_if fn [js]: js == false
-
-    fold [js, ctx], [jss]=[[]]:
-      [[...jss, js], ctx]
+    with_ctx ctx
+    map_with_ctx add_runtime_fn_overrides
+    drop_if ignorable_import
+    map_with_ctx transform_body_expr
+    collect_with_ctx ctx
     insert_imports
 
   js = file

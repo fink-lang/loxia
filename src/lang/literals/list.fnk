@@ -2,13 +2,14 @@ babel_types = import '@babel/types'
 {arrayExpression} = babel_types
 {null} = import '@fink/js-interop/nullish.fnk'
 
-{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
+{transform, with_ctx, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
 
 
 
 transform_list = fn node, ctx:
   [elems, next_ctx] = pipe node.exprs:
-    map_with_ctx ctx, fn elem, elem_ctx:
+    with_ctx ctx
+    map_with_ctx fn elem, elem_ctx:
       match elem:
         {type: 'empty'}:
           [null, ctx]

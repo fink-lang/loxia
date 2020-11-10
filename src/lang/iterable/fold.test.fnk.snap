@@ -37,13 +37,13 @@ _fold_((item, prev) => {
 exports[`fold compiles with default runtime 2`] = `
 "import { _fold_ } from \\"@fink/js-interop/runtime.js\\";
 
-_fold_((item, prev, acc = 1) => [item * acc + prev, acc + 1], 3, false, 0);"
+_fold_((item, prev, acc) => [item * acc + prev, acc + 1], 3, false, 0, 1);"
 `;
 
 exports[`fold compiles with default runtime 3`] = `
 "import { _fold_ } from \\"@fink/js-interop/runtime.js\\";
 
-_fold_((item, prev, acc = 1, shared_acc) => [item * acc + prev, acc + 1, shared_acc + 1], 4, false, 0);"
+_fold_((item, prev, acc, shared_acc) => [item * acc + prev, acc + 1, shared_acc + 1], 4, false, 0, 1, undefined);"
 `;
 
 exports[`fold compiles with default runtime 4`] = `

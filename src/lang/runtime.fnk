@@ -53,7 +53,7 @@ runtime_impl = fn ident, ctx:
 
 
 is_runtime_fn = fn name, ctx:
-  name in [...ctx.runtime.names]
+  name in ctx.runtime.names
 
 
 
@@ -63,7 +63,7 @@ get_runtime_imports = fn ctx:
   pipe runtime.used:
     # If it was overridden it was imported, no need to create an extra import
     filter name:
-      not name in [...runtime.overrides]
+      not name in runtime.overrides
 
     map name:
       uri = runtime_impl name, ctx
@@ -80,7 +80,6 @@ get_runtime_imports = fn ctx:
           right: rec:
             type: 'string'
             exprs: [{type: 'string:text', value: uri}]
-    [...?]
 
 
 

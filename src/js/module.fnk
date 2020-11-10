@@ -23,7 +23,7 @@ transform_specifiers = fn {specifiers, source}:
       variableDeclaration 'const', [variableDeclarator local, init]
 
     isImportSpecifier ?:
-      [...props] = pipe specifiers:
+      props = pipe specifiers:
         map node:
           objectProperty
             node.imported
@@ -33,7 +33,7 @@ transform_specifiers = fn {specifiers, source}:
 
       variableDeclaration 'const', list:
         variableDeclarator
-          objectPattern props
+          objectPattern [...props]
           init
 
     else:

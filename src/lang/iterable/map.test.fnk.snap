@@ -239,8 +239,8 @@ exports[`map uses default runtime 1`] = `
 {
   let ˆpipe_result_1 = [1, 2, 3];
   ˆpipe_result_1 = _map_((item) => item * 2, 1, false, false)(ˆpipe_result_1);
-  ˆpipe_result_1 = _map_((item, acc = 0) => [item + acc, acc + 1], 2, false, false)(ˆpipe_result_1);
-  ˆpipe_result_1 = _map_((item, acc = 0, shared_acc = 0) => [item + acc + shared_acc, acc + 1, shared_acc + 1], 3, false, false)(ˆpipe_result_1);
+  ˆpipe_result_1 = _map_((item, acc) => [item + acc, acc + 1], 2, false, false, 0)(ˆpipe_result_1);
+  ˆpipe_result_1 = _map_((item, acc, shared_acc) => [item + acc + shared_acc, acc + 1, shared_acc + 1], 3, false, false, 0, 0)(ˆpipe_result_1);
   ˆpipe_result_1 = _map_((item) => item, 1, false, true)(ˆpipe_result_1);
 }"
 `;

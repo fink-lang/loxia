@@ -5,7 +5,18 @@ babel_types = import '@babel/types'
 {assign, lets, expr_block, undef, unique_ident} = import '../../js/types.fnk'
 {transform_value} = import '../partial/init.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
-{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
+{transform, with_ctx, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
+
+
+
+transform_callee = fn result: fn expr, ctx:
+  [callee, next_ctx] = transform_value expr, ctx
+
+  js = wrap_with_comment_loc
+    assign result, callExpression callee, [result]
+    expr
+
+  [js, next_ctx]
 
 
 
@@ -22,14 +33,8 @@ transform_pipe = fn node, ctx:
   [result, pipe_ctx] = unique_ident 'pipe_result', id_ctx
 
   [pipe_calls, next_ctx] = pipe exprs:
-    map_with_ctx pipe_ctx, fn expr, callee_ctx:
-      [callee, next_ctx] = transform_value expr, callee_ctx
-
-      js = wrap_with_comment_loc
-        assign result, callExpression callee, [result]
-        expr
-
-      [js, next_ctx]
+    with_ctx pipe_ctx
+    map_with_ctx transform_callee result
     collect_with_ctx pipe_ctx
 
   js = expr_block

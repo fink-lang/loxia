@@ -47,8 +47,8 @@
   "devDependencies": {
     "@fink/cli": "^8.0.0",
     "@fink/jest": "^7.0.0",
-    "@fink/larix": "^15.2.0",
-    "@fink/loxia": "^18.0.0",
+    "@fink/larix": "^15.3.0",
+    "@fink/loxia": "^19.0.0",
     "commitizen": "^4.1.2",
     "cz-conventional-changelog": "^3.1.0",
     "jest-cli": "^26.5.3",
@@ -56,15 +56,15 @@
     "semantic-release": "^17.2.1"
   },
   "peerDependencies": {
-    "@fink/js-interop": ">2.1"
+    "@fink/js-interop": ">2.2"
   },
   "dependencies": {
     "@babel/core": "^7.10.5",
     "@babel/traverse": "^7.10.5",
     "@babel/types": "^7.10.5",
-    "@fink/js-interop": "^2.0.1",
-    "@fink/snippet": "^2.0.1",
-    "@fink/std-lib": "^6.0.0"
+    "@fink/js-interop": "^2.2.0",
+    "@fink/snippet": "^2.2.0",
+    "@fink/std-lib": "^7.0.0"
   },
   "config": {
     "commitizen": {
