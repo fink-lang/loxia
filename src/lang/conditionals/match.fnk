@@ -12,7 +12,7 @@ babel_types = import '@babel/types'
 {get_key} = import '../literals/record.fnk'
 {is_partial} = import '../partial/init.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
-{transform, with_ctx, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
+{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
 
 
 
@@ -67,14 +67,12 @@ match_props = fn props, emit_result, ctx, cond:
 
 match_obj = fn value, obj, emit_result, ctx, cond:
   [id_props, props_ctx] = pipe obj.exprs:
-    with_ctx ctx
     map_with_ctx fn prop, id_ctx:
       [id, next_ctx] = unique_ident 'p', id_ctx
       [{id, prop}, next_ctx]
     collect_with_ctx ctx
 
   [props, result_ctx] = pipe id_props:
-    with_ctx props_ctx
     map_with_ctx fn {id, prop}, prop_ctx:
       match prop:
         {left: {type: 'spread'}}:
@@ -157,7 +155,6 @@ get_array_decl = fn arr, id_elems, right, ctx:
 
 match_array = fn value, arr, emit_result, ctx, cond:
   [id_elems, elems_ctx] = pipe arr.exprs:
-    with_ctx ctx
     map_with_ctx fn expr, expr_ctx:
       [id, next_ctx] = unique_ident 'a', expr_ctx
       [{id, value: expr}, next_ctx]
@@ -226,7 +223,6 @@ split_condition = fn {left, right}:
 
 match_all = fn value, matches, emit, ctx:
   [exprs, end_ctx] = pipe matches:
-    with_ctx ctx
     map_with_ctx fn expr, expr_ctx:
       match expr:
         {type: 'block', op: 'else'}:

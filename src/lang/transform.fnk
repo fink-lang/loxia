@@ -31,13 +31,6 @@ wrap_node = fn ctx, js_node, node:
       wrap_with_comment_loc js_node, node
 
 
-# TODO: should not need it if fold would set initial accu value
-with_ctx = fn ctx:
-  map item, , shared_ctx=ctx:
-    [item, , shared_ctx]
-
-
-
 map_with_ctx = fn fnc:
   map item, , ctx:
     [value, next_ctx] = fnc item, ctx
@@ -51,19 +44,9 @@ drop_if = fn cond: filter item, , ctx:
 
 
 
-collect_with_ctx = fn fallback_ctx: fn items:
-  [result, ctx, workaround] = items | fold item, [items]=[[], fallback_ctx, true], , ctx=fallback_ctx:
-    [[[...items, item], ctx, true], , ctx]
-
-  match workaround:
-    --- istanbul ignore else ---
-    true:
-      [result, ctx]
-    --- istanbul ignore next ---
-    else:
-      [foo] = result
-      [foo, ctx]
-
+collect_with_ctx = fn ctx:
+  fold item, items=[], , curr_ctx=ctx:
+    [[...items, item], , curr_ctx]
 
 
 
