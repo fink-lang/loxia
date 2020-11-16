@@ -11,10 +11,11 @@ transform_args = fn args, ctx:
     map_with_ctx fn expr, arg_ctx:
       match expr:
         {type: 'empty'}:
-          [(identifier 'undefined'), ctx]
+          [(identifier 'undefined'), arg_ctx]
         else:
           transform expr, arg_ctx
     collect_with_ctx ctx
+
 
 
 transform_single_arg = fn [expr], ctx:

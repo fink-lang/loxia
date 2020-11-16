@@ -35,6 +35,16 @@ describe 'map', fn:
       to_match_snapshot
 
 
+  it 'handles initial args transform (ctx bug)', fn:
+    expect
+      fink2js '
+        foo = map item, acc:
+          true in spam
+      '
+      to_match_snapshot
+
+
+
 describe 'custom runtime', fn:
 
   it 'uses multiple custom runtimes', fn:

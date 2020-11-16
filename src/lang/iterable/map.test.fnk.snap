@@ -19,6 +19,12 @@ exports[`map handles await 1`] = `
 }"
 `;
 
+exports[`map handles initial args transform (ctx bug) 1`] = `
+"import { _in_ } from \\"@fink/js-interop/runtime.js\\";
+import { _map_ } from \\"@fink/js-interop/runtime.js\\";
+export const foo = _map_((item, acc) => _in_(true, spam), 2, false, false, undefined);"
+`;
+
 exports[`map legacy compiles as flat map 1`] = `
 "(function map(ˆitems_3) {
   return {
