@@ -63,7 +63,8 @@ transform_with_runtime_lib = fn iter_fn, node, ctx:
       callee: {type: 'ident', value : iter_fn}
       args: seq:
         rec:
-          type: 'fn'
+          type: 'block'
+          op: 'fn'
           args: final_args
           exprs: exprs
           loc: node.loc
@@ -73,6 +74,7 @@ transform_with_runtime_lib = fn iter_fn, node, ctx:
         ...initial_values
       loc: node.loc
     ctx
+
   [result, end_ctx]
 
 
