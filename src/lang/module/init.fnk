@@ -48,13 +48,11 @@ add_runtime_fn_overrides = fn expr, ctx:
       next_ctx = pipe expr.left.exprs:
         filter {left, right}:
           match right:
-            --- istanbul ignore next ---
             false: is_runtime_fn left.value, ctx
             else: is_runtime_fn right.value, ctx
 
         fold {left, right}, override_ctx=ctx:
           name = match right:
-            --- istanbul ignore next ---
             false: left.value
             else: right.value
           set_runtime_impl name, uri, override_ctx
