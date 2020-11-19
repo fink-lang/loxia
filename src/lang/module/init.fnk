@@ -46,30 +46,34 @@ add_runtime_fn_overrides = fn expr, ctx:
       {right: {right: {exprs: [{value: uri}]}}} = expr
 
       next_ctx = pipe expr.left.exprs:
-        filter {right}: is_runtime_fn right.value, ctx
-        fold {right: {value: name}}, override_ctx=ctx:
+        filter {left, right}:
+          match right:
+            --- istanbul ignore next ---
+            false: is_runtime_fn left.value, ctx
+            else: is_runtime_fn right.value, ctx
+
+        fold {left, right}, override_ctx=ctx:
+          name = match right:
+            --- istanbul ignore next ---
+            false: left.value
+            else: right.value
           set_runtime_impl name, uri, override_ctx
+
       [expr, next_ctx]
     else:
       [expr, ctx]
 
 
 
-insert_imports = fn [body, ctx]:
-  [imports, end_ctx] = pipe ctx:
-    get_runtime_imports ?
-    drop_if ignorable_import
-    map_with_ctx transform_body_expr
-    collect_with_ctx ctx
-
-  [[...imports, ...body], end_ctx]
-
-
-
 imported_specs = fn exprs, ctx:
   pipe exprs:
     map prop, , imp_ctx:
-      [right, left_ctx] = transform prop.right, imp_ctx
+
+      [right, left_ctx] = match prop:
+        {right: false}:
+          transform prop.left, imp_ctx
+        else:
+          transform prop.right, imp_ctx
 
       match prop:
         {left: {value: 'default'}}:
@@ -140,6 +144,17 @@ transform_body_expr = fn expr, expr_ctx:
 
     else:
       block_statement expr, expr_ctx
+
+
+
+insert_imports = fn [body, ctx]:
+  [imports, end_ctx] = pipe ctx:
+    get_runtime_imports ?
+    drop_if ignorable_import
+    map_with_ctx transform_body_expr
+    collect_with_ctx ctx
+
+  [[...imports, ...body], end_ctx]
 
 
 

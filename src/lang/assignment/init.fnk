@@ -43,6 +43,10 @@ transform_spread_left = fn {left}, ctx:
   [before, middle, end] = pipe left.exprs:
     fold expr, [before=[], middle=false, end=[]]=[]:
       match expr:
+        --- istanbul ignore next ---
+        {type: 'spread', right: false}:
+          [before, {type: 'empty'}, end]
+
         {type: 'spread', right: {}}:
           [before, expr.right, end]
 

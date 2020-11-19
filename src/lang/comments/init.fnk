@@ -21,6 +21,7 @@ get_comments = fn {comments={}}:
 wrap_with_comment_loc = fn js_node, larix_node:
   comments = get_comments larix_node
   {loc} = larix_node
+
   match js_node:
     {loc: {}}: {...js_node, ...comments}
     else: {...js_node, ...comments, loc}
