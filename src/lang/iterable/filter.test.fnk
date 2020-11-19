@@ -37,59 +37,11 @@ describe 'filter', fn:
       to_match_snapshot
 
 
-
-describe 'filter legacy', fn:
-  it 'compiles', fn:
+  it 'compiles async', fn:
     expect
       fink2js '
-        {_filter_} = import "@fink/loxia:iter:legacy"
-        filter item:
+        filter await item:
           item % 2 == 0
-
-        filter [a, ...b]:
-          a_alone = a andis_empty b
-          a_alone
-
-        filter [...a, b]:
-          b and is_empty a
-      '
-      to_match_snapshot
-
-
-  it 'compiles with accu', fn:
-    expect
-      fink2js '
-        {_filter_} = import "@fink/loxia:iter:legacy"
-        filter item, cntr=0:
-          [item < 1 and cntr % 2 == 0, cntr + 1]
-      '
-      to_match_snapshot
-
-    expect
-      fink2js '
-        {_filter_} = import "@fink/loxia:iter:legacy"
-        filter _, is_even=false:
-          [is_even, not is_even]
-      '
-      to_match_snapshot
-
-    expect
-      fink2js '
-        {_filter_} = import "@fink/loxia:iter:legacy"
-        filter , is_even=false:
-          [is_even, not is_even]
-      '
-      to_match_snapshot
-
-
-
-describe 'filter async', fn:
-  it 'compiles', fn:
-    expect
-      fink2js '
-        {_filter_} = import "@fink/loxia:iter:legacy"
-        filter item:
-          await item % 2 == 0
       '
       to_match_snapshot
 

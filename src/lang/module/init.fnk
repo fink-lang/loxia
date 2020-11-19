@@ -30,7 +30,7 @@ get_hashbang = fn expr:
       [[], expr]
 
 
-
+--- istanbul ignore next ---
 ignorable_import = fn expr, ctx:
   match expr:
     {type: 'assign', right: is_ignorable_import ?, ctx}:

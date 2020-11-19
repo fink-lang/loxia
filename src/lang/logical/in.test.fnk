@@ -25,17 +25,3 @@ describe 'in', fn:
       "
       to_match_snapshot
 
-
-  it 'compiles with legacy', fn:
-    expect
-      fink2js "
-        {_in_} = import '@fink/loxia:iter:legacy'
-        foo = 1 in [1, 2, 3]
-        bar = '2' in '1234'
-        spam = key in {foo: bar}
-        shrub = item in ni
-      "
-      to_match_snapshot
-
-
-

@@ -1,37 +1,19 @@
 babe_types = import '@babel/types'
-{is_empty} = import '@fink/std-lib/iter.fnk'
-
-
-{escape_ident} = import'./identifier.fnk'
-
 {
   variableDeclaration, variableDeclarator
-  forOfStatement, yieldExpression, nullLiteral, booleanLiteral
-  expressionStatement, functionExpression
-  blockStatement, identifier, arrowFunctionExpression
-  logicalExpression, binaryExpression, unaryExpression
-  doExpression, assignmentExpression, isIdentifier, objectExpression,
-  returnStatement, objectMethod, memberExpression
+  nullLiteral, booleanLiteral, identifier, expressionStatement
+  logicalExpression, binaryExpression, unaryExpression, assignmentExpression
 } = babe_types
+
+{is_empty} = import '@fink/std-lib/iter.fnk'
+
+{escape_ident} = import'./identifier.fnk'
 
 
 
 wrap = fn larix_node, js_node:
   {...js_node, loc: larix_node.loc}
 
-
-expr_block = fn ...exprs:
-  doExpression
-    blockStatement list:
-      ...pipe exprs:
-        map node:
-          match node:
-            # TODO: was used, why not anymore?
-            # {type: ends_with ?, 'Expression'}:
-            #   expressionStatement node
-            isIdentifier ?:
-              expressionStatement node
-            else: node
 
 
 typof = fn value: unaryExpression 'typeof', value
@@ -52,7 +34,6 @@ eq = fn left, right: binaryExpression '===', left, right
 undef = fn: identifier 'undefined'
 
 
-true_ = fn: booleanLiteral true
 false_ = fn: booleanLiteral false
 
 
@@ -98,44 +79,3 @@ lets = fn left, init:
 assign = fn left, right:
   expressionStatement
     assignmentExpression '=', left, right
-
-
-yields = fn expr, delegate:
-  expressionStatement
-    yieldExpression expr, delegate
-
-
-func = fn args, ...expressions:
-  arrowFunctionExpression
-    args
-    expr_block ...expressions
-
-
-symbol = fn symb:
-  memberExpression
-    identifier 'Symbol'
-    identifier symb
-
-
-computed = true
-async = true
-
-
-generator = fn name, args, ...statements:
-  functionExpression name, args,
-    blockStatement list:
-      returnStatement
-        objectExpression list:
-          objectMethod
-            'method', (symbol 'iterator'), []
-            blockStatement list:
-              ...statements
-            computed
-            async
-
-
-for_of = fn [item, items], ...expressions:
-  forOfStatement
-    consts item
-    items
-    blockStatement expressions

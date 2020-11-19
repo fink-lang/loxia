@@ -36,51 +36,9 @@ describe 'until', fn:
       to_match_snapshot
 
 
-
-describe 'until legacy', fn:
-  it 'compiles', fn:
+  it 'compiles async', fn:
     expect
       fink2js '
-        {_until_} = import "@fink/loxia:iter:legacy"
-        until item:
-          item < 10
-      '
-      to_match_snapshot
-
-
-  it 'compiles with accu', fn:
-    expect
-      fink2js '
-        {_until_} = import "@fink/loxia:iter:legacy"
-        until _, cntr=0:
-          [cntr > 2, cntr + 1]
-
-        until , cntr=0:
-          [cntr > 2, cntr + 1]
-      '
-      to_match_snapshot
-
-
-  it 'compiles destructuring', fn:
-    expect
-      fink2js '
-        {_until_} = import "@fink/loxia:iter:legacy"
-        until [foo, ...bar]:
-          foo_alone = foo and is_empty bar
-          foo_alone
-
-        until [...foo, bar]:
-          bar and is_empty foo
-      '
-      to_match_snapshot
-
-
-
-describe 'until async', fn:
-  it 'compiles', fn:
-    expect
-      fink2js '
-        {_until_} = import "@fink/loxia:iter:legacy"
         until item:
           await item < 10
       '

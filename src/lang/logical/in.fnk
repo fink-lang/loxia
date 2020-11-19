@@ -1,87 +1,17 @@
 babel_types = import '@babel/types'
-{identifier, optionalCallExpression, optionalMemberExpression, memberExpression, callExpression, logicalExpression} = babel_types
+{identifier, callExpression} = babel_types
 
 {transform} = import '../transform.fnk'
 
 {use_runtime_fn} = import '../runtime.fnk'
-{runtime_impl} = import '../runtime.fnk'
 
 
 
-legacy_uri = '@fink/loxia:iter:legacy'
+transform_in = fn node, ctx:
+  runtime_fn = '_${node.op}_'
+  runtime_ctx = use_runtime_fn runtime_fn, ctx
 
-
-
-transform_legacy = fn node, ctx:
-  {left, right} = node
-  [js_right, next_ctx] = transform right, ctx
-  [js_left, end_ctx] = transform left, next_ctx
-
-
-  js = match right:
-    {type: 'list'}:
-      callExpression
-        memberExpression
-          js_right
-          identifier 'includes'
-        [js_left]
-
-    {type: 'string'}:
-      callExpression
-        memberExpression
-          js_right
-          identifier 'includes'
-        [js_left]
-
-    {type: 'rec'}:
-      callExpression
-        memberExpression
-          js_right
-          identifier 'hasOwnProperty'
-        [js_left]
-
-    else:
-      logicalExpression
-        '??'
-        optionalCallExpression
-          optionalMemberExpression
-            js_right
-            identifier 'includes'
-            false
-            true
-          [js_left]
-          true
-
-        logicalExpression
-          '??'
-          optionalCallExpression
-            optionalMemberExpression
-              js_right
-              identifier 'has'
-              false
-              true
-            [js_left]
-            true
-
-          logicalExpression
-            '??'
-            optionalCallExpression
-              optionalMemberExpression
-                js_right
-                identifier 'hasOwnProperty'
-                false
-                true
-              [js_left]
-              true
-            identifier 'false'
-
-  [js, end_ctx]
-
-
-
-transform_with_runtime_lib = fn runtime_fn, node, ctx:
-  # TODO: if right hand side is a literal, we could optimize as legacy did
-  [right, next_ctx] = transform node.right, ctx
+  [right, next_ctx] = transform node.right, runtime_ctx
   [left, end_ctx] = transform node.left, next_ctx
 
   js = callExpression
@@ -89,18 +19,6 @@ transform_with_runtime_lib = fn runtime_fn, node, ctx:
     [left, right]
 
   [js, end_ctx]
-
-
-
-transform_in = fn node, ctx:
-  runtime_fn = '_${node.op}_'
-  next_ctx = use_runtime_fn runtime_fn, ctx
-
-  match next_ctx:
-    legacy_uri == runtime_impl runtime_fn, ?:
-      transform_legacy node, next_ctx
-    else:
-      transform_with_runtime_lib runtime_fn, node, next_ctx
 
 
 

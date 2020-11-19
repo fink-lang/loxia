@@ -1,19 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`fold async compiles 1`] = `
-"async ˆitems_3 => {
-  let ˆfold_result_4 = 0;
+exports[`fold compiles async  1`] = `
+"import { _fold_ } from \\"@fink/js-interop/runtime.js\\";
 
-  for await (const ˆitem_1 of ˆitems_3) {
-    const item = ˆitem_1;
-    const acc = ˆfold_result_4;
-    const ni = (await item) + acc;
-    const ˆresult_2 = item * acc;
-    ˆfold_result_4 = ˆresult_2;
-  }
-
-  return ˆfold_result_4;
-};"
+_fold_((item, acc) => {
+  const ni = item + acc;
+  return item * acc;
+}, 2, true, 0);"
 `;
 
 exports[`fold compiles with custom runtime 1`] = `
@@ -56,123 +49,4 @@ exports[`fold compiles with default runtime 5`] = `
 "import { _fold_ } from \\"@fink/js-interop/runtime.js\\";
 
 _fold_(() => false, 0, false);"
-`;
-
-exports[`fold legacy compiles 1`] = `
-"ˆitems_3 => {
-  let ˆfold_result_4 = 0;
-
-  for (const ˆitem_1 of ˆitems_3) {
-    const item = ˆitem_1;
-    const prev = ˆfold_result_4;
-    const ni = item + prev;
-    const ˆresult_2 = item * ni;
-    ˆfold_result_4 = ˆresult_2;
-  }
-
-  return ˆfold_result_4;
-};"
-`;
-
-exports[`fold legacy compiles with accu 1`] = `
-"ˆitems_5 => {
-  let ˆaccu_2 = 1;
-  let ˆfold_result_6 = 0;
-
-  for (const ˆitem_1 of ˆitems_5) {
-    const item = ˆitem_1;
-    const acc = ˆaccu_2;
-    const prev = ˆfold_result_6;
-    const [ˆresult_3, ˆnext_accu_4] = [item * acc + prev, acc + 1];
-    ˆaccu_2 = ˆnext_accu_4;
-    ˆfold_result_6 = ˆresult_3;
-  }
-
-  return ˆfold_result_6;
-};"
-`;
-
-exports[`fold legacy compiles without using prev result 1`] = `
-"ˆitems_3 => {
-  let ˆfold_result_4;
-
-  for (const ˆitem_1 of ˆitems_3) {
-    const item = ˆitem_1;
-    const ˆresult_2 = item;
-    ˆfold_result_4 = ˆresult_2;
-  }
-
-  return ˆfold_result_4;
-};"
-`;
-
-exports[`fold legacy destructuring item 1`] = `
-"ˆitems_3 => {
-  let ˆfold_result_4 = [];
-
-  for (const ˆitem_1 of ˆitems_3) {
-    const [foo, ...bar] = ˆitem_1;
-    const prev = ˆfold_result_4;
-    const ˆresult_2 = [[foo, bar], ...prev];
-    ˆfold_result_4 = ˆresult_2;
-  }
-
-  return ˆfold_result_4;
-};
-
-ˆitems_8 => {
-  let ˆfold_result_9 = [];
-
-  for (const ˆitem_5 of ˆitems_8) {
-    let _do_result;
-
-    {
-      const [...ˆitems_6] = ˆitem_5;
-      _do_result = [ˆitems_6.slice(0, -1), ˆitems_6.slice(-1)];
-    }
-    const [foo, [bar]] = _do_result;
-    _do_result = undefined;
-    const prev = ˆfold_result_9;
-    const ˆresult_7 = [[foo, bar], ...prev];
-    ˆfold_result_9 = ˆresult_7;
-  }
-
-  return ˆfold_result_9;
-};"
-`;
-
-exports[`fold legacy destructuring prev result 1`] = `
-"ˆitems_3 => {
-  let ˆfold_result_4 = [];
-
-  for (const ˆitem_1 of ˆitems_3) {
-    const item = ˆitem_1;
-    const [foo, ...bar] = ˆfold_result_4;
-    const ˆresult_2 = [item, bar, foo];
-    ˆfold_result_4 = ˆresult_2;
-  }
-
-  return ˆfold_result_4;
-};
-
-ˆitems_7 => {
-  let ˆfold_result_8 = [];
-
-  for (const ˆitem_5 of ˆitems_7) {
-    const item = ˆitem_5;
-
-    let _do_result;
-
-    {
-      const [...ˆitems_9] = ˆfold_result_8;
-      _do_result = [ˆitems_9.slice(0, -1), ˆitems_9.slice(-1)];
-    }
-    const [foo, [bar]] = _do_result;
-    _do_result = undefined;
-    const ˆresult_6 = [item, bar, foo];
-    ˆfold_result_8 = ˆresult_6;
-  }
-
-  return ˆfold_result_8;
-};"
 `;

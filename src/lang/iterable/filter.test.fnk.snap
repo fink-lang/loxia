@@ -1,18 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`filter async compiles 1`] = `
-"(function filter(ˆitems_3) {
-  return {
-    async *[Symbol.asyncIterator]() {
-      for await (const ˆitem_1 of ˆitems_3) {
-        const item = ˆitem_1;
-        const ˆresult_2 = (await item) % 2 === 0;
-        if (ˆresult_2) yield ˆitem_1;
-      }
-    }
+exports[`filter compiles async 1`] = `
+"import { _filter_ } from \\"@fink/js-interop/runtime.js\\";
 
-  };
-});"
+_filter_((item) => item % 2 === 0, 1, true);"
 `;
 
 exports[`filter compiles with custom runtime 1`] = `
@@ -37,108 +28,4 @@ exports[`filter compiles with default runtime 2`] = `
 "import { _filter_ } from \\"@fink/js-interop/runtime.js\\";
 
 _filter_((item, cntr) => [item < 1 && cntr % 2 === 0, cntr + 1], 2, false, 0);"
-`;
-
-exports[`filter legacy compiles 1`] = `
-"(function filter(ˆitems_3) {
-  return {
-    *[Symbol.iterator]() {
-      for (const ˆitem_1 of ˆitems_3) {
-        const item = ˆitem_1;
-        const ˆresult_2 = item % 2 === 0;
-        if (ˆresult_2) yield ˆitem_1;
-      }
-    }
-
-  };
-});
-
-(function filter(ˆitems_6) {
-  return {
-    *[Symbol.iterator]() {
-      for (const ˆitem_4 of ˆitems_6) {
-        const [a, ...b] = ˆitem_4;
-        const a_alone = a(andis_empty(b));
-        const ˆresult_5 = a_alone;
-        if (ˆresult_5) yield ˆitem_4;
-      }
-    }
-
-  };
-});
-
-(function filter(ˆitems_10) {
-  return {
-    *[Symbol.iterator]() {
-      for (const ˆitem_7 of ˆitems_10) {
-        let _do_result;
-
-        {
-          const [...ˆitems_8] = ˆitem_7;
-          _do_result = [ˆitems_8.slice(0, -1), ˆitems_8.slice(-1)];
-        }
-        const [a, [b]] = _do_result;
-        _do_result = undefined;
-        const ˆresult_9 = b && is_empty(a);
-        if (ˆresult_9) yield ˆitem_7;
-      }
-    }
-
-  };
-});"
-`;
-
-exports[`filter legacy compiles with accu 1`] = `
-"(function filter(ˆitems_5) {
-  return {
-    *[Symbol.iterator]() {
-      let ˆaccu_2 = 0;
-
-      for (const ˆitem_1 of ˆitems_5) {
-        const item = ˆitem_1;
-        const cntr = ˆaccu_2;
-        const [ˆresult_3, ˆnext_accu_4] = [item < 1 && cntr % 2 === 0, cntr + 1];
-        ˆaccu_2 = ˆnext_accu_4;
-        if (ˆresult_3) yield ˆitem_1;
-      }
-    }
-
-  };
-});"
-`;
-
-exports[`filter legacy compiles with accu 2`] = `
-"(function filter(ˆitems_5) {
-  return {
-    *[Symbol.iterator]() {
-      let ˆaccu_2 = false;
-
-      for (const ˆitem_1 of ˆitems_5) {
-        const is_even = ˆaccu_2;
-        const [ˆresult_3, ˆnext_accu_4] = [is_even, !is_even];
-        ˆaccu_2 = ˆnext_accu_4;
-        if (ˆresult_3) yield ˆitem_1;
-      }
-    }
-
-  };
-});"
-`;
-
-exports[`filter legacy compiles with accu 3`] = `
-"(function filter(ˆitems_5) {
-  return {
-    *[Symbol.iterator]() {
-      let ˆaccu_2 = false;
-
-      for (const ˆitem_1 of ˆitems_5) {
-        const is_even = ˆaccu_2;
-        const [ˆresult_3, ˆnext_accu_4] = [is_even, !is_even];
-        ˆaccu_2 = ˆnext_accu_4;
-        if (ˆresult_3) yield ˆitem_1;
-      }
-    }
-
-  };
-});"
 `;

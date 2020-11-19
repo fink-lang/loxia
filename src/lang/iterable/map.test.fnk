@@ -20,7 +20,7 @@ describe 'map', fn:
             [item + acc + shared_acc, acc + 1, shared_acc + 1]
 
           map item:
-            ...item
+            ... item
       '
       to_match_snapshot
 
@@ -59,115 +59,5 @@ describe 'custom runtime', fn:
       '
       to_match_snapshot
 
-
-
-describe 'map legacy', fn:
-  it 'compiles single line', fn:
-    expect
-      fink2js '
-        {_map_} = import "@fink/loxia:iter:legacy"
-        map item: item * 2
-      '
-      to_match_snapshot
-
-
-  it 'compiles multi line', fn:
-    expect
-      fink2js '
-        {_map_} = import "@fink/loxia:iter:legacy"
-        map item:
-          ni = foo item
-          ni + 2
-      '
-      to_match_snapshot
-
-
-  it 'compiles single line with default value', fn:
-    expect
-      fink2js '
-        {_map_} = import "@fink/loxia:iter:legacy"
-        map item=123: item * 2
-      '
-      to_match_snapshot
-
-
-  it 'compiles single line with destructured obj', fn:
-    expect
-      fink2js '
-        {_map_} = import "@fink/loxia:iter:legacy"
-        map {item}: item * 2
-      '
-      to_match_snapshot
-
-
-  it 'compiles single line with destructured list', fn:
-    expect
-      fink2js '
-        {_map_} = import "@fink/loxia:iter:legacy"
-        map [x, y]: x + y
-      '
-      to_match_snapshot
-
-
-  it 'compiles as flat map', fn:
-    expect
-      fink2js '
-        {_map_} = import "@fink/loxia:iter:legacy"
-        map [x, y]:
-          ...[x, y]
-      '
-      to_match_snapshot
-
-
-  it 'compiles with foo', fn:
-    expect
-      fink2js '
-        {_map_} = import "@fink/loxia:iter:legacy"
-        map {foo}:
-          match foo:
-            bar: spam
-      '
-      to_match_snapshot
-
-
-  it 'compiles with acc', fn:
-    expect
-      fink2js '
-        {_map_} = import "@fink/loxia:iter:legacy"
-        map {foo}, acc=0:
-          [foo + acc, acc+1]
-      '
-      to_match_snapshot
-
-    expect
-      fink2js '
-        {_map_} = import "@fink/loxia:iter:legacy"
-        map {foo}, acc=0:
-          ...[[acc, foo], acc+1]
-      '
-      to_match_snapshot
-
-
-  it 'compiles destructuring', fn:
-    expect
-      fink2js '
-        {_map_} = import "@fink/loxia:iter:legacy"
-        map [x, ...rest]:
-         rest
-
-        map [...ignored, last]:
-         last
-      '
-      to_match_snapshot
-
-
-  it 'compiles async', fn:
-    expect
-      fink2js '
-        {_map_} = import "@fink/loxia:iter:legacy"
-        map item:
-          await item * 2
-      '
-      to_match_snapshot
 
 

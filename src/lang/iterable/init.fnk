@@ -1,46 +1,100 @@
+{length, zip} = import '@fink/std-lib/iter.fnk'
+
+{transform} = import '../transform.fnk'
 {add_with_runtime, any} = import '../context.fnk'
-
-{transform_fold} = import './fold.fnk'
-{transform_unfold} = import './unfold.fnk'
-{transform_map} = import './map.fnk'
-{transform_filter} = import './filter.fnk'
-{transform_while} = import './while.fnk'
-{transform_until} = import './until.fnk'
-{transform_with_runtime_lib} = import './common.fnk'
-
 {use_runtime_fn} = import '../runtime.fnk'
-{runtime_impl} = import '../runtime.fnk'
-{add_ignorable_import} = import '../transform.fnk'
 
 
-legacy_uri = '@fink/loxia:iter:legacy'
+get_initial_values = fn node, args:
+  [plain_args, initial_args] = match node:
+    {args: 0 == length ?}:
+      [[], []]
+    else:
+      [item_arg, ...rest] = args
+      [[item_arg], rest]
+
+  [rest_args, initial_values] = pipe initial_args:
+    map arg: match arg:
+      {type: 'assign'}:
+        {left, right} = arg
+        [left, right]
+      else:
+        [arg, {type: 'empty', loc: arg.loc}]
+    zip ...?
+
+  [[...plain_args, ...rest_args], initial_values]
 
 
 
-with_legacy = fn legacy_transform: fn node, ctx:
-  runtime_fn = '_${node.op}_'
-  next_ctx = use_runtime_fn runtime_fn, ctx
+transform_with_runtime_lib = fn iter_fn, node, ctx:
+  args_len = length node.args
 
-  match next_ctx:
-    legacy_uri == runtime_impl runtime_fn, ?:
-      legacy_transform node, next_ctx
+  [use_spread, exprs] = match node:
+    {op: not ? in ['map', 'unfold']}:
+      [[], node.exprs]
+
+    {exprs: [..., {type: 'spread'}]}:
+      spread = {type: 'literal', value: 'true', loc: node.loc}
+      [...exprs, last] = node.exprs
+      [[spread], [...exprs, last.right]]
 
     else:
-      transform_with_runtime_lib runtime_fn, node, next_ctx
+      spread = {type: 'literal', value: 'false', loc: node.loc}
+      [[spread], node.exprs]
+
+  [is_async, args] = match node.args:
+    --- istanbul ignore else ---
+    [{op: 'await'}]:
+      async = {type: 'literal', value: 'true', loc: node.loc}
+      [{right}, ...rest] = node.args
+      [async, [right, ...rest]]
+
+    else:
+      async = {type: 'literal', value: 'false', loc: node.loc}
+      [async, node.args]
+
+  [final_args, initial_values] = get_initial_values node, args
+
+  [result, end_ctx] = transform
+    rec:
+      type: 'call'
+      callee: {type: 'ident', value : iter_fn}
+      args: seq:
+        rec:
+          type: 'block'
+          op: 'fn'
+          args: final_args
+          exprs: exprs
+          loc: node.loc
+        {type: 'number', value: '${args_len}', loc: node.loc}
+        is_async
+        ...use_spread
+        ...initial_values
+      loc: node.loc
+    ctx
+
+  [result, end_ctx]
 
 
-add = fn op, legacy_transform: fn ctx:
+
+transform_using_runtime = fn node, ctx:
+  runtime_fn = '_${node.op}_'
+  next_ctx = use_runtime_fn runtime_fn, ctx
+  transform_with_runtime_lib runtime_fn, node, next_ctx
+
+
+
+add = fn op: fn ctx:
   pipe ctx:
-    add_with_runtime any, op, with_legacy legacy_transform
+    add_with_runtime any, op, transform_using_runtime
 
 
 
 add_iterables = fn ctx:
   pipe ctx:
-    add_ignorable_import legacy_uri
-    add 'fold', transform_fold
-    add 'unfold', transform_unfold
-    add 'map', transform_map
-    add 'filter', transform_filter
-    add 'while', transform_while
-    add 'until', transform_until
+    add 'fold'
+    add 'unfold'
+    add 'map'
+    add 'filter'
+    add 'while'
+    add 'until'

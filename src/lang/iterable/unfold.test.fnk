@@ -51,56 +51,11 @@ describe 'unfold', fn:
       to_match_snapshot
 
 
-
-
-describe 'unfold legacy', fn:
-
-  it 'compiles with previous', fn:
-    expect
-      fink2js '
-        {_unfold_} = import "@fink/loxia:iter:legacy"
-        unfold prev:
-          prev + 1
-      '
-      to_match_snapshot
-
-
-  it 'compiles with default', fn:
-    expect
-      fink2js '
-        {_unfold_} = import "@fink/loxia:iter:legacy"
-        unfold prev=1:
-          prev + 1
-      '
-      to_match_snapshot
-
-
-  it 'compiles with default and accu', fn:
-    expect
-      fink2js '
-        {_unfold_} = import "@fink/loxia:iter:legacy"
-        unfold prev=1, acc=1:
-          [prev * accu, accu + 1]
-      '
-      to_match_snapshot
-
-
-  it 'compiles without args', fn:
-    expect
-      fink2js '
-        {_unfold_} = import "@fink/loxia:iter:legacy"
-        unfold:
-          1234
-      '
-      to_match_snapshot
-
-
   it 'compiles with spread', fn:
     expect
       fink2js '
-        {_unfold_} = import "@fink/loxia:iter:legacy"
         unfold:
-          ...[1, 2, 3]
+          ... [1, 2, 3]
       '
       to_match_snapshot
 
