@@ -68,7 +68,7 @@ get_runtime_imports = fn ctx:
     map name:
       uri = runtime_impl name, ctx
       left = {type: 'ident', value: name}
-      [uri, {type: 'rec:kv', left, right: left}]
+      [uri, {type: 'rec:kv', left, right: false}]
 
     map [uri, kv]:
       rec:

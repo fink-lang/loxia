@@ -37,8 +37,11 @@ get_key = fn {left: key}, ctx:
 
 
 
-get_value = fn {right}, ctx:
+get_value = fn {left, right}, ctx:
   match right:
+    --- istanbul ignore next ---
+    false:
+      transform left, ctx
     {type: 'empty'}:
       unique_ident 'unused', ctx
     else:
@@ -54,7 +57,11 @@ transform_kv = fn node, ctx:
       [computed, key, next_ctx] = get_key node, ctx
       [value, end_ctx] = get_value node, next_ctx
 
-      shorthand = node.left == node.right
+      shorthand = match node:
+        --- istanbul ignore next ---
+        {right: false}: true
+        {right: node.left}: true
+        else: false
 
       final_value = match node:
         {right: {type: 'assign'}}:

@@ -6,12 +6,8 @@ babel_types = import '@babel/types'
 
 
 
-not_tagged = {tagged: false}
-
-
-
 transform_string = fn node, ctx:
-  {exprs: parts, tag=not_tagged} = node
+  {exprs: parts, tag=false} = node
 
   quasies = pipe parts:
     filter part:
@@ -33,7 +29,7 @@ transform_string = fn node, ctx:
   templ_str = templateLiteral [...quasies], expressions
 
   match tag:
-    not_tagged:
+    false:
       [templ_str, next_ctx]
     else:
       [tag, end_ctx] = transform node.tag, next_ctx
