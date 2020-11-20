@@ -52,7 +52,6 @@ match_props = fn props, emit_result, ctx, cond:
   value = match prop:
     {left: {type: 'spread'}}:
       prop.left
-    --- istanbul ignore next ---
     {right: false}:
       prop.left
     else:
@@ -128,19 +127,14 @@ get_array_decl = fn arr, id_elems, right, ctx:
         {type: 'empty'}:
           value
 
-        --- istanbul ignore next ---
+        # e.g. spread in [foo, ..., bar]
         {type: 'spread', right: false}:
-          # e.g. spread in [foo, ..., bar]
           value
 
         # e.g. spread in [foo, ...bar, spam]
         {type: 'spread', right: {}}:
           ident = {type: 'ident', value: id.name}
           {...value, right: ident}
-
-        # e.g. spread in [foo, ..., bar]
-        {type: 'spread'}:
-          value
 
         else:
           {type: 'ident', value: id.name}
@@ -176,13 +170,11 @@ match_array = fn value, arr, emit_result, ctx, cond:
         # empty elements need no matching
         {type: 'empty'}: false
 
-        --- istanbul ignore next ---
-        {type: 'spread', right: false}:
-          # empty spreads need no matching
-          false
-        {type: 'spread', right: {}}: true
         # empty spreads need no matching
-        {type: 'spread'}: false
+        {type: 'spread', right: false}:  false
+
+        {type: 'spread', right: {}}: true
+
         else: true
 
   [result, end_ctx] = match id_elems:
@@ -209,7 +201,6 @@ match_simple = fn value, expr, emit_result, ctx:
 
 
 
-
 match_condition = fn value, expr, emit_result, ctx, cond:
   [js_expr, next_ctx] = match expr:
     {type: 'rec'}:
@@ -218,11 +209,7 @@ match_condition = fn value, expr, emit_result, ctx, cond:
     {type: 'list'}:
       match_array value, expr, emit_result, ctx, cond
 
-    --- istanbul ignore next ---
-    {type: 'spread', right: false}:
-      match_simple value, expr, emit_result, ctx
-
-    {type: 'spread', right: {}}:
+    {type: 'spread'}:
       match_condition value, expr.right, emit_result, ctx, cond
 
     else:
@@ -243,7 +230,7 @@ match_all = fn value, matches, emit, ctx:
     map_with_ctx fn expr, expr_ctx:
       match expr:
         {type: 'block', op: 'else'}:
-          {op:_, ...block} = expr
+          {op: _, ...block} = expr
           [js_expr, next_ctx] = emit block, expr_ctx
           js = wrap_with_comment_loc js_expr, block
           [js, next_ctx]

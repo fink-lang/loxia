@@ -1,8 +1,8 @@
 babel_types = import '@babel/types'
-{callExpression} = babel_types
+{callExpression, doExpression, blockStatement} = babel_types
 {is_empty} = import '@fink/std-lib/iter.fnk'
 
-{assign, lets, expr_block, undef, unique_ident} = import '../../js/types.fnk'
+{assign, lets, undef, unique_ident} = import '../../js/types.fnk'
 {transform_value} = import '../partial/init.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
 {transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
@@ -36,10 +36,11 @@ transform_pipe = fn node, ctx:
     map_with_ctx transform_callee result
     collect_with_ctx pipe_ctx
 
-  js = expr_block
-    wrap_with_comment_loc
-      lets result, start_value
-      start_value
-    ...pipe_calls
+  js = doExpression
+    blockStatement seq:
+      wrap_with_comment_loc
+        lets result, start_value
+        start_value
+      ...pipe_calls
 
   [js, next_ctx]

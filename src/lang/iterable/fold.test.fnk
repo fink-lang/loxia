@@ -52,73 +52,11 @@ describe 'fold', fn:
       to_match_snapshot
 
 
-
-describe 'fold legacy', fn:
-  it 'compiles', fn:
+  it 'compiles async ', fn:
     expect
       fink2js '
-        {_fold_} = import "@fink/loxia:iter:legacy"
-        fold item, prev=0:
-          ni = item + prev
-          item * ni
-      '
-      to_match_snapshot
-
-
-   it 'compiles with accu', fn:
-    expect
-      fink2js '
-        {_fold_} = import "@fink/loxia:iter:legacy"
-        fold item, prev=0, acc=1:
-          [item * acc + prev, acc + 1]
-      '
-      to_match_snapshot
-
-
-  it 'compiles without using prev result', fn:
-    expect
-      fink2js '
-        {_fold_} = import "@fink/loxia:iter:legacy"
-        fold item:
-          item
-      '
-      to_match_snapshot
-
-
-  it 'destructuring item', fn:
-    expect
-      fink2js '
-        {_fold_} = import "@fink/loxia:iter:legacy"
-        fold [foo, ...bar], prev=[]:
-          [[foo, bar], ...prev]
-
-        fold [...foo, bar], prev=[]:
-          [[foo, bar], ...prev]
-      '
-      to_match_snapshot
-
-
-  it 'destructuring prev result', fn:
-    expect
-      fink2js '
-        {_fold_} = import "@fink/loxia:iter:legacy"
-        fold item, [foo, ...bar]=[]:
-          [item, bar, foo]
-
-        fold item, [...foo, bar]=[]:
-          [item, bar, foo]
-      '
-      to_match_snapshot
-
-
-
-describe 'fold async', fn:
-  it 'compiles', fn:
-    expect
-      fink2js '
-        {_fold_} = import "@fink/loxia:iter:legacy"
-        fold item, acc=0:
-          ni = await item + acc
+        fold await item, acc=0:
+          ni = item + acc
           item * acc
       '
       to_match_snapshot

@@ -8,7 +8,7 @@
 {wrap_with_comment_loc} = import './comments/init.fnk'
 
 
-
+--- istanbul ignore next ---
 add_ignorable_import = fn uri: fn ctx:
   {...ctx, ignoreable_imports: [...ctx.ignoreable_imports, uri]}
 

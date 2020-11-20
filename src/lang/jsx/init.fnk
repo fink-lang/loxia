@@ -13,10 +13,7 @@ babel_types = import '@babel/types'
 
 
 transform_jsx_elem = fn node, ctx:
-  id =  match node.name:
-    --- istanbul ignore next ---
-    {type: 'ident'}: jsxIdentifier node.name.value
-    else: jsxIdentifier node.name
+  id = jsxIdentifier node.name.value
 
   [attrs, children_ctx] = pipe node.props:
     map_with_ctx fn expr, expr_ctx:
@@ -57,7 +54,7 @@ transform_jsx_frag = fn node, ctx:
 
 
 transform_jsx_attr = fn node, ctx:
-  {loc, name} = node
+  {name} = node
 
   [value, next_ctx] = match node:
     {value: {type: 'string', exprs: 1 == length ?}}:
@@ -68,25 +65,16 @@ transform_jsx_attr = fn node, ctx:
       [val, next_ctx] = transform node.value, ctx
       [[val], next_ctx]
 
-    --- istanbul ignore next ---
     {value: false}:
       [val, next_ctx] = transform name, ctx
       [[jsxExpressionContainer val], next_ctx]
 
-    {value: {}}:
+    else:
       [val, next_ctx] = transform node.value, ctx
       [[jsxExpressionContainer val], next_ctx]
 
-    else:
-      [val, next_ctx] = transform {type: 'ident', value: name, loc}, ctx
-      [[jsxExpressionContainer val], next_ctx]
-
-  id = match name:
-    --- istanbul ignore next ---
-    {type: 'ident'}: jsxIdentifier name.value
-    else: jsxIdentifier name
+  id = jsxIdentifier name.value
   js = jsxAttribute id, ...value
-
   [js, next_ctx]
 
 

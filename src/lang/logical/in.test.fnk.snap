@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`in compiles with custom runtime 1`] = `
-"import { _in_ } from \\"./foo.js\\";
+"import { better_in as _in_ } from \\"./foo.js\\";
 export const foo = _in_(1, [1, 2, 3]);
 export const bar = _in_(\`2\`, \`1234\`);
 export const spam = _in_(key, {
@@ -18,13 +18,4 @@ export const spam = _in_(key, {
   foo: bar
 });
 export const shrub = _in_(item, ni);"
-`;
-
-exports[`in compiles with legacy 1`] = `
-"export const foo = [1, 2, 3].includes(1);
-export const bar = \`1234\`.includes(\`2\`);
-export const spam = {
-  foo: bar
-}.hasOwnProperty(key);
-export const shrub = ni?.includes?.(item) ?? ni?.has?.(item) ?? ni?.hasOwnProperty?.(item) ?? false;"
 `;

@@ -36,55 +36,9 @@ describe 'while', fn:
     to_match_snapshot
 
 
-
-describe 'while legacy', fn:
-  it 'compiles', fn:
+  it 'compiles async', fn:
     expect
       fink2js '
-        {_while_} = import "@fink/loxia:iter:legacy"
-        while item:
-          item < 10
-      '
-      to_match_snapshot
-
-
-  it 'compiles with accu', fn:
-    expect
-      fink2js '
-        {_while_} = import "@fink/loxia:iter:legacy"
-
-        while _, cntr=0:
-          [cntr < 2, cntr + 1]
-
-        while , cntr=0:
-          [cntr < 2, cntr + 1]
-
-        while item, cntr=0:
-          [item and cntr < 2, cntr + 1]
-      '
-      to_match_snapshot
-
-
-  it 'compiles destructuring', fn:
-    expect
-      fink2js '
-        {_while_} = import "@fink/loxia:iter:legacy"
-        while [foo, ...bar]:
-          foo_alone = foo and is_empty bar
-          foo_alone
-
-        while [...foo, bar]:
-          bar and is_empty foo
-      '
-      to_match_snapshot
-
-
-
-describe 'while async', fn:
-  it 'compiles', fn:
-    expect
-      fink2js '
-        {_while_} = import "@fink/loxia:iter:legacy"
         while item:
           await item < 10
       '
