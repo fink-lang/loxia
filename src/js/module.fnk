@@ -47,7 +47,7 @@ module_transforms = dict:
     no_result
 
   ExportDefaultDeclaration: fn path:
-    id = path.node.declaration;
+    id = path.node.declaration
     foo = expressionStatement
       assignmentExpression
         '='
@@ -61,7 +61,7 @@ module_transforms = dict:
     no_result
 
   ExportNamedDeclaration: fn path:
-    {declarations: [{id}]} = path.node.declaration;
+    {declarations: [{id}]} = path.node.declaration
     foo = expressionStatement
       assignmentExpression
         '='

@@ -15,7 +15,7 @@ describe 'binary', fn:
           - 1111
 
         group1 = (1 + 2) * 3
-        group2 = (34234^-34234) + 1
+        group2 = (34234 ^ -34234) + 1
       '
       to_match_snapshot
 

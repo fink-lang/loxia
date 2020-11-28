@@ -19,12 +19,12 @@ wrap = fn larix_node, js_node:
 typof = fn value: unaryExpression 'typeof', value
 
 
-and = fn left, ...rest:
+and_ = fn left, ...rest:
   match rest:
     is_empty ?:
       left
     else:
-      logicalExpression '&&', left, and ...rest
+      logicalExpression '&&', left, and_ ...rest
 
 
 neq = fn left, right: binaryExpression '!==', left, right
@@ -40,7 +40,7 @@ false_ = fn: booleanLiteral false
 not_nullish = fn value:
   not_null = neq value, nullLiteral _
   not_undef = neq value, undef _
-  and not_undef, not_null
+  and_ not_undef, not_null
 
 
 ident = fn name, ctx:
