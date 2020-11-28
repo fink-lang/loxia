@@ -82,10 +82,10 @@ describe 'errors', fn:
 
   it 'errors when provided with unknown tokens', fn:
     {errors: [{message}]} = generate
-      dict:
+      rec:
         type: 'test'
         op: 'foobar'
-        loc: dict:
+        loc: rec:
           start: {pos: 0, line: 1, column: 0}
           end: {pos: 9, line: 1, column: 9}
 

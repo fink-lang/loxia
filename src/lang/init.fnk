@@ -47,7 +47,7 @@ add_transformers = fn ctx:
 
 
 init_ctx = fn code, filename, options:
-  ctx = dict:
+  ctx = rec:
     filename
     code
     errors: []

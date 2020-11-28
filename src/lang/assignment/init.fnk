@@ -160,7 +160,7 @@ transform_await_right = fn expr, ctx:
           iter
           callExpression
             memberExpression
-              dict:
+              rec:
                 ...logicalExpression
                   '||'
                   memberExpression

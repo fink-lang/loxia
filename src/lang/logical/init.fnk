@@ -8,7 +8,7 @@ babel_types = import '@babel/types'
 
 
 
-transform_op = dict:
+transform_op = rec:
   'and': '&&'
   'or': '||'
   'not': '!'

@@ -142,7 +142,7 @@ get_array_decl = fn arr, id_elems, right, ctx:
   left = {type: 'list', exprs, loc: arr.loc}
 
   [decl, next_ctx] = transform
-    dict:
+    rec:
       type: 'assign'
       op: '='
       left

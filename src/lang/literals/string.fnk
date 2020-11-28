@@ -14,7 +14,7 @@ transform_string = fn node, ctx:
       part.type == 'string:text'
 
     map part:
-      templateElement dict:
+      templateElement rec:
         raw: replace_all
           part.value
           rx'\\([\s\S])|(`)'

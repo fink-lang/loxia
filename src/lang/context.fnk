@@ -7,7 +7,7 @@ any = false
 
 
 add = fn type, op, transformer: fn {transformers, ...ctx}:
-  next_transformers = dict:
+  next_transformers = rec:
     ...transformers
     (type or op): transformer
 

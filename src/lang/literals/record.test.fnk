@@ -43,7 +43,7 @@ describe 'record', fn:
   it 'compiles idents that are not js prop-names', fn:
     expect
       fink2js "
-        foo = dict:
+        foo = rec:
           foo: bar
           π: 3.12,
           ƒ: 'fink'
@@ -68,7 +68,7 @@ describe 'record', fn:
       to_match_snapshot
 
     expect
-      fink2js 'obj = dict:
+      fink2js 'obj = rec:
           a: 123
 
           b: 123
@@ -86,7 +86,7 @@ describe 'calculated props', fn:
   it 'compiles', fn:
     expect
       fink2js "
-        foo = dict:
+        foo = rec:
           (Symbol 'foo'): 123
           'spam': 456
           'spam-\${ham}': 'ni'

@@ -24,7 +24,7 @@ transform_file = fn fink_ast, code, filename, options:
 
   match error:
     false:
-      traverse js_ast, dict:
+      traverse js_ast, rec:
         DoExpression: transform_do_expr
         AwaitExpression: {enter: transform_async}
         ...extras
@@ -37,7 +37,7 @@ transform_file = fn fink_ast, code, filename, options:
 babel_generate = fn ast, filename, source, options:
   {babel={babelrc: false, configFile: false}, source_maps} = options
 
-  babel_opts = dict:
+  babel_opts = rec:
     filename
     sourceFileName: filename
     sourceMaps: source_maps

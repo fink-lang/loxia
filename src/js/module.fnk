@@ -41,7 +41,7 @@ transform_specifiers = fn {specifiers, source}:
 
 
 # ImportNamespaceSpecifier:
-module_transforms = dict:
+module_transforms = rec:
   ImportDeclaration: fn path:
     path.replaceWith transform_specifiers path.node
     no_result

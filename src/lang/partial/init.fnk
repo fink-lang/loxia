@@ -32,7 +32,7 @@ transform_value = fn node, ctx:
 
   partial_or_node = match node:
     is_partial ?:
-      dict:
+      rec:
         type: 'func'
         op: 'fn'
         args: [{type: 'partial', value: '?'}]

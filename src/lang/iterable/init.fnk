@@ -59,7 +59,7 @@ transform_with_runtime_lib = fn iter_fn, node, ctx:
     rec:
       type: 'call'
       callee: {type: 'ident', value : iter_fn}
-      args: seq:
+      args: list:
         rec:
           type: 'block'
           op: 'fn'
