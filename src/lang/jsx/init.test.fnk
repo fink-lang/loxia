@@ -86,7 +86,7 @@ describe 'JSX extensions',  fn:
 
   it "compiles fink expr with gt comparison", fn:
     expect
-      fink2js "<Foobar spam=(foo > 123) shrub=1234> ni </Foobar>"
+      fink2js "<Foobar spam={foo > 123} shrub=1234> ni </Foobar>"
       to_match_snapshot
 
 

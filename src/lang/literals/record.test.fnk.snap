@@ -17,7 +17,7 @@ exports[`destructuring record compiles computed keys 1`] = `
 exports[`destructuring record compiles defaults 1`] = `
 "const {
   x = 1,
-  \\"∑\\": ˆ6q9 = 2,
+  π = 2,
   ni: {
     y,
     z
@@ -45,7 +45,6 @@ exports[`destructuring record compiles non js idents 1`] = `
   foo,
   π,
   ƒ,
-  \\"∑\\": ˆ6q9,
   \\"delete\\": ˆdelete
 } = obj;"
 `;
@@ -73,8 +72,7 @@ exports[`record compiles idents that are not js prop-names 1`] = `
 "export const foo = {
   foo: bar,
   π: 3.12,
-  ƒ: \`fink\`,
-  \\"∑\\": \`sum\`
+  ƒ: \`fink\`
 };"
 `;
 
@@ -116,8 +114,7 @@ exports[`record compiles shorthand 1`] = `
 "export const obj = {
   foo,
   π,
-  ƒ,
-  \\"∑\\": ˆ6q9
+  ƒ
 };"
 `;
 

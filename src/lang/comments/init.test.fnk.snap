@@ -9,6 +9,5 @@ Shrub ni.
 */
 export const bar = () =>
 /* single line block */
-spam;
-// trailing module"
+spam;"
 `;

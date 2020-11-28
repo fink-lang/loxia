@@ -24,12 +24,12 @@ describe 'identifiers', fn:
       to_match_snapshot
 
 
-  it 'escapes identifiers incompatible with JS', fn:
+  it 'does not escapes unicode names', fn:
     expect
       fink2js '
-        @ = spam
-        ∂ = shrub
-        ∑ = ni
+        ƒ = shrub
+        π = ni
+        ಠ_ಠ = 1234
       '
       to_match_snapshot
 

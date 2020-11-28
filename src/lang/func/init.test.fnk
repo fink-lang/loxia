@@ -25,7 +25,7 @@ describe 'func', fn:
         fun5 = fn c: fn d, e:
           match [d, e]:
             [1, 2]: c
-            [2, 1]: 1/c
+            [2, 1]: 1 / c
         '
       to_match_snapshot
 

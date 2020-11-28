@@ -46,14 +46,14 @@ transform_value = fn node, ctx:
 
 
 
-transform_partial = fn {value}, ctx:
+transform_partial = fn , ctx:
   {partial_ident} = ctx
 
   name = match partial_ident:
     {name: {}}:
       partial_ident.name
     else:
-      escape_ident value, ctx
+      '${ctx.ident_prefix}partial'
 
   js = identifier name
 

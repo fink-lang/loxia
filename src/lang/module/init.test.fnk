@@ -23,6 +23,6 @@ describe 'module', fn:
     expect
       fink2js "
         delete = fn: true
-        ∑ = fn: true
+        π = fn: true
       "
       to_match_snapshot

@@ -11,7 +11,7 @@ describe 'record', fn:
 
   it 'compiles shorthand', fn:
     expect
-      fink2js 'obj = {foo, π, ƒ, ∑}'
+      fink2js 'obj = {foo, π, ƒ}'
       to_match_snapshot
 
     expect
@@ -47,7 +47,6 @@ describe 'record', fn:
           foo: bar
           π: 3.12,
           ƒ: 'fink'
-          ∑: 'sum'
         "
       to_match_snapshot
 
@@ -105,7 +104,7 @@ describe 'destructuring record', fn:
 
   it 'compiles non js idents', fn:
     expect
-      fink2js '{foo, π, ƒ, ∑, delete} = obj'
+      fink2js '{foo, π, ƒ, delete} = obj'
       to_match_snapshot
 
 
@@ -123,7 +122,7 @@ describe 'destructuring record', fn:
 
   it 'compiles defaults', fn:
     expect
-      fink2js '{x=1, ∑=2, ni: {y, z}} = {ni: {y: 1, z: 2}}'
+      fink2js '{x=1, π=2, ni: {y, z}} = {ni: {y: 1, z: 2}}'
       to_match_snapshot
 
 

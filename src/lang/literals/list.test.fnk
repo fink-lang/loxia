@@ -10,7 +10,7 @@ describe 'list', fn:
         array2 = [1]
         array3 = [1, 2, 4, (a ()), (a _), ...b]
         array4 = list:
-          a + 1 + 45+
+          a + 1 + 45 +
             b + c
           [1, 2]
           (3 + 3) * 2

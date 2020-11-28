@@ -4,11 +4,10 @@ exports[`module handles comments 1`] = `
 "#!/usr/bin/env node
 // leading comment
 // expr comment
-export const foo = 1234;
-// trailing comment"
+export const foo = 1234;"
 `;
 
 exports[`module handles exports 1`] = `
 "export const ˆdelete = () => true;
-export const ˆ6q9 = () => true;"
+export const π = () => true;"
 `;
