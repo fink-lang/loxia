@@ -41,7 +41,7 @@ describe 'match', fn:
     expect
       fink2js "
         match shrub:
-          # deep obj comparison
+          # deep record comparison
           {foo: {}}: spam + ni
           {foo: []}: spam + ni
           {foo: 4, ni: {na, nu}}: spam + ni
