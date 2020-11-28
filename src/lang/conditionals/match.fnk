@@ -7,7 +7,7 @@ babel_types = import '@babel/types'
 } = babel_types
 {length, is_empty} = import '@fink/std-lib/iter.fnk'
 
-{and, eq, not_nullish, typof, consts, unique_ident} = import '../../js/types.fnk'
+{and_, eq, not_nullish, typof, consts, unique_ident} = import '../../js/types.fnk'
 
 {get_key} = import '../literals/record.fnk'
 {is_partial} = import '../partial/init.fnk'
@@ -25,7 +25,7 @@ iter = fn value:
 
 
 is_iterable = fn value:
-  and
+  and_
     not_nullish value
     eq
       typof iter value
