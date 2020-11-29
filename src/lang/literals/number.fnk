@@ -11,7 +11,7 @@ transform_number = fn {value}, ctx:
       numericLiteral parse_float value
     else:
       num = parse_int value
-      dict:
+      rec:
         ...numericLiteral num
         extra: {raw: value, rawValue: num}
 

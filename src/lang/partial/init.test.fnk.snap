@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`partial compiles assignment 1`] = `
-"export const foo1 = (ˆ1r) => a * ˆ1r + 1;
-export const foo2 = (ˆ1r) => bar(ˆ1r);
-export const foo3 = (ˆ1r) => ˆ1r.bar(spam);
-export const foo4 = (ˆ1r) => ˆ1r();
-export const foo5 = (ˆ1r) => ˆ1r();
-export const foo6 = (ˆ1r) => ˆ1r(bar, spam);"
+"export const foo1 = (ˆpartial) => a * ˆpartial + 1;
+export const foo2 = (ˆpartial) => bar(ˆpartial);
+export const foo3 = (ˆpartial) => ˆpartial.bar(spam);
+export const foo4 = (ˆpartial) => ˆpartial();
+export const foo5 = (ˆpartial) => ˆpartial();
+export const foo6 = (ˆpartial) => ˆpartial(bar, spam);"
 `;
 
 exports[`partial compiles assignment 2`] = `
-"export const foo1 = (ˆ1r) => [1, ...ˆ1r, 9];
-export const foo2 = (ˆ1r) => ({
+"export const foo1 = (ˆpartial) => [1, ...ˆpartial, 9];
+export const foo2 = (ˆpartial) => ({
   foo,
-  ...ˆ1r
+  ...ˆpartial
 });"
 `;

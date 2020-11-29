@@ -7,7 +7,7 @@ exports[`import imports dynamically with static URL 1`] = `"export const ni = aw
 exports[`import imports exported values 1`] = `
 "import { bar } from \\"./spam.js\\";
 import { foo as spam } from \\"./shrub.js\\";
-import { ˆ6q9, ˆdelete } from \\"./ni.js\\";"
+import { π, ˆdelete } from \\"./ni.js\\";"
 `;
 
 exports[`import imports module 1`] = `

@@ -5,33 +5,33 @@
 describe 'record', fn:
   it 'compiles simple', fn:
     expect
-      fink2js 'obj = {}'
+      fink2js 'foo = {}'
       to_match_snapshot
 
 
   it 'compiles shorthand', fn:
     expect
-      fink2js 'obj = {foo, π, ƒ, ∑}'
+      fink2js 'foo = {foo, π, ƒ}'
       to_match_snapshot
 
     expect
-      fink2js 'obj = {a, delete, true, false}'
+      fink2js 'foo = {a, delete, true, false}'
       to_match_snapshot
 
     expect
-      fink2js "obj = {'foo'}"
+      fink2js "foo = {'foo'}"
       to_match_snapshot
 
 
   it 'compiles spread', fn:
     expect
-      fink2js 'obj = {a, b, ...c}'
+      fink2js 'foo = {a, b, ...c}'
       to_match_snapshot
 
 
   it 'compiles key:val', fn:
     expect
-      fink2js "obj = {a: 1, b: 123, 'c-d-e': cde}"
+      fink2js "foo = {a: 1, b: 123, 'c-d-e': cde}"
       to_match_snapshot
 
     expect
@@ -43,17 +43,16 @@ describe 'record', fn:
   it 'compiles idents that are not js prop-names', fn:
     expect
       fink2js "
-        foo = dict:
+        foo = rec:
           foo: bar
           π: 3.12,
           ƒ: 'fink'
-          ∑: 'sum'
         "
       to_match_snapshot
 
   it 'compiles multiline', fn:
     expect
-      fink2js 'obj = {
+      fink2js 'foo = {
           a: 123
 
           b: 123
@@ -68,7 +67,7 @@ describe 'record', fn:
       to_match_snapshot
 
     expect
-      fink2js 'obj = dict:
+      fink2js 'foo = rec:
           a: 123
 
           b: 123
@@ -86,7 +85,7 @@ describe 'calculated props', fn:
   it 'compiles', fn:
     expect
       fink2js "
-        foo = dict:
+        foo = rec:
           (Symbol 'foo'): 123
           'spam': 456
           'spam-\${ham}': 'ni'
@@ -105,7 +104,7 @@ describe 'destructuring record', fn:
 
   it 'compiles non js idents', fn:
     expect
-      fink2js '{foo, π, ƒ, ∑, delete} = obj'
+      fink2js '{foo, π, ƒ, delete} = spam'
       to_match_snapshot
 
 
@@ -123,7 +122,7 @@ describe 'destructuring record', fn:
 
   it 'compiles defaults', fn:
     expect
-      fink2js '{x=1, ∑=2, ni: {y, z}} = {ni: {y: 1, z: 2}}'
+      fink2js '{x=1, π=2, ni: {y, z}} = {ni: {y: 1, z: 2}}'
       to_match_snapshot
 
 

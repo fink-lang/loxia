@@ -102,13 +102,13 @@ exports[`match compiles nested pattern 1`] = `
   ˆmatch_2: {
     const ˆvalue_1 = shrub;
 
-    // deep obj comparison
+    // deep record comparison
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
       const {
         foo: ˆp_3
       } = ˆvalue_1;
 
-      // deep obj comparison
+      // deep record comparison
       if (ˆp_3 !== undefined && ˆp_3 !== null) {
         spam + ni;
         break ˆmatch_2;

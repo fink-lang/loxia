@@ -1,8 +1,5 @@
 babel_types = import '@babel/types'
 {memberExpression, identifier} = babel_types
-{rx, matches} = import '@fink/std-lib/regex.fnk'
-
-{raw_str} = import '../../js/types.fnk'
 
 {add, any} = import '../context.fnk'
 {transform} = import '../transform.fnk'
@@ -15,10 +12,8 @@ transform_member = fn {left, right}, ctx:
   {loc, value} = right
 
   [computed, memb_right, end_ctx] = match right:
-    {type: 'ident', value: matches ?, rx'^[$_\p{L}][$_\p{L}\p{N}]*'}:
-      [false, {loc, ...identifier value}, next_ctx]
     {type: 'ident'}:
-      [true, {loc, ...raw_str value}, next_ctx]
+      [false, {loc, ...identifier value}, next_ctx]
     else:
       [true, ...transform right, next_ctx]
 

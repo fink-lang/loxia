@@ -67,8 +67,8 @@ match_props = fn props, emit_result, ctx, cond:
 
 
 
-match_obj = fn value, obj, emit_result, ctx, cond:
-  [id_props, props_ctx] = pipe obj.exprs:
+match_record = fn value, record, emit_result, ctx, cond:
+  [id_props, props_ctx] = pipe record.exprs:
     map_with_ctx fn prop, id_ctx:
       [id, next_ctx] = unique_ident 'p', id_ctx
       [{id, prop}, next_ctx]
@@ -142,7 +142,7 @@ get_array_decl = fn arr, id_elems, right, ctx:
   left = {type: 'list', exprs, loc: arr.loc}
 
   [decl, next_ctx] = transform
-    dict:
+    rec:
       type: 'assign'
       op: '='
       left
@@ -204,7 +204,7 @@ match_simple = fn value, expr, emit_result, ctx:
 match_condition = fn value, expr, emit_result, ctx, cond:
   [js_expr, next_ctx] = match expr:
     {type: 'rec'}:
-      match_obj value, expr, emit_result, ctx, cond
+      match_record value, expr, emit_result, ctx, cond
 
     {type: 'list'}:
       match_array value, expr, emit_result, ctx, cond

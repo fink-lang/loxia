@@ -40,7 +40,7 @@ use_runtime_fn = fn name, ctx:
     ...ctx
     runtime: rec:
       ...runtime
-      used: seq:
+      used: list:
         name,
         ...runtime.used | filter used_name: used_name != name
 

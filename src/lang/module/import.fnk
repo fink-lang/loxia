@@ -33,7 +33,7 @@ transform_import = fn node, ctx:
       [...exprs, url] = node.right.exprs
 
       transform
-        dict:
+        rec:
           ...node.right
           exprs: [...exprs, {...url, value: resolve_ext url.value, options}]
         ctx

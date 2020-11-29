@@ -2,10 +2,10 @@
 
 exports[`identifiers does not escape true, false 1`] = `"export const foo = [true, false];"`;
 
-exports[`identifiers escapes identifiers incompatible with JS 1`] = `
-"export const ˆ1s = spam;
-export const ˆ6pu = shrub;
-export const ˆ6q9 = ni;"
+exports[`identifiers does not escapes unicode names 1`] = `
+"export const ƒ = shrub;
+export const π = ni;
+export const ಠ_ಠ = 1234;"
 `;
 
 exports[`identifiers escapes reserved JS identifiers 1`] = `

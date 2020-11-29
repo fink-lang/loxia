@@ -7,7 +7,7 @@ babe_types = import '@babel/types'
 
 {is_empty} = import '@fink/std-lib/iter.fnk'
 
-{escape_ident} = import'./identifier.fnk'
+{escape_ident} = import './identifier.fnk'
 
 
 
@@ -56,10 +56,10 @@ unique_ident = fn name, ctx:
 
 
 raw_str = fn value:
-  dict:
+  rec:
     type: 'StringLiteral'
     value
-    extra: dict:
+    extra: rec:
       raw: '"${value}"'
       rawValue: value
 

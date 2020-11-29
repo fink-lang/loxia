@@ -37,7 +37,7 @@ transform_pipe = fn node, ctx:
     collect_with_ctx pipe_ctx
 
   js = doExpression
-    blockStatement seq:
+    blockStatement list:
       wrap_with_comment_loc
         lets result, start_value
         start_value

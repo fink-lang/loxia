@@ -8,6 +8,7 @@ describe 'numbers', fn:
       fink2js '
         x = 1234578
         y = 0123
+        z = 123_456_789
       '
       to_match_snapshot
 

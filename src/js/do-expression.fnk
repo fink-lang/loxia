@@ -65,7 +65,7 @@ last_expressions = fn path:
       # TODO: don't use mutable obj
       items = []
       body.traverse
-        dict:
+        rec:
           LabeledStatement: fn nested_match:
             nested_match.skip _
 

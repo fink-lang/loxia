@@ -13,7 +13,7 @@ transform_comments = fn comments:
 get_comments = fn {comments={}}:
   {leading=[], trailing=[]} = comments
 
-  dict:
+  rec:
     leadingComments: [...transform_comments leading]
     trailingComments: [...transform_comments trailing]
 

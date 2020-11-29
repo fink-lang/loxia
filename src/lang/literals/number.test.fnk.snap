@@ -15,5 +15,6 @@ export const b = 0b01010;"
 
 exports[`numbers transforms integers 1`] = `
 "export const x = 1234578;
-export const y = 0123;"
+export const y = 0123;
+export const z = 123_456_789;"
 `;

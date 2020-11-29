@@ -17,7 +17,7 @@ exports[`destructuring record compiles computed keys 1`] = `
 exports[`destructuring record compiles defaults 1`] = `
 "const {
   x = 1,
-  \\"∑\\": ˆ6q9 = 2,
+  π = 2,
   ni: {
     y,
     z
@@ -45,9 +45,8 @@ exports[`destructuring record compiles non js idents 1`] = `
   foo,
   π,
   ƒ,
-  \\"∑\\": ˆ6q9,
   \\"delete\\": ˆdelete
-} = obj;"
+} = spam;"
 `;
 
 exports[`destructuring record compiles simple 1`] = `
@@ -73,13 +72,12 @@ exports[`record compiles idents that are not js prop-names 1`] = `
 "export const foo = {
   foo: bar,
   π: 3.12,
-  ƒ: \`fink\`,
-  \\"∑\\": \`sum\`
+  ƒ: \`fink\`
 };"
 `;
 
 exports[`record compiles key:val 1`] = `
-"export const obj = {
+"export const foo = {
   a: 1,
   b: 123,
   [\`c-d-e\`]: cde
@@ -95,7 +93,7 @@ exports[`record compiles key:val 2`] = `
 `;
 
 exports[`record compiles multiline 1`] = `
-"export const obj = {
+"export const foo = {
   a: 123,
   b: 123 && 123 && 1345,
   c: (a, b) => 134,
@@ -104,7 +102,7 @@ exports[`record compiles multiline 1`] = `
 `;
 
 exports[`record compiles multiline 2`] = `
-"export const obj = {
+"export const foo = {
   a: 123,
   b: 123 && 123 && 1345,
   c: (a, b) => 134,
@@ -113,16 +111,15 @@ exports[`record compiles multiline 2`] = `
 `;
 
 exports[`record compiles shorthand 1`] = `
-"export const obj = {
+"export const foo = {
   foo,
   π,
-  ƒ,
-  \\"∑\\": ˆ6q9
+  ƒ
 };"
 `;
 
 exports[`record compiles shorthand 2`] = `
-"export const obj = {
+"export const foo = {
   a,
   \\"delete\\": ˆdelete,
   true,
@@ -131,15 +128,15 @@ exports[`record compiles shorthand 2`] = `
 `;
 
 exports[`record compiles shorthand 3`] = `
-"export const obj = {
+"export const foo = {
   [\`foo\`]: \`foo\`
 };"
 `;
 
-exports[`record compiles simple 1`] = `"export const obj = {};"`;
+exports[`record compiles simple 1`] = `"export const foo = {};"`;
 
 exports[`record compiles spread 1`] = `
-"export const obj = {
+"export const foo = {
   a,
   b,
   ...c

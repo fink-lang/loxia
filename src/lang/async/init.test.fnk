@@ -7,7 +7,7 @@ describe 'await', fn:
 
     expect
       fink2js '
-        task1 = fn foo: - await foo
+        task1 = fn foo: -await foo
 
         task2 = fn foo: await (foo + 4)
 
