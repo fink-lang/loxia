@@ -2,13 +2,17 @@ babel_types = import '@babel/types'
 {
   objectExpression, objectProperty, assignmentPattern, doExpression
   blockStatement, expressionStatement, assignmentExpression, spreadElement
-  memberExpression, identifier
+  optionalMemberExpression, identifier
 } = babel_types
 
 {is_empty} = import '@fink/std-lib/iter.fnk'
 
 {raw_str, unique_ident, ident, lets} = import '../../js/types.fnk'
 {transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
+
+optional = true
+not_computed = false
+
 
 
 has_member_keys = fn expr:
@@ -36,7 +40,7 @@ transform_member_prop = fn [key, ...parents], rec_val, value:
     is_empty ?:
       value
     else:
-      next_rec_val = memberExpression rec_val, key
+      next_rec_val = optionalMemberExpression rec_val, key, not_computed, optional
       transform_member_prop parents, next_rec_val, value
 
   objectExpression list:
