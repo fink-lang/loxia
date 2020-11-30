@@ -103,6 +103,22 @@ describe 'match records', fn:
       to_match_snapshot
 
 
+  it 'matches member expr keys', fn:
+    expect
+      fink2js '
+        match foo:
+          {foo.bar.spam: ham}: spam
+      '
+      to_match_snapshot
+
+    expect
+      fink2js '
+        match foo:
+          {foo.bar.spam: {ham.ni: nu}}: spam
+      '
+      to_match_snapshot
+
+
 
 describe 'match value assertions', fn:
   it 'compiles patial application', fn:

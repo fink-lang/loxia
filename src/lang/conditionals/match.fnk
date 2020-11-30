@@ -68,11 +68,23 @@ match_props = fn props, emit_result, ctx, cond:
 
 
 
+fix_member_prop = fn expr:
+  match expr:
+    {left: {type: 'member'}}:
+      {left, right} = expr.left
+      value = {type: 'rec', exprs: [{...expr, left: right}], loc: expr.loc}
+      fix_member_prop {...expr, left, right: value}
+    else:
+      expr
+
+
 match_record = fn value, record, emit_result, ctx, cond:
   [id_props, props_ctx] = pipe record.exprs:
-    map_with_ctx fn prop, id_ctx:
+    map_with_ctx fn orig_prop, id_ctx:
+      prop = fix_member_prop orig_prop
       [id, next_ctx] = unique_ident 'p', id_ctx
       [{id, prop}, next_ctx]
+
     collect_with_ctx ctx
 
   [props, result_ctx] = pipe id_props:

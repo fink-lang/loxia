@@ -193,6 +193,80 @@ exports[`match records matches calculated props 1`] = `
 }"
 `;
 
+exports[`match records matches member expr keys 1`] = `
+"{
+  ˆmatch_2: {
+    const ˆvalue_1 = foo;
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        foo: ˆp_3
+      } = ˆvalue_1;
+
+      if (ˆp_3 !== undefined && ˆp_3 !== null) {
+        const {
+          bar: ˆp_4
+        } = ˆp_3;
+
+        if (ˆp_4 !== undefined && ˆp_4 !== null) {
+          const {
+            spam: ˆp_5
+          } = ˆp_4;
+
+          if (ˆp_5 === ham) {
+            spam;
+            break ˆmatch_2;
+          }
+        }
+      }
+    }
+  }
+}"
+`;
+
+exports[`match records matches member expr keys 2`] = `
+"{
+  ˆmatch_2: {
+    const ˆvalue_1 = foo;
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        foo: ˆp_3
+      } = ˆvalue_1;
+
+      if (ˆp_3 !== undefined && ˆp_3 !== null) {
+        const {
+          bar: ˆp_4
+        } = ˆp_3;
+
+        if (ˆp_4 !== undefined && ˆp_4 !== null) {
+          const {
+            spam: ˆp_5
+          } = ˆp_4;
+
+          if (ˆp_5 !== undefined && ˆp_5 !== null) {
+            const {
+              ham: ˆp_6
+            } = ˆp_5;
+
+            if (ˆp_6 !== undefined && ˆp_6 !== null) {
+              const {
+                ni: ˆp_7
+              } = ˆp_6;
+
+              if (ˆp_7 === nu) {
+                spam;
+                break ˆmatch_2;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}"
+`;
+
 exports[`match records matches props 1`] = `
 "{
   ˆmatch_2: {
