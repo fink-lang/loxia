@@ -101,6 +101,87 @@ exports[`match iterables matches spread 1`] = `
 }"
 `;
 
+exports[`match iterables matches value assertions 1`] = `
+"{
+  ˆmatch_2: {
+    const ˆvalue_1 = foo;
+
+    // nested unary
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_3] = ˆvalue_1;
+
+      // nested unary
+      if (!ˆa_3) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    // nested binary
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_4] = ˆvalue_1;
+
+      // nested binary
+      if (ˆa_4 > 123) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    // nested call
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_5] = ˆvalue_1;
+
+      // nested call
+      if (ˆa_5()) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_6] = ˆvalue_1;
+
+      if (ˆa_6()) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    // nested member call
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_7] = ˆvalue_1;
+
+      // nested member call
+      if (ˆa_7.is_foo()) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_8] = ˆvalue_1;
+
+      if (ˆa_8.is_foo()) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    // nested as call arg
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_9] = ˆvalue_1;
+
+      // nested as call arg
+      if (is_foo(ˆa_9)) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+  }
+}"
+`;
+
 exports[`match iterables matches values 1`] = `
 "{
   ˆmatch_2: {
@@ -176,6 +257,43 @@ exports[`match matches simple values 1`] = `
     // fallback if none of above match
     {
       shrub;
+      break ˆmatch_2;
+    }
+  }
+}"
+`;
+
+exports[`match matches value assertions 1`] = `
+"{
+  ˆmatch_2: {
+    const ˆvalue_1 = 123;
+
+    // simple unary
+    if (!ˆvalue_1) {
+      ni;
+      break ˆmatch_2;
+    }
+
+    // simple binary
+    if (ˆvalue_1 > 123) {
+      ni;
+      break ˆmatch_2;
+    }
+
+    // simple call
+    if (ˆvalue_1()) {
+      ni;
+      break ˆmatch_2;
+    }
+
+    if (ˆvalue_1()) {
+      ni;
+      break ˆmatch_2;
+    }
+
+    // simple as call arg
+    if (shrub(ˆvalue_1)) {
+      ni;
       break ˆmatch_2;
     }
   }
@@ -408,70 +526,10 @@ exports[`match records matches spread 1`] = `
 }"
 `;
 
-exports[`match value assertions compiles do-expr 1`] = `
-"let _do_result;
-
-ˆmatch_2: {
-  const ˆvalue_1 = bar;
-
-  if (ˆvalue_1 === spam) {
-    _do_result = (() => {
-      ni;
-      throw foobar;
-    })();
-
-    break ˆmatch_2;
-  }
-
-  {
-    _do_result = (() => {
-      shrub;
-      throw ni;
-    })();
-
-    break ˆmatch_2;
-  }
-}
-
-export const foo = _do_result;
-_do_result = undefined;"
-`;
-
-exports[`match value assertions compiles patial application 1`] = `
+exports[`match records matches value assertions 1`] = `
 "{
   ˆmatch_2: {
-    const ˆvalue_1 = {
-      spam: 123
-    };
-
-    // simple unary
-    if (!ˆvalue_1) {
-      ni;
-      break ˆmatch_2;
-    }
-
-    // simple binary
-    if (ˆvalue_1 > 123) {
-      ni;
-      break ˆmatch_2;
-    }
-
-    // simple call
-    if (ˆvalue_1()) {
-      ni;
-      break ˆmatch_2;
-    }
-
-    if (ˆvalue_1()) {
-      ni;
-      break ˆmatch_2;
-    }
-
-    // simple as call arg
-    if (shrub(ˆvalue_1)) {
-      ni;
-      break ˆmatch_2;
-    }
+    const ˆvalue_1 = foo;
 
     // nested unary
     if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
@@ -559,79 +617,35 @@ exports[`match value assertions compiles patial application 1`] = `
         break ˆmatch_2;
       }
     }
-
-    // nested unary
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_10] = ˆvalue_1;
-
-      // nested unary
-      if (!ˆa_10) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    // nested binary
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_11] = ˆvalue_1;
-
-      // nested binary
-      if (ˆa_11 > 123) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    // nested call
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_12] = ˆvalue_1;
-
-      // nested call
-      if (ˆa_12()) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_13] = ˆvalue_1;
-
-      if (ˆa_13()) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    // nested member call
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_14] = ˆvalue_1;
-
-      // nested member call
-      if (ˆa_14.is_foo()) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_15] = ˆvalue_1;
-
-      if (ˆa_15.is_foo()) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    // nested as call arg
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
-      const [ˆa_16] = ˆvalue_1;
-
-      // nested as call arg
-      if (is_foo(ˆa_16)) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
   }
 }"
+`;
+
+exports[`match value assertions compiles do-expr 1`] = `
+"let _do_result;
+
+ˆmatch_2: {
+  const ˆvalue_1 = bar;
+
+  if (ˆvalue_1 === spam) {
+    _do_result = (() => {
+      ni;
+      throw foobar;
+    })();
+
+    break ˆmatch_2;
+  }
+
+  {
+    _do_result = (() => {
+      shrub;
+      throw ni;
+    })();
+
+    break ˆmatch_2;
+  }
+}
+
+export const foo = _do_result;
+_do_result = undefined;"
 `;
