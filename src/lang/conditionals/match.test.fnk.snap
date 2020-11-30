@@ -79,6 +79,24 @@ exports[`match iterables matches spread 1`] = `
         break ˆmatch_2;
       }
     }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      let _do_result3;
+
+      {
+        const [...ˆitems_16] = ˆvalue_1;
+        _do_result3 = [ˆitems_16, ˆitems_16.slice(1, -1), ˆitems_16.slice(-1)];
+      }
+      const [[ˆa_13], ˆa_14, [ˆa_15]] = _do_result3;
+      _do_result3 = undefined;
+      if (ˆa_13 === 1) if (ˆa_14 !== undefined && ˆa_14 !== null && typeof ˆa_14[Symbol.iterator] === \\"function\\") {
+        const [ˆa_17, ˆa_18] = ˆa_14;
+        if (ˆa_17 === 2) if (ˆa_18 === 3) if (ˆa_15 === 4) {
+          foo;
+          break ˆmatch_2;
+        }
+      }
+    }
   }
 }"
 `;
