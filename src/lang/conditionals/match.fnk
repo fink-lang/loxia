@@ -50,6 +50,9 @@ match_props = fn props, emit_result, ctx, cond:
   [{id, prop}, ...rest] = props
 
   value = match prop:
+    ---istanbul ignore next---
+    {type: 'spread'}:
+      prop
     {left: {type: 'spread'}}:
       prop.left
     {right: false}:
@@ -77,6 +80,9 @@ match_record = fn value, record, emit_result, ctx, cond:
   [props, result_ctx] = pipe id_props:
     map_with_ctx fn {id, prop}, prop_ctx:
       match prop:
+        ---istanbul ignore next---
+        {type: 'spread'}:
+          [(restElement id), prop_ctx]
         {left: {type: 'spread'}}:
           [(restElement id), prop_ctx]
         else:

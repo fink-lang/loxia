@@ -50,8 +50,13 @@ get_value = fn {left, right}, ctx:
 
 transform_kv = fn node, ctx:
   match node:
+    ---istanbul ignore next---
+    {type: 'spread'}:
+      transform node, ctx
+
     {left: {type: 'spread'}}:
       transform node.left, ctx
+
     else:
       [computed, key, next_ctx] = get_key node, ctx
       [value, end_ctx] = get_value node, next_ctx
