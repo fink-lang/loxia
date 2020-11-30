@@ -37,7 +37,7 @@ describe 'match', fn:
       to_match_snapshot
 
 
-  it 'compiles nested pattern', fn:
+ it 'matches records', fn:
     expect
       fink2js "
         match shrub:
@@ -54,6 +54,8 @@ describe 'match', fn:
       "
       to_match_snapshot
 
+
+  it 'matches iterables', fn:
     expect
       fink2js '
         match shrub:
@@ -66,14 +68,14 @@ describe 'match', fn:
       to_match_snapshot
 
     expect
-      # TODO: example without JS API
+      # TODO: add support for asserting on rest spread
       fink2js '
         # spread and ignored elems
         match shrub:
           [1, ,2]: foo
-          [1, ...{length: 0}]: foo
+          [1, [2, 3]]: foo
           [1, ..., 3]: foo
-          [1, ...{length: 0}, 3]: foo
+          [..., 2]: foo
       '
       to_match_snapshot
 
