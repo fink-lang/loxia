@@ -1,5 +1,5 @@
 {fink2js} = import '../../testing/generate.fnk'
-{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{only, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
 describe 'match', fn:
@@ -109,6 +109,9 @@ describe 'match iterables', fn:
 
           # nested as call arg
           [is_foo ?]: ni
+
+          [1, ...is_empty ?]: ni
+          [1, ...(1 < length ?)]: ni
       '
       to_match_snapshot
 
@@ -184,6 +187,9 @@ describe 'match records', fn:
 
           # nested as call arg
           {spam: is_foo ?}: ni
+
+          {spam, ...is_empty ?}: ni
+          {spam, ...("foo" in ?)}: ni
       '
       to_match_snapshot
 

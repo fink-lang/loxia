@@ -178,6 +178,22 @@ exports[`match iterables matches value assertions 1`] = `
         break ˆmatch_2;
       }
     }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_10, ...ˆa_11] = ˆvalue_1;
+      if (ˆa_10 === 1) if (is_empty(ˆa_11)) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+      const [ˆa_12, ...ˆa_13] = ˆvalue_1;
+      if (ˆa_12 === 1) if (1 < length(ˆa_13)) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
   }
 }"
 `;
@@ -527,7 +543,8 @@ exports[`match records matches spread 1`] = `
 `;
 
 exports[`match records matches value assertions 1`] = `
-"{
+"import { _in_ } from \\"@fink/js-interop/runtime.js\\";
+{
   ˆmatch_2: {
     const ˆvalue_1 = foo;
 
@@ -613,6 +630,28 @@ exports[`match records matches value assertions 1`] = `
 
       // nested as call arg
       if (is_foo(ˆp_9)) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        spam: ˆp_10,
+        ...ˆp_11
+      } = ˆvalue_1;
+      if (ˆp_10 === spam) if (is_empty(ˆp_11)) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+      const {
+        spam: ˆp_12,
+        ...ˆp_13
+      } = ˆvalue_1;
+      if (ˆp_12 === spam) if (_in_(\`foo\`, ˆp_13)) {
         ni;
         break ˆmatch_2;
       }
