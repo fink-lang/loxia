@@ -25,6 +25,7 @@ iter = fn value:
 
 
 is_iterable = fn value:
+  # TODO use nullish coalescing operator
   and_
     not_nullish value
     eq
@@ -50,11 +51,8 @@ match_props = fn props, emit_result, ctx, cond:
   [{id, prop}, ...rest] = props
 
   value = match prop:
-    ---istanbul ignore next---
     {type: 'spread'}:
       prop
-    {left: {type: 'spread'}}:
-      prop.left
     {right: false}:
       prop.left
     else:
@@ -80,10 +78,7 @@ match_record = fn value, record, emit_result, ctx, cond:
   [props, result_ctx] = pipe id_props:
     map_with_ctx fn {id, prop}, prop_ctx:
       match prop:
-        ---istanbul ignore next---
         {type: 'spread'}:
-          [(restElement id), prop_ctx]
-        {left: {type: 'spread'}}:
           [(restElement id), prop_ctx]
         else:
           [computed, key, next_ctx] = get_key prop, prop_ctx
