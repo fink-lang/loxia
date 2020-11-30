@@ -39,8 +39,8 @@ exports[`record compiles member expr as keys 1`] = `
   let ˆrec_1 = { ...bar
   };
   ˆrec_1 = { ...ˆrec_1,
-    spam: { ...ˆrec_1.spam,
-      ham: { ...ˆrec_1.spam.ham,
+    spam: { ...ˆrec_1?.spam,
+      ham: { ...ˆrec_1?.spam?.ham,
         ni: \`ni\`
       }
     }
@@ -64,11 +64,11 @@ exports[`record compiles member expr as keys 2`] = `
   let ˆrec_1 = { ...bar
   };
   ˆrec_1 = { ...ˆrec_1,
-    spam: { ...ˆrec_1.spam,
+    spam: { ...ˆrec_1?.spam,
       ham: (() => {
         let ˆrec_2 = {};
         ˆrec_2 = { ...ˆrec_2,
-          ni: { ...ˆrec_2.ni,
+          ni: { ...ˆrec_2?.ni,
             na: \`ni\`
           }
         };
