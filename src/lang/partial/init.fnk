@@ -1,7 +1,6 @@
 babel_types = import '@babel/types'
 {identifier} = babel_types
 
-{escape_ident} = import '../../js/identifier.fnk'
 {add} = import '../context.fnk'
 {transform} = import '../transform.fnk'
 
