@@ -3,7 +3,7 @@
 
 
 describe 'match', fn:
-  it 'compiles', fn:
+  it 'matches simple values', fn:
     expect
       fink2js '
         match shrub:
@@ -11,14 +11,6 @@ describe 'match', fn:
           123:
             # result
             spam
-
-          # record matching
-          {foo: 4, ni}:
-            spam + ni
-
-          # iterable matching
-          [1, 2, ni]:
-            ni
 
           # fallback if none of above match
           else:
@@ -31,51 +23,7 @@ describe 'match', fn:
     expect
       fink2js '
         match shrub:
-          {foo: 4, ni}: spam + ni
           123: spam
-      '
-      to_match_snapshot
-
-
- it 'matches records', fn:
-    expect
-      fink2js "
-        match shrub:
-          # deep record comparison
-          {foo: {}}: spam + ni
-          {foo: []}: spam + ni
-          {foo: 4, ni: {na, nu}}: spam + ni
-          {xx: 1, foo: {bar: 'spam'}, shrub: {na: 'nu'}}: ni
-          {ni: {len: 1}, na: {len: 1}}: na
-          # calculated props
-          {(a): {b, c}}: ni
-          # spread
-          {(foo): {}, ...{bar, spam}}: ni
-      "
-      to_match_snapshot
-
-
-  it 'matches iterables', fn:
-    expect
-      fink2js '
-        match shrub:
-          # deep iterable comparison
-          [1, 2, [ni]]: ni
-          [1, 2, [], {}]: foo
-          [1, [2, 3], 4]: bar
-          [1, [2, [3, 4]], [5, 6], 7]: spam
-      '
-      to_match_snapshot
-
-    expect
-      # TODO: add support for asserting on rest spread
-      fink2js '
-        # spread and ignored elems
-        match shrub:
-          [1, ,2]: foo
-          [1, [2, 3]]: foo
-          [1, ..., 3]: foo
-          [..., 2]: foo
       '
       to_match_snapshot
 
@@ -93,6 +41,70 @@ describe 'match', fn:
       to_match_snapshot
 
 
+
+describe 'match iterables', fn:
+  it 'matches values', fn:
+    expect
+      fink2js '
+        match shrub:
+          # deep iterable comparison
+          [1, 2, [ni]]: ni
+          [1, 2, [], {}]: foo
+          [1, [2, 3], 4]: bar
+          [1, [2, [3, 4]], [5, 6], 7]: spam
+      '
+      to_match_snapshot
+
+
+  it 'matches spread', fn:
+    expect
+      fink2js '
+        # spread and ignored elems
+        match shrub:
+          [1, ,2]: foo
+          [1, ..., 3]: foo
+          [..., 2]: foo
+      '
+      to_match_snapshot
+
+
+
+describe 'match records', fn:
+  it 'matches props', fn:
+    expect
+      fink2js "
+        match shrub:
+          {foo: {}}: spam + ni
+          {foo: []}: spam + ni
+          {foo: 4, ni: {na, nu}}: spam + ni
+          {foo: 1, foo: {bar: 'spam'}, shrub: {na: 'nu'}}: ni
+          {ni: {len: 1}, na: {len: 1}}: na
+      "
+      to_match_snapshot
+
+
+  it 'matches calculated props', fn:
+    expect
+      fink2js '
+        match shrub:
+          # calculated props
+          {(a): {b, c}}: ni
+      '
+      to_match_snapshot
+
+
+  it 'matches spread', fn:
+    expect
+      fink2js '
+        match shrub:
+          # spread
+          {(foo): {}, ...{bar, spam}}: ni
+      '
+      to_match_snapshot
+
+
+
+describe 'match value assertions', fn:
   it 'compiles patial application', fn:
     expect
       fink2js '
@@ -110,7 +122,6 @@ describe 'match', fn:
           # simple as call arg
           shrub ?: ni
 
-
           # nested unary
           {spam: not ?}: ni
 
@@ -127,7 +138,6 @@ describe 'match', fn:
 
           # nested as call arg
           {spam: is_foo ?}: ni
-
 
           # nested unary
           [not ?]: ni
