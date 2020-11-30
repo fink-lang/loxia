@@ -18,7 +18,7 @@ describe 'list', fn:
       to_match_snapshot
 
 
-describe 'destructuring list', fn:
+describe 'unpacking list', fn:
   it 'compiles', fn:
     expect
       fink2js "

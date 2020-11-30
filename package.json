@@ -47,8 +47,8 @@
   "devDependencies": {
     "@fink/cli": "^8.0.0",
     "@fink/jest": "^7.0.0",
-    "@fink/larix": "^17.0.0",
-    "@fink/loxia": "^20.0.0",
+    "@fink/larix": "^18.0.0",
+    "@fink/loxia": "^21.0.0",
     "commitizen": "^4.1.2",
     "cz-conventional-changelog": "^3.1.0",
     "jest-cli": "^26.5.3",

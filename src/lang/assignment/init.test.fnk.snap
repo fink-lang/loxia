@@ -10,7 +10,7 @@ export const assign_lang_const2 = false;
 export const multi_line_assign = 123 + 234 + (-567 - 1111);"
 `;
 
-exports[`list destructuring compiles first, some, last 1`] = `
+exports[`unpacking lists compiles first, some, last 1`] = `
 "let _do_result;
 
 {
@@ -31,7 +31,7 @@ const [[a,,],, [b, c]] = _do_result2;
 _do_result2 = undefined;"
 `;
 
-exports[`list destructuring compiles leading, last 1`] = `
+exports[`unpacking lists compiles leading, last 1`] = `
 "let _do_result;
 
 {

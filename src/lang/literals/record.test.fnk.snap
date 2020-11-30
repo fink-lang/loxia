@@ -8,66 +8,6 @@ exports[`calculated props compiles 1`] = `
 };"
 `;
 
-exports[`destructuring record compiles computed keys 1`] = `
-"const {
-  [\`n i\`]: ni
-} = foo;"
-`;
-
-exports[`destructuring record compiles defaults 1`] = `
-"const {
-  x = 1,
-  π = 2,
-  ni: {
-    y,
-    z
-  }
-} = {
-  ni: {
-    y: 1,
-    z: 2
-  }
-};"
-`;
-
-exports[`destructuring record compiles empty 1`] = `
-"const {
-  foo: ˆunused_1,
-  bar
-} = {
-  foo: 12,
-  bar: 34
-};"
-`;
-
-exports[`destructuring record compiles non js idents 1`] = `
-"const {
-  foo,
-  π,
-  ƒ,
-  \\"delete\\": ˆdelete
-} = spam;"
-`;
-
-exports[`destructuring record compiles simple 1`] = `
-"const {
-  a,
-  b,
-  c
-} = ni;"
-`;
-
-exports[`destructuring record compiles spread 1`] = `
-"const {
-  e,
-  ...f
-} = {
-  e: 0,
-  foo: 12,
-  bar: 34
-};"
-`;
-
 exports[`record compiles idents that are not js prop-names 1`] = `
 "export const foo = {
   foo: bar,
@@ -140,5 +80,117 @@ exports[`record compiles spread 1`] = `
   a,
   b,
   ...c
+};"
+`;
+
+exports[`unpacking record compiles computed keys 1`] = `
+"const {
+  [\`n i\`]: ni
+} = foo;"
+`;
+
+exports[`unpacking record compiles defaults 1`] = `
+"const {
+  x = 1,
+  π = 2,
+  ni: {
+    y,
+    z
+  }
+} = {
+  ni: {
+    y: 1,
+    z: 2
+  }
+};"
+`;
+
+exports[`unpacking record compiles empty 1`] = `
+"const {
+  foo: ˆunused_1,
+  bar
+} = {
+  foo: 12,
+  bar: 34
+};"
+`;
+
+exports[`unpacking record compiles member expr as keys 1`] = `
+"let _do_result;
+
+{
+  let ˆrec_1 = { ...bar
+  };
+  ˆrec_1 = { ...ˆrec_1,
+    spam: { ...ˆrec_1.spam,
+      ham: { ...ˆrec_1.spam.ham,
+        ni: \`ni\`
+      }
+    }
+  };
+  ˆrec_1 = { ...ˆrec_1,
+    na: 1234
+  };
+  ˆrec_1 = { ...ˆrec_1,
+    ...nu
+  };
+  _do_result = ˆrec_1;
+}
+export const foo = _do_result;
+_do_result = undefined;"
+`;
+
+exports[`unpacking record compiles member expr as keys 2`] = `
+"const {
+  spam: {
+    ham: {
+      ni: ni
+    }
+  },
+  ...rest
+} = foo;"
+`;
+
+exports[`unpacking record compiles member expr as keys 3`] = `
+"const {
+  spam: {
+    ham: {
+      ni: {
+        ni: nu,
+        foo: {
+          bar: bar
+        }
+      }
+    }
+  },
+  ...rest
+} = foo;"
+`;
+
+exports[`unpacking record compiles non js idents 1`] = `
+"const {
+  foo,
+  π,
+  ƒ,
+  \\"delete\\": ˆdelete
+} = spam;"
+`;
+
+exports[`unpacking record compiles simple 1`] = `
+"const {
+  a,
+  b,
+  c
+} = ni;"
+`;
+
+exports[`unpacking record compiles spread 1`] = `
+"const {
+  e,
+  ...f
+} = {
+  e: 0,
+  foo: 12,
+  bar: 34
 };"
 `;

@@ -17,7 +17,7 @@ babel_types = import '@babel/types'
 
 
 transform_left = fn node, ctx:
-  [left, next_ctx] = transform node, ctx
+  [left, next_ctx] = transform node, {...ctx, is_binding: true}
   js = xform_left left
   [js, next_ctx]
 
@@ -230,7 +230,7 @@ transform_assign = fn node, ctx:
 
 
   [left, right_ctx] = left_transform node, ctx
-  [right, next_ctx] = right_transform node, right_ctx
+  [right, next_ctx] = right_transform node, {...right_ctx, is_binding: false}
 
   js = assignmentExpression '=', left, right
   [js, next_ctx]
