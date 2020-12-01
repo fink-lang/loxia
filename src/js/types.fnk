@@ -1,11 +1,9 @@
 babe_types = import '@babel/types'
 {
   variableDeclaration, variableDeclarator
-  nullLiteral, booleanLiteral, identifier, expressionStatement
+  booleanLiteral, identifier, expressionStatement
   logicalExpression, binaryExpression, unaryExpression, assignmentExpression
 } = babe_types
-
-{is_empty} = import '@fink/std-lib/iter.fnk'
 
 {escape_ident} = import './identifier.fnk'
 
@@ -19,16 +17,6 @@ wrap = fn larix_node, js_node:
 typof = fn value: unaryExpression 'typeof', value
 
 
-and_ = fn left, ...rest:
-  match rest:
-    is_empty ?:
-      left
-    else:
-      logicalExpression '&&', left, and_ ...rest
-
-
-neq = fn left, right: binaryExpression '!==', left, right
-
 eq = fn left, right: binaryExpression '===', left, right
 
 undef = fn: identifier 'undefined'
@@ -38,9 +26,7 @@ false_ = fn: booleanLiteral false
 
 
 not_nullish = fn value:
-  not_null = neq value, nullLiteral _
-  not_undef = neq value, undef _
-  and_ not_undef, not_null
+  logicalExpression '??', value, booleanLiteral false
 
 
 ident = fn name, ctx:

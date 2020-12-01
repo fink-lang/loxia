@@ -98,7 +98,6 @@ describe 'calculated props', fn:
     expect
       fink2js "
         foo = rec:
-          (Symbol 'foo'): 123
           'spam': 456
           'spam-\${ham}': 'ni'
         "

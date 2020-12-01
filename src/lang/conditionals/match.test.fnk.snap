@@ -41,7 +41,7 @@ exports[`match iterables matches spread 1`] = `
   ˆmatch_2: {
     const ˆvalue_1 = shrub;
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_3,, ˆa_5] = ˆvalue_1;
       if (ˆa_3 === 1) if (ˆa_5 === 2) {
         foo;
@@ -49,7 +49,7 @@ exports[`match iterables matches spread 1`] = `
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       let _do_result;
 
       {
@@ -64,7 +64,7 @@ exports[`match iterables matches spread 1`] = `
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       let _do_result2;
 
       {
@@ -80,7 +80,7 @@ exports[`match iterables matches spread 1`] = `
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       let _do_result3;
 
       {
@@ -89,7 +89,7 @@ exports[`match iterables matches spread 1`] = `
       }
       const [[ˆa_13], ˆa_14, [ˆa_15]] = _do_result3;
       _do_result3 = undefined;
-      if (ˆa_13 === 1) if (ˆa_14 !== undefined && ˆa_14 !== null && typeof ˆa_14[Symbol.iterator] === \\"function\\") {
+      if (ˆa_13 === 1) if (typeof ˆa_14?.[Symbol.iterator] === \\"function\\") {
         const [ˆa_17, ˆa_18] = ˆa_14;
         if (ˆa_17 === 2) if (ˆa_18 === 3) if (ˆa_15 === 4) {
           foo;
@@ -107,7 +107,7 @@ exports[`match iterables matches value assertions 1`] = `
     const ˆvalue_1 = foo;
 
     // nested unary
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_3] = ˆvalue_1;
 
       // nested unary
@@ -118,7 +118,7 @@ exports[`match iterables matches value assertions 1`] = `
     }
 
     // nested binary
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_4] = ˆvalue_1;
 
       // nested binary
@@ -129,7 +129,7 @@ exports[`match iterables matches value assertions 1`] = `
     }
 
     // nested call
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_5] = ˆvalue_1;
 
       // nested call
@@ -139,7 +139,7 @@ exports[`match iterables matches value assertions 1`] = `
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_6] = ˆvalue_1;
 
       if (ˆa_6()) {
@@ -149,7 +149,7 @@ exports[`match iterables matches value assertions 1`] = `
     }
 
     // nested member call
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_7] = ˆvalue_1;
 
       // nested member call
@@ -159,7 +159,7 @@ exports[`match iterables matches value assertions 1`] = `
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_8] = ˆvalue_1;
 
       if (ˆa_8.is_foo()) {
@@ -169,7 +169,7 @@ exports[`match iterables matches value assertions 1`] = `
     }
 
     // nested as call arg
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_9] = ˆvalue_1;
 
       // nested as call arg
@@ -179,7 +179,7 @@ exports[`match iterables matches value assertions 1`] = `
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_10, ...ˆa_11] = ˆvalue_1;
       if (ˆa_10 === 1) if (is_empty(ˆa_11)) {
         ni;
@@ -187,7 +187,7 @@ exports[`match iterables matches value assertions 1`] = `
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_12, ...ˆa_13] = ˆvalue_1;
       if (ˆa_12 === 1) if (1 < length(ˆa_13)) {
         ni;
@@ -204,12 +204,12 @@ exports[`match iterables matches values 1`] = `
     const ˆvalue_1 = shrub;
 
     // deep iterable comparison
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_3, ˆa_4, ˆa_5] = ˆvalue_1;
       // deep iterable comparison
       if (ˆa_3 === 1) // deep iterable comparison
         if (ˆa_4 === 2) // deep iterable comparison
-          if (ˆa_5 !== undefined && ˆa_5 !== null && typeof ˆa_5[Symbol.iterator] === \\"function\\") {
+          if (typeof ˆa_5?.[Symbol.iterator] === \\"function\\") {
             const [ˆa_6] = ˆa_5;
 
             // deep iterable comparison
@@ -220,17 +220,17 @@ exports[`match iterables matches values 1`] = `
           }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_7, ˆa_8, ˆa_9, ˆa_10] = ˆvalue_1;
-      if (ˆa_7 === 1) if (ˆa_8 === 2) if (ˆa_9 !== undefined && ˆa_9 !== null && typeof ˆa_9[Symbol.iterator] === \\"function\\") if (ˆa_10 !== undefined && ˆa_10 !== null) {
+      if (ˆa_7 === 1) if (ˆa_8 === 2) if (typeof ˆa_9?.[Symbol.iterator] === \\"function\\") if (ˆa_10 ?? false) {
         foo;
         break ˆmatch_2;
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_11, ˆa_12, ˆa_13] = ˆvalue_1;
-      if (ˆa_11 === 1) if (ˆa_12 !== undefined && ˆa_12 !== null && typeof ˆa_12[Symbol.iterator] === \\"function\\") {
+      if (ˆa_11 === 1) if (typeof ˆa_12?.[Symbol.iterator] === \\"function\\") {
         const [ˆa_14, ˆa_15] = ˆa_12;
         if (ˆa_14 === 2) if (ˆa_15 === 3) if (ˆa_13 === 4) {
           bar;
@@ -239,13 +239,13 @@ exports[`match iterables matches values 1`] = `
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_16, ˆa_17, ˆa_18, ˆa_19] = ˆvalue_1;
-      if (ˆa_16 === 1) if (ˆa_17 !== undefined && ˆa_17 !== null && typeof ˆa_17[Symbol.iterator] === \\"function\\") {
+      if (ˆa_16 === 1) if (typeof ˆa_17?.[Symbol.iterator] === \\"function\\") {
         const [ˆa_20, ˆa_21] = ˆa_17;
-        if (ˆa_20 === 2) if (ˆa_21 !== undefined && ˆa_21 !== null && typeof ˆa_21[Symbol.iterator] === \\"function\\") {
+        if (ˆa_20 === 2) if (typeof ˆa_21?.[Symbol.iterator] === \\"function\\") {
           const [ˆa_22, ˆa_23] = ˆa_21;
-          if (ˆa_22 === 3) if (ˆa_23 === 4) if (ˆa_18 !== undefined && ˆa_18 !== null && typeof ˆa_18[Symbol.iterator] === \\"function\\") {
+          if (ˆa_22 === 3) if (ˆa_23 === 4) if (typeof ˆa_18?.[Symbol.iterator] === \\"function\\") {
             const [ˆa_24, ˆa_25] = ˆa_18;
             if (ˆa_24 === 5) if (ˆa_25 === 6) if (ˆa_19 === 7) {
               spam;
@@ -322,13 +322,13 @@ exports[`match records matches calculated props 1`] = `
     const ˆvalue_1 = shrub;
 
     // calculated props
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         [a]: ˆp_3
       } = ˆvalue_1;
 
       // calculated props
-      if (ˆp_3 !== undefined && ˆp_3 !== null) {
+      if (ˆp_3 ?? false) {
         const {
           b: ˆp_4,
           c: ˆp_5
@@ -350,17 +350,17 @@ exports[`match records matches member expr keys 1`] = `
   ˆmatch_2: {
     const ˆvalue_1 = foo;
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         foo: ˆp_3
       } = ˆvalue_1;
 
-      if (ˆp_3 !== undefined && ˆp_3 !== null) {
+      if (ˆp_3 ?? false) {
         const {
           bar: ˆp_4
         } = ˆp_3;
 
-        if (ˆp_4 !== undefined && ˆp_4 !== null) {
+        if (ˆp_4 ?? false) {
           const {
             spam: ˆp_5
           } = ˆp_4;
@@ -381,27 +381,27 @@ exports[`match records matches member expr keys 2`] = `
   ˆmatch_2: {
     const ˆvalue_1 = foo;
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         foo: ˆp_3
       } = ˆvalue_1;
 
-      if (ˆp_3 !== undefined && ˆp_3 !== null) {
+      if (ˆp_3 ?? false) {
         const {
           bar: ˆp_4
         } = ˆp_3;
 
-        if (ˆp_4 !== undefined && ˆp_4 !== null) {
+        if (ˆp_4 ?? false) {
           const {
             spam: ˆp_5
           } = ˆp_4;
 
-          if (ˆp_5 !== undefined && ˆp_5 !== null) {
+          if (ˆp_5 ?? false) {
             const {
               ham: ˆp_6
             } = ˆp_5;
 
-            if (ˆp_6 !== undefined && ˆp_6 !== null) {
+            if (ˆp_6 ?? false) {
               const {
                 ni: ˆp_7
               } = ˆp_6;
@@ -424,34 +424,34 @@ exports[`match records matches props 1`] = `
   ˆmatch_2: {
     const ˆvalue_1 = shrub;
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         foo: ˆp_3
       } = ˆvalue_1;
 
-      if (ˆp_3 !== undefined && ˆp_3 !== null) {
+      if (ˆp_3 ?? false) {
         spam + ni;
         break ˆmatch_2;
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         foo: ˆp_4
       } = ˆvalue_1;
 
-      if (ˆp_4 !== undefined && ˆp_4 !== null && typeof ˆp_4[Symbol.iterator] === \\"function\\") {
+      if (typeof ˆp_4?.[Symbol.iterator] === \\"function\\") {
         spam + ni;
         break ˆmatch_2;
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         foo: ˆp_5,
         ni: ˆp_6
       } = ˆvalue_1;
-      if (ˆp_5 === 4) if (ˆp_6 !== undefined && ˆp_6 !== null) {
+      if (ˆp_5 === 4) if (ˆp_6 ?? false) {
         const {
           na: ˆp_7,
           nu: ˆp_8
@@ -463,17 +463,17 @@ exports[`match records matches props 1`] = `
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         foo: ˆp_9,
         foo: ˆp_10,
         shrub: ˆp_11
       } = ˆvalue_1;
-      if (ˆp_9 === 1) if (ˆp_10 !== undefined && ˆp_10 !== null) {
+      if (ˆp_9 === 1) if (ˆp_10 ?? false) {
         const {
           bar: ˆp_12
         } = ˆp_10;
-        if (ˆp_12 === \`spam\`) if (ˆp_11 !== undefined && ˆp_11 !== null) {
+        if (ˆp_12 === \`spam\`) if (ˆp_11 ?? false) {
           const {
             na: ˆp_13
           } = ˆp_11;
@@ -486,17 +486,17 @@ exports[`match records matches props 1`] = `
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         ni: ˆp_14,
         na: ˆp_15
       } = ˆvalue_1;
 
-      if (ˆp_14 !== undefined && ˆp_14 !== null) {
+      if (ˆp_14 ?? false) {
         const {
           len: ˆp_16
         } = ˆp_14;
-        if (ˆp_16 === 1) if (ˆp_15 !== undefined && ˆp_15 !== null) {
+        if (ˆp_16 === 1) if (ˆp_15 ?? false) {
           const {
             len: ˆp_17
           } = ˆp_15;
@@ -518,14 +518,14 @@ exports[`match records matches spread 1`] = `
     const ˆvalue_1 = shrub;
 
     // spread
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         [foo]: ˆp_3,
         ...ˆp_4
       } = ˆvalue_1;
       // spread
-      if (ˆp_3 !== undefined && ˆp_3 !== null) // spread
-        if (ˆp_4 !== undefined && ˆp_4 !== null) {
+      if (ˆp_3 ?? false) // spread
+        if (ˆp_4 ?? false) {
           const {
             bar: ˆp_5,
             spam: ˆp_6
@@ -549,7 +549,7 @@ exports[`match records matches value assertions 1`] = `
     const ˆvalue_1 = foo;
 
     // nested unary
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         spam: ˆp_3
       } = ˆvalue_1;
@@ -562,7 +562,7 @@ exports[`match records matches value assertions 1`] = `
     }
 
     // nested binary
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         spam: ˆp_4
       } = ˆvalue_1;
@@ -575,7 +575,7 @@ exports[`match records matches value assertions 1`] = `
     }
 
     // nested call
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         spam: ˆp_5
       } = ˆvalue_1;
@@ -587,7 +587,7 @@ exports[`match records matches value assertions 1`] = `
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         spam: ˆp_6
       } = ˆvalue_1;
@@ -599,7 +599,7 @@ exports[`match records matches value assertions 1`] = `
     }
 
     // nested member call
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         spam: ˆp_7
       } = ˆvalue_1;
@@ -611,7 +611,7 @@ exports[`match records matches value assertions 1`] = `
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         spam: ˆp_8
       } = ˆvalue_1;
@@ -623,7 +623,7 @@ exports[`match records matches value assertions 1`] = `
     }
 
     // nested as call arg
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         spam: ˆp_9
       } = ˆvalue_1;
@@ -635,7 +635,7 @@ exports[`match records matches value assertions 1`] = `
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         spam: ˆp_10,
         ...ˆp_11
@@ -646,7 +646,7 @@ exports[`match records matches value assertions 1`] = `
       }
     }
 
-    if (ˆvalue_1 !== undefined && ˆvalue_1 !== null) {
+    if (ˆvalue_1 ?? false) {
       const {
         spam: ˆp_12,
         ...ˆp_13

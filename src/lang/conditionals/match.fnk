@@ -3,11 +3,11 @@ babel_types = import '@babel/types'
   blockStatement, breakStatement, labeledStatement, objectPattern
   objectProperty, expressionStatement, ifStatement
   doExpression, stringLiteral, memberExpression, restElement
-  identifier
+  identifier, optionalMemberExpression
 } = babel_types
 {length, is_empty} = import '@fink/std-lib/iter.fnk'
 
-{and_, eq, not_nullish, typof, consts, unique_ident} = import '../../js/types.fnk'
+{eq, not_nullish, typof, consts, unique_ident} = import '../../js/types.fnk'
 
 {get_key} = import '../literals/record.fnk'
 {is_partial} = import '../partial/init.fnk'
@@ -20,18 +20,14 @@ iter = fn value:
   symb = identifier 'Symbol'
   iterator = identifier 'iterator'
   symb_iter = memberExpression symb, iterator
-  memberExpression value, symb_iter, true
+  optionalMemberExpression value, symb_iter, true, true
 
 
 
 is_iterable = fn value:
-  # TODO use nullish coalescing operator
-  and_
-    not_nullish value
-    eq
-      typof iter value
-      stringLiteral 'function'
-
+  eq
+    typof iter value
+    stringLiteral 'function'
 
 
 comp = fn id, expected, ctx:
