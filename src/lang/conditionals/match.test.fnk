@@ -1,5 +1,5 @@
 {fink2js} = import '../../testing/generate.fnk'
-{only, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
 describe 'match', fn:
