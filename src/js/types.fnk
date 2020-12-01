@@ -1,9 +1,11 @@
 babe_types = import '@babel/types'
 {
   variableDeclaration, variableDeclarator
-  booleanLiteral, identifier, expressionStatement
-  logicalExpression, binaryExpression, unaryExpression, assignmentExpression
+  nullLiteral, booleanLiteral, identifier, expressionStatement
+  binaryExpression, unaryExpression, assignmentExpression
 } = babe_types
+
+
 
 {escape_ident} = import './identifier.fnk'
 
@@ -21,12 +23,13 @@ eq = fn left, right: binaryExpression '===', left, right
 
 undef = fn: identifier 'undefined'
 
-
 false_ = fn: booleanLiteral false
 
 
+
 not_nullish = fn value:
-  logicalExpression '??', value, booleanLiteral false
+  binaryExpression '!=', value, nullLiteral _
+
 
 
 ident = fn name, ctx:
@@ -50,16 +53,19 @@ raw_str = fn value:
       rawValue: value
 
 
+
 consts = fn left, init:
   variableDeclaration
     'const'
     [variableDeclarator left, init]
 
 
+
 lets = fn left, init:
   variableDeclaration
     'let'
     [variableDeclarator left, init]
+
 
 
 assign = fn left, right:
