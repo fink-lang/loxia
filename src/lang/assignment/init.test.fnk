@@ -24,7 +24,7 @@ describe 'assignment', fn:
 
 
 
-describe 'list destructuring', fn:
+describe 'unpacking lists', fn:
   it 'compiles leading, last', fn:
     expect
       fink2js "

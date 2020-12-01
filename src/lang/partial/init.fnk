@@ -1,7 +1,6 @@
 babel_types = import '@babel/types'
 {identifier} = babel_types
 
-{escape_ident} = import '../../js/identifier.fnk'
 {add} = import '../context.fnk'
 {transform} = import '../transform.fnk'
 
@@ -24,6 +23,7 @@ is_partial = fn node:
     {type: 'call'}: has_partial node.args
     {type: 'list'}: has_partial node.exprs
     {type: 'rec'}: has_partial node.exprs
+    {type: 'group'}: has_partial node.exprs
     else: false
 
 

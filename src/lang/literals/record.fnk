@@ -1,17 +1,129 @@
 babel_types = import '@babel/types'
-{objectExpression, objectProperty, assignmentPattern} = babel_types
+{
+  objectExpression, objectProperty, assignmentPattern, doExpression
+  blockStatement, expressionStatement, assignmentExpression, spreadElement
+  optionalMemberExpression, identifier
+} = babel_types
 
-{raw_str, unique_ident, ident} = import '../../js/types.fnk'
+{is_empty} = import '@fink/std-lib/iter.fnk'
+
+{raw_str, unique_ident, ident, lets} = import '../../js/types.fnk'
 {transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
 
+optional = true
+not_computed = false
 
-transform_record = fn node, ctx:
-  [props, next_ctx] = pipe node.exprs:
-    map_with_ctx transform
-    collect_with_ctx ctx
 
-  js = objectExpression props
+
+has_member_keys = fn expr:
+  [found=false] = expr.exprs | filter expr:
+    match expr:
+      {left: {type: 'member'}}: true
+      else: false
+  found != false
+
+
+
+get_path = fn expr:
+  match expr.type:
+    'member':
+      list:
+        ... get_path expr.left
+        ... get_path expr.right
+    else:
+      [identifier expr.value]
+
+
+
+transform_member_prop = fn [key, ...parents], rec_val, value:
+  next_value = match parents:
+    is_empty ?:
+      value
+    else:
+      next_rec_val = optionalMemberExpression rec_val, key, not_computed, optional
+      transform_member_prop parents, next_rec_val, value
+
+  objectExpression list:
+    spreadElement rec_val
+    objectProperty key, next_value
+
+
+
+transform_member_or_plain_prop = fn initial_rec: fn expr, ctx:
+  [val, next_ctx] = match expr:
+    {left: {type: 'member'}}:
+      path = get_path expr.left
+      [value, end_ctx] = transform expr.right, ctx
+      js = transform_member_prop path, initial_rec, value
+      [js, end_ctx]
+
+    else:
+      [prop, end_ctx] = transform expr, ctx
+      js = objectExpression list:
+        spreadElement initial_rec
+        prop
+      [js, end_ctx]
+
+  js = expressionStatement
+    assignmentExpression '=', initial_rec, val
+
   [js, next_ctx]
+
+
+
+transform_rec_regular_props = fn rec_expr, ctx:
+  [...exprs] = rec_expr.exprs | while expr:
+    match expr:
+      {left: {type: 'member'}}: false
+      else: true
+
+  transform {...rec_expr, exprs}, ctx
+
+
+
+transform_member_props = fn expr, ctx:
+  [initial_rec, next_ctx]  = unique_ident 'rec', ctx
+
+  [rec_updates, end_ctx] = pipe expr.exprs:
+    filter expr, keep=false:
+      do_keep = match expr:
+        {left: {type: 'member'}}: true
+        else: keep
+      [do_keep, do_keep]
+    map_with_ctx transform_member_or_plain_prop initial_rec
+    collect_with_ctx next_ctx
+
+  [initial_rec, rec_updates, end_ctx]
+
+
+
+transform_with_member_expr_keys = fn expr, ctx:
+  [initial_rec, props_ctx] = transform_rec_regular_props expr, ctx
+
+  [tmp_rec, rec_updates, end_ctx] = transform_member_props expr, props_ctx
+
+  js = doExpression
+    blockStatement list:
+      lets tmp_rec, initial_rec
+      ...rec_updates
+      expressionStatement tmp_rec
+
+  [js, end_ctx]
+
+
+
+transform_record = fn expr, ctx:
+  match expr:
+    ctx.is_binding != true and has_member_keys ?:
+      transform_with_member_expr_keys expr, ctx
+
+    else:
+      [props, next_ctx] = pipe expr.exprs:
+        map_with_ctx transform
+        collect_with_ctx ctx
+
+      js = objectExpression props
+      [js, next_ctx]
 
 
 
@@ -48,24 +160,23 @@ get_value = fn {left, right}, ctx:
 
 
 
-transform_kv = fn node, ctx:
-  match node:
-    ---istanbul ignore next---
-    {type: 'spread'}:
-      transform node, ctx
-
-    {left: {type: 'spread'}}:
-      transform node.left, ctx
+transform_kv = fn expr, ctx:
+  match expr:
+    {left: {type: 'member'}}:
+      {left, right} = expr.left
+      value = {type: 'rec', exprs: [{...expr, left: right}], loc: expr.loc}
+      prop = {...expr, left, right: value}
+      transform prop, ctx
 
     else:
-      [computed, key, next_ctx] = get_key node, ctx
-      [value, end_ctx] = get_value node, next_ctx
+      [computed, key, next_ctx] = get_key expr, ctx
+      [value, end_ctx] = get_value expr, next_ctx
 
-      shorthand = match node:
+      shorthand = match expr:
         {right: false}: true
         else: false
 
-      final_value = match node:
+      final_value = match expr:
         {right: {type: 'assign'}}:
           assignmentPattern value.left, value.right
         else:
@@ -73,5 +184,4 @@ transform_kv = fn node, ctx:
 
       js = objectProperty key, final_value, computed, shorthand
       [js, end_ctx]
-
 

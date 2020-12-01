@@ -3,11 +3,11 @@ babel_types = import '@babel/types'
   blockStatement, breakStatement, labeledStatement, objectPattern
   objectProperty, expressionStatement, ifStatement
   doExpression, stringLiteral, memberExpression, restElement
-  identifier
+  identifier, optionalMemberExpression
 } = babel_types
 {length, is_empty} = import '@fink/std-lib/iter.fnk'
 
-{and_, eq, not_nullish, typof, consts, unique_ident} = import '../../js/types.fnk'
+{eq, not_nullish, typof, consts, unique_ident} = import '../../js/types.fnk'
 
 {get_key} = import '../literals/record.fnk'
 {is_partial} = import '../partial/init.fnk'
@@ -20,17 +20,14 @@ iter = fn value:
   symb = identifier 'Symbol'
   iterator = identifier 'iterator'
   symb_iter = memberExpression symb, iterator
-  memberExpression value, symb_iter, true
+  optionalMemberExpression value, symb_iter, true, true
 
 
 
 is_iterable = fn value:
-  and_
-    not_nullish value
-    eq
-      typof iter value
-      stringLiteral 'function'
-
+  eq
+    typof iter value
+    stringLiteral 'function'
 
 
 comp = fn id, expected, ctx:
@@ -50,11 +47,8 @@ match_props = fn props, emit_result, ctx, cond:
   [{id, prop}, ...rest] = props
 
   value = match prop:
-    ---istanbul ignore next---
     {type: 'spread'}:
       prop
-    {left: {type: 'spread'}}:
-      prop.left
     {right: false}:
       prop.left
     else:
@@ -70,20 +64,29 @@ match_props = fn props, emit_result, ctx, cond:
 
 
 
+fix_member_prop = fn expr:
+  match expr:
+    {left: {type: 'member'}}:
+      {left, right} = expr.left
+      value = {type: 'rec', exprs: [{...expr, left: right}], loc: expr.loc}
+      fix_member_prop {...expr, left, right: value}
+    else:
+      expr
+
+
 match_record = fn value, record, emit_result, ctx, cond:
   [id_props, props_ctx] = pipe record.exprs:
-    map_with_ctx fn prop, id_ctx:
+    map_with_ctx fn orig_prop, id_ctx:
+      prop = fix_member_prop orig_prop
       [id, next_ctx] = unique_ident 'p', id_ctx
       [{id, prop}, next_ctx]
+
     collect_with_ctx ctx
 
   [props, result_ctx] = pipe id_props:
     map_with_ctx fn {id, prop}, prop_ctx:
       match prop:
-        ---istanbul ignore next---
         {type: 'spread'}:
-          [(restElement id), prop_ctx]
-        {left: {type: 'spread'}}:
           [(restElement id), prop_ctx]
         else:
           [computed, key, next_ctx] = get_key prop, prop_ctx

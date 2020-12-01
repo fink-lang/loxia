@@ -1,6 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`destructuring list compiles 1`] = `
+exports[`list compiles 1`] = `
+"export const array1 = [];
+export const array2 = [1];
+export const array3 = [1, 2, 4, a(), a(), ...b];
+export const array4 = [a + 1 + 45 + b + c, [1, 2], (3 + 3) * 2];"
+`;
+
+exports[`unpacking list compiles 1`] = `
 "const [a, b, c] = ni;
 const [,, d] = ni;
 const [head, ...tail] = ni;
@@ -40,11 +47,4 @@ let _do_result4;
 }
 const [, [nuna]] = _do_result4;
 _do_result4 = undefined;"
-`;
-
-exports[`list compiles 1`] = `
-"export const array1 = [];
-export const array2 = [1];
-export const array3 = [1, 2, 4, a(), a(), ...b];
-export const array4 = [a + 1 + 45 + b + c, [1, 2], (3 + 3) * 2];"
 `;

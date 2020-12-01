@@ -1,5 +1,5 @@
-{fink2js} = import '../../testing/generate.fnk'
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{fink2js} = import '../../testing/generate.fnk'
 
 
 describe 'record', fn:
@@ -81,12 +81,23 @@ describe 'record', fn:
       to_match_snapshot
 
 
+  it 'compiles member expr as keys', fn:
+    expect
+      fink2js "foo = {...bar, spam.ham.ni: 'ni', na: 1234, ...nu}"
+      to_match_snapshot
+
+    expect
+      fink2js "foo = {...bar, spam.ham: {ni.na: 'ni'}, ...nu}"
+      to_match_snapshot
+
+
+
+
 describe 'calculated props', fn:
   it 'compiles', fn:
     expect
       fink2js "
         foo = rec:
-          (Symbol 'foo'): 123
           'spam': 456
           'spam-\${ham}': 'ni'
         "
@@ -95,7 +106,7 @@ describe 'calculated props', fn:
 
 
 
-describe 'destructuring record', fn:
+describe 'unpacking record', fn:
   it 'compiles simple', fn:
     expect
       fink2js '{a, b, c} = ni'
@@ -132,22 +143,12 @@ describe 'destructuring record', fn:
       to_match_snapshot
 
 
-  # it 'compiles dot', fn:
-  #   expect
-  #     fink2js "foo = {...foo, a.b.c: 123, c.d.e: 13}"
-  #     to_match_snapshot
+  it 'compiles member expr as keys', fn:
+    expect
+      fink2js "{spam.ham.ni: ni, ...rest} = foo"
+      to_match_snapshot
 
-  #   expect
-  #     fink2js "{a.b.c, c.d.e, ...foo} = foo"
-  #     to_match_snapshot
-
-
-  # it 'compiles sub recs', fn:
-  #   expect
-  #     fink2js "{a: {...{a, b, c}: c, ...rest}} = foo"
-  #     to_match_snapshot
-
-  #   expect
-  #     fink2js "foo = {a: {...{a, b, c}: c, ...rest}}"
-  #     to_match_snapshot
+    expect
+      fink2js "{spam.ham.ni: {ni: nu, foo.bar: bar}, ...rest} = foo"
+      to_match_snapshot
 

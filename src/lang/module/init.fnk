@@ -17,8 +17,6 @@ babel_types = import '@babel/types'
 
 
 
-
-# TODO should larix handle shebang as special expr?
 get_hashbang = fn expr:
   {comments} = expr
   match comments:
@@ -28,6 +26,7 @@ get_hashbang = fn expr:
       [[shebang], {...expr, comments: {...comments, leading: rest}}]
     else:
       [[], expr]
+
 
 
 --- istanbul ignore next ---

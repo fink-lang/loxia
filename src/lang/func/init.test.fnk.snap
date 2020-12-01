@@ -14,14 +14,14 @@ exports[`func compiles func of func 1`] = `
 "export const fun5 = (c) => (d, e) => {
   const ˆvalue_1 = [d, e];
 
-  if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+  if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
     const [ˆa_3, ˆa_4] = ˆvalue_1;
     if (ˆa_3 === 1) if (ˆa_4 === 2) {
       return c;
     }
   }
 
-  if (ˆvalue_1 !== undefined && ˆvalue_1 !== null && typeof ˆvalue_1[Symbol.iterator] === \\"function\\") {
+  if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
     const [ˆa_5, ˆa_6] = ˆvalue_1;
     if (ˆa_5 === 2) if (ˆa_6 === 1) {
       return 1 / c;
