@@ -7,7 +7,7 @@ babel_types = import '@babel/types'
 
 
 transform_string = fn node, ctx:
-  {exprs: parts, tag=false} = node
+  {exprs: parts, tag} = node
 
   quasies = pipe parts:
     filter part:
