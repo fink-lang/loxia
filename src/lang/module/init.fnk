@@ -95,6 +95,7 @@ transform_import = fn node, ctx:
       [imp, next_ctx] = transform node.left, ctx
       [[importDefaultSpecifier imp], next_ctx]
 
+    --- istanbul ignore next TODO: it is only else ---
     {type: 'rec'}:
       imported_specs node.left.exprs, ctx
 

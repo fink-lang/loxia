@@ -111,8 +111,9 @@ replace_with_return = fn path:
 
       # TODO: no need for e.g. breaks after a return
       sibl = expr.getSibling expr.key + 1
-      match {sibl}:
-        {sibl: {}}:
+      match sibl:
+        --- istanbul ignore next ---
+        {}:
           sibl.remove _
 
     consume_all
