@@ -5,6 +5,6 @@ exports[`call compiles 1`] = `
 export const call2 = a(ni);
 export const call3 = a();
 export const call4 = a();
-export const call5 = a((x) => x * 2);
+export const call5 = a(x => x * 2);
 export const call6 = a(foo, undefined, bar);"
 `;

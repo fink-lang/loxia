@@ -6,23 +6,23 @@ exports[`pipe compiles 1`] = `
   let ˆpipe_result_1 = undefined;
   ˆpipe_result_1 = foo(ˆpipe_result_1);
 
-  ˆpipe_result_1 = ((ˆpartial) => bar(ˆpartial, {
+  ˆpipe_result_1 = (ˆpartial => bar(ˆpartial, {
     foo,
     ...ˆpartial
   }))(ˆpipe_result_1);
 
   ˆpipe_result_1 = spam(ˆpipe_result_1);
 
-  ˆpipe_result_1 = ((ˆpartial) => [...ˆpartial])(ˆpipe_result_1);
+  ˆpipe_result_1 = (ˆpartial => [...ˆpartial])(ˆpipe_result_1);
 }
 {
   let ˆpipe_result_2 = [1, 2, 3];
-  ˆpipe_result_2 = _map_((item) => item * 2, 1, false, false)(ˆpipe_result_2);
+  ˆpipe_result_2 = _map_(item => item * 2, 1, false, false)(ˆpipe_result_2);
 }"
 `;
 
 exports[`small pipe | handles precedence 1`] = `
-"export const foo = (ˆpartial) => matches(rx\`[a-z]\`, ˆpartial)(\`foo\`);
+"export const foo = ˆpartial => matches(rx\`[a-z]\`, ˆpartial)(\`foo\`);
 export const bar = [ham(spam), ni(shrub)];"
 `;
 
