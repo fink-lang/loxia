@@ -42,7 +42,7 @@ _fold_((item, prev, acc, shared_acc) => [item * acc + prev, acc + 1, shared_acc 
 exports[`fold compiles with default runtime 4`] = `
 "import { _fold_ } from \\"@fink/js-interop/runtime.js\\";
 
-_fold_((item) => item, 1, false);"
+_fold_(item => item, 1, false);"
 `;
 
 exports[`fold compiles with default runtime 5`] = `

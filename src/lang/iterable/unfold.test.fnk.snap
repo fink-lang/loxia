@@ -3,7 +3,7 @@
 exports[`unfold compiles with custom runtime 1`] = `
 "import { _unfold_ } from \\"./iter.js\\";
 
-_unfold_((prev) => prev + 1, 1, false, false);"
+_unfold_(prev => prev + 1, 1, false, false);"
 `;
 
 exports[`unfold compiles with default runtime 1`] = `
@@ -15,7 +15,7 @@ _unfold_(() => 123, 0, false, false);"
 exports[`unfold compiles with default runtime 2`] = `
 "import { _unfold_ } from \\"@fink/js-interop/runtime.js\\";
 
-_unfold_((prev) => prev + 1, 1, false, false);"
+_unfold_(prev => prev + 1, 1, false, false);"
 `;
 
 exports[`unfold compiles with default runtime 3`] = `

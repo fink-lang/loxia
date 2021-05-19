@@ -3,13 +3,13 @@
 exports[`until compiles async 1`] = `
 "import { _until_ } from \\"@fink/js-interop/runtime.js\\";
 
-_until_(async (item) => (await item) < 10, 1, false);"
+_until_(async item => (await item) < 10, 1, false);"
 `;
 
 exports[`until compiles with default runtime 1`] = `
 "import { _until_ } from \\"@fink/js-interop/runtime.js\\";
 
-_until_((item) => item < 10, 1, false);"
+_until_(item => item < 10, 1, false);"
 `;
 
 exports[`until compiles with default runtime 2`] = `

@@ -7,13 +7,13 @@
   ],
   "license": "MIT",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=14.13.0"
   },
   "type": "module",
   "exports": {
-    "./": {
-      "import": "./",
-      "require": "./cjs/"
+    "./*": {
+      "import": "./*",
+      "require": "./cjs/*"
     }
   },
   "version": "0.0.0-semantically-released",
@@ -62,7 +62,7 @@
     "@babel/core": "^7.10.5",
     "@babel/traverse": "^7.10.5",
     "@babel/types": "^7.10.5",
-    "@fink/js-interop": "^2.2.0",
+    "@fink/js-interop": ">2.2",
     "@fink/snippet": "^2.2.0",
     "@fink/std-lib": "^8.0.1"
   },
