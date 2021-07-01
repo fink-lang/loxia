@@ -1,4 +1,4 @@
-{rx , matches} = import '@fink/std-lib/regex.fnk'
+{rx , matches, replace} = import '@fink/std-lib/regex.fnk'
 
 
 
@@ -9,14 +9,22 @@ acceptable_idents = rx'
     typeof|default|extends|finally|package|private|continue|function|
     arguments|interface|protected|implements|instanceof|null|undefined
   )$)
-  [_$\p{L}][_$\p{L}\p{N}]*$'
+  [_$\p{L}][-_$\p{L}\p{N}]*$'
 
 
+# valid hyphen replacements for js idents [ˉ, ـ, ᅳ, ￚ, ᐨ, ᜭ]
+hyphen_replacement = 'ᜭ'
 
-escape_ident = fn name, {ident_prefix}:
+
+escape_prop = fn name:
+  replace name, rx'-', hyphen_replacement
+
+
+escape_ident = fn ident, {ident_prefix}:
+  name = escape_prop ident
+
   match name:
     matches ?, acceptable_idents:
       name
     else:
       '${ident_prefix}${name}'
-

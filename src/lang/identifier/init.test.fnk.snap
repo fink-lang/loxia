@@ -8,6 +8,8 @@ export const π = ni;
 export const ಠ_ಠ = 1234;"
 `;
 
+exports[`identifiers escapes hyphenated idents 1`] = `"export const fooᜭbar = spamᜭni;"`;
+
 exports[`identifiers escapes reserved JS identifiers 1`] = `
 "const {
   \\"do\\": ˆdo,

@@ -14,8 +14,10 @@ describe 'jsx', fn:
       fink2js 'elem = <a foo bar="ni" />'
       to_match_snapshot
 
+
+  it 'compiles hypenate props', fn:
     expect
-      fink2js "elem = <a foo bar='ni' />"
+      fink2js 'elem = <a foo-bar="1234" />'
       to_match_snapshot
 
 
@@ -66,6 +68,12 @@ describe 'jsx', fn:
 
 
 describe 'JSX extensions',  fn:
+  it 'compiles shothand props', fn:
+    expect
+      fink2js '<Foobar spam ham-ni />'
+      to_match_snapshot
+
+
   it 'compiles spread', fn:
     expect
       fink2js '<Foobar spam ...ham shrub />'
@@ -95,3 +103,8 @@ describe 'JSX extensions',  fn:
       fink2js "<Foobar spam=(ham ni) shrub=1234 />"
       to_match_snapshot
 
+
+  it "compiles class prop as className", fn:
+    expect
+      fink2js "<Foobar class='shrub' />"
+      to_match_snapshot

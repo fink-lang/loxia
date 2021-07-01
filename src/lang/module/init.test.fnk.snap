@@ -9,5 +9,7 @@ export const foo = 1234;"
 
 exports[`module handles exports 1`] = `
 "export const ˆdelete = () => true;
-export const π = () => true;"
+export const π = () => true;
+export const foo_bar = 1234;
+export const fooᜭbar = 1234;"
 `;

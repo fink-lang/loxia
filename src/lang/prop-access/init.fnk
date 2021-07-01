@@ -1,19 +1,30 @@
 babel_types = import '@babel/types'
 {memberExpression, identifier} = babel_types
 
+{escape_prop} = import '../../js/identifier.fnk'
+{raw_str} = import '../../js/types.fnk'
+
 {add, any} = import '../context.fnk'
 {transform} = import '../transform.fnk'
+
+
+
+safe_prop_ident = fn {loc, value}, ctx :
+  id = escape_prop value
+  match id:
+    value:
+      [false, {loc, ...identifier id}, ctx]
+    else:
+      [true, {loc, ...raw_str value}, ctx]
 
 
 
 transform_member = fn {left, right}, ctx:
   [memb_left, next_ctx] = transform left, ctx
 
-  {loc, value} = right
-
   [computed, memb_right, end_ctx] = match right:
     {type: 'ident'}:
-      [false, {loc, ...identifier value}, next_ctx]
+      safe_prop_ident right, next_ctx
     else:
       [true, ...transform right, next_ctx]
 

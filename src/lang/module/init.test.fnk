@@ -24,5 +24,7 @@ describe 'module', fn:
       fink2js "
         delete = fn: true
         π = fn: true
+        foo_bar = 1234
+        foo-bar = 1234
       "
       to_match_snapshot

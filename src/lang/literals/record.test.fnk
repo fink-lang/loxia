@@ -11,7 +11,7 @@ describe 'record', fn:
 
   it 'compiles shorthand', fn:
     expect
-      fink2js 'foo = {foo, π, ƒ}'
+      fink2js 'foo = {foo, π, ƒ, foo-bar}'
       to_match_snapshot
 
     expect
@@ -40,6 +40,7 @@ describe 'record', fn:
       '
       to_match_snapshot
 
+
   it 'compiles idents that are not js prop-names', fn:
     expect
       fink2js "
@@ -47,6 +48,7 @@ describe 'record', fn:
           foo: bar
           π: 3.12,
           ƒ: 'fink'
+          foo-bar: spam
         "
       to_match_snapshot
 
@@ -150,5 +152,9 @@ describe 'unpacking record', fn:
 
     expect
       fink2js "{spam.ham.ni: {ni: nu, foo.bar: bar}, ...rest} = foo"
+      to_match_snapshot
+
+    expect
+      fink2js "{foo-bar.spam-ham.ni: {ni: nu, foo.bar: bar}, ...rest} = foo"
       to_match_snapshot
 

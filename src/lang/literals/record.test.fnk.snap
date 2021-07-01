@@ -11,7 +11,8 @@ exports[`record compiles idents that are not js prop-names 1`] = `
 "export const foo = {
   foo: bar,
   π: 3.12,
-  ƒ: \`fink\`
+  ƒ: \`fink\`,
+  \\"foo-bar\\": spam
 };"
 `;
 
@@ -106,7 +107,8 @@ exports[`record compiles shorthand 1`] = `
 "export const foo = {
   foo,
   π,
-  ƒ
+  ƒ,
+  \\"foo-bar\\": fooᜭbar
 };"
 `;
 
@@ -182,6 +184,22 @@ exports[`unpacking record compiles member expr as keys 2`] = `
 "const {
   spam: {
     ham: {
+      ni: {
+        ni: nu,
+        foo: {
+          bar: bar
+        }
+      }
+    }
+  },
+  ...rest
+} = foo;"
+`;
+
+exports[`unpacking record compiles member expr as keys 3`] = `
+"const {
+  \\"foo-bar\\": {
+    \\"spam-ham\\": {
       ni: {
         ni: nu,
         foo: {
