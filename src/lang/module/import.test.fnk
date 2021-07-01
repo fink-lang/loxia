@@ -9,6 +9,7 @@ describe 'import', fn:
         {bar} = import './spam.fnk'
         {foo: spam} = import './shrub.fnk'
         {π, delete} = import './ni.fnk'
+        {foo-bar} = import './ham.fnk'
       "
       to_match_snapshot
 

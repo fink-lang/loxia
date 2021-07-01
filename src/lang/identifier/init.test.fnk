@@ -16,6 +16,14 @@ describe 'identifiers', fn:
       to_match_snapshot
 
 
+  it 'escapes hyphenated idents', fn:
+    expect
+      fink2js '
+        foo-bar = spam-ni
+      '
+      to_match_snapshot
+
+
   it 'does not escape true, false', fn:
     expect
       fink2js '

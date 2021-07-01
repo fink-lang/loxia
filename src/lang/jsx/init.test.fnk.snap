@@ -1,10 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JSX extensions compiles class prop as className 1`] = `"<Foobar className=\\"shrub\\" />;"`;
+
 exports[`JSX extensions compiles expr group with call for attr value 1`] = `"<Foobar spam={ham(ni)} shrub={1234} />;"`;
 
 exports[`JSX extensions compiles fink expr as attr values 1`] = `"<Foobar spam={ham} shrub={1234} ni={-123}> foo </Foobar>;"`;
 
 exports[`JSX extensions compiles fink expr with gt comparison 1`] = `"<Foobar spam={foo > 123} shrub={1234}> ni </Foobar>;"`;
+
+exports[`JSX extensions compiles shothand props 1`] = `"<Foobar spam={spam} ham-ni={hamᜭni} />;"`;
 
 exports[`JSX extensions compiles spread 1`] = `"<Foobar spam={spam} {...ham} shrub={shrub} />;"`;
 
@@ -20,6 +24,8 @@ exports[`jsx compiles fragment with children 1`] = `
   <p>bar</p>
 </>;"
 `;
+
+exports[`jsx compiles hypenate props 1`] = `"export const elem = <a foo-bar=\\"1234\\" />;"`;
 
 exports[`jsx compiles shorthand 1`] = `"export const elem = <a />;"`;
 
@@ -38,5 +44,3 @@ exports[`jsx compiles with expr params 1`] = `"export const elem = <a foo={foo} 
 exports[`jsx compiles with expr params 2`] = `"export const elem = <a foo={foo} bar=\\"ni\\" />;"`;
 
 exports[`jsx compiles with str params 1`] = `"export const elem = <a foo={foo} bar=\\"ni\\" />;"`;
-
-exports[`jsx compiles with str params 2`] = `"export const elem = <a foo={foo} bar=\\"ni\\" />;"`;
