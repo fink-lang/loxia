@@ -104,7 +104,3 @@ describe 'JSX extensions',  fn:
       to_match_snapshot
 
 
-  it "compiles class prop as className", fn:
-    expect
-      fink2js "<Foobar class='shrub' />"
-      to_match_snapshot
