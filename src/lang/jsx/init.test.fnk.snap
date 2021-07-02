@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`JSX extensions compiles class prop as className 1`] = `"<Foobar className=\\"shrub\\" />;"`;
-
 exports[`JSX extensions compiles expr group with call for attr value 1`] = `"<Foobar spam={ham(ni)} shrub={1234} />;"`;
 
 exports[`JSX extensions compiles fink expr as attr values 1`] = `"<Foobar spam={ham} shrub={1234} ni={-123}> foo </Foobar>;"`;

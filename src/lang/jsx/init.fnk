@@ -73,10 +73,7 @@ transform_jsx_attr = fn node, ctx:
       [val, next_ctx] = transform node.value, ctx
       [[jsxExpressionContainer val], next_ctx]
 
-  id = match name:
-    {value: 'class'}: jsxIdentifier 'className'
-    else: jsxIdentifier name.value
-
+  id = jsxIdentifier name.value
   js = jsxAttribute id, ...value
   [js, next_ctx]
 
