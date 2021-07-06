@@ -1,0 +1,82 @@
+
+{
+  arrayExpression, arrayPattern, booleanLiteral, restElement, whileStatement
+  blockStatement, continueStatement
+  isVariableDeclarator, isCallExpression, isReturnStatement
+} = import '@babel/types'
+
+{consts, assign} = import './types.fnk'
+
+{is_empty} = import '@fink/std-lib/iter.fnk'
+
+
+
+get_references = fn path:
+  {parentPath: {node.id: {name}, scope: {bindings}}} = path
+  bindings.(name).referencePaths
+
+
+
+filter_tail_calls = fn path: filter ref: match ref:
+  {
+    parentPath: isCallExpression ?
+    parentPath.parentPath: isReturnStatement ?
+    parentPath: path == ?.getFunctionParent _
+  }:
+    true
+  else:
+    false
+
+
+
+get_tail_call_returns = fn path:
+  refs = get_references path
+
+  pipe refs:
+    filter_tail_calls path
+
+
+
+replace_tail_calls_with_args_assing = fn args, tcs:
+  tcs | fold ref:
+    ret_st = ref.parentPath.parentPath
+    ret_st.replaceWithMultiple list:
+      assign
+        args
+        arrayExpression ref.parent.arguments
+      continueStatement _
+
+
+
+replace_body_with_loop = fn path, args:
+  body = path.get 'body'
+  {node: {params}} = path
+
+  body.unshiftContainer
+    'body'
+    consts
+      arrayPattern params
+      args
+
+  path.set 'params', [restElement args]
+
+  path.set 'body', blockStatement list:
+    whileStatement
+      booleanLiteral true
+      path.node.body
+
+
+
+transform_tail_call = fn path:
+  match path:
+    {parentPath: isVariableDeclarator ?}:
+      [...tcs] = get_tail_call_returns path
+
+      match tcs:
+        not is_empty ?:
+          args = path.scope.generateUidIdentifier 'args'
+
+          replace_tail_calls_with_args_assing args, tcs
+
+          replace_body_with_loop path, args
+

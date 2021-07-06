@@ -62,5 +62,25 @@ describe 'func', fn:
       to_match_snapshot
 
 
+  it 'eliminates tail calls', fn:
+    expect
+      fink2js '
+        fun = fn a, b=1:
+          match a:
+            b: a
+            else: fun a - 1
+        '
+      to_match_snapshot
+
+    expect
+      fink2js '
+        fun = fn ...args:
+          match a:
+            b: fun ...args
+            else: b
+        '
+      to_match_snapshot
+
+
 
 
