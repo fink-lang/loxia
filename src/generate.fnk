@@ -9,6 +9,7 @@ babel_traverse = import '@babel/traverse'
 {transform_do_expr} = import './js/do-expression.fnk'
 {transform_async} = import './js/async.fnk'
 {module_transforms} = import './js/module.fnk'
+{transform_tail_call} = import './js/tail-call.fnk'
 
 
 
@@ -27,7 +28,9 @@ transform_file = fn fink_ast, code, filename, options:
       traverse js_ast, rec:
         DoExpression: transform_do_expr
         AwaitExpression: {enter: transform_async}
+        ArrowFunctionExpression: {exit: transform_tail_call}
         ...extras
+
       {...js_ast, errors: []}
     else:
       {errors: [error]}
