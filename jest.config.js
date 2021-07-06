@@ -23,10 +23,7 @@ export default {
 
   collectCoverage: true,
   collectCoverageFrom: ['<rootDir>/src/**/*.fnk'],
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
-    '<rootDir>/src/testing/resolver.fnk'
-  ],
+  coveragePathIgnorePatterns: ['/node_modules/'],
   coverageDirectory: './build/cov',
   coverageReporters: ['lcov'],
   coverageThreshold: {
