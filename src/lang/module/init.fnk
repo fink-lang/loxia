@@ -5,6 +5,7 @@ babel_types = import '@babel/types'
   exportNamedDeclaration, exportDefaultDeclaration, identifier
 } = babel_types
 {starts_with, slice} = import '@fink/std-lib/str.fnk'
+{map_ac, filter, fold: fold_} = import '@fink/std-lib/iter.fnk'
 
 {add, any} = import '../context.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
@@ -45,12 +46,12 @@ add_runtime_fn_overrides = fn expr, ctx:
       {right: {right: {exprs: [{value: uri}]}}} = expr
 
       next_ctx = pipe expr.left.exprs:
-        filter {left, right}:
+        filter fn {left, right}:
           match right:
             false: is_runtime_fn left.value, ctx
             else: is_runtime_fn right.value, ctx
 
-        fold {left, right}, override_ctx=ctx:
+        fold_ ctx, fn {left, right}, override_ctx:
           name = match right:
             false: left.value
             else: right.value
@@ -64,8 +65,7 @@ add_runtime_fn_overrides = fn expr, ctx:
 
 imported_specs = fn exprs, ctx:
   pipe exprs:
-    map prop, , imp_ctx:
-
+    map_ac fn prop, , imp_ctx:
       [right, left_ctx] = match prop:
         {right: false}:
           transform prop.left, imp_ctx

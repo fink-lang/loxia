@@ -7,7 +7,7 @@
 
 {consts, assign} = import './types.fnk'
 
-{is_empty} = import '@fink/std-lib/iter.fnk'
+{fold: fold_, filter, is_empty} = import '@fink/std-lib/iter.fnk'
 
 
 
@@ -17,7 +17,7 @@ get_references = fn path:
 
 
 
-filter_tail_calls = fn path: filter ref: match ref:
+filter_tail_calls = fn path: filter fn ref: match ref:
   {
     parentPath: isCallExpression ?
     parentPath.parentPath: isReturnStatement ?
@@ -38,7 +38,7 @@ get_tail_call_returns = fn path:
 
 
 replace_tail_calls_with_args_assing = fn args, tcs:
-  tcs | fold ref:
+  tcs | fold_ _, fn ref:
     ret_st = ref.parentPath.parentPath
     ret_st.replaceWithMultiple list:
       assign

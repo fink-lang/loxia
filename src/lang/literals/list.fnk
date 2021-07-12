@@ -11,7 +11,7 @@ transform_list = fn node, ctx:
     map_with_ctx fn elem, elem_ctx:
       match elem:
         {type: 'empty'}:
-          [null, ctx]
+          [null, elem_ctx]
         else:
           transform elem, elem_ctx
     collect_with_ctx ctx

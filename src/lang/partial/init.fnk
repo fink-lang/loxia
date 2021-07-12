@@ -1,6 +1,8 @@
 babel_types = import '@babel/types'
 {identifier} = babel_types
 
+{map, filter} = import '@fink/std-lib/iter.fnk'
+
 {add} = import '../context.fnk'
 {transform} = import '../transform.fnk'
 
@@ -8,8 +10,10 @@ babel_types = import '@babel/types'
 
 has_partial = fn exprs:
   [partial=false] = pipe exprs:
-    map expr: is_partial expr
-    filter partial: partial
+    # TODO map is_partial
+    map fn expr: is_partial expr
+    # TODO filter ?
+    filter fn partial: partial
   partial
 
 

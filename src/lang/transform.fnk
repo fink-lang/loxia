@@ -1,4 +1,5 @@
 {is_str} = import '@fink/std-lib/str.fnk'
+{fold_ac, map_ac, filter} = import '@fink/std-lib/iter.fnk'
 
 {wrap} = import '../js/types.fnk'
 
@@ -32,20 +33,19 @@ wrap_node = fn ctx, js_node, node:
 
 
 map_with_ctx = fn fnc:
-  map item, , ctx:
+  map_ac fn item, , ctx:
     [value, next_ctx] = fnc item, ctx
     [value, , next_ctx]
 
 
 # TODO: std-lib
-drop_if = fn cond: filter item, , ctx:
-  keep = not cond item, ctx
-  [keep, , ctx]
+drop_if = fn cond: filter fn item, , ctx:
+  not cond item, ctx
 
 
 
-collect_with_ctx = fn ctx:
-  fold item, items=[], , curr_ctx=ctx:
+collect_with_ctx = fn ctx: fn items:
+  items | fold_ac [], ctx, fn item, items, , curr_ctx:
     [[...items, item], , curr_ctx]
 
 

@@ -5,7 +5,7 @@ babel_types = import '@babel/types'
   optionalMemberExpression, identifier
 } = babel_types
 
-{is_empty} = import '@fink/std-lib/iter.fnk'
+{filter, filter_ac, while, is_empty} = import '@fink/std-lib/iter.fnk'
 
 {raw_str, unique_ident, ident, lets} = import '../../js/types.fnk'
 {transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
@@ -16,7 +16,7 @@ not_computed = false
 
 
 has_member_keys = fn expr:
-  [found=false] = expr.exprs | filter expr:
+  [found=false] = expr.exprs | filter fn expr:
     match expr:
       {left: {type: 'member'}}: true
       else: false
@@ -72,7 +72,7 @@ transform_member_or_plain_prop = fn initial_rec: fn expr, ctx:
 
 
 transform_rec_regular_props = fn rec_expr, ctx:
-  [...exprs] = rec_expr.exprs | while expr:
+  [...exprs] = rec_expr.exprs | while fn expr:
     match expr:
       {left: {type: 'member'}}: false
       else: true
@@ -85,11 +85,11 @@ transform_member_props = fn expr, ctx:
   [initial_rec, next_ctx]  = unique_ident 'rec', ctx
 
   [rec_updates, end_ctx] = pipe expr.exprs:
-    filter expr, keep=false:
+    filter_ac fn expr, keep=false, ctx:
       do_keep = match expr:
         {left: {type: 'member'}}: true
         else: keep
-      [do_keep, do_keep]
+      [do_keep, do_keep, ctx]
     map_with_ctx transform_member_or_plain_prop initial_rec
     collect_with_ctx next_ctx
 
