@@ -1,3 +1,5 @@
+{map} = import '@fink/std-lib/iter.fnk'
+
 
 transform_comment = fn {op, value, loc}:
   match op:
@@ -7,7 +9,7 @@ transform_comment = fn {op, value, loc}:
 
 transform_comments = fn comments:
   pipe comments:
-    map comment: transform_comment comment
+    map fn comment: transform_comment comment
 
 
 get_comments = fn {comments={}}:

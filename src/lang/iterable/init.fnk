@@ -1,4 +1,4 @@
-{length, zip} = import '@fink/std-lib/iter.fnk'
+{map, length, zip} = import '@fink/std-lib/iter.fnk'
 
 {transform} = import '../transform.fnk'
 {add_with_runtime, any} = import '../context.fnk'
@@ -14,7 +14,7 @@ get_initial_values = fn node, args:
       [[item_arg], rest]
 
   [rest_args, initial_values] = pipe initial_args:
-    map arg: match arg:
+    map fn arg: match arg:
       {type: 'assign'}:
         {left, right} = arg
         [left, right]

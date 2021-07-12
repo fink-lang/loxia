@@ -5,7 +5,7 @@ babel_types = import '@babel/types'
   memberExpression, identifier, expressionStatement, arrayPattern, restElement
   numericLiteral, awaitExpression, logicalExpression
 } = babel_types
-{length, is_empty} = import '@fink/std-lib/iter.fnk'
+{map, map_ac, filter, fold: fold_, length, is_empty} = import '@fink/std-lib/iter.fnk'
 
 {unique_ident} = import '../../js/types.fnk'
 {transform_left: xform_left} = import '../../js/left.fnk'
@@ -31,8 +31,10 @@ has_spread_not_last = fn {left}:
       [...exprs, ] = left.exprs
 
       [spread=false] = pipe exprs:
-        map {type}: type == 'spread'
-        filter is_spread: is_spread
+        # TODO map ?.type == 'spread'
+        map fn {type}: type == 'spread'
+        #TODO filter is_spread
+        filter fn is_spread: is_spread
 
       spread
     else:
@@ -41,7 +43,7 @@ has_spread_not_last = fn {left}:
 
 transform_spread_left = fn {left}, ctx:
   [before, middle, end] = pipe left.exprs:
-    fold expr, [before=[], middle=false, end=[]]=[]:
+    fold_ [], fn expr, [before=[], middle=false, end=[]]:
       match expr:
         {type: 'spread', right: false}:
           [before, {type: 'empty'}, end]
@@ -101,9 +103,9 @@ transform_spread_right = fn expr, ctx:
 
   len = (length left.exprs) - 1
   [[idx]] = pipe left.exprs:
-    map expr, idx=0:
+    map_ac fn expr, idx=0:
       [[idx, expr], idx + 1]
-    filter [, {type}]:
+    filter fn [, {type}]:
       type == 'spread'
 
   slices = list:
@@ -181,7 +183,7 @@ transform_await_right = fn expr, ctx:
     right
 
   [...right_exprs] = pipe left.exprs:
-    map expr:
+    map fn expr:
       wrap_with_comment_loc
         memberExpression
           awaitExpression

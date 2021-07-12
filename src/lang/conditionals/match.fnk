@@ -5,7 +5,7 @@ babel_types = import '@babel/types'
   doExpression, stringLiteral, memberExpression, restElement
   identifier, optionalMemberExpression
 } = babel_types
-{length, is_empty} = import '@fink/std-lib/iter.fnk'
+{map, filter, length, is_empty} = import '@fink/std-lib/iter.fnk'
 
 {eq, not_nullish, typof, consts, unique_ident} = import '../../js/types.fnk'
 
@@ -130,7 +130,7 @@ match_elems = fn elems, emit_result, ctx, cond:
 
 get_array_decl = fn arr, id_elems, right, ctx:
   [...exprs] = pipe id_elems:
-    map {id, value}:
+    map fn {id, value}:
       match value:
         # e.g. empty elems in [,, foo, bar]
         {type: 'empty'}:
@@ -174,7 +174,7 @@ match_array = fn value, arr, emit_result, ctx, cond:
   [array_decl, result_ctx] = get_array_decl arr, id_elems, value, elems_ctx
 
   [...filtered_id_elems] = pipe id_elems:
-    filter {value}:
+    filter fn {value}:
       match value:
         # empty elements need no matching
         {type: 'empty'}: false

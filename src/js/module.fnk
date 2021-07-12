@@ -6,6 +6,8 @@ babel_types = import '@babel/types'
   isImportDefaultSpecifier, isImportSpecifier
 } = babel_types
 
+{map} = import '@fink/std-lib/iter.fnk'
+
 
 [no_result] = []
 
@@ -24,7 +26,7 @@ transform_specifiers = fn {specifiers, source}:
 
     isImportSpecifier ?:
       props = pipe specifiers:
-        map node:
+        map fn node:
           objectProperty
             node.imported
             node.local

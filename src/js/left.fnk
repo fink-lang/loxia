@@ -4,6 +4,8 @@ babel_types = import '@babel/types'
   isArrayExpression, arrayPattern, isObjectExpression, objectPattern
 } = babel_types
 
+{map} = import '@fink/std-lib/iter.fnk'
+
 
 transform_left = fn val:
   match val:
@@ -16,11 +18,11 @@ transform_left = fn val:
     isArrayExpression ?:
       arrayPattern list:
         ... pipe val.elements:
-          map item: transform_left item
+          map fn item: transform_left item
 
     isObjectExpression ?:
       objectPattern list:
         ... pipe val.properties:
-          map prop: transform_left prop
+          map fn prop: transform_left prop
 
     else: val

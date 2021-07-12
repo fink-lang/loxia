@@ -7,7 +7,7 @@ babel_types = import '@babel/types'
 } = babel_types
 {set_props} = import '@fink/js-interop/reflect.fnk'
 {undefined} = import '@fink/js-interop/nullish.fnk'
-{is_empty} = import '@fink/std-lib/iter.fnk'
+{map, is_empty} = import '@fink/std-lib/iter.fnk'
 {wrap_with_comment_loc} = import '../lang/comments/init.fnk'
 
 {lets, assign, undef} = import './types.fnk'
@@ -96,7 +96,7 @@ last_expressions = fn path:
 
 replace_with_return = fn path:
   pipe last_expressions path:
-    map expr:
+    map fn expr:
       match expr:
         {node: {expression: {operator: 'throw'}}}:
           expr.replaceWith
@@ -131,7 +131,7 @@ replace_with_assign = fn target, path:
   target.parentPath.insertAfter assign id, undef _
 
   pipe last_expressions path:
-    map expr:
+    map fn expr:
       expr.replaceWith
         wrap_with_comment_loc
           assignmentExpression '=', id, expr.node.expression

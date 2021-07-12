@@ -1,4 +1,5 @@
 {is_str} = import '@fink/std-lib/str.fnk'
+{filter, map} = import '@fink/std-lib/iter.fnk'
 
 
 default_in_runtime = '@fink/js-interop/runtime.js'
@@ -41,8 +42,8 @@ use_runtime_fn = fn name, ctx:
     runtime: rec:
       ...runtime
       used: list:
-        name,
-        ...runtime.used | filter used_name: used_name != name
+        name, # TODO: filter ? != name
+        ...runtime.used | filter fn used_name: used_name != name
 
 
 
@@ -62,15 +63,15 @@ get_runtime_imports = fn ctx:
 
   pipe runtime.used:
     # If it was overridden it was imported, no need to create an extra import
-    filter name:
+    filter fn name:
       not name in runtime.overrides
 
-    map name:
+    map fn name:
       uri = runtime_impl name, ctx
       left = {type: 'ident', value: name}
       [uri, {type: 'rec:kv', left, right: false}]
 
-    map [uri, kv]:
+    map fn [uri, kv]:
       rec:
         type: 'assign'
         op: '='
