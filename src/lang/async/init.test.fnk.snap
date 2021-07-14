@@ -1,15 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`await compiles 1`] = `
-"import { _unfold_ } from \\"@fink/js-interop/runtime.js\\";
-export const task1 = async foo => -(await foo);
+"export const task1 = async foo => -(await foo);
 export const task2 = async foo => await (foo + 4);
 export const task3 = async foo => {
   const bar = await foo();
   const spam = await foo();
   return bar + 123;
 };
-export const a_gen = _unfold_(async (curr = 0) => {
+export const a_gen = unfold(async (curr = 0) => {
   const ˆvalue_1 = shrub;
 
   if (ˆvalue_1 === spam) {
@@ -19,21 +18,19 @@ export const a_gen = _unfold_(async (curr = 0) => {
   {
     return curr + 1;
   }
-}, 1, false, false);
+});
 await ni;"
 `;
 
 exports[`await handles awaiting async iterables 1`] = `
-"import { _unfold_ } from \\"@fink/js-interop/runtime.js\\";
-
-let _do_result;
+"let _do_result;
 
 {
   let _do_result2;
 
   {
     let ˆpipe_result_3 = undefined;
-    _do_result2 = ˆpipe_result_3 = _unfold_(async (cntr = 0) => (await cntr) + 1, 1, false, false)(ˆpipe_result_3);
+    _do_result2 = ˆpipe_result_3 = unfold(async (cntr = 0) => (await cntr) + 1)(ˆpipe_result_3);
   }
   const ˆitems_1 = _do_result2;
   _do_result2 = undefined;

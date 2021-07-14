@@ -1,7 +1,6 @@
 {add_assignment} = import './assignment/init.fnk'
 {add_func} = import './func/init.fnk'
 {add_conditionals} = import './conditionals/init.fnk'
-{add_iterables} = import './iterable/init.fnk'
 {add_call} = import './call/init.fnk'
 {add_literals} = import './literals/init.fnk'
 {add_spread} = import './spread/init.fnk'
@@ -37,7 +36,6 @@ add_transformers = fn ctx:
     add_async
     add_func
     add_conditionals
-    add_iterables
     add_call
     add_async
     add_jsx

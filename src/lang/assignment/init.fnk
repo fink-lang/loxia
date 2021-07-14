@@ -5,7 +5,7 @@ babel_types = import '@babel/types'
   memberExpression, identifier, expressionStatement, arrayPattern, restElement
   numericLiteral, awaitExpression, logicalExpression
 } = babel_types
-{map, map_ac, filter, fold: fold_, length, is_empty} = import '@fink/std-lib/iter.fnk'
+{map, map_ac, filter, fold, length, is_empty} = import '@fink/std-lib/iter.fnk'
 
 {unique_ident} = import '../../js/types.fnk'
 {transform_left: xform_left} = import '../../js/left.fnk'
@@ -43,7 +43,7 @@ has_spread_not_last = fn {left}:
 
 transform_spread_left = fn {left}, ctx:
   [before, middle, end] = pipe left.exprs:
-    fold_ [], fn expr, [before=[], middle=false, end=[]]:
+    fold [], fn expr, [before=[], middle=false, end=[]]:
       match expr:
         {type: 'spread', right: false}:
           [before, {type: 'empty'}, end]

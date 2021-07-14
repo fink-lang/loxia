@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pipe compiles 1`] = `
-"import { _map_ } from \\"@fink/js-interop/runtime.js\\";
-{
+"{
   let ˆpipe_result_1 = undefined;
   ˆpipe_result_1 = foo(ˆpipe_result_1);
 
@@ -17,7 +16,7 @@ exports[`pipe compiles 1`] = `
 }
 {
   let ˆpipe_result_2 = [1, 2, 3];
-  ˆpipe_result_2 = _map_(item => item * 2, 1, false, false)(ˆpipe_result_2);
+  ˆpipe_result_2 = map(item => item * 2)(ˆpipe_result_2);
 }"
 `;
 

@@ -16,7 +16,7 @@ describe 'await', fn:
           spam = await foo _
           bar + 123
 
-        a_gen = unfold curr=0:
+        a_gen = unfold fn curr=0:
           match shrub:
             spam: await ni curr
             else: curr + 1
@@ -31,7 +31,7 @@ describe 'await', fn:
     expect
       fink2js '
         [await foo, bar] = pipe:
-          unfold cntr=0:
+          unfold fn cntr=0:
             await cntr + 1
       '
       to_match_snapshot

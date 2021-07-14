@@ -7,7 +7,7 @@ babel_types = import '@babel/types'
 } = babel_types
 {set_props} = import '@fink/js-interop/reflect.fnk'
 {undefined} = import '@fink/js-interop/nullish.fnk'
-{map, is_empty} = import '@fink/std-lib/iter.fnk'
+{fold, map, is_empty} = import '@fink/std-lib/iter.fnk'
 {wrap_with_comment_loc} = import '../lang/comments/init.fnk'
 
 {lets, assign, undef} = import './types.fnk'
@@ -17,7 +17,7 @@ get_body = fn path: path.get 'body'
 
 
 
-consume_all = fold: undefined
+consume_all = fold fn: undefined
 
 
 
