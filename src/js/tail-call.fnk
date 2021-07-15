@@ -7,7 +7,7 @@
 
 {consts, assign} = import './types.fnk'
 
-{fold: fold_, filter, is_empty} = import '@fink/std-lib/iter.fnk'
+{fold, filter, is_empty} = import '@fink/std-lib/iter.fnk'
 
 
 
@@ -38,7 +38,7 @@ get_tail_call_returns = fn path:
 
 
 replace_tail_calls_with_args_assing = fn args, tcs:
-  tcs | fold_ _, fn ref:
+  tcs | fold _, fn ref:
     ret_st = ref.parentPath.parentPath
     ret_st.replaceWithMultiple list:
       assign

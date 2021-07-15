@@ -10,6 +10,8 @@ export const spam = _in_(key, {
 export const shrub = _in_(item, ni);"
 `;
 
+exports[`in compiles with custom runtime import 1`] = `"import { _in_ } from \\"./foo.js\\";"`;
+
 exports[`in compiles with default runtime 1`] = `
 "import { _in_ } from \\"@fink/js-interop/runtime.js\\";
 export const foo = _in_(1, [1, 2, 3]);
