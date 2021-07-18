@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`comparison compiles as partials 1`] = `
+"ˆpartial => 1 === len(ˆpartial);
+
+ˆpartial => ˆpartial !== 123;
+
+ˆpartial => ˆpartial > 3;
+
+ˆpartial => 1 < ˆpartial && ˆpartial <= 3;"
+`;
+
 exports[`comparison compiles combined 1`] = `
 "export const lt = a < b && b < c;
 export const gt = a > b && b > c;

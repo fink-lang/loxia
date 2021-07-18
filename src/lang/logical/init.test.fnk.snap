@@ -5,3 +5,11 @@ exports[`logical compiles 1`] = `
 export const bar = a && b && c;
 export const spam = !a;"
 `;
+
+exports[`logical compiles as partial 1`] = `
+"ˆpartial => ˆpartial || foo(ˆpartial);
+
+ˆpartial => ˆpartial && spam;
+
+ˆpartial => !ˆpartial;"
+`;

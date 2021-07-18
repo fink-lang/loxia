@@ -11,7 +11,6 @@ babel_types = import '@babel/types'
 {transform_left: xform_left} = import '../../js/left.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
 {add, any} = import '../context.fnk'
-{transform_value} = import '../partial/init.fnk'
 {transform} = import '../transform.fnk'
 
 
@@ -31,10 +30,8 @@ has_spread_not_last = fn {left}:
       [...exprs, ] = left.exprs
 
       [spread=false] = pipe exprs:
-        # TODO map ?.type == 'spread'
-        map fn {type}: type == 'spread'
-        #TODO filter is_spread
-        filter fn is_spread: is_spread
+        # TODO filter ?.type == 'spread'
+        filter fn {type}: type == 'spread'
 
       spread
     else:
@@ -90,7 +87,7 @@ transform_spread_right = fn expr, ctx:
   {left, right} = expr
   [items, init_ctx] = unique_ident 'items', ctx
   # TODO: wrap declarator?
-  [init, next_ctx] = transform_value right, init_ctx
+  [init, next_ctx] = transform right, init_ctx
 
   items_init = wrap_with_comment_loc
     variableDeclaration
@@ -148,7 +145,7 @@ transform_await_right = fn expr, ctx:
   [items, iter_ctx] = unique_ident 'items', ctx
   [iter, init_ctx] = unique_ident 'iter', iter_ctx
 
-  [init, next_ctx] = transform_value right, init_ctx
+  [init, next_ctx] = transform right, init_ctx
 
   items_init = wrap_with_comment_loc
     variableDeclaration 'const', [variableDeclarator items, init]
@@ -214,7 +211,7 @@ transform_assign_left = fn node, ctx:
 
 
 transform_assign_right = fn node, ctx:
-   transform_value node.right, ctx
+   transform node.right, ctx
 
 
 

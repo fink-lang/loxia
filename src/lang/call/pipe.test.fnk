@@ -2,6 +2,7 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
+
 describe 'pipe', fn:
   it 'compiles', fn:
 
@@ -9,7 +10,7 @@ describe 'pipe', fn:
       fink2js '
         pipe:
           foo
-          bar ?, {foo, ...?}
+          bar ?, {foo}
           spam
           [...?]
 

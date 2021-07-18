@@ -2,9 +2,9 @@ babel_types = import '@babel/types'
 {logicalExpression, unaryExpression} = babel_types
 
 {add, add_with_runtime, any} = import '../context.fnk'
-{transform} = import '../transform.fnk'
 
 {transform_in} = import './in.fnk'
+{transform_with_partial_lr, transform_with_partial} = import '../partial/init.fnk'
 
 
 
@@ -17,20 +17,22 @@ transform_op = rec:
 
 transform_not = fn node, ctx:
   {(node.op): op} = transform_op
-  [right, next_ctx] = transform node.right, ctx
+  [wrap_partial, right, next_ctx] = transform_with_partial node.right, ctx
+
   js = unaryExpression op, right
-  [js, next_ctx]
+
+  wrap_partial js, next_ctx
 
 
 
 transform_logical = fn node, ctx:
   {(node.op): op} = transform_op
 
-  [left, next_ctx] = transform node.left, ctx
-  [right, end_ctx] = transform node.right, next_ctx
+  [left, right, next_ctx, wrap_partial] = transform_with_partial_lr node.left, node.right, ctx
+
   js = logicalExpression op, left, right
 
-  [js, end_ctx]
+  wrap_partial js, next_ctx
 
 
 

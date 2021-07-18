@@ -19,3 +19,13 @@ describe 'binary', fn:
       '
       to_match_snapshot
 
+
+  it 'compiles as partial', fn:
+    expect
+      fink2js '
+        add = a + ?
+        b + ?
+        -?
+      '
+      to_match_snapshot
+

@@ -6,8 +6,7 @@ exports[`pipe compiles 1`] = `
   ˆpipe_result_1 = foo(ˆpipe_result_1);
 
   ˆpipe_result_1 = (ˆpartial => bar(ˆpartial, {
-    foo,
-    ...ˆpartial
+    foo
   }))(ˆpipe_result_1);
 
   ˆpipe_result_1 = spam(ˆpipe_result_1);
@@ -21,7 +20,7 @@ exports[`pipe compiles 1`] = `
 `;
 
 exports[`small pipe | handles precedence 1`] = `
-"export const foo = ˆpartial => matches(rx\`[a-z]\`, ˆpartial)(\`foo\`);
+"export const foo = (ˆpartial => matches(rx\`[a-z]\`, ˆpartial))(\`foo\`);
 export const bar = [ham(spam), ni(shrub)];"
 `;
 

@@ -95,6 +95,17 @@ describe 'record', fn:
 
 
 
+describe 'partial', fn:
+  it 'compiles', fn:
+    expect
+      fink2js '
+        {foo: bar, ...?}
+        {foo: ?, bar: spam}
+      '
+      to_match_snapshot
+
+
+
 describe 'calculated props', fn:
   it 'compiles', fn:
     expect

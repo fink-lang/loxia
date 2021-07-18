@@ -2,7 +2,7 @@ babel_types = import '@babel/types'
 {binaryExpression, logicalExpression} = babel_types
 
 {add, any} = import '../context.fnk'
-{transform} = import '../transform.fnk'
+{transform_with_partial_lr} = import '../partial/init.fnk'
 
 
 
@@ -15,8 +15,7 @@ transform_op = rec:
 transform_comp = fn {op, left, right}, ctx:
   {(op): operator=op} = transform_op
 
-  [bin_left, next_ctx] = transform left, ctx
-  [bin_right, end_ctx] = transform right, next_ctx
+  [bin_left, bin_right, next_ctx, wrap_partial] = transform_with_partial_lr left, right, ctx
 
   js = match left:
     {op: ? in ['<', '>', '<=', '>=', '==', '!=']}:
@@ -26,7 +25,7 @@ transform_comp = fn {op, left, right}, ctx:
     else:
       binaryExpression operator, bin_left, bin_right
 
-  [js, end_ctx]
+  wrap_partial js, next_ctx
 
 
 

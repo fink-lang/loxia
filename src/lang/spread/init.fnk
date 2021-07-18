@@ -7,8 +7,13 @@ babel_types = import '@babel/types'
 
 transform_spread = fn node, ctx:
   [right, next_ctx] = transform node.right, ctx
-  js = spreadElement right
-  [js, next_ctx]
+  match right:
+    {is_partial: true}:
+      js = spreadElement right.body
+      [{...js, is_partial: true}, next_ctx]
+    else:
+      js = spreadElement right
+      [js, next_ctx]
 
 
 

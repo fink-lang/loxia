@@ -6,9 +6,12 @@ babel_types = import '@babel/types'
 } = babel_types
 
 {filter, filter_ac, while, is_empty} = import '@fink/std-lib/iter.fnk'
+{map, zip} = import '@fink/std-lib/iter.fnk'
 
 {raw_str, unique_ident, ident, lets} = import '../../js/types.fnk'
 {transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
+{partial_wrapper, no_wrapper} = import '../partial/init.fnk'
+
 
 optional = true
 not_computed = false
@@ -122,8 +125,16 @@ transform_record = fn expr, ctx:
         map_with_ctx transform
         collect_with_ctx ctx
 
+      [wrap_partial=no_wrapper] = pipe zip expr.exprs, props:
+        filter fn [prop, js_prop]: match prop:
+          {right.type: 'partial'}: true
+          {type: 'spread'}: js_prop.is_partial
+          else: false
+        map fn:
+          partial_wrapper
+
       js = objectExpression props
-      [js, next_ctx]
+      wrap_partial js, next_ctx
 
 
 

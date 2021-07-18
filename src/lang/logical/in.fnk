@@ -1,24 +1,22 @@
 babel_types = import '@babel/types'
 {identifier, callExpression} = babel_types
 
-{transform} = import '../transform.fnk'
-
 {use_runtime_fn} = import '../runtime.fnk'
+{transform_with_partial_lr} = import '../partial/init.fnk'
 
 
 
 transform_in = fn node, ctx:
   runtime_fn = '_${node.op}_'
-  runtime_ctx = use_runtime_fn runtime_fn, ctx
+  expr_ctx = use_runtime_fn runtime_fn, ctx
 
-  [right, next_ctx] = transform node.right, runtime_ctx
-  [left, end_ctx] = transform node.left, next_ctx
+  [left, right, next_ctx, wrap_partial] = transform_with_partial_lr node.left, node.right, expr_ctx
 
   js = callExpression
     identifier runtime_fn
     [left, right]
 
-  [js, end_ctx]
+  wrap_partial js, next_ctx
 
 
 

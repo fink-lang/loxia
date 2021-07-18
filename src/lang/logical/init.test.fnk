@@ -11,3 +11,14 @@ describe 'logical', fn:
         spam = not a
       "
       to_match_snapshot
+
+
+  it 'compiles as partial', fn:
+    expect
+      fink2js "
+        ? or foo ?
+        ? and spam
+        not ?
+      "
+      to_match_snapshot
+

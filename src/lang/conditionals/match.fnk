@@ -10,9 +10,9 @@ babel_types = import '@babel/types'
 {eq, not_nullish, typof, consts, unique_ident} = import '../../js/types.fnk'
 
 {get_key} = import '../literals/record.fnk'
-{is_partial} = import '../partial/init.fnk'
 {wrap_with_comment_loc} = import '../comments/init.fnk'
 {transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
+{transform_with_partial} = import '../partial/init.fnk'
 
 
 
@@ -32,12 +32,11 @@ is_iterable = fn value:
 
 comp = fn id, expected, ctx:
   value_ctx = {...ctx, partial_ident: id}
-  # TODO: test how deep `?` goes
-  [value, {partial_ident: _, ...next_ctx}] = transform expected, value_ctx
+  [wrap_with_partial, value, {partial_ident: _, ...next_ctx}] = transform_with_partial expected, value_ctx, false
 
-  cond = match expected:
-    is_partial ?: value
-    else: eq id, value
+  cond = match wrap_with_partial:
+    false: eq id, value
+    else: value
 
   [cond, next_ctx]
 
