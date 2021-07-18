@@ -11,9 +11,7 @@ transform_string = fn node, ctx:
   {exprs: parts, tag} = node
 
   quasies = pipe parts:
-    # TODO filter ?.type == 'string:text'
-    filter fn part:
-      part.type == 'string:text'
+    filter ?.type == 'string:text'
 
     map fn part:
       templateElement rec:
@@ -23,8 +21,7 @@ transform_string = fn node, ctx:
           '\\$1$2'
 
   [expressions, next_ctx] = pipe parts:
-    # TODO drop_if ?.type == 'string:text'
-    drop_if fn {type}: type == 'string:text'
+    drop_if ?.type == 'string:text'
     map_with_ctx transform
     collect_with_ctx ctx
 

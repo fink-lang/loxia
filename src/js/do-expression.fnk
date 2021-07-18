@@ -3,7 +3,8 @@ babel_types = import '@babel/types'
   assignmentExpression, returnStatement, expressionStatement
   isDoExpression, isBlockStatement, isLabeledStatement
   isVariableDeclarator, isArrowFunctionExpression, isExpressionStatement
-  isReturnStatement, arrowFunctionExpression, callExpression
+  isReturnStatement
+  arrowFunctionExpression, callExpression
 } = babel_types
 {set_props} = import '@fink/js-interop/reflect.fnk'
 {undefined} = import '@fink/js-interop/nullish.fnk'
@@ -13,7 +14,7 @@ babel_types = import '@babel/types'
 {lets, assign, undef} = import './types.fnk'
 
 
-get_body = fn path: path.get 'body'
+get_body = ?.get 'body'
 
 
 
@@ -34,6 +35,7 @@ simple = fn body, sl=false:
               stmnt.node.body
             # TODO:
             # {sl: true, stmnt: isIfStatement ?}:
+            #   console.log body
             #   body.node
             else:
               simple stmnt
@@ -66,8 +68,7 @@ last_expressions = fn path:
       items = []
       body.traverse
         rec:
-          LabeledStatement: fn nested_match:
-            nested_match.skip _
+          LabeledStatement: ?.skip _
 
           BreakStatement: fn brk:
             last = brk.getSibling brk.key - 1
@@ -169,13 +170,12 @@ transform_do_expr = fn path:
       replace_with_return path
 
     else:
-      # e.g.
-      # fn:
-      #   foo = match:
-      #      spam:
-      #        shrub
-      #        ni
-      #   foo
+      # TODO
+      # foo = match:
+      #   spam:
+      #     shrub
+      #     ni
+      # foo
       arrow = arrowFunctionExpression [], path.node
       path.replaceWith
         callExpression arrow, []

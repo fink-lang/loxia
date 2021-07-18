@@ -42,8 +42,8 @@ use_runtime_fn = fn name, ctx:
     runtime: rec:
       ...runtime
       used: list:
-        name, # TODO: filter ? != name
-        ...runtime.used | filter fn used_name: used_name != name
+        name,
+        ...runtime.used | filter ? != name
 
 
 
