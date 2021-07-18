@@ -18,6 +18,15 @@ describe 'list', fn:
       to_match_snapshot
 
 
+  it 'compiles as partial', fn:
+    expect
+      fink2js '
+        [1, ...?, 9]
+        [?, ?]
+      '
+      to_match_snapshot
+
+
 describe 'unpacking list', fn:
   it 'compiles', fn:
     expect

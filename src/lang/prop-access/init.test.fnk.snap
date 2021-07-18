@@ -8,3 +8,11 @@ export const reserved_prop = item.arguments;
 export const js_safe_unicode = [item.π, item.ƒ];
 export const js_unsfae = item[\\"foo-bar\\"];"
 `;
+
+exports[`member compiles partial 1`] = `
+"ˆpartial => ˆpartial.foo;
+
+ˆpartial => ˆpartial.foo.bar;
+
+ˆpartial => ˆpartial.foo === bar;"
+`;

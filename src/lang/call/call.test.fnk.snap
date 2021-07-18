@@ -8,3 +8,27 @@ export const call4 = a();
 export const call5 = a(x => x * 2);
 export const call6 = a(foo, undefined, bar);"
 `;
+
+exports[`call compiles as partial 1`] = `
+"ˆpartial => foo(ˆpartial);
+
+ˆpartial => foo(ˆpartial, 123);
+
+ˆpartial => foo(...ˆpartial);
+
+ˆpartial => foo(...ˆpartial.bar);
+
+ˆpartial => ˆpartial(123);
+
+ˆpartial => ˆpartial(bar, spam);
+
+ˆpartial => ˆpartial.bar(spam);"
+`;
+
+exports[`call compiles with partial args 1`] = `
+"filter(ˆpartial => ˆpartial === 1);
+filter(ˆpartial => ˆpartial || foo(ˆpartial));
+filter(ˆpartial => !ˆpartial);
+map(ˆpartial => ˆpartial.foo);
+map(ˆpartial => ˆpartial % 2 === 0);"
+`;

@@ -7,6 +7,18 @@ exports[`calculated props compiles 1`] = `
 };"
 `;
 
+exports[`partial compiles 1`] = `
+"ˆpartial => ({
+  foo: bar,
+  ...ˆpartial
+});
+
+ˆpartial => ({
+  foo: ˆpartial,
+  bar: spam
+});"
+`;
+
 exports[`record compiles idents that are not js prop-names 1`] = `
 "export const foo = {
   foo: bar,

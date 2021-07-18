@@ -26,9 +26,19 @@ describe 'in', fn:
       to_match_snapshot
 
 
+  it 'compiles as partial', fn:
+    expect
+      fink2js "
+        ? in [1, 2, 3]
+        foo in ?
+      "
+      to_match_snapshot
+
+
   it 'compiles with custom runtime import', fn:
     expect
       fink2js "
         {_in_} = import './foo.fnk'
       "
       to_match_snapshot
+

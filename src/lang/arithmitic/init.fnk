@@ -2,7 +2,8 @@ babel_types = import '@babel/types'
 {binaryExpression, unaryExpression} = babel_types
 
 {add, any} = import '../context.fnk'
-{transform} = import '../transform.fnk'
+
+{transform_with_partial_lr, transform_with_partial} = import '../partial/init.fnk'
 
 
 
@@ -14,19 +15,22 @@ transform_op = rec:
 transform_arithmitic = fn {op, left, right}, ctx:
   {(op): operator=op} = transform_op
 
-  [left_js, right_ctx] = transform left, ctx
-  [right_js, end_ctx] = transform right, right_ctx
+  [left_js, right_js, next_ctx, wrap_partial] = transform_with_partial_lr left, right, ctx
+
   js = binaryExpression operator, left_js, right_js
 
-  [js, end_ctx]
+  wrap_partial js, next_ctx
+
+
 
 
 
 transform_unary = fn {op, right}, ctx:
-  [right_js, next_ctx] = transform right, ctx
+  [wrap_partial, right_js, next_ctx] = transform_with_partial right, ctx
+
   js = unaryExpression op, right_js
 
-  [js, next_ctx]
+  wrap_partial js, next_ctx
 
 
 

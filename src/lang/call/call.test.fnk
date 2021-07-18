@@ -4,7 +4,6 @@
 
 describe 'call', fn:
   it 'compiles', fn:
-
     expect
       fink2js '
         call1 = a ni, x=123, ...x
@@ -16,5 +15,30 @@ describe 'call', fn:
       '
       to_match_snapshot
 
+
+  it 'compiles as partial', fn:
+    expect
+      fink2js '
+        foo ?
+        foo ?, 123
+        foo ...?
+        foo ...?.bar
+        ? 123
+        ? bar, spam
+        ?.bar spam
+      '
+      to_match_snapshot
+
+
+  it 'compiles with partial args', fn:
+    expect
+      fink2js '
+        filter ? == 1
+        filter ? or foo ?
+        filter not ?
+        map ?.foo
+        map ? % 2 == 0
+      '
+      to_match_snapshot
 
 

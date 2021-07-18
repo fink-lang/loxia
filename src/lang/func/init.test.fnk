@@ -82,5 +82,3 @@ describe 'func', fn:
       to_match_snapshot
 
 
-
-

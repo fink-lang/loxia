@@ -4,7 +4,6 @@
 
 describe 'member', fn:
   it 'compiles', fn:
-
     expect
       fink2js "
         foo = spam.shrub
@@ -13,6 +12,16 @@ describe 'member', fn:
         reserved_prop = item.arguments
         js_safe_unicode = [item.π, item.ƒ]
         js_unsfae = item.foo-bar
+      "
+      to_match_snapshot
+
+
+  it 'compiles partial', fn:
+    expect
+      fink2js "
+        ?.foo
+        ?.foo.bar
+        ?.foo == bar
       "
       to_match_snapshot
 

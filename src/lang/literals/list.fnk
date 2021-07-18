@@ -1,8 +1,10 @@
 babel_types = import '@babel/types'
 {arrayExpression} = babel_types
 {null} = import '@fink/js-interop/nullish.fnk'
+{map, filter, zip} = import '@fink/std-lib/iter.fnk'
 
 {transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
+{partial_wrapper, no_wrapper} = import '../partial/init.fnk'
 
 
 
@@ -16,5 +18,16 @@ transform_list = fn node, ctx:
           transform elem, elem_ctx
     collect_with_ctx ctx
 
+  # TODO: same as in call.fnk
+  [wrap_partial=no_wrapper] = pipe zip node.exprs, elems:
+    filter fn [arg, js_arg]: match arg:
+      {type: 'partial'}: true
+      {type: 'spread', right.type: 'partial'}: true
+      {type: 'spread'}: js_arg.is_partial
+      else: false
+    map fn:
+      partial_wrapper
+
   js = arrayExpression elems
-  [js, next_ctx]
+
+  wrap_partial js, next_ctx

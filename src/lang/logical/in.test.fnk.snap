@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`in compiles as partial 1`] = `
+"import { _in_ } from \\"@fink/js-interop/runtime.js\\";
+
+ˆpartial => _in_(ˆpartial, [1, 2, 3]);
+
+ˆpartial => _in_(foo, ˆpartial);"
+`;
+
 exports[`in compiles with custom runtime 1`] = `
 "import { better_in as _in_ } from \\"./foo.js\\";
 export const foo = _in_(1, [1, 2, 3]);

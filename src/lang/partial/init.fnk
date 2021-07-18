@@ -1,52 +1,52 @@
 babel_types = import '@babel/types'
-{identifier} = babel_types
-
-{map, filter} = import '@fink/std-lib/iter.fnk'
+{identifier, arrowFunctionExpression} = babel_types
 
 {add} = import '../context.fnk'
 {transform} = import '../transform.fnk'
 
 
 
-has_partial = fn exprs:
-  [partial=false] = pipe exprs:
-    # TODO map is_partial
-    map fn expr: is_partial expr
-    # TODO filter ?
-    filter fn partial: partial
-  partial
 
 
-
-is_partial = fn node:
-  match node:
-    {type: 'partial'}: true
-    {left: is_partial ?}: true
-    {right: is_partial ?}: true
-    {type: 'call', callee: is_partial ?}: true
-    {type: 'call'}: has_partial node.args
-    {type: 'list'}: has_partial node.exprs
-    {type: 'rec'}: has_partial node.exprs
-    {type: 'group'}: has_partial node.exprs
-    else: false
-
-
-
-transform_value = fn node, ctx:
-
-  partial_or_node = match node:
-    is_partial ?:
-      rec:
-        type: 'func'
-        op: 'fn'
-        args: [{type: 'partial', value: '?'}]
-        exprs: [node]
-        comments: node.comments
-        loc: node.loc
+partial_wrapper = fn js, ctx:
+  {partial_ident} = ctx
+  name = match partial_ident:
+    {name: {}}:
+      partial_ident.name
     else:
-      node
+      '${ctx.ident_prefix}partial'
 
-  transform partial_or_node, ctx
+  partial_id = identifier name
+  [{is_partial: true, ...arrowFunctionExpression [partial_id], js}, ctx]
+
+
+no_wrapper = fn js, ctx: [js, ctx]
+
+
+
+transform_with_partial = fn expr, ctx, default_wrapper=no_wrapper:
+  [js, next_ctx] = match expr:
+    {type: 'partial'}:
+      [js, next_ctx] = transform expr, ctx
+      [{params: [js], body: js, is_partial: true}, next_ctx]
+    else:
+      transform expr, ctx
+
+  match js:
+    {is_partial: true}:
+      [partial_wrapper, js.body, next_ctx]
+    else:
+      [default_wrapper, js, next_ctx]
+
+
+
+
+transform_with_partial_lr = fn left, right, ctx:
+  [wrapper_l, js_l, right_ctx] = transform_with_partial left, ctx
+  [wrapper, js_r, next_ctx] = transform_with_partial right, right_ctx, wrapper_l
+
+  [js_l, js_r, next_ctx, wrapper]
+
 
 
 
