@@ -1,13 +1,13 @@
 babel_types = import '@babel/types'
 {unaryExpression} = babel_types
 
-{wrap} = import '../../js/types.fnk'
+{add_loc} = import '../../js/types.fnk'
 {transform} = import '../transform.fnk'
 
 
 
 transform_throw = fn node, ctx:
   [right, next_ctx] = transform node.right, ctx
-  js = wrap node, unaryExpression 'throw', right
+  js = add_loc node, unaryExpression 'throw', right
 
   [js, next_ctx]

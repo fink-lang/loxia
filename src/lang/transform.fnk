@@ -1,7 +1,7 @@
 {is_str} = import '@fink/std-lib/str.fnk'
 {fold_ac, map_ac, filter} = import '@fink/std-lib/iter.fnk'
 
-{wrap} = import '../js/types.fnk'
+{add_loc} = import '../js/types.fnk'
 
 {transform_error} = import './errors.fnk'
 {get_transformer} = import './context.fnk'
@@ -27,7 +27,7 @@ is_ignorable_import = fn expr, ctx:
 wrap_node = fn ctx, js_node, node:
   match ctx:
     {wrap: 'loc'}:
-      wrap node, js_node
+      add_loc node, js_node
     else:
       wrap_with_comment_loc js_node, node
 

@@ -11,7 +11,7 @@ babe_types = import '@babel/types'
 
 
 
-wrap = fn larix_node, js_node:
+add_loc = fn larix_node, js_node:
   {...js_node, loc: larix_node.loc}
 
 
