@@ -31,6 +31,10 @@ not_nullish = fn value:
   binaryExpression '!=', value, nullLiteral _
 
 
+not_undefiend = fn value:
+  binaryExpression '!==', value, undef _
+
+
 
 ident = fn name, ctx:
   identifier escape_ident name, ctx

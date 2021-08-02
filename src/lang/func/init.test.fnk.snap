@@ -3,7 +3,6 @@
 exports[`func compiles defaults 1`] = `
 "export const fun = (a, b = 12, c) => {
   shrub(...a);
-  foo();
   return bar();
 };"
 `;

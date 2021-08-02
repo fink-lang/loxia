@@ -3,7 +3,7 @@
 exports[`list compiles 1`] = `
 "export const array1 = [];
 export const array2 = [1];
-export const array3 = [1, 2, 4, a(), a(), ...b];
+export const array3 = [1, 2, 4, a(), ...b];
 export const array4 = [a + 1 + 45 + b + c, [1, 2], (3 + 3) * 2];"
 `;
 

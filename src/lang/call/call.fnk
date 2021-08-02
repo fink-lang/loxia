@@ -1,7 +1,7 @@
 babel_types = import '@babel/types'
 {callExpression, identifier} = babel_types
 
-{map, filter, zip, is_empty, length} = import '@fink/std-lib/iter.fnk'
+{map, filter, zip, length} = import '@fink/std-lib/iter.fnk'
 
 {transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
 {transform_with_partial, partial_wrapper, no_wrapper} = import '../partial/init.fnk'
@@ -24,9 +24,6 @@ transform_single_arg = fn [expr], ctx:
   match expr:
     {type: 'empty'}:
       [[],  ctx]
-    # TODO: remove in favour of using _ as empty?
-    {type: 'group', exprs: is_empty ?}:
-      [[], ctx]
     else:
       transform_multiple_args [expr], ctx
 
