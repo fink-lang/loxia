@@ -209,10 +209,10 @@ describe 'match value assertions', fn:
         foo = match bar:
           spam:
             ni
-            throw foobar
+            shrub foobar
           else:
             shrub
-            throw ni
+            spam ni
       '
       to_match_snapshot
 

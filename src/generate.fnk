@@ -2,6 +2,7 @@ babel_traverse = import '@babel/traverse'
 {default: traverse} = babel_traverse
 
 {transformFromAstSync} = import '@babel/core'
+{try_catch} = import '@fink/js-interop/errors.fnk'
 
 {transform} = import './lang/transform.fnk'
 {init_ctx} = import './lang/init.fnk'
@@ -16,7 +17,7 @@ babel_traverse = import '@babel/traverse'
 transform_file = fn fink_ast, code, filename, options:
   ctx = init_ctx code, filename, options
 
-  [error, [js_ast]=[]] = try:
+  [error, [js_ast]=[]] = try_catch fn:
     transform fink_ast, ctx
 
   extras = match options:
@@ -46,7 +47,7 @@ babel_generate = fn ast, filename, source, options:
     sourceMaps: source_maps
     ...babel
 
-  [error, result] = try:
+  [error, result] = try_catch fn:
     {code, map: source_map} = transformFromAstSync ast, source, babel_opts
     {code, source_map, errors: []}
 

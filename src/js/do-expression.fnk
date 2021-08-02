@@ -1,8 +1,9 @@
 babel_types = import '@babel/types'
 {
-  assignmentExpression, returnStatement, expressionStatement
+  assignmentExpression, returnStatement
   isDoExpression, isBlockStatement, isLabeledStatement
   isVariableDeclarator, isArrowFunctionExpression, isExpressionStatement
+  isAssignmentExpression
   isReturnStatement
   arrowFunctionExpression, callExpression
 } = babel_types
@@ -61,6 +62,7 @@ last_expressions = fn path:
         else:
           [...last_expressions last]
 
+    --- istanbul ignore else ---
     isLabeledStatement ?:
       body = get_body path
 
@@ -72,47 +74,24 @@ last_expressions = fn path:
 
           BreakStatement: fn brk:
             last = brk.getSibling brk.key - 1
-            # TODO: don't add throw expr
-            match last.node:
-              {expression: {operator: 'throw'}}:
-                last.replaceWith
-                  expressionStatement last.node.expression
-                brk.remove _
-              else:
-                # TODO: don't use mutation
-                items.push last
+            items.push last
             undefined
       items
-
-    else:
-      # isTryStatement
-      block = path.get'block'
-      handler = path.get 'handler'
-      body = get_body handler
-      list:
-        ...last_expressions block
-        ...last_expressions body
 
 
 
 replace_with_return = fn path:
   pipe last_expressions path:
     map fn expr:
-      match expr:
-        {node: {expression: {operator: 'throw'}}}:
-          expr.replaceWith
-            wrap_with_comment_loc
-              expressionStatement expr.node.expression
-              expr.node.expression
-        else:
-          expr.replaceWith
-            wrap_with_comment_loc
-              returnStatement expr.node.expression
-              expr.node.expression
+      expr.replaceWith
+        wrap_with_comment_loc
+          returnStatement expr.node.expression
+          expr.node.expression
 
       # TODO: no need for e.g. breaks after a return
       sibl = expr.getSibling expr.key + 1
       match sibl:
+        # TODO `?:`
         --- istanbul ignore next ---
         {}:
           sibl.remove _
@@ -169,13 +148,23 @@ transform_do_expr = fn path:
 
       replace_with_return path
 
+
+    isAssignmentExpression ?:
+      id = parent.get 'left'
+
+      pipe last_expressions path:
+        map fn expr:
+          expr.replaceWith
+            wrap_with_comment_loc
+              assignmentExpression '=', id.node, expr.node.expression
+              expr.node.expression
+
+        consume_all
+
+      parent.replaceWithMultiple path.node.body.body
+
     else:
-      # TODO
-      # foo = match:
-      #   spam:
-      #     shrub
-      #     ni
-      # foo
+      # TODO: {spam.ham.ni: {foo, bar} = spam
       arrow = arrowFunctionExpression [], path.node
       path.replaceWith
         callExpression arrow, []

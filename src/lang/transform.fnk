@@ -1,5 +1,6 @@
 {is_str} = import '@fink/std-lib/str.fnk'
 {fold_ac, map_ac, filter} = import '@fink/std-lib/iter.fnk'
+{try_catch, throw_err} = import '@fink/js-interop/errors.fnk'
 
 {add_loc} = import '../js/types.fnk'
 
@@ -51,7 +52,7 @@ collect_with_ctx = fn ctx: fn items:
 
 
 transform_with_comments = fn transform_expr, node, ctx:
-  [err, result] = try:
+  [err, result] = try_catch fn:
     transform_expr node, ctx
 
   match err:
@@ -60,9 +61,9 @@ transform_with_comments = fn transform_expr, node, ctx:
       js = wrap_node next_ctx, js_node, node
       [js, next_ctx]
     {transform_error: {}}:
-      throw err
+      throw_err err
     else:
-      throw transform_error err, node, ctx
+      throw_err transform_error err, node, ctx
 
 
 
@@ -71,7 +72,7 @@ transform = fn node, ctx:
 
   match transform_expr:
     false:
-      throw transform_error 'Unknown expression.', node, ctx
+      throw_err transform_error 'Unknown expression.', node, ctx
     else:
       transform_with_comments transform_expr, node, ctx
 

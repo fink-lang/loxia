@@ -23,9 +23,6 @@ eq = fn left, right: binaryExpression '===', left, right
 
 undef = fn: identifier 'undefined'
 
-false_ = fn: booleanLiteral false
-
-
 
 not_nullish = fn value:
   binaryExpression '!=', value, nullLiteral _
