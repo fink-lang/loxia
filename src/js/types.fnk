@@ -1,7 +1,7 @@
 babe_types = import '@babel/types'
 {
   variableDeclaration, variableDeclarator
-  nullLiteral, booleanLiteral, identifier, expressionStatement
+  nullLiteral, identifier, expressionStatement
   binaryExpression, unaryExpression, assignmentExpression
 } = babe_types
 
