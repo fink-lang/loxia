@@ -1,7 +1,7 @@
 babe_types = import '@babel/types'
 {
   variableDeclaration, variableDeclarator
-  nullLiteral, booleanLiteral, identifier, expressionStatement
+  nullLiteral, identifier, expressionStatement
   binaryExpression, unaryExpression, assignmentExpression
 } = babe_types
 
@@ -11,7 +11,7 @@ babe_types = import '@babel/types'
 
 
 
-wrap = fn larix_node, js_node:
+add_loc = fn larix_node, js_node:
   {...js_node, loc: larix_node.loc}
 
 
@@ -23,12 +23,13 @@ eq = fn left, right: binaryExpression '===', left, right
 
 undef = fn: identifier 'undefined'
 
-false_ = fn: booleanLiteral false
-
-
 
 not_nullish = fn value:
   binaryExpression '!=', value, nullLiteral _
+
+
+not_undefiend = fn value:
+  binaryExpression '!==', value, undef _
 
 
 

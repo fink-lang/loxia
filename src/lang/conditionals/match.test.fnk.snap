@@ -117,12 +117,23 @@ exports[`match iterables matches value assertions 1`] = `
       }
     }
 
-    // nested binary
+    // any value
     if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_4] = ˆvalue_1;
 
+      // any value
+      if (ˆa_4 !== undefined) {
+        true;
+        break ˆmatch_2;
+      }
+    }
+
+    // nested binary
+    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
+      const [ˆa_5] = ˆvalue_1;
+
       // nested binary
-      if (ˆa_4 > 123) {
+      if (ˆa_5 > 123) {
         ni;
         break ˆmatch_2;
       }
@@ -130,18 +141,9 @@ exports[`match iterables matches value assertions 1`] = `
 
     // nested call
     if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_5] = ˆvalue_1;
-
-      // nested call
-      if (ˆa_5()) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_6] = ˆvalue_1;
 
+      // nested call
       if (ˆa_6()) {
         ni;
         break ˆmatch_2;
@@ -159,37 +161,28 @@ exports[`match iterables matches value assertions 1`] = `
       }
     }
 
+    // nested as call arg
     if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_8] = ˆvalue_1;
 
-      if (ˆa_8.is_foo()) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    // nested as call arg
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_9] = ˆvalue_1;
-
       // nested as call arg
-      if (is_foo(ˆa_9)) {
+      if (is_foo(ˆa_8)) {
         ni;
         break ˆmatch_2;
       }
     }
 
     if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_10, ...ˆa_11] = ˆvalue_1;
-      if (ˆa_10 === 1) if (is_empty(ˆa_11)) {
+      const [ˆa_9, ...ˆa_10] = ˆvalue_1;
+      if (ˆa_9 === 1) if (is_empty(ˆa_10)) {
         ni;
         break ˆmatch_2;
       }
     }
 
     if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_12, ...ˆa_13] = ˆvalue_1;
-      if (ˆa_12 === 1) if (1 < length(ˆa_13)) {
+      const [ˆa_11, ...ˆa_12] = ˆvalue_1;
+      if (ˆa_11 === 1) if (1 < length(ˆa_12)) {
         ni;
         break ˆmatch_2;
       }
@@ -220,12 +213,17 @@ exports[`match iterables matches values 1`] = `
           }
     }
 
+    // TODO: fix semantics for matching [], {}
     if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
       const [ˆa_7, ˆa_8, ˆa_9, ˆa_10] = ˆvalue_1;
-      if (ˆa_7 === 1) if (ˆa_8 === 2) if (typeof ˆa_9?.[Symbol.iterator] === \\"function\\") if (ˆa_10 != null) {
-        foo;
-        break ˆmatch_2;
-      }
+      // TODO: fix semantics for matching [], {}
+      if (ˆa_7 === 1) // TODO: fix semantics for matching [], {}
+        if (ˆa_8 === 2) // TODO: fix semantics for matching [], {}
+          if (typeof ˆa_9?.[Symbol.iterator] === \\"function\\") // TODO: fix semantics for matching [], {}
+            if (ˆa_10 != null) {
+              foo;
+              break ˆmatch_2;
+            }
     }
 
     if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
@@ -302,14 +300,15 @@ exports[`match matches value assertions 1`] = `
       break ˆmatch_2;
     }
 
-    if (ˆvalue_1()) {
+    // simple as call arg
+    if (shrub(ˆvalue_1)) {
       ni;
       break ˆmatch_2;
     }
 
-    // simple as call arg
-    if (shrub(ˆvalue_1)) {
-      ni;
+    // any value
+    if (ˆvalue_1 !== undefined) {
+      true;
       break ˆmatch_2;
     }
   }
@@ -424,22 +423,26 @@ exports[`match records matches props 1`] = `
   ˆmatch_2: {
     const ˆvalue_1 = shrub;
 
+    // TODO: fix semantics for matching {}
     if (ˆvalue_1 != null) {
       const {
         foo: ˆp_3
       } = ˆvalue_1;
 
+      // TODO: fix semantics for matching {}
       if (ˆp_3 != null) {
         spam + ni;
         break ˆmatch_2;
       }
     }
 
+    // TODO: fix semantics for matching []
     if (ˆvalue_1 != null) {
       const {
         foo: ˆp_4
       } = ˆvalue_1;
 
+      // TODO: fix semantics for matching []
       if (typeof ˆp_4?.[Symbol.iterator] === \\"function\\") {
         spam + ni;
         break ˆmatch_2;
@@ -587,36 +590,14 @@ exports[`match records matches value assertions 1`] = `
       }
     }
 
+    // nested member call
     if (ˆvalue_1 != null) {
       const {
         spam: ˆp_6
       } = ˆvalue_1;
 
-      if (ˆp_6()) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    // nested member call
-    if (ˆvalue_1 != null) {
-      const {
-        spam: ˆp_7
-      } = ˆvalue_1;
-
       // nested member call
-      if (ˆp_7.is_foo()) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    if (ˆvalue_1 != null) {
-      const {
-        spam: ˆp_8
-      } = ˆvalue_1;
-
-      if (ˆp_8.is_foo()) {
+      if (ˆp_6.is_foo()) {
         ni;
         break ˆmatch_2;
       }
@@ -625,11 +606,22 @@ exports[`match records matches value assertions 1`] = `
     // nested as call arg
     if (ˆvalue_1 != null) {
       const {
-        spam: ˆp_9
+        spam: ˆp_7
       } = ˆvalue_1;
 
       // nested as call arg
-      if (is_foo(ˆp_9)) {
+      if (is_foo(ˆp_7)) {
+        ni;
+        break ˆmatch_2;
+      }
+    }
+
+    if (ˆvalue_1 != null) {
+      const {
+        spam: ˆp_8,
+        ...ˆp_9
+      } = ˆvalue_1;
+      if (ˆp_8 === spam) if (is_empty(ˆp_9)) {
         ni;
         break ˆmatch_2;
       }
@@ -640,19 +632,21 @@ exports[`match records matches value assertions 1`] = `
         spam: ˆp_10,
         ...ˆp_11
       } = ˆvalue_1;
-      if (ˆp_10 === spam) if (is_empty(ˆp_11)) {
+      if (ˆp_10 === spam) if (_in_(\`foo\`, ˆp_11)) {
         ni;
         break ˆmatch_2;
       }
     }
 
+    // any value
     if (ˆvalue_1 != null) {
       const {
-        spam: ˆp_12,
-        ...ˆp_13
+        spam: ˆp_12
       } = ˆvalue_1;
-      if (ˆp_12 === spam) if (_in_(\`foo\`, ˆp_13)) {
-        ni;
+
+      // any value
+      if (ˆp_12 !== undefined) {
+        true;
         break ˆmatch_2;
       }
     }
@@ -667,20 +661,14 @@ exports[`match value assertions compiles do-expr 1`] = `
   const ˆvalue_1 = bar;
 
   if (ˆvalue_1 === spam) {
-    _do_result = (() => {
-      ni;
-      throw foobar;
-    })();
-
+    ni;
+    _do_result = shrub(foobar);
     break ˆmatch_2;
   }
 
   {
-    _do_result = (() => {
-      shrub;
-      throw ni;
-    })();
-
+    shrub;
+    _do_result = spam(ni);
     break ˆmatch_2;
   }
 }

@@ -47,7 +47,6 @@ describe 'func', fn:
       fink2js '
         fun = fn a, b=12, c:
           shrub ...a
-          foo ()
           bar _
         '
       to_match_snapshot

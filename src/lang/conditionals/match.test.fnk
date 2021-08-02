@@ -30,11 +30,13 @@ describe 'match', fn:
           ? > 123: ni
 
           # simple call
-          ? (): ni
           ? _: ni
 
           # simple as call arg
           shrub ?: ni
+
+          # any value
+          ?: true
       '
       to_match_snapshot
 
@@ -69,6 +71,7 @@ describe 'match iterables', fn:
         match shrub:
           # deep iterable comparison
           [1, 2, [ni]]: ni
+          # TODO: fix semantics for matching [], {}
           [1, 2, [], {}]: foo
           [1, [2, 3], 4]: bar
           [1, [2, [3, 4]], [5, 6], 7]: spam
@@ -96,15 +99,16 @@ describe 'match iterables', fn:
           # nested unary
           [not ?]: ni
 
+          # any value
+          [?]: true
+
           # nested binary
           [? > 123]: ni
 
           # nested call
-          [? ()]: ni
           [? _]: ni
 
           # nested member call
-          [?.is_foo ()]: ni
           [?.is_foo _]: ni
 
           # nested as call arg
@@ -122,7 +126,9 @@ describe 'match records', fn:
     expect
       fink2js "
         match shrub:
+          # TODO: fix semantics for matching {}
           {foo: {}}: spam + ni
+          # TODO: fix semantics for matching []
           {foo: []}: spam + ni
           {foo: 4, ni: {na, nu}}: spam + ni
           {foo: 1, foo: {bar: 'spam'}, shrub: {na: 'nu'}}: ni
@@ -178,11 +184,9 @@ describe 'match records', fn:
           {spam: ? > 123}: ni
 
           # nested call
-          {spam: ? ()}: ni
           {spam: ? _}: ni
 
           # nested member call
-          {spam: ?.is_foo ()}: ni
           {spam: ?.is_foo _}: ni
 
           # nested as call arg
@@ -190,6 +194,9 @@ describe 'match records', fn:
 
           {spam, ...is_empty ?}: ni
           {spam, ...("foo" in ?)}: ni
+
+          # any value
+          {spam: ?}: true
       '
       to_match_snapshot
 
@@ -202,10 +209,10 @@ describe 'match value assertions', fn:
         foo = match bar:
           spam:
             ni
-            throw foobar
+            shrub foobar
           else:
             shrub
-            throw ni
+            spam ni
       '
       to_match_snapshot
 
