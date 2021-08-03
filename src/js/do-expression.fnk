@@ -5,7 +5,7 @@ babel_types = import '@babel/types'
   isVariableDeclarator, isArrowFunctionExpression, isExpressionStatement
   isAssignmentExpression
   isReturnStatement
-  arrowFunctionExpression, callExpression
+  arrowFunctionExpression, callExpression, blockStatement
 } = babel_types
 {set_props} = import '@fink/js-interop/reflect.fnk'
 {undefined} = import '@fink/js-interop/nullish.fnk'
@@ -34,10 +34,6 @@ simple = fn body, sl=false:
           match {sl, stmnt}:
             {sl: true, stmnt: isLabeledStatement ?}:
               stmnt.node.body
-            # TODO:
-            # {sl: true, stmnt: isIfStatement ?}:
-            #   console.log body
-            #   body.node
             else:
               simple stmnt
         else:
@@ -120,6 +116,22 @@ replace_with_assign = fn target, path:
     consume_all
 
 
+replace_with_simple_assign = fn target, path:
+  id = target.node.left
+  target.parentPath.insertBefore blockStatement path.node.body.body
+
+  pipe last_expressions path:
+    map fn expr:
+      expr.replaceWith
+        wrap_with_comment_loc
+          assignmentExpression '=', id, expr.node.expression
+          expr.node.expression
+
+    consume_all
+
+  target.replaceWithMultiple []
+
+
 
 transform_do_expr = fn path:
   {parentPath: parent} = path
@@ -150,18 +162,7 @@ transform_do_expr = fn path:
 
 
     isAssignmentExpression ?:
-      id = parent.get 'left'
-
-      pipe last_expressions path:
-        map fn expr:
-          expr.replaceWith
-            wrap_with_comment_loc
-              assignmentExpression '=', id.node, expr.node.expression
-              expr.node.expression
-
-        consume_all
-
-      parent.replaceWithMultiple path.node.body.body
+      replace_with_simple_assign parent, path
 
     else:
       # TODO: {spam.ham.ni: {foo, bar} = spam

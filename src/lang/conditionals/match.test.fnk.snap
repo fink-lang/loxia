@@ -661,14 +661,18 @@ exports[`match value assertions compiles do-expr 1`] = `
   const ˆvalue_1 = bar;
 
   if (ˆvalue_1 === spam) {
-    ni;
-    _do_result = shrub(foobar);
+    {
+      ni;
+      _do_result = shrub(foobar);
+    }
     break ˆmatch_2;
   }
 
   {
-    shrub;
-    _do_result = spam(ni);
+    {
+      shrub;
+      _do_result = spam(ni);
+    }
     break ˆmatch_2;
   }
 }
