@@ -4,8 +4,8 @@ babel_traverse = import '@babel/traverse'
 {transformFromAstSync} = import '@babel/core'
 {try_catch} = import '@fink/js-interop/errors.fnk'
 
-{transform} = import './lang/transform.fnk'
-{init_ctx} = import './lang/init.fnk'
+{transform} = import './js/transform.fnk'
+{init_ctx} = import './js/init.fnk'
 
 {transform_do_expr} = import './js/do-expression.fnk'
 {transform_async} = import './js/async.fnk'
