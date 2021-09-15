@@ -13,18 +13,28 @@ exports[`func compiles func of func 1`] = `
 "export const fun5 = c => (d, e) => {
   const ˆvalue_1 = [d, e];
 
+  /* istanbul ignore else */
   if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
     const [ˆa_3, ˆa_4] = ˆvalue_1;
-    if (ˆa_3 === 1) if (ˆa_4 === 2) {
-      return c;
-    }
+
+    /* istanbul ignore else */
+    if (ˆa_3 === 1)
+      /* istanbul ignore else */
+      if (ˆa_4 === 2) {
+        return c;
+      }
   }
 
+  /* istanbul ignore else */
   if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
     const [ˆa_5, ˆa_6] = ˆvalue_1;
-    if (ˆa_5 === 2) if (ˆa_6 === 1) {
-      return 1 / c;
-    }
+
+    /* istanbul ignore else */
+    if (ˆa_5 === 2)
+      /* istanbul ignore else */
+      if (ˆa_6 === 1) {
+        return 1 / c;
+      }
   }
 };"
 `;
@@ -35,10 +45,12 @@ exports[`func compiles other 1`] = `
   {
     const ˆvalue_1 = ni;
 
+    /* istanbul ignore else */
     if (ˆvalue_1 === c + x) {
       return d;
     }
 
+    /* istanbul ignore else */
     if (ˆvalue_1 === c + 1) {
       return d + 1;
     }
@@ -56,6 +68,7 @@ exports[`func eliminates tail calls 1`] = `
     const [a, b = 1] = _args;
     const ˆvalue_1 = a;
 
+    /* istanbul ignore else */
     if (ˆvalue_1 === b) {
       return a;
     }
@@ -74,6 +87,7 @@ exports[`func eliminates tail calls 2`] = `
     const [...args] = _args;
     const ˆvalue_1 = a;
 
+    /* istanbul ignore else */
     if (ˆvalue_1 === b) {
       _args = [...args];
       continue;

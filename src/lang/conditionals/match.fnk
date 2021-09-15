@@ -111,9 +111,13 @@ match_record = fn value, record, emit_result, ctx, cond:
         prop_match
       [js, next_ctx]
 
-  js = ifStatement
-    not_nullish value
-    result
+  js = rec:
+    ...ifStatement
+      not_nullish value
+      result
+    leadingComments: list: rec:
+      type: 'CommentBlock'
+      value: ' istanbul ignore else '
 
   [js, end_ctx]
 
@@ -199,9 +203,14 @@ match_array = fn value, arr, emit_result, ctx, cond:
       js = blockStatement [array_decl, matched]
       [js, next_ctx]
 
-  js = ifStatement
-    is_iterable value
-    result
+  js = rec:
+    ...ifStatement
+      is_iterable value
+      result
+    leadingComments: list: rec:
+      type: 'CommentBlock'
+      value: ' istanbul ignore else '
+
   [js, end_ctx]
 
 
@@ -209,7 +218,12 @@ match_array = fn value, arr, emit_result, ctx, cond:
 match_simple = fn value, expr, emit_result, ctx:
   [cond, result_ctx] = comp value, expr, {...ctx, wrap: 'loc'}
   [result, next_ctx] = emit_result result_ctx
-  js = ifStatement cond, result
+  js = rec:
+    ...ifStatement cond, result
+    leadingComments: list: rec:
+      type: 'CommentBlock'
+      value: ' istanbul ignore else '
+
   [js, next_ctx]
 
 
