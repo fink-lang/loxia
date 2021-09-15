@@ -12,16 +12,18 @@ transform_comments = fn comments:
     map fn comment: transform_comment comment
 
 
-get_comments = fn {comments={}}:
+get_comments = fn {comments={}}, {leadingComments=[]}:
   {leading=[], trailing=[]} = comments
 
   rec:
-    leadingComments: [...transform_comments leading]
+    leadingComments: list:
+      ...transform_comments leading
+      ...leadingComments
     trailingComments: [...transform_comments trailing]
 
 
 wrap_with_comment_loc = fn js_node, larix_node:
-  comments = get_comments larix_node
+  comments = get_comments larix_node, js_node
   {loc} = larix_node
 
   match js_node:

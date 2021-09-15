@@ -10,6 +10,7 @@ export const task3 = async foo => {
 export const a_gen = unfold(async (curr = 0) => {
   const ˆvalue_1 = shrub;
 
+  /* istanbul ignore else */
   if (ˆvalue_1 === spam) {
     return await ni(curr);
   }
