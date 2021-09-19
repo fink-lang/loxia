@@ -1,0 +1,44 @@
+
+
+
+optimize_tails = fn [expr=false, ...exprs], meta, out=[]:
+  match expr:
+    false:
+      [out, meta]
+
+    ['cn']:
+      [op, [args, body], ...rest] = expr
+      [obody, next_meta] = optimize_tails body, meta, []
+      oexpr = [op, [args, obody], ...rest]
+      optimize_tails exprs, next_meta, [...out, oexpr]
+
+    ['fn']:
+      [ , [args, body], ...rest] = expr
+      [[fn_id]] = rest
+      {curr_fn} = meta
+      # TODO only need to know ret_id not all args for curr_fn
+      body_meta = {...meta, curr_fn: [fn_id, ...args]}
+      [obody, next_meta] = optimize_tails body, body_meta, []
+      oop = match next_meta:
+        {(fn_id): {tco: true}}: 'fnr'
+        else: 'fn'
+      oexpr = [oop, [args, obody], ...rest]
+      optimize_tails exprs, {...next_meta, curr_fn}, [...out, oexpr]
+
+    ['af']:
+      [ , [callee, ...args], , ...rest] = expr
+      [next_expr, ...rest_exprs] = exprs
+      {curr_fn: [curr_fn, ...fn_args]=[], (callee): fn_meta} = meta
+      [..., ret_id] = fn_args
+
+      match [callee, next_expr]:
+        [curr_fn, ['cc', [ret_id]]]:
+          opt_expr = ['cf', [callee, ...args], [], ...rest]
+          next_meta = {...meta, (curr_fn): {...fn_meta, tco: true}}
+          optimize_tails rest_exprs, next_meta, [...out, opt_expr]
+
+        else:
+          optimize_tails exprs, meta, [...out, expr]
+
+    else:
+      optimize_tails exprs, meta, [...out, expr]

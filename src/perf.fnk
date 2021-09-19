@@ -1,0 +1,23 @@
+
+{new} = import '@fink/js-interop/reflect.fnk'
+{fold} = import '@fink/std-lib/iter.fnk'
+{
+  performance,
+  PerformanceObserver
+} = import 'perf_hooks'
+
+
+obs = new PerformanceObserver, fn items:
+  pipe items.getEntries _:
+    fold fn entry:
+      console.log entry.name, entry.duration, 'ms'
+  obs.disconnect _
+
+
+obs.observe {entryTypes: ['function'] }
+
+
+timed = fn func:
+  wrapped = performance.timerify func
+  wrapped
+

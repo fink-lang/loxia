@@ -1,0 +1,15 @@
+{add, any} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+
+
+
+transform_await = fn node, result, ctx:
+  [future, future_id, next_ctx] = transform node.right, 'futr', ctx
+  [[...future, ['wt', [future_id], [result], {loc: node.loc}]], next_ctx]
+
+
+
+add_async = fn ctx:
+  pipe ctx:
+    add 'await', any, transform_await
+

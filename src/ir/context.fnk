@@ -1,0 +1,113 @@
+{is_fn} = import '@fink/std-lib/fn.fnk'
+
+
+
+any = false
+
+
+add = fn type, op, transformer: fn {transformers, ...ctx}:
+  next_transformers = rec:
+    ...transformers
+    (type or op): transformer
+
+  {transformers: next_transformers, ...ctx}
+
+
+
+get_transformer = fn {op, type}, {transformers}:
+  match transformers:
+    {(op): is_fn ?}:
+      {(op): transform} = transformers
+      transform
+
+    {(type): is_fn ?}:
+      {(type): transform} = transformers
+      transform
+
+
+
+unique_ident = fn name, ctx:
+  {unique_ids: {(name): cntr=0, ...ids}={}} = ctx
+  uid = '${name}_${cntr}'
+  [uid, {...ctx, unique_ids: {...ids, (name): cntr + 1}}]
+
+
+
+update_value = fn id, updates, {values, ...ctx}:
+  {(id): curr={}} = values
+  {...ctx, values: {...values, (id): {...curr, ...updates}}}
+
+
+
+get_value = fn id, {values}:
+  {(id): val={}} = values
+  val
+
+
+
+get_refs = fn id, ctx:
+  {refs} = get_value id, ctx
+  refs
+
+
+
+inc_ref = fn id, ctx:
+  {refs=0} = get_value id, ctx
+  update_value id, {refs: refs + 1}, ctx
+
+
+
+inc_refs = fn [id=false, ...rest], ctx:
+  match id:
+    false: ctx
+    else: inc_refs rest, inc_ref id, ctx
+
+
+
+dec_ref = fn id, ctx:
+  {refs=0} = get_value id, ctx
+  update_value id, {refs: refs - 1}, ctx
+
+
+
+dec_refs = fn [id=false, ...exprs], ctx:
+  match id:
+    false: ctx
+    else:  dec_refs exprs, dec_ref id, ctx
+
+
+
+
+init_refs = fn [id=false, ...rest], ctx:
+  match id:
+    false: ctx
+    else: init_refs rest, update_value id, {refs: 0}, ctx
+
+
+
+
+is_unused = fn id, ctx:
+  {refs} = get_value id, ctx
+  # TODO 0 == get_refs id, ctx
+  refs == 0
+
+
+
+init_ctx = fn [expr=false, ...rest], ctx={values: {}}:
+  match expr:
+    false: ctx
+    else:
+      [op, args, res] = expr
+      rest_ctx = match op:
+        ? in ['fn', 'cn', 'fnr']:
+          [fn_args, body] = args
+          init_ctx body, init_refs [...fn_args, ...res], ctx
+
+        ? in ['int', 'float', 'str']:
+          init_refs res, ctx
+
+        else:
+          init_refs res, inc_refs args, ctx
+
+      init_ctx rest, rest_ctx
+

@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`comment compiles 1`] = `
+"// leading expression
+export const spam = ni;
+
+/*
+Shrub ni.
+*/
+export const bar = () =>
+/* single line block */
+spam;"
+`;

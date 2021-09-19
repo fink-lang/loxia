@@ -1,0 +1,18 @@
+{any, add} = import '../context.fnk'
+
+{transform_number} = import './number.fnk'
+{transform_string} = import './string.fnk'
+{transform_list} = import './list.fnk'
+{transform_record, transform_kv} = import './record.fnk'
+{transform_keyword} = import './keywords.fnk'
+
+
+
+add_literals = fn ctx:
+  pipe ctx:
+    add 'number', any, transform_number
+    add 'string', any, transform_string
+    add 'list', any, transform_list
+    add 'rec', any, transform_record
+    add 'rec:kv', any, transform_kv
+    add 'literal', any, transform_keyword

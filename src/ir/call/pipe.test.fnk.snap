@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pipe compiles no args 1`] = `
+"
+rec >> exports_0:
+  = foo >> pfn_0:
+    lst >> args_1:
+      af pfn_0, args_1 >> ppr_0:
+        = bar >> callee_0:
+          lst >> cargs_0:
+            = spam >> arg_0:
+              lst_a cargs_0, arg_0 >> cargs_1:
+                af callee_0, cargs_1 >> pfn_1:
+                  lst >> args_2:
+                    lst_a args_2, ppr_0 >> args_3:
+                      af pfn_1, args_3 >> ppr_1:
+                        = ppr_1 >> mex_0:
+                          lst >> drctvs_0:
+                            mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`pipe compiles simple 1`] = `
+"
+rec >> exports_0:
+  lst >> lst_2:
+    int 1 >> item_2:
+      lst_a lst_2, item_2 >> lst_1:
+        int 2 >> item_1:
+          lst_a lst_1, item_1 >> lst_0:
+            int 3 >> item_0:
+              lst_a lst_0, item_0 >> pps_0:
+                = shrub >> callee_0:
+                  lst >> cargs_0:
+                    = ni >> arg_0:
+                      lst_a cargs_0, arg_0 >> cargs_1:
+                        af callee_0, cargs_1 >> pfn_0:
+                          lst >> args_0:
+                            lst_a args_0, pps_0 >> args_1:
+                              af pfn_0, args_1 >> ppr_0:
+                                = map >> callee_1:
+                                  lst >> cargs_2:
+                                    fn args_2, ret_0:
+                                      lst_h args_2 >> item_3:
+                                        lst_t args_2 >> tail_0:
+                                          = item_3 >> left_0:
+                                            int 2 >> right_0:
+                                              * left_0, right_0 >> result_0:
+                                                cc ret_0, result_0
+                                    >> arg_1:
+                                      lst_a cargs_2, arg_1 >> cargs_3:
+                                        af callee_1, cargs_3 >> pfn_1:
+                                          lst >> args_3:
+                                            lst_a args_3, ppr_0 >> args_4:
+                                              af pfn_1, args_4 >> ppr_1:
+                                                = ppr_1 >> mex_0:
+                                                  lst >> drctvs_0:
+                                                    mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`pipe compiles with partials 1`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    lst_h args_0 >> prtl_0:
+      = bar >> callee_0:
+        lst >> cargs_0:
+          = prtl_0 >> arg_0:
+            lst_a cargs_0, arg_0 >> cargs_1:
+              int 123 >> arg_1:
+                lst_a cargs_1, arg_1 >> cargs_2:
+                  af callee_0, cargs_2 >> pfn_1:
+                    cc ret_0, pfn_1
+  >> pfn_0:
+    lst >> args_2:
+      af pfn_0, args_2 >> ppr_0:
+        = spam >> callee_1:
+          lst >> cargs_3:
+            = ni >> arg_2:
+              lst_a cargs_3, arg_2 >> cargs_4:
+                af callee_1, cargs_4 >> pfn_2:
+                  lst >> args_3:
+                    lst_a args_3, ppr_0 >> args_4:
+                      af pfn_2, args_4 >> ppr_1:
+                        fn args_5, ret_1:
+                          lst_h args_5 >> prtl_3:
+                            lst >> lst_2:
+                              int 4 >> item_1:
+                                lst_a lst_2, item_1 >> lst_1:
+                                  int 5 >> item_0:
+                                    lst_a lst_1, item_0 >> lst_0:
+                                      = prtl_3 >> items_0:
+                                        lst_c lst_0, items_0 >> pfn_3:
+                                          cc ret_1, pfn_3
+                        >> pfn_4:
+                          lst >> args_6:
+                            lst_a args_6, ppr_1 >> args_7:
+                              af pfn_4, args_7 >> ppr_2:
+                                = shrub >> callee_2:
+                                  lst >> cargs_5:
+                                    = prtl_3 >> left_0:
+                                      int 1 >> right_0:
+                                        > left_0, right_0 >> arg_3:
+                                          lst_a cargs_5, arg_3 >> cargs_6:
+                                            af callee_2, cargs_6 >> pfn_5:
+                                              lst >> args_8:
+                                                lst_a args_8, ppr_2 >> args_9:
+                                                  af pfn_5, args_9 >> ppr_3:
+                                                    = ppr_3 >> mex_0:
+                                                      lst >> drctvs_0:
+                                                        mod exports_0, drctvs_0 >> mod_0:"
+`;

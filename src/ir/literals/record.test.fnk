@@ -1,0 +1,127 @@
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{fink2lir, fink2lir_o} = import '../../testing/generate.fnk'
+
+
+describe 'record', fn:
+  it 'compiles simple', fn:
+    expect
+      fink2lir 'foo = {}'
+      to_match_snapshot
+
+
+  it 'compiles shorthand', fn:
+    expect
+      fink2lir 'foo = {foo, π, ƒ, foo-bar}'
+      to_match_snapshot
+
+    expect
+      fink2lir 'foo = {a, delete, true, false}'
+      to_match_snapshot
+
+    expect
+      fink2lir "foo = {'foo'}"
+      to_match_snapshot
+
+
+  it 'compiles spread', fn:
+    expect
+      fink2lir 'foo = {a, b, ...c}'
+      to_match_snapshot
+
+
+  it 'compiles key:val', fn:
+    expect
+      fink2lir "foo = {a: 1, b: 123, 'c-d-e': cde}"
+      to_match_snapshot
+
+    expect
+      fink2lir '
+        obj7 = {a: 123, b: 123 and 123 and 1345, c: fn a, b: 134}
+      '
+      to_match_snapshot
+
+
+  it 'compiles calculaged props', fn:
+    expect
+      fink2lir "
+        foo = rec:
+          'spam': 456
+          'spam-\${ham}': 'ni'
+        "
+      to_match_snapshot
+
+
+  skip.it 'compiles member expr as keys', fn:
+    expect
+      fink2lir "foo = {...bar, spam.ham.ni: 'ni', na: 1234, ...nu}"
+      to_match_snapshot
+
+    expect
+      fink2lir "foo = {...bar, spam.ham: {ni.na: 'ni'}, ...nu}"
+      to_match_snapshot
+
+
+
+
+describe 'unpacking record', fn:
+  it 'compiles simple', fn:
+    expect
+      fink2lir "{a, 'b': b, (foo bar): {c}} = ni"
+      to_match_snapshot
+
+
+  it 'compiles nested', fn:
+    expect
+      fink2lir "{a, b: {c, d}, e} = ni"
+      to_match_snapshot
+
+    expect
+      fink2lir "{a, b: [c, d], e} = ni"
+      to_match_snapshot
+
+
+  it 'compiles spread', fn:
+    expect
+      fink2lir '{a, a: {b, c}, ...f} = foo'
+      to_match_snapshot
+
+
+  it 'destructuress tpls', fn:
+    expect
+      fink2lir '{foo: [bar, spam]} = shrub'
+      to_match_snapshot
+
+
+  it 'compiles empty', fn:
+    expect
+      fink2lir '{foo: _, bar} = shrub'
+      to_match_snapshot
+
+
+  it 'compiles defaults', fn:
+    expect
+      fink2lir '{x=1, π: pi=2, ni: {y, z}} = foo'
+      to_match_snapshot
+
+
+  skip.it 'compiles member expr as keys', fn:
+    expect
+      fink2lir "{spam.ham.ni: ni, ...rest} = foo"
+      to_match_snapshot
+
+    expect
+      fink2lir "{spam.ham.ni: {ni: nu, foo.bar: bar}, ...rest} = foo"
+      to_match_snapshot
+
+    expect
+      fink2lir "{foo-bar.spam-ham.ni: {ni: nu, foo.bar: bar}, ...rest} = foo"
+      to_match_snapshot
+
+
+
+describe 'rec optimizations', fn:
+  it 'optimizes key-refs', fn:
+    expect
+      fink2lir_o 'foo = {π, ƒ, foo-bar}'
+      to_match_snapshot
+

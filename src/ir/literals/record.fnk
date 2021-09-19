@@ -1,0 +1,57 @@
+{reverse} = import '@fink/std-lib/iter.fnk'
+{transform} = import '../transform.fnk'
+{unique_ident} = import '../context.fnk'
+
+
+
+transform_key = fn expr, ctx:
+  match expr:
+    {type: 'ident'}:
+      [key_id, next_ctx] = unique_ident 'key', ctx
+      [[['str', [expr.value], [key_id], {loc: expr.loc}]], key_id, next_ctx]
+    else:
+      transform expr, 'key', ctx
+
+
+
+transform_val = fn expr, key_id, ctx:
+  match expr:
+    {left: {type: 'ident'}, right: false}:
+      transform expr.left, 'val', ctx
+
+    {right: false}:
+       [[], key_id, ctx]
+
+    else:
+      transform expr.right, 'val', ctx
+
+
+
+transform_kv = fn expr, out_id, ctx:
+  [rec_id, key_ctx] = unique_ident 'rec', ctx
+  match expr:
+    {type: 'spread'}:
+      [val, val_id, next_ctx] = transform expr.right, 'sprd', key_ctx
+      [[...val, ['rec_m', [rec_id, val_id], [out_id], {loc: expr.loc}]], rec_id , next_ctx]
+    else:
+      [key, key_id, val_ctx] = transform_key expr.left, key_ctx
+      [val, val_id, next_ctx] = transform_val expr, key_id, val_ctx
+      [[...key, ...val, ['rec_s', [rec_id, key_id, val_id], [out_id], {loc: expr.loc}]], rec_id, next_ctx]
+
+
+
+transform_entries = fn [expr=false, ...rest], ctx, result_id, out=[]:
+  match expr:
+    false:
+      [out, result_id, ctx]
+    else:
+      [kv, rec_id, next_ctx] = transform_kv expr, result_id, ctx
+      transform_entries rest, next_ctx, rec_id, [...kv, ...out]
+
+
+
+transform_record = fn node, result, ctx:
+  exprs = reverse node.exprs
+  [out, rec_id, next_ctx] = transform_entries exprs, ctx, result
+  [[['rec', [], [rec_id], {loc: node.loc}], ...out], next_ctx]
+

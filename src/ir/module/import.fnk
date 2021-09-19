@@ -1,0 +1,6 @@
+{transform} = import '../transform.fnk'
+
+
+transform_import = fn node, res_id, ctx:
+  [loc, loc_id, next_ctx] = transform node.right, 'src', ctx
+  [[...loc, ['impd', [loc_id], [res_id], {loc: node.loc}]], next_ctx]

@@ -1,0 +1,66 @@
+{length} = import '@fink/std-lib/iter.fnk'
+{floor} = import '@fink/std-lib/math.fnk'
+
+
+alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+base = length alphabet
+
+to_id = fn idx, out='':
+  div = floor idx / base
+  rem = idx % base
+  match div:
+    0:
+      '${alphabet.(rem)}${out}'
+    else:
+      to_id div - 1, '${alphabet.(rem)}${out}'
+
+
+
+replace_refs = fn [id=false, ...ids], renames, out=[]:
+  match id:
+    false: out
+    else:
+      {(id): new_id=id} = renames
+      replace_refs ids, renames, [...out, new_id]
+
+
+
+
+rename = fn [id=false, ...ids], renames, out=[]:
+  match id:
+    false: [out, renames]
+    else:
+      {id_cntr=0} = renames
+      new_id = to_id id_cntr
+      nrs = {...renames, id_cntr: id_cntr + 1, (id): new_id}
+      rename ids, nrs, [...out, new_id]
+
+
+
+shorten_names = fn [expr=false, ...exprs], renames={}, out=[]:
+  match expr:
+    false: [out, renames]
+
+    [? in ['int', 'float', 'str']]:
+      [op, args, res, ...rest] = expr
+      [nres, next_ren] = rename res, renames
+      shorten_names exprs, next_ren, [...out, [op, args, nres, ...rest]]
+
+    [? in ['fn', 'cn']]:
+      [op, [args, body], res, ...rest] = expr
+      [nargs, bod_ren] = rename args, renames
+      [nbody, res_ren] = shorten_names body, bod_ren
+      [nres, next_ren] = rename res, res_ren
+      shorten_names exprs, next_ren, [...out, [op, [nargs, nbody], nres, ...rest]]
+
+    else:
+      [op, args, res, ...rest] = expr
+      nargs = replace_refs args, renames
+      [nres, next_ren] = rename res, renames
+      shorten_names exprs, next_ren, [...out, [op, nargs, nres, ...rest]]
+
+
+
+optimize_ids = fn exprs:
+  [n] = shorten_names exprs
+  n

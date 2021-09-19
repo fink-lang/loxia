@@ -1,0 +1,29 @@
+{transform} = import '../transform.fnk'
+{unique_ident} = import '../context.fnk'
+
+
+
+transform_parts = fn [expr=false, ...rest], ctx, ids=[], out=[]:
+  match expr:
+    false:
+      [out, ids, ctx]
+
+    {type: 'string:text'}:
+      [str_id, next_ctx] = unique_ident 'str', ctx
+      item = ['str', [expr.value], [str_id], {loc: expr.loc}]
+      transform_parts rest, next_ctx, [...ids, str_id], [...out, item]
+
+    else:
+      [item, id, next_ctx] = transform expr, 'sx', ctx
+      transform_parts rest, next_ctx, [...ids, id], [...out, ...item]
+
+
+
+transform_string = fn node, result, ctx:
+  [out, ids, next_ctx] = transform_parts node.exprs, ctx
+  match node:
+    {tag: false}:
+      [[...out, ['strt', ids, [result], {loc: node.loc}]], next_ctx]
+    else:
+      [tag, tag_id, st_ctx] = transform node.tag, 'tag', next_ctx
+      [[...tag, ...out, ['strtt', [tag_id, ...ids], [result], {loc: node.loc}]], st_ctx]

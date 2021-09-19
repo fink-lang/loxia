@@ -1,0 +1,27 @@
+{fink2lir} = import '../../testing/generate.fnk'
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+describe 'member', fn:
+  it 'compiles', fn:
+    expect
+      fink2lir "
+        foo = spam.shrub
+        computed_member = item.'bar spam'
+        computed_member2 = item.(get_key foo)
+        reserved_prop = item.arguments
+        js_safe_unicode = [item.π, item.ƒ]
+        js_unsfae = item.foo-bar
+      "
+      to_match_snapshot
+
+
+  skip.it 'compiles partial', fn:
+    expect
+      fink2lir "
+        ?.foo
+        ?.foo.bar
+        ?.foo == bar
+      "
+      to_match_snapshot
+

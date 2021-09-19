@@ -1,0 +1,364 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`func compiles 1`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    tph args_0 >> a_0:
+      tpt args_0 >> tail_0:
+        tph tail_0 >> b_0:
+          tpt tail_0 >> tail_1:
+            tph tail_1 >> d_0:
+              tpt tail_1 >> tail_2:
+                = a_0 >> left_1:
+                  = b_0 >> right_0:
+                    + left_1, right_0 >> left_0:
+                      = c >> right_1:
+                        + left_0, right_1 >> result_0:
+                          cc ret_0, result_0
+  >> fun_0:
+    sr 'fun' >> key_0
+      rcs exports_0, key_0, fun_0 >> exports_1:
+        fn args_1, ret_1:
+          tph args_1 >> foo_0:
+            tpt args_1 >> tail_3:
+              fn args_2, ret_2:
+                tph args_2 >> bar_0:
+                  tpt args_2 >> tail_4:
+                    = foo_0 >> callee_0:
+                      tpl >> tpl_0:
+                        = bar_0 >> item_0:
+                          tpa tpl_0, item_0 >> args_3:
+                            af callee_0, args_3 >> result_2:
+                              cc ret_2, result_2
+              >> result_1:
+                cc ret_1, result_1
+        >> f2_0:
+          sr 'f2' >> key_1
+            rcs exports_1, key_1, f2_0 >> exports_2:
+              tpl >> drctvs_0:
+                mod exports_2, drctvs_0 >> mod_0:"
+`;
+
+exports[`func compiles defaults 1`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    tph args_0 >> a_0:
+      tpt args_0 >> tail_0:
+        int 12 >> flbk_0:
+          tph tail_0 >> hdm_0:
+            ifv hdm_0, hdm_0, flbk_0 >> b_0:
+              tpt tail_0 >> tail_1:
+                tph tail_1 >> c_0:
+                  tpt tail_1 >> tail_2:
+                    = shrub >> callee_0:
+                      tpl >> tpl_0:
+                        = a_0 >> items_0:
+                          tpc tpl_0, items_0 >> args_1:
+                            af callee_0, args_1 >> result_0:
+                              = bar >> callee_1:
+                                tpl >> args_2:
+                                  af callee_1, args_2 >> result_1:
+                                    cc ret_0, result_1
+  >> fun_0:
+    sr 'fun' >> key_0
+      rcs exports_0, key_0, fun_0 >> exports_1:
+        tpl >> drctvs_0:
+          mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`func compiles destructuring args 1`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    tph args_0 >> items_0:
+      tpt args_0 >> tail_3:
+        tph items_0 >> a_0:
+          tpt items_0 >> tail_0:
+            tph tail_0 >> items_1:
+              tpt tail_0 >> tail_2:
+                tph items_1 >> b_0:
+                  tpt items_1 >> tail_1:
+                    tph tail_3 >> items_2:
+                      tpt tail_3 >> tail_5:
+                        tph items_2 >> c_0:
+                          tpt items_2 >> tail_4:
+                            tpr tail_4 >> rtail_0:
+                              tpr rtail_0 >> d_0:
+                                tpl >> tpl_1:
+                                  = a_0 >> left_0:
+                                    = b_0 >> right_0:
+                                      + left_0, right_0 >> item_1:
+                                        tpa tpl_1, item_1 >> tpl_0:
+                                          = c_0 >> item_0:
+                                            tpa tpl_0, item_0 >> result_0:
+                                              cc ret_0, result_0
+  >> fun_0:
+    sr 'fun' >> key_0
+      rcs exports_0, key_0, fun_0 >> exports_1:
+        tpl >> drctvs_0:
+          mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`func compiles destructuring recs 1`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    tph args_0 >> drec_0:
+      tpt args_0 >> tail_0:
+        sr 'a' >> key_0
+          rcg drec_0, key_0 >> a_0:
+            sr 'b' >> key_1
+              rcg drec_0, key_1 >> b_0:
+                tph tail_0 >> items_0:
+                  tpt tail_0 >> tail_2:
+                    tph items_0 >> c_0:
+                      tpt items_0 >> tail_1:
+                        tpr tail_1 >> rtail_0:
+                          tpr rtail_0 >> d_0:
+                            tpl >> tpl_1:
+                              = a_0 >> left_0:
+                                = b_0 >> right_0:
+                                  + left_0, right_0 >> item_1:
+                                    tpa tpl_1, item_1 >> tpl_0:
+                                      = c_0 >> item_0:
+                                        tpa tpl_0, item_0 >> result_0:
+                                          cc ret_0, result_0
+  >> fun_0:
+    sr 'fun' >> key_2
+      rcs exports_0, key_2, fun_0 >> exports_1:
+        tpl >> drctvs_0:
+          mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`func compiles empty arg 1`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    tph args_0 >> a_0:
+      tpt args_0 >> tail_0:
+        tph tail_0 >> unused_0:
+          tpt tail_0 >> tail_1:
+            tph tail_1 >> unused_1:
+              tpt tail_1 >> tail_2:
+                tph tail_2 >> b_0:
+                  tpt tail_2 >> tail_3:
+                    = b_0 >> result_0:
+                      cc ret_0, result_0
+  >> fun_0:
+    sr 'fun' >> key_0
+      rcs exports_0, key_0, fun_0 >> exports_1:
+        tpl >> drctvs_0:
+          mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`func compiles empty arg 2`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    tph args_0 >> unused_0:
+      tpt args_0 >> tail_0:
+        tph tail_0 >> b_0:
+          tpt tail_0 >> tail_1:
+            = b_0 >> result_0:
+              cc ret_0, result_0
+  >> fun_0:
+    sr 'fun' >> key_0
+      rcs exports_0, key_0, fun_0 >> exports_1:
+        tpl >> drctvs_0:
+          mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`func compiles func of func 1`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    tph args_0 >> c_0:
+      tpt args_0 >> tail_0:
+        fn args_1, ret_1:
+          tph args_1 >> d_0:
+            tpt args_1 >> tail_1:
+              tph tail_1 >> e_0:
+                tpt tail_1 >> tail_2:
+                  cn ret_2:
+                    tpl >> tpl_1:
+                      = d_0 >> item_1:
+                        tpa tpl_1, item_1 >> tpl_0:
+                          = e_0 >> item_0:
+                            tpa tpl_0, item_0 >> value_0:
+                              tph value_0 >> itm_0:
+                                int 2 >> val_1:
+                                  cn:
+                                    == itm_0, val_1 >> cond_1:
+                                      tpt value_0 >> tail_3:
+                                        tph tail_3 >> itm_1:
+                                          int 1 >> val_0:
+                                            cn:
+                                              == itm_1, val_0 >> cond_0:
+                                                cn:
+                                                  int 1 >> left_0:
+                                                    = c_0 >> right_0:
+                                                      / left_0, right_0 >> result_2:
+                                                        cc ret_2, result_2
+                                                >> match_res_0:
+                                                  cif cond_0, match_res_0
+                                            >> match_1:
+                                              cif cond_1, match_1
+                                  >> match_2:
+                                    tph value_0 >> itm_2:
+                                      int 1 >> val_3:
+                                        == itm_2, val_3 >> cond_3:
+                                          tpt value_0 >> tail_4:
+                                            tph tail_4 >> itm_3:
+                                              int 2 >> val_2:
+                                                cn:
+                                                  == itm_3, val_2 >> cond_2:
+                                                    cn:
+                                                      = c_0 >> result_3:
+                                                        cc ret_2, result_3
+                                                    >> match_res_1:
+                                                      cif cond_2, match_res_1, match_2
+                                                >> match_3:
+                                                  cif cond_3, match_3, match_2
+                  >> match_0:
+                    ac match_0 >> result_1:
+                      cc ret_1, result_1
+        >> result_0:
+          cc ret_0, result_0
+  >> fun5_0:
+    sr 'fun5' >> key_0
+      rcs exports_0, key_0, fun5_0 >> exports_1:
+        tpl >> drctvs_0:
+          mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`func compiles other 1`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    tph args_0 >> c_0:
+      tpt args_0 >> tail_0:
+        tph tail_0 >> d_0:
+          tpt tail_0 >> tail_1:
+            int 123 >> x_0:
+              cn ret_1:
+                = ni >> value_0:
+                  = c_0 >> left_1:
+                    int 1 >> right_1:
+                      + left_1, right_1 >> val_0:
+                        cn:
+                          == value_0, val_0 >> cond_0:
+                            cn:
+                              = d_0 >> left_0:
+                                int 1 >> right_0:
+                                  + left_0, right_0 >> result_2:
+                                    cc ret_1, result_2
+                            >> match_res_0:
+                              cif cond_0, match_res_0
+                        >> match_1:
+                          = c_0 >> left_2:
+                            = x_0 >> right_2:
+                              + left_2, right_2 >> val_1:
+                                == value_0, val_1 >> cond_1:
+                                  cn:
+                                    = d_0 >> result_3:
+                                      cc ret_1, result_3
+                                  >> match_res_1:
+                                    cif cond_1, match_res_1, match_1
+              >> match_0:
+                ac match_0 >> result_1:
+                  cc ret_0, result_1
+  >> fun_0:
+    sr 'fun' >> key_0
+      rcs exports_0, key_0, fun_0 >> exports_1:
+        tpl >> drctvs_0:
+          mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`func compiles spread 1`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    tph args_0 >> a_0:
+      tpt args_0 >> tail_0:
+        tph tail_0 >> b_0:
+          tpt tail_0 >> tail_1:
+            tpr tail_1 >> rtail_0:
+              tpr rtail_0 >> c_0:
+                tpl >> tpl_1:
+                  = a_0 >> left_0:
+                    = b_0 >> right_0:
+                      + left_0, right_0 >> item_1:
+                        tpa tpl_1, item_1 >> tpl_0:
+                          = c_0 >> item_0:
+                            tpa tpl_0, item_0 >> result_0:
+                              cc ret_0, result_0
+  >> fun_0:
+    sr 'fun' >> key_0
+      rcs exports_0, key_0, fun_0 >> exports_1:
+        tpl >> drctvs_0:
+          mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`func compiles spread 2`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    tph args_0 >> a_0:
+      tpt args_0 >> tail_0:
+        tpr tail_0 >> rtail_0:
+          tph rtail_0 >> c_0:
+            tpt rtail_0 >> tail_1:
+              tpr tail_1 >> b_0:
+                tpl >> tpl_2:
+                  = a_0 >> item_2:
+                    tpa tpl_2, item_2 >> tpl_1:
+                      = b_0 >> item_1:
+                        tpa tpl_1, item_1 >> tpl_0:
+                          = c_0 >> item_0:
+                            tpa tpl_0, item_0 >> result_0:
+                              cc ret_0, result_0
+  >> fun_0:
+    sr 'fun' >> key_0
+      rcs exports_0, key_0, fun_0 >> exports_1:
+        tpl >> drctvs_0:
+          mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`func eliminates tail calls 1`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    lst_h args_0 >> a_0:
+      lst_t args_0 >> tail_0:
+        lst_h tail_0 >> b_0:
+          lst_t tail_0 >> tail_1:
+            cn ret_1:
+              = a_0 >> value_0:
+                cn:
+                  = fun_0 >> callee_0:
+                    lst >> cargs_0:
+                      = a_0 >> left_0:
+                        int 1 >> right_0:
+                          - left_0, right_0 >> arg_0:
+                            lst_a cargs_0, arg_0 >> cargs_1:
+                              af callee_0, cargs_1 >> result_1:
+                                cc ret_1, result_1
+                >> else_0:
+                  = b_0 >> val_0:
+                    == value_0, val_0 >> cond_0:
+                      cn:
+                        = a_0 >> result_2:
+                          cc ret_1, result_2
+                      >> match_res_0:
+                        cif cond_0, match_res_0, else_0
+            >> match_0:
+              ac match_0 >> result_0:
+                cc ret_0, result_0
+  >> fun_0:
+    str 'fun' >> key_0
+      rec_s exports_0, key_0, fun_0 >> exports_1:
+        lst >> drctvs_0:
+          mod exports_1, drctvs_0 >> mod_0:"
+`;

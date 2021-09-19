@@ -1,0 +1,59 @@
+{unique_ident} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+{transform_with_partial} = import './call.fnk'
+
+
+apply_fun = fn callee_id, arg, meta, ctx:
+  [tpl_id, args_ctx] = unique_ident 'args', ctx
+  [args_id, res_ctx] = unique_ident 'args', args_ctx
+  [res_id, next_ctx] = unique_ident 'ppr', res_ctx
+
+  call = match arg:
+    '_':
+      list:
+        ['lst', [], [args_id], meta]
+        ['af', [callee_id, args_id], [res_id], meta]
+    else:
+      list:
+        ['lst', [], [tpl_id], meta]
+        ['lst_a', [tpl_id, arg], [args_id], meta]
+        ['af', [callee_id, args_id], [res_id], meta]
+
+  [call, res_id, next_ctx]
+
+
+
+pipe_all =  fn [expr=false, ...exprs], prev_res_id, ctx, out=[]:
+  match expr:
+    false:
+      [out, prev_res_id, ctx]
+
+    {type: ? in ['ident', 'call']}:
+      [callee, callee_id, next_ctx] = transform expr, 'pfn', ctx
+      [call, res_id, end_ctx] = apply_fun callee_id, prev_res_id, {loc: expr.loc}, next_ctx
+      pipe_all exprs, res_id, end_ctx, [...out, ...callee, ...call]
+
+    else:
+      # [res, res_id, {partial_ident, has_partial, ...next_ctx}] = transform expr, 'res', {...ctx, partial_ident: prev_res_id}
+      # pipe_all exprs, res_id, next_ctx, [...out, ...res]
+
+      [callee, callee_id, next_ctx] = transform_with_partial expr, 'pfn', ctx
+      [call, res_id, end_ctx] = apply_fun callee_id, prev_res_id, {loc: expr.loc}, next_ctx
+      pipe_all exprs, res_id, end_ctx, [...out, ...callee, ...call]
+
+
+
+
+
+transform_pipe = fn expr, result, ctx:
+  [val, val_id, pipe_ctx] = match expr.args:
+    [?]:
+      [start_val] = expr.args
+      transform start_val, 'pps', ctx
+    else:
+      [[], '_', ctx]
+
+  [calls, res_id, next_ctx] = pipe_all expr.exprs, val_id, pipe_ctx
+  [[...val, ...calls, ['=', [res_id], [result], {loc: expr.loc}]], next_ctx]
+
+

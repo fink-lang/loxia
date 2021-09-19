@@ -1,0 +1,23 @@
+{add, any} = import '../context.fnk'
+{transform_binary, transform_unary} = import '../transform.fnk'
+{transform_in} = import './in.fnk'
+
+
+
+transform_not = fn node, res_id, ctx:
+  transform_unary node.op, node.right, res_id, {loc: node.loc}, ctx
+
+
+
+transform_logical = fn node, res_id, ctx:
+  transform_binary node.op, node.left, node.right, res_id, {loc: node.loc}, ctx
+
+
+
+add_logical = fn ctx:
+  pipe ctx:
+    add any, 'and', transform_logical
+    add any, 'or', transform_logical
+    add any, 'not', transform_not
+    # TODO: should this live in iterables?
+    add any, 'in', transform_in

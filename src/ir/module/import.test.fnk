@@ -1,0 +1,41 @@
+{fink2lir} = import '../../testing/generate.fnk'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+describe 'import', fn:
+  it 'imports exported values', fn:
+    expect
+      fink2lir "
+        {bar} = import './spam.fnk'
+        {foo: spam} = import './shrub.fnk'
+        {π, delete} = import './ni.fnk'
+        {foo-bar} = import './ham.fnk'
+      "
+      to_match_snapshot
+
+
+  it 'imports as side effect', fn:
+    expect
+      fink2lir "
+        import './spam.fnk'
+      "
+      to_match_snapshot
+
+
+  it 'imports dynamically with static URL', fn:
+    expect
+      fink2lir "
+        ni = fn: import './shrub.fnk'
+      "
+      to_match_snapshot
+
+
+  it 'imports with dynamic URLs', fn:
+    expect
+      fink2lir "
+        shrub = fn: import foo
+        ni = fn: import '\${foo}'
+        na = fn: import './\${foo}.fnk'
+      "
+      to_match_snapshot
+

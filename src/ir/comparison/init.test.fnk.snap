@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`comparison compiles as partials 1`] = `
+"ˆpartial => 1 === len(ˆpartial);
+
+ˆpartial => ˆpartial !== 123;
+
+ˆpartial => ˆpartial > 3;
+
+ˆpartial => 1 < ˆpartial && ˆpartial <= 3;"
+`;
+
+exports[`comparison compiles combined 1`] = `
+"
+rec >> exports_0:
+  = a >> left_1:
+    = b >> right_0:
+      < left_1, right_0 >> left_0:
+        = b >> left_2:
+          = c >> right_2:
+            < left_2, right_2 >> right_1:
+              and left_0, right_1 >> lt_0:
+                str 'lt' >> key_0
+                  rec_s exports_0, key_0, lt_0 >> exports_1:
+                    = a >> left_4:
+                      = b >> right_3:
+                        > left_4, right_3 >> left_3:
+                          = b >> left_5:
+                            = c >> right_5:
+                              > left_5, right_5 >> right_4:
+                                and left_3, right_4 >> gt_0:
+                                  str 'gt' >> key_1
+                                    rec_s exports_1, key_1, gt_0 >> exports_2:
+                                      = a >> left_7:
+                                        = b >> right_6:
+                                          == left_7, right_6 >> left_6:
+                                            = b >> left_8:
+                                              = c >> right_8:
+                                                == left_8, right_8 >> right_7:
+                                                  and left_6, right_7 >> eq_0:
+                                                    str 'eq' >> key_2
+                                                      rec_s exports_2, key_2, eq_0 >> exports_3:
+                                                        = a >> left_10:
+                                                          = b >> right_9:
+                                                            != left_10, right_9 >> left_9:
+                                                              = b >> left_11:
+                                                                = c >> right_11:
+                                                                  != left_11, right_11 >> right_10:
+                                                                    and left_9, right_10 >> neq_0:
+                                                                      str 'neq' >> key_3
+                                                                        rec_s exports_3, key_3, neq_0 >> exports_4:
+                                                                          = a >> left_13:
+                                                                            = b >> right_12:
+                                                                              >= left_13, right_12 >> left_12:
+                                                                                = b >> left_14:
+                                                                                  = c >> right_14:
+                                                                                    >= left_14, right_14 >> right_13:
+                                                                                      and left_12, right_13 >> gteq_0:
+                                                                                        str 'gteq' >> key_4
+                                                                                          rec_s exports_4, key_4, gteq_0 >> exports_5:
+                                                                                            = a >> left_16:
+                                                                                              = b >> right_15:
+                                                                                                <= left_16, right_15 >> left_15:
+                                                                                                  = b >> left_17:
+                                                                                                    = c >> right_17:
+                                                                                                      <= left_17, right_17 >> right_16:
+                                                                                                        and left_15, right_16 >> lteq_0:
+                                                                                                          str 'lteq' >> key_5
+                                                                                                            rec_s exports_5, key_5, lteq_0 >> exports_6:
+                                                                                                              lst >> drctvs_0:
+                                                                                                                mod exports_6, drctvs_0 >> mod_0:"
+`;
+
+exports[`comparison compiles simple 1`] = `
+"
+rec >> exports_0:
+  = a >> left_0:
+    = b >> right_0:
+      < left_0, right_0 >> lt_0:
+        str 'lt' >> key_0
+          rec_s exports_0, key_0, lt_0 >> exports_1:
+            = a >> left_1:
+              = b >> right_1:
+                > left_1, right_1 >> gt_0:
+                  str 'gt' >> key_1
+                    rec_s exports_1, key_1, gt_0 >> exports_2:
+                      = a >> left_2:
+                        = b >> right_2:
+                          == left_2, right_2 >> eq_0:
+                            str 'eq' >> key_2
+                              rec_s exports_2, key_2, eq_0 >> exports_3:
+                                = a >> left_3:
+                                  = b >> right_3:
+                                    != left_3, right_3 >> neq_0:
+                                      str 'neq' >> key_3
+                                        rec_s exports_3, key_3, neq_0 >> exports_4:
+                                          = a >> left_4:
+                                            = b >> right_4:
+                                              >= left_4, right_4 >> gteq_0:
+                                                str 'gteq' >> key_4
+                                                  rec_s exports_4, key_4, gteq_0 >> exports_5:
+                                                    = a >> left_5:
+                                                      = b >> right_5:
+                                                        <= left_5, right_5 >> lteq_0:
+                                                          str 'lteq' >> key_5
+                                                            rec_s exports_5, key_5, lteq_0 >> exports_6:
+                                                              lst >> drctvs_0:
+                                                                mod exports_6, drctvs_0 >> mod_0:"
+`;

@@ -1,0 +1,44 @@
+{reverse} = import '@fink/std-lib/iter.fnk'
+
+{is_unused, dec_refs} = import '../ir/context.fnk'
+
+
+
+
+get_ref_args = fn [op, args]:
+  match op:
+    ? in ['int', 'float', 'str']: []
+    else:  args
+
+
+
+
+remove_unused = fn [expr=false, ...exprs], ctx, out:
+  match expr:
+    false:
+      [out, ctx]
+
+    [? in ['mod', 'imp', 'af', 'ac', 'cc', 'cif', 'cf']]:
+      remove_unused exprs, ctx, [expr, ...out]
+
+    [, , [is_unused ?, ctx]]:
+      args = get_ref_args expr
+      next_ctx = dec_refs args, ctx
+      remove_unused exprs, next_ctx, out
+
+    [? in ['fn', 'fnr', 'cn']]:
+      [op, [args, body], ...rest] = expr
+      rbody = reverse body
+      [obody, next_ctx] = remove_unused rbody, ctx, []
+      oexpr = [op, [args, obody], ...rest]
+      remove_unused exprs, next_ctx, [oexpr, ...out]
+
+    else:
+      remove_unused exprs, ctx, [expr, ...out]
+
+
+
+optimize_unused = fn exprs, ctx:
+  rexprs = reverse exprs
+  remove_unused rexprs, ctx, []
+

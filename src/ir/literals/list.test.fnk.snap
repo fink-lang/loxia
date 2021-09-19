@@ -1,0 +1,305 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`list compiles 1`] = `
+"
+rec >> exports_0:
+  lst >> array1_0:
+    str 'array1' >> key_0
+      rec_s exports_0, key_0, array1_0 >> exports_1:
+        lst >> lst_0:
+          int 1 >> item_0:
+            lst_a lst_0, item_0 >> array2_0:
+              str 'array2' >> key_1
+                rec_s exports_1, key_1, array2_0 >> exports_2:
+                  lst >> lst_2:
+                    int 1 >> item_2:
+                      lst_a lst_2, item_2 >> lst_1:
+                        int 2 >> item_1:
+                          lst_a lst_1, item_1 >> array3_0:
+                            str 'array3' >> key_2
+                              rec_s exports_2, key_2, array3_0 >> exports_3:
+                                lst >> lst_5:
+                                  int 1 >> item_4:
+                                    lst_a lst_5, item_4 >> lst_4:
+                                      lst_a lst_4, _ >> lst_3:
+                                        int 2 >> item_3:
+                                          lst_a lst_3, item_3 >> array4_0:
+                                            str 'array4' >> key_3
+                                              rec_s exports_3, key_3, array4_0 >> exports_4:
+                                                lst >> lst_10:
+                                                  = a >> left_5:
+                                                    int 1 >> right_2:
+                                                      + left_5, right_2 >> left_4:
+                                                        int 45 >> right_3:
+                                                          + left_4, right_3 >> left_3:
+                                                            = b >> right_4:
+                                                              + left_3, right_4 >> left_2:
+                                                                = c >> right_5:
+                                                                  + left_2, right_5 >> item_9:
+                                                                    lst_a lst_10, item_9 >> lst_7:
+                                                                      lst >> lst_9:
+                                                                        int 1 >> item_8:
+                                                                          lst_a lst_9, item_8 >> lst_8:
+                                                                            int 2 >> item_7:
+                                                                              lst_a lst_8, item_7 >> item_6:
+                                                                                lst_a lst_7, item_6 >> lst_6:
+                                                                                  int 3 >> left_1:
+                                                                                    int 3 >> right_0:
+                                                                                      + left_1, right_0 >> left_0:
+                                                                                        int 2 >> right_1:
+                                                                                          * left_0, right_1 >> item_5:
+                                                                                            lst_a lst_6, item_5 >> array5_0:
+                                                                                              str 'array5' >> key_4
+                                                                                                rec_s exports_4, key_4, array5_0 >> exports_5:
+                                                                                                  lst >> drctvs_0:
+                                                                                                    mod exports_5, drctvs_0 >> mod_0:"
+`;
+
+exports[`list compiles spread 1`] = `
+"
+rec >> exports_0:
+  lst >> lst_2:
+    int 1 >> item_1:
+      lst_a lst_2, item_1 >> lst_1:
+        int 2 >> item_0:
+          lst_a lst_1, item_0 >> lst_0:
+            = b >> items_0:
+              lst_c lst_0, items_0 >> array1_0:
+                str 'array1' >> key_0
+                  rec_s exports_0, key_0, array1_0 >> exports_1:
+                    lst >> lst_7:
+                      int 1 >> item_5:
+                        lst_a lst_7, item_5 >> lst_6:
+                          int 2 >> item_4:
+                            lst_a lst_6, item_4 >> lst_5:
+                              = b >> items_1:
+                                lst_c lst_5, items_1 >> lst_4:
+                                  int 3 >> item_3:
+                                    lst_a lst_4, item_3 >> lst_3:
+                                      int 4 >> item_2:
+                                        lst_a lst_3, item_2 >> array2_0:
+                                          str 'array2' >> key_1
+                                            rec_s exports_1, key_1, array2_0 >> exports_2:
+                                              lst >> drctvs_0:
+                                                mod exports_2, drctvs_0 >> mod_0:"
+`;
+
+exports[`optimizations ignores empty concats 1`] = `
+"
+rec >> exports_0:
+  str 'foo' >> key_0
+    rec_s exports_0, key_0, b >> exports_1:
+      lst >> ham_0:
+        str 'ham' >> key_1
+          rec_s exports_1, key_1, ham_0 >> exports_2:
+            lst >> lst_2:
+              lst_a lst_2, b >> lst_1:
+                str 'spam' >> key_2
+                  rec_s exports_2, key_2, lst_1 >> exports_3:
+                    lst >> drctvs_0:
+                      mod exports_3, drctvs_0 >> result_0:"
+`;
+
+exports[`optimizations reuses item refs 1`] = `
+"
+rec >> exports_0:
+  int 1 >> item_3:
+    int 2 >> item_2:
+      int 3 >> item_1:
+        lst >> lst_5:
+          lst_a lst_5, item_2 >> lst_4:
+            lst_a lst_4, item_3 >> foo_0:
+              str 'foo' >> key_0
+                rec_s exports_0, key_0, foo_0 >> exports_1:
+                  int 1 >> left_1:
+                    int 2 >> right_3:
+                      + left_1, right_3 >> item_7:
+                        lst >> cargs_0:
+                          lst_a cargs_0, item_3 >> cargs_1:
+                            lst_a cargs_1, item_2 >> cargs_2:
+                              lst_a cargs_2, item_1 >> cargs_3:
+                                lst_a cargs_3, foo_0 >> cargs_4:
+                                  lst_a cargs_4, item_7 >> cargs_5:
+                                    lst_a cargs_5, item_2 >> cargs_6:
+                                      lst_a cargs_6, item_3 >> cargs_7:
+                                        af log, cargs_7 >> mex_3:
+                                          lst >> drctvs_0:
+                                            mod exports_1, drctvs_0 >> result_0:"
+`;
+
+exports[`unpacking list destructures recs 1`] = `
+"
+rec >> exports_0:
+  = ni >> right_0:
+    lst_h right_0 >> drec_0:
+      lst_t right_0 >> tail_0:
+        str 'a' >> key_0
+          rec_g drec_0, key_0 >> a_0:
+            str 'b' >> key_1
+              rec_g drec_0, key_1 >> b_0:
+                lst_h tail_0 >> c_0:
+                  lst_t tail_0 >> tail_1:
+                    lst >> drctvs_0:
+                      mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`unpacking list destructures simple 1`] = `
+"
+rec >> exports_0:
+  lst >> lst_3:
+    int 1 >> item_3:
+      lst_a lst_3, item_3 >> lst_0:
+        lst >> lst_2:
+          int 2 >> item_2:
+            lst_a lst_2, item_2 >> lst_1:
+              int 3 >> item_1:
+                lst_a lst_1, item_1 >> item_0:
+                  lst_a lst_0, item_0 >> right_0:
+                    lst_h right_0 >> a_0:
+                      lst_t right_0 >> tail_0:
+                        lst_h tail_0 >> items_0:
+                          lst_t tail_0 >> tail_3:
+                            lst_h items_0 >> b_0:
+                              lst_t items_0 >> tail_1:
+                                lst_h tail_1 >> c_0:
+                                  lst_t tail_1 >> tail_2:
+                                    lst >> lst_5:
+                                      = b_0 >> item_5:
+                                        lst_a lst_5, item_5 >> lst_4:
+                                          = a_0 >> item_4:
+                                            lst_a lst_4, item_4 >> foo_0:
+                                              str 'foo' >> key_0
+                                                rec_s exports_0, key_0, foo_0 >> exports_1:
+                                                  lst >> lst_7:
+                                                    int 1 >> left_1:
+                                                      int 2 >> right_3:
+                                                        + left_1, right_3 >> item_7:
+                                                          lst_a lst_7, item_7 >> lst_6:
+                                                            int 3 >> left_0:
+                                                              int 4 >> right_2:
+                                                                * left_0, right_2 >> item_6:
+                                                                  lst_a lst_6, item_6 >> right_1:
+                                                                    lst_h right_1 >> z_0:
+                                                                      lst_t right_1 >> tail_4:
+                                                                        = foo_0 >> right_4:
+                                                                          lst_h right_4 >> x_0:
+                                                                            lst_t right_4 >> tail_5:
+                                                                              lst_h tail_5 >> y_0:
+                                                                                lst_t tail_5 >> tail_6:
+                                                                                  lst >> drctvs_0:
+                                                                                    mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`unpacking list destructures spread 1`] = `
+"
+rec >> exports_0:
+  = ni >> right_0:
+    lst_h right_0 >> a_0:
+      lst_t right_0 >> tail_0:
+        lst_h tail_0 >> b_0:
+          lst_t tail_0 >> tail_1:
+            lst_h tail_1 >> c_0:
+              lst_t tail_1 >> tail_2:
+                = ni >> right_1:
+                  lst_h right_1 >> unused_0:
+                    lst_t right_1 >> tail_3:
+                      lst_h tail_3 >> unused_1:
+                        lst_t tail_3 >> tail_4:
+                          lst_h tail_4 >> d_0:
+                            lst_t tail_4 >> tail_5:
+                              = ni >> right_2:
+                                lst_h right_2 >> head_0:
+                                  lst_t right_2 >> tail_6:
+                                    lst_r tail_6 >> rtail_0:
+                                      lst_r rtail_0 >> tail_7:
+                                        str '1234' >> str_0
+                                          strt str_0 >> right_3:
+                                            lst_r right_3 >> rtail_1:
+                                              lst_h rtail_1 >> last_0:
+                                                lst_t rtail_1 >> tail_8:
+                                                  lst_r tail_8 >> items_0:
+                                                    str '123' >> str_1
+                                                      strt str_1 >> right_4:
+                                                        lst_h right_4 >> first_0:
+                                                          lst_t right_4 >> tail_9:
+                                                            lst_h tail_9 >> second_0:
+                                                              lst_t tail_9 >> tail_10:
+                                                                lst_r tail_10 >> rtail_2:
+                                                                  lst_h rtail_2 >> end_0:
+                                                                    lst_t rtail_2 >> tail_11:
+                                                                      lst_h tail_11 >> penultimate_0:
+                                                                        lst_t tail_11 >> tail_12:
+                                                                          lst_r tail_12 >> middle_0:
+                                                                            str '123' >> str_2
+                                                                              strt str_2 >> right_5:
+                                                                                lst_h right_5 >> ni_0:
+                                                                                  lst_t right_5 >> tail_13:
+                                                                                    lst_r tail_13 >> rtail_3:
+                                                                                      lst_h rtail_3 >> nu_0:
+                                                                                        lst_t rtail_3 >> tail_14:
+                                                                                          str '123' >> str_3
+                                                                                            strt str_3 >> right_6:
+                                                                                              lst_r right_6 >> rtail_4:
+                                                                                                lst_h rtail_4 >> nuna_0:
+                                                                                                  lst_t rtail_4 >> tail_15:
+                                                                                                    lst >> drctvs_0:
+                                                                                                      mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`unpacking list destructures with defaults 1`] = `
+"
+rec >> exports_0:
+  = foo >> right_0:
+    int 12 >> flbk_0:
+      lst_h right_0 >> hdm_0:
+        ifv hdm_0, hdm_0, flbk_0 >> a_0:
+          lst_t right_0 >> tail_0:
+            int 34 >> flbk_1:
+              lst_h tail_0 >> hdm_1:
+                ifv hdm_1, hdm_1, flbk_1 >> b_0:
+                  lst_t tail_0 >> tail_1:
+                    lst >> lst_1:
+                      = a_0 >> item_1:
+                        lst_a lst_1, item_1 >> lst_0:
+                          = b_0 >> item_0:
+                            lst_a lst_0, item_0 >> out_0:
+                              str 'out' >> key_0
+                                rec_s exports_0, key_0, out_0 >> exports_1:
+                                  lst >> drctvs_0:
+                                    mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`unpacking list destructures with defaults 2`] = `
+"
+rec >> exports_0:
+  = foo >> right_0:
+    lst >> lst_1:
+      int 1 >> item_1:
+        lst_a lst_1, item_1 >> lst_0:
+          int 2 >> item_0:
+            lst_a lst_0, item_0 >> flbk_0:
+              lst_h right_0 >> hdm_1:
+                ifv hdm_1, hdm_1, flbk_0 >> items_0:
+                  lst_t right_0 >> tail_2:
+                    lst_h items_0 >> a_0:
+                      lst_t items_0 >> tail_0:
+                        int 0 >> flbk_1:
+                          lst_h tail_0 >> hdm_0:
+                            ifv hdm_0, hdm_0, flbk_1 >> b_0:
+                              lst_t tail_0 >> tail_1:
+                                int 34 >> flbk_2:
+                                  lst_h tail_2 >> hdm_2:
+                                    ifv hdm_2, hdm_2, flbk_2 >> c_0:
+                                      lst_t tail_2 >> tail_3:
+                                        lst >> lst_4:
+                                          = a_0 >> item_4:
+                                            lst_a lst_4, item_4 >> lst_3:
+                                              = b_0 >> item_3:
+                                                lst_a lst_3, item_3 >> lst_2:
+                                                  = c_0 >> item_2:
+                                                    lst_a lst_2, item_2 >> out_0:
+                                                      str 'out' >> key_0
+                                                        rec_s exports_0, key_0, out_0 >> exports_1:
+                                                          lst >> drctvs_0:
+                                                            mod exports_1, drctvs_0 >> mod_0:"
+`;

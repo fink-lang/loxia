@@ -1,0 +1,4 @@
+
+
+transform_keyword = fn {value, loc}, result, ctx:
+  [[['=', [value], [result], {loc}]], ctx]

@@ -1,0 +1,12 @@
+{fink2lir} = import '../../testing/generate.fnk'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+describe 'keywords', fn:
+  it 'transforms literals', fn:
+    expect
+      fink2lir '
+        x = false
+        y = true
+      '
+      to_match_snapshot

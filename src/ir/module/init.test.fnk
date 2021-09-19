@@ -1,0 +1,29 @@
+{fink2lir} = import '../../testing/generate.fnk'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+describe 'module', fn:
+  it 'handles comments', fn:
+    expect
+      fink2lir "
+        #!/usr/bin/env node
+
+        # leading comment
+
+        # expr comment
+        foo = 1234
+
+        # trailing comment
+      "
+      to_match_snapshot
+
+
+  it 'handles exports', fn:
+    expect
+      fink2lir "
+        delete = fn: true
+        π = fn: true
+        foo_bar = 1234
+        foo-bar = 1234
+      "
+      to_match_snapshot

@@ -1,0 +1,26 @@
+{add, any} = import '../context.fnk'
+
+
+
+
+get_ident = fn id, [scope, ...scopes]=[]:
+  match scope:
+    {(id): ?}: scope.(id)
+    ?: get_ident id, scopes
+    else: id
+
+
+
+transform_ident = fn ident, res_id, ctx:
+  id = get_ident ident.value, ctx.scopes
+  [[['=', [id], [res_id], {loc: ident.loc}]], ctx]
+
+
+
+add_ident = fn ctx:
+  pipe ctx:
+    add 'ident', any, transform_ident
+
+
+
+

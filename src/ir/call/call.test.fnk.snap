@@ -1,0 +1,219 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`call compiles 1`] = `
+"
+rec >> exports_0:
+  = foo >> callee_0:
+    lst >> cargs_0:
+      = bar >> arg_0:
+        lst_a cargs_0, arg_0 >> cargs_1:
+          af callee_0, cargs_1 >> mex_0:
+            = foo >> callee_1:
+              lst >> cargs_2:
+                = bar >> arg_1:
+                  lst_a cargs_2, arg_1 >> cargs_3:
+                    = spam >> arg_2:
+                      lst_a cargs_3, arg_2 >> cargs_4:
+                        af callee_1, cargs_4 >> mex_1:
+                          = foo >> callee_2:
+                            lst >> cargs_5:
+                              fn args_0, ret_0:
+                                lst_h args_0 >> bar_0:
+                                  lst_t args_0 >> tail_0:
+                                    = bar_0 >> left_0:
+                                      int 2 >> right_0:
+                                        * left_0, right_0 >> result_0:
+                                          cc ret_0, result_0
+                              >> arg_3:
+                                lst_a cargs_5, arg_3 >> cargs_6:
+                                  af callee_2, cargs_6 >> mex_2:
+                                    = foo >> callee_3:
+                                      lst >> cargs_7:
+                                        af callee_3, cargs_7 >> mex_3:
+                                          = foo >> callee_4:
+                                            lst >> cargs_8:
+                                              = bar >> arg_4:
+                                                lst_a cargs_8, arg_4 >> cargs_9:
+                                                  lst_a cargs_9, _ >> cargs_10:
+                                                    = spam >> arg_5:
+                                                      lst_a cargs_10, arg_5 >> cargs_11:
+                                                        af callee_4, cargs_11 >> mex_4:
+                                                          fn args_1, ret_1:
+                                                            lst_h args_1 >> prtl_7:
+                                                              = foo >> callee_5:
+                                                                lst >> cargs_12:
+                                                                  = bar >> arg_6:
+                                                                    lst_a cargs_12, arg_6 >> cargs_13:
+                                                                      = spam >> sprd_0:
+                                                                        lst_c cargs_13, sprd_0 >> cargs_14:
+                                                                          af callee_5, cargs_14 >> pfn_0:
+                                                                            cc ret_1, pfn_0
+                                                          >> mex_5:
+                                                            fn args_2, ret_2:
+                                                              lst_h args_2 >> prtl_8:
+                                                                = foo >> callee_6:
+                                                                  lst >> cargs_15:
+                                                                    = bar >> sprd_1:
+                                                                      lst_c cargs_15, sprd_1 >> cargs_16:
+                                                                        af callee_6, cargs_16 >> pfn_1:
+                                                                          cc ret_2, pfn_1
+                                                            >> mex_6:
+                                                              fn args_3, ret_3:
+                                                                lst_h args_3 >> prtl_9:
+                                                                  = foo >> callee_7:
+                                                                    lst >> cargs_17:
+                                                                      = bar >> sprd_2:
+                                                                        lst_c cargs_17, sprd_2 >> cargs_18:
+                                                                          = spam >> arg_7:
+                                                                            lst_a cargs_18, arg_7 >> cargs_19:
+                                                                              af callee_7, cargs_19 >> pfn_2:
+                                                                                cc ret_3, pfn_2
+                                                              >> mex_7:
+                                                                lst >> drctvs_0:
+                                                                  mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`call compiles as partial 1`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    lst_h args_0 >> prtl_0:
+      = foo >> callee_0:
+        lst >> cargs_0:
+          = prtl_0 >> arg_0:
+            lst_a cargs_0, arg_0 >> cargs_1:
+              af callee_0, cargs_1 >> pfn_0:
+                cc ret_0, pfn_0
+  >> mex_0:
+    fn args_1, ret_1:
+      lst_h args_1 >> prtl_1:
+        = foo >> callee_1:
+          lst >> cargs_2:
+            = prtl_1 >> arg_1:
+              lst_a cargs_2, arg_1 >> cargs_3:
+                int 123 >> arg_2:
+                  lst_a cargs_3, arg_2 >> cargs_4:
+                    af callee_1, cargs_4 >> pfn_1:
+                      cc ret_1, pfn_1
+    >> mex_1:
+      fn args_2, ret_2:
+        lst_h args_2 >> prtl_3:
+          = foo >> callee_2:
+            lst >> cargs_5:
+              = prtl_3 >> sprd_0:
+                lst_c cargs_5, sprd_0 >> cargs_6:
+                  af callee_2, cargs_6 >> pfn_2:
+                    cc ret_2, pfn_2
+      >> mex_2:
+        fn args_3, ret_3:
+          lst_h args_3 >> prtl_4:
+            = foo >> callee_3:
+              lst >> cargs_7:
+                = prtl_4 >> left_0:
+                  str 'bar' >> key_0
+                    rec_g left_0, key_0 >> sprd_1:
+                      lst_c cargs_7, sprd_1 >> cargs_8:
+                        af callee_3, cargs_8 >> pfn_3:
+                          cc ret_3, pfn_3
+        >> mex_3:
+          fn args_4, ret_4:
+            lst_h args_4 >> prtlc_4:
+              = prtlc_4 >> callee_4:
+                lst >> cargs_9:
+                  int 123 >> arg_3:
+                    lst_a cargs_9, arg_3 >> cargs_10:
+                      af callee_4, cargs_10 >> pfn_4:
+                        cc ret_4, pfn_4
+          >> mex_4:
+            fn args_5, ret_5:
+              lst_h args_5 >> prtlc_5:
+                = prtlc_5 >> callee_5:
+                  lst >> cargs_11:
+                    = bar >> arg_4:
+                      lst_a cargs_11, arg_4 >> cargs_12:
+                        = spam >> arg_5:
+                          lst_a cargs_12, arg_5 >> cargs_13:
+                            af callee_5, cargs_13 >> pfn_5:
+                              cc ret_5, pfn_5
+            >> mex_5:
+              fn args_6, ret_6:
+                lst_h args_6 >> prtlc_6:
+                  = prtlc_6 >> left_1:
+                    str 'bar' >> key_1
+                      rec_g left_1, key_1 >> callee_6:
+                        lst >> cargs_14:
+                          = spam >> arg_6:
+                            lst_a cargs_14, arg_6 >> cargs_15:
+                              af callee_6, cargs_15 >> pfn_6:
+                                cc ret_6, pfn_6
+              >> mex_6:
+                lst >> drctvs_0:
+                  mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`call compiles with partial args 1`] = `
+"
+rec >> exports_0:
+  = filter >> callee_0:
+    lst >> cargs_0:
+      fn args_0, ret_0:
+        lst_h args_0 >> prtl_0:
+          = prtl_0 >> left_0:
+            int 1 >> right_0:
+              == left_0, right_0 >> arg_0:
+                cc ret_0, arg_0
+      >> pfn_0:
+        lst_a cargs_0, pfn_0 >> cargs_1:
+          af callee_0, cargs_1 >> mex_0:
+            = filter >> callee_1:
+              lst >> cargs_2:
+                fn args_1, ret_1:
+                  lst_h args_1 >> prtl_1:
+                    = prtl_1 >> left_1:
+                      = foo >> callee_2:
+                        lst >> cargs_3:
+                          = prtl_1 >> arg_2:
+                            lst_a cargs_3, arg_2 >> cargs_4:
+                              af callee_2, cargs_4 >> right_1:
+                                or left_1, right_1 >> arg_1:
+                                  cc ret_1, arg_1
+                >> pfn_1:
+                  lst_a cargs_2, pfn_1 >> cargs_5:
+                    af callee_1, cargs_5 >> mex_1:
+                      = filter >> callee_3:
+                        lst >> cargs_6:
+                          fn args_2, ret_2:
+                            lst_h args_2 >> prtl_3:
+                              = prtl_3 >> right_2:
+                                not right_2 >> arg_3:
+                                  cc ret_2, arg_3
+                          >> pfn_2:
+                            lst_a cargs_6, pfn_2 >> cargs_7:
+                              af callee_3, cargs_7 >> mex_2:
+                                = map >> callee_4:
+                                  lst >> cargs_8:
+                                    fn args_3, ret_3:
+                                      lst_h args_3 >> prtl_4:
+                                        = prtl_4 >> left_2:
+                                          str 'foo' >> key_0
+                                            rec_g left_2, key_0 >> arg_4:
+                                              cc ret_3, arg_4
+                                    >> pfn_3:
+                                      lst_a cargs_8, pfn_3 >> cargs_9:
+                                        af callee_4, cargs_9 >> mex_3:
+                                          = map >> callee_5:
+                                            lst >> cargs_10:
+                                              fn args_4, ret_4:
+                                                lst_h args_4 >> prtl_5:
+                                                  = prtl_5 >> left_4:
+                                                    int 2 >> right_3:
+                                                      % left_4, right_3 >> left_3:
+                                                        int 0 >> right_4:
+                                                          == left_3, right_4 >> arg_5:
+                                                            cc ret_4, arg_5
+                                              >> pfn_4:
+                                                lst_a cargs_10, pfn_4 >> cargs_11:
+                                                  af callee_5, cargs_11 >> mex_4:
+                                                    lst >> drctvs_0:
+                                                      mod exports_0, drctvs_0 >> mod_0:"
+`;

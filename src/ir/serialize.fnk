@@ -1,0 +1,56 @@
+{replace_all, rx} = import '@fink/std-lib/regex.fnk'
+{join} = import '@fink/std-lib/iter.fnk'
+
+
+
+a2s = fn args:
+  match args:
+    [?]: ' ${args | join ', '}'
+    else: ''
+
+
+raw = fn s:
+  replace_all s, rx'(\n)', '\\n'
+
+
+
+serialize = fn [curr=false, ...rest], out='', indent='':
+  # match curr:
+  #   false: false
+  #   [ , , , ?]: false
+  #   else: console.log 'missing loc', curr
+
+  match curr:
+    false:
+      out
+
+    [? in ['cn', 'fn', 'fnr']]:
+      [op, [args, body], ids] = curr
+      serialize
+        rest
+        '${out}\n${indent}${op}${a2s args}:${serialize body, '', '  ${indent}'}
+          ${indent}>>${a2s ids}:'
+        '  ${indent}'
+
+    ['str']:
+      [op, [val], ids] = curr
+      serialize
+        rest
+        '${out}\n${indent}${op} \'${raw val}\' >>${a2s ids}'
+        '  ${indent}'
+
+
+    [ , , [?]]:
+      [op, args, ids] = curr
+      serialize
+        rest
+        '${out}\n${indent}${op}${a2s args} >>${a2s ids}:'
+        '  ${indent}'
+
+    else:
+      [op, args] = curr
+      serialize
+        rest
+        '${out}\n${indent}${op}${a2s args}'
+        '  ${indent}'
+

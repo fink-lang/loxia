@@ -1,0 +1,24 @@
+{init_ctx} = import '../ir/context.fnk'
+{optimize_unused} = import './unused.fnk'
+{optimize_refs} = import './refs.fnk'
+{optimize_tails} = import './tail-calls.fnk'
+{optimize_ids} = import './short-ids.fnk'
+
+
+optimize = fn exprs:
+
+  meta = init_ctx exprs
+  [tail_ir] = optimize_refs exprs, meta
+
+  tail_meta = init_ctx tail_ir
+  [u_ir] = optimize_tails tail_ir, tail_meta
+
+  u_meta = init_ctx u_ir
+  [end_il, end_meta] = optimize_unused u_ir, u_meta
+
+  optimize_ids end_il, end_meta
+
+  # log add_type_info end_meta, end_il
+  # short_il = optimize_ids un_il
+  [end_il, end_meta]
+

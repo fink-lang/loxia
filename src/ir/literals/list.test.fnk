@@ -1,0 +1,112 @@
+{fink2lir, fink2lir_o} = import '../../testing/generate.fnk'
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+describe 'list', fn:
+  it 'compiles', fn:
+    expect
+      fink2lir '
+        array1 = []
+        array2 = [1]
+        array3 = [1, 2]
+        array4 = [1, , 2]
+        array5 = list:
+          a + 1 + 45 +
+            b + c
+          [1, 2]
+          (3 + 3) * 2
+      '
+      to_match_snapshot
+
+
+  it 'compiles spread', fn:
+    expect
+      fink2lir '
+        array1 = [1, 2, ...b]
+        array2 = [1, 2, ...b, 3, 4]
+      '
+      to_match_snapshot
+
+
+  skip.it 'compiles as partial', fn:
+    expect
+      fink2lir '
+        [1, ...?, 9]
+        [?, ?]
+      '
+      to_match_snapshot
+
+
+
+describe 'unpacking list', fn:
+  it 'destructures simple', fn:
+    expect
+      fink2lir '
+        [a, [b, c]] = [1, [2, 3]]
+        foo = [b, a]
+        [z] = [1 + 2, 3 * 4]
+        [x, y] = foo
+      '
+      to_match_snapshot
+
+
+  it 'destructures with defaults', fn:
+    expect
+      fink2lir '
+        [a=12, b=34] = foo
+        out = [a, b]
+      '
+      to_match_snapshot
+
+    expect
+      fink2lir '
+        [[a, b=0]=[1, 2], c=34] = foo
+        out = [a, b, c]
+      '
+      to_match_snapshot
+
+
+  it 'destructures spread', fn:
+    expect
+      fink2lir "
+        [a, b, c] = ni
+        [, , d] = ni
+        [head, ...tail] = ni
+        [...items, last] = '1234'
+        [first, second, ...middle, penultimate, end] = '123'
+        [ni, ..., nu] = '123'
+        [..., nuna] = '123'
+      "
+      to_match_snapshot
+
+
+  it 'destructures recs', fn:
+    expect
+      fink2lir "
+        [{a, b}, c] = ni
+      "
+      to_match_snapshot
+
+
+
+describe 'optimizations', fn:
+  it 'reuses item refs', fn:
+    expect
+      fink2lir_o '
+        [a, [b, c]] = [1, [2, 3]]
+        foo = [b, a]
+        [z] = [1 + 2, 3 * 4]
+        [x, y] = foo
+        log a, b, c, foo, z, x, y
+      '
+      to_match_snapshot
+
+
+  it 'ignores empty concats', fn:
+    expect
+      fink2lir_o '
+        foo = [...b]
+        ham = []
+        spam = [foo, ...ham]
+      '
+      to_match_snapshot

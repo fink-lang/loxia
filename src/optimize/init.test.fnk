@@ -1,0 +1,60 @@
+{fink2lir_o} = import '../testing/generate.fnk'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+describe 'optimize', fn:
+  it 'optimizes values', fn:
+    expect
+      fink2lir_o '
+        y = [1, 2]
+        x = 3
+        [foo, [bar, ni], shrub] = [4, [x, 5], y]
+        [..., spam] = y
+        [...sp, spam] = [1, 2, 3]
+        [x] = sp
+        [...spl] = lala
+        log foo, bar, ni, shrub, spam, sp, x, spl
+      '
+      to_match_snapshot
+
+
+  it 'optimizes functions', fn:
+    expect
+      fink2lir_o '
+        ni = 123
+
+        spam = fn foo, bar:
+          [a, b] = [bar, foo]
+          a + b + ni
+
+        spam foo, bar
+      '
+      to_match_snapshot
+
+
+  it 'optimizes conts', fn:
+    expect
+      fink2lir_o '
+        ni = 123
+
+        spam = fn foo, bar:
+          [spam, ham] = match foo:
+            bar: [1, ni]
+            else: [2, ni * 2]
+
+          spam + ni + ham
+
+        spam foo, bar
+      '
+      to_match_snapshot
+
+
+  it 'optimizes ac ...>> res: cc ..., res', fn:
+    expect
+      fink2lir_o '
+        gcd = fn x, y:
+          match y:
+            0: x
+            else: gcd y, x % y
+      '
+      to_match_snapshot

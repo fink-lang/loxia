@@ -1,0 +1,40 @@
+{add, any} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+{unique_ident} = import '../context.fnk'
+{transform_dl} = import '../assignment/init.fnk'
+
+
+
+transform_exprs = fn [expr=false, ...rest], ctx, out, last_id:
+  match expr:
+    false:
+      [out, last_id, ctx]
+    else:
+      [foo, id, next_ctx] = transform expr, 'result', ctx
+      transform_exprs rest, next_ctx, [...out, ...foo], id
+
+
+
+
+transform_args = fn exprs, ctx:
+  [args_id, next_ctx] = unique_ident 'args', ctx
+  [args, , end_ctx] = transform_dl exprs, args_id, next_ctx
+  [args, args_id, end_ctx]
+
+
+
+transform_func = fn expr, res_id, {scopes=[], ...ctx}:
+  args_ctx = {...ctx, scopes: [{}, ...scopes]}
+  [args, args_id, ret_ctx] = transform_args expr.args, args_ctx
+  [ret_id, body_ctx] = unique_ident 'ret', ret_ctx
+  [body, fn_res_id, end_ctx] = transform_exprs expr.exprs, body_ctx, []
+
+  fun_body = [...args, ...body, ['cc', [ret_id, fn_res_id], [], {loc: expr.loc}]]
+  fun = ['fn', [[args_id, ret_id], fun_body], [res_id], {loc: expr.loc}]
+  [[fun], {...end_ctx, scopes}]
+
+
+
+add_func = fn ctx:
+  pipe ctx:
+    add any, 'fn', transform_func

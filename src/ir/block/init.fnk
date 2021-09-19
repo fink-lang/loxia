@@ -1,0 +1,25 @@
+
+{add, any} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+
+
+
+transform_exprs = fn [expr=false, ...exprs], res_id, ctx, out=[]:
+  match exprs:
+    [?]:
+      [val, , next_ctx] = transform expr, 'blkv', ctx
+      transform_exprs exprs, res_id, next_ctx, [...out, ...val]
+    else:
+      [val, , next_ctx] = transform expr, res_id, ctx, false
+      [[...out, ...val], next_ctx]
+
+
+
+transform_block = fn expr, res_id, ctx:
+  transform_exprs expr.exprs, res_id, ctx
+
+
+add_block = fn ctx:
+  pipe ctx:
+    add 'block', any, transform_block
+

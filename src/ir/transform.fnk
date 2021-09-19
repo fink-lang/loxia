@@ -1,0 +1,31 @@
+{throw_err} = import '@fink/js-interop/errors.fnk'
+{transform_error} = import './errors.fnk'
+
+{get_transformer, unique_ident} = import './context.fnk'
+
+
+
+transform = fn expr, name_or_id, ctx, gen_id=true:
+  [id, next_ctx] = match gen_id:
+    false: [name_or_id, ctx]
+    else: unique_ident name_or_id, ctx
+
+  transform_expr = get_transformer expr, ctx
+
+  [out, end_ctx] = transform_expr expr, id, next_ctx
+  [out, id, end_ctx]
+
+
+
+transform_binary = fn op, left, right, res_id, meta, ctx:
+  [l, l_id, r_ctx] = transform left, 'left', ctx
+  [r, r_id, next_ctx] = transform right, 'right', r_ctx
+  [[...l, ...r, [op, [l_id, r_id], [res_id], meta]], next_ctx]
+
+
+
+transform_unary = fn op, right, res_id, meta, ctx:
+  [r, r_id, next_ctx] = transform right, 'right', ctx
+  [[...r, [op, [r_id], [res_id], meta]], next_ctx]
+
+

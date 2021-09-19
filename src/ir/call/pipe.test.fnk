@@ -1,0 +1,37 @@
+{fink2lir} = import '../../testing/generate.fnk'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+
+describe 'pipe', fn:
+  it 'compiles no args', fn:
+    expect
+      fink2lir '
+        pipe:
+          foo
+          bar spam
+      '
+      to_match_snapshot
+
+
+  it 'compiles simple', fn:
+    expect
+      fink2lir '
+        pipe [1, 2, 3]:
+          shrub ni
+          map fn item: item * 2
+      '
+      to_match_snapshot
+
+
+  it 'compiles with partials', fn:
+    expect
+      fink2lir '
+        pipe:
+          bar ?, 123
+          spam ni
+          [4, 5, ...?]
+          shrub ? > 1
+      '
+      to_match_snapshot
+

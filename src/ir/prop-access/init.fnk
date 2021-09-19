@@ -1,0 +1,23 @@
+{add, any} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+{unique_ident} = import '../context.fnk'
+
+
+
+
+transform_member = fn {left, right, loc}, result, ctx:
+  [l, l_id, key_ctx] = transform left, 'left', ctx
+
+  [key, key_id, next_ctx] = match right:
+    {type: 'ident'}:
+      [key_id, next_ctx] = unique_ident 'key', key_ctx
+      [[['str', [right.value], [key_id], {loc: right.loc}]], key_id, next_ctx]
+    else:
+      transform right, 'key', key_ctx
+
+  [[...l, ...key, ['rec_g', [l_id, key_id], [result], {loc}]], next_ctx]
+
+
+add_member = fn ctx:
+  pipe ctx:
+    add any, '.', transform_member

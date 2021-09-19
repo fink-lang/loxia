@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`import imports as side effect 1`] = `
+"
+rec >> exports_0:
+  str './spam.fnk' >> str_0
+    strt str_0 >> uri_0:
+      imp uri_0
+        lst >> drctvs_0:
+          mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`import imports dynamically with static URL 1`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    str './shrub.fnk' >> str_0
+      strt str_0 >> src_0:
+        impd src_0 >> result_0:
+          cc ret_0, result_0
+  >> ni_0:
+    str 'ni' >> key_0
+      rec_s exports_0, key_0, ni_0 >> exports_1:
+        lst >> drctvs_0:
+          mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`import imports exported values 1`] = `
+"
+rec >> exports_0:
+  str './spam.fnk' >> str_0
+    strt str_0 >> uri_0:
+      str 'bar' >> key_0
+        imp uri_0, key_0 >> bar_0:
+          str './shrub.fnk' >> str_1
+            strt str_1 >> uri_1:
+              str 'foo' >> key_1
+                imp uri_1, key_1 >> spam_0:
+                  str './ni.fnk' >> str_2
+                    strt str_2 >> uri_2:
+                      str 'π' >> key_2
+                        imp uri_2, key_2 >> π_0:
+                          str 'delete' >> key_3
+                            imp uri_2, key_3 >> delete_0:
+                              str './ham.fnk' >> str_3
+                                strt str_3 >> uri_3:
+                                  str 'foo-bar' >> key_4
+                                    imp uri_3, key_4 >> foo-bar_0:
+                                      lst >> drctvs_0:
+                                        mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`import imports with dynamic URLs 1`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    = foo >> src_0:
+      impd src_0 >> result_0:
+        cc ret_0, result_0
+  >> shrub_0:
+    str 'shrub' >> key_0
+      rec_s exports_0, key_0, shrub_0 >> exports_1:
+        fn args_1, ret_1:
+          str '' >> str_0
+            = foo >> sx_0:
+              str '' >> str_1
+                strt str_0, sx_0, str_1 >> src_1:
+                  impd src_1 >> result_1:
+                    cc ret_1, result_1
+        >> ni_0:
+          str 'ni' >> key_1
+            rec_s exports_1, key_1, ni_0 >> exports_2:
+              fn args_2, ret_2:
+                str './' >> str_2
+                  = foo >> sx_1:
+                    str '.fnk' >> str_3
+                      strt str_2, sx_1, str_3 >> src_2:
+                        impd src_2 >> result_2:
+                          cc ret_2, result_2
+              >> na_0:
+                str 'na' >> key_2
+                  rec_s exports_2, key_2, na_0 >> exports_3:
+                    lst >> drctvs_0:
+                      mod exports_3, drctvs_0 >> mod_0:"
+`;

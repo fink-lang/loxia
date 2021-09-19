@@ -1,0 +1,317 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JSX extensions compiles block 1`] = `
+"
+rec >> exports_0:
+  = Foobar >> jsxi_0:
+    rec >> props_0:
+      lst >> chldrn_0:
+        str '\\\\n  ' >> chld_0
+          lst_a chldrn_0, chld_0 >> chldrn_1:
+            = spam >> callee_0:
+              lst >> cargs_0:
+                af callee_0, cargs_0 >> foo_0:
+                  = bar >> callee_1:
+                    lst >> cargs_1:
+                      = spam >> arg_0:
+                        lst_a cargs_1, arg_0 >> cargs_2:
+                          = foo_0 >> arg_1:
+                            lst_a cargs_2, arg_1 >> cargs_3:
+                              = foo_0 >> arg_2:
+                                lst_a cargs_3, arg_2 >> cargs_4:
+                                  af callee_1, cargs_4 >> chld_1:
+                                    lst_a chldrn_1, chld_1 >> chldrn_2:
+                                      str '\\\\n' >> chld_2
+                                        lst_a chldrn_2, chld_2 >> chldrn_3:
+                                          jxe jsxi_0, props_0, chldrn_3 >> mex_0:
+                                            lst >> drctvs_0:
+                                              mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`JSX extensions compiles expr group with call for attr value 1`] = `
+"
+rec >> exports_0:
+  = Foobar >> jsxi_0:
+    rec >> props_0:
+      str 'spam' >> prpn_0
+        = ham >> callee_0:
+          lst >> cargs_0:
+            = ni >> arg_0:
+              lst_a cargs_0, arg_0 >> cargs_1:
+                af callee_0, cargs_1 >> prpv_0:
+                  rec_s props_0, prpn_0, prpv_0 >> props_1:
+                    str 'shrub' >> prpn_1
+                      int 1234 >> prpv_1:
+                        rec_s props_1, prpn_1, prpv_1 >> props_2:
+                          lst >> chldrn_0:
+                            jxe jsxi_0, props_2, chldrn_0 >> mex_0:
+                              lst >> drctvs_0:
+                                mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`JSX extensions compiles fink expr as attr values 1`] = `
+"
+rec >> exports_0:
+  = Foobar >> jsxi_0:
+    rec >> props_0:
+      str 'spam' >> prpn_0
+        = ham >> prpv_0:
+          rec_s props_0, prpn_0, prpv_0 >> props_1:
+            str 'shrub' >> prpn_1
+              int 1234 >> prpv_1:
+                rec_s props_1, prpn_1, prpv_1 >> props_2:
+                  str 'ni' >> prpn_2
+                    int 123 >> right_0:
+                      - right_0 >> prpv_2:
+                        rec_s props_2, prpn_2, prpv_2 >> props_3:
+                          lst >> chldrn_0:
+                            str ' foo ' >> chld_0
+                              lst_a chldrn_0, chld_0 >> chldrn_1:
+                                jxe jsxi_0, props_3, chldrn_1 >> mex_0:
+                                  lst >> drctvs_0:
+                                    mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`JSX extensions compiles fink expr with gt comparison 1`] = `
+"
+rec >> exports_0:
+  = Foobar >> jsxi_0:
+    rec >> props_0:
+      str 'spam' >> prpn_0
+        = foo >> left_0:
+          int 123 >> right_0:
+            > left_0, right_0 >> prpv_0:
+              rec_s props_0, prpn_0, prpv_0 >> props_1:
+                str 'shrub' >> prpn_1
+                  int 1234 >> prpv_1:
+                    rec_s props_1, prpn_1, prpv_1 >> props_2:
+                      lst >> chldrn_0:
+                        str ' ni ' >> chld_0
+                          lst_a chldrn_0, chld_0 >> chldrn_1:
+                            jxe jsxi_0, props_2, chldrn_1 >> mex_0:
+                              lst >> drctvs_0:
+                                mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`JSX extensions compiles shothand props 1`] = `
+"
+rec >> exports_0:
+  = Foobar >> jsxi_0:
+    rec >> props_0:
+      str 'spam' >> prpn_0
+        = spam >> prpv_0:
+          rec_s props_0, prpn_0, prpv_0 >> props_1:
+            str 'ham-ni' >> prpn_1
+              = ham-ni >> prpv_1:
+                rec_s props_1, prpn_1, prpv_1 >> props_2:
+                  lst >> chldrn_0:
+                    jxe jsxi_0, props_2, chldrn_0 >> mex_0:
+                      lst >> drctvs_0:
+                        mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`JSX extensions compiles spread 1`] = `
+"
+rec >> exports_0:
+  = Foobar >> jsxi_0:
+    rec >> props_0:
+      str 'spam' >> prpn_0
+        = spam >> prpv_0:
+          rec_s props_0, prpn_0, prpv_0 >> props_1:
+            = ham >> sprd_0:
+              rec_m props_1, sprd_0 >> props_2:
+                str 'shrub' >> prpn_1
+                  = shrub >> prpv_1:
+                    rec_s props_2, prpn_1, prpv_1 >> props_3:
+                      lst >> chldrn_0:
+                        jxe jsxi_0, props_3, chldrn_0 >> mex_0:
+                          lst >> drctvs_0:
+                            mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`JSX extensions compiles template str attr 1`] = `
+"
+rec >> exports_0:
+  = Foobar >> jsxi_0:
+    rec >> props_0:
+      str 'spam' >> prpn_0
+        str 'ni: ' >> str_0
+          int 1 >> left_0:
+            int 2 >> right_0:
+              + left_0, right_0 >> sx_0:
+                str '' >> str_1
+                  strt str_0, sx_0, str_1 >> prpv_0:
+                    rec_s props_0, prpn_0, prpv_0 >> props_1:
+                      lst >> chldrn_0:
+                        jxe jsxi_0, props_1, chldrn_0 >> mex_0:
+                          lst >> drctvs_0:
+                            mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`jsx compiles empty elem 1`] = `
+"
+rec >> exports_0:
+  = b >> jsxi_0:
+    rec >> props_0:
+      lst >> chldrn_0:
+        jxe jsxi_0, props_0, chldrn_0 >> elem_0:
+          str 'elem' >> key_0
+            rec_s exports_0, key_0, elem_0 >> exports_1:
+              lst >> drctvs_0:
+                mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`jsx compiles fragment 1`] = `
+"
+rec >> exports_0:
+  lst >> chldrn_0:
+    jxf chldrn_0 >> elem_0:
+      str 'elem' >> key_0
+        rec_s exports_0, key_0, elem_0 >> exports_1:
+          lst >> drctvs_0:
+            mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`jsx compiles fragment with children 1`] = `
+"
+rec >> exports_0:
+  lst >> chldrn_0:
+    str '\\\\n  foo\\\\n  ' >> chld_0
+      lst_a chldrn_0, chld_0 >> chldrn_1:
+        = p >> jsxi_0:
+          rec >> props_0:
+            lst >> chldrn_3:
+              str 'bar' >> chld_2
+                lst_a chldrn_3, chld_2 >> chldrn_4:
+                  jxe jsxi_0, props_0, chldrn_4 >> chld_1:
+                    lst_a chldrn_1, chld_1 >> chldrn_2:
+                      str '\\\\n' >> chld_3
+                        lst_a chldrn_2, chld_3 >> chldrn_5:
+                          jxf chldrn_5 >> elem_0:
+                            str 'elem' >> key_0
+                              rec_s exports_0, key_0, elem_0 >> exports_1:
+                                lst >> drctvs_0:
+                                  mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`jsx compiles hypenate props 1`] = `
+"
+rec >> exports_0:
+  = a >> jsxi_0:
+    rec >> props_0:
+      str 'foo-bar' >> prpn_0
+        str '1234' >> str_0
+          strt str_0 >> prpv_0:
+            rec_s props_0, prpn_0, prpv_0 >> props_1:
+              lst >> chldrn_0:
+                jxe jsxi_0, props_1, chldrn_0 >> elem_0:
+                  str 'elem' >> key_0
+                    rec_s exports_0, key_0, elem_0 >> exports_1:
+                      lst >> drctvs_0:
+                        mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`jsx compiles shorthand 1`] = `
+"
+rec >> exports_0:
+  = a >> jsxi_0:
+    rec >> props_0:
+      lst >> chldrn_0:
+        jxe jsxi_0, props_0, chldrn_0 >> elem_0:
+          str 'elem' >> key_0
+            rec_s exports_0, key_0, elem_0 >> exports_1:
+              lst >> drctvs_0:
+                mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`jsx compiles with children and expr 1`] = `
+"
+rec >> exports_0:
+  = a >> jsxi_0:
+    rec >> props_0:
+      lst >> chldrn_0:
+        str '\\\\n  foo ' >> chld_0
+          lst_a chldrn_0, chld_0 >> chldrn_1:
+            = ni >> chld_1:
+              lst_a chldrn_1, chld_1 >> chldrn_2:
+                str '\\\\n  ' >> chld_2
+                  lst_a chldrn_2, chld_2 >> chldrn_3:
+                    = b >> jsxi_1:
+                      rec >> props_1:
+                        lst >> chldrn_5:
+                          jxe jsxi_1, props_1, chldrn_5 >> chld_3:
+                            lst_a chldrn_3, chld_3 >> chldrn_4:
+                              str ' ham\\\\n  spam\\\\n  ' >> chld_4
+                                lst_a chldrn_4, chld_4 >> chldrn_6:
+                                  = c >> jsxi_2:
+                                    rec >> props_2:
+                                      lst >> chldrn_8:
+                                        jxe jsxi_2, props_2, chldrn_8 >> chld_5:
+                                          lst_a chldrn_6, chld_5 >> chldrn_7:
+                                            str '\\\\n  ni\\\\n' >> chld_6
+                                              lst_a chldrn_7, chld_6 >> chldrn_9:
+                                                jxe jsxi_0, props_0, chldrn_9 >> elem_0:
+                                                  str 'elem' >> key_0
+                                                    rec_s exports_0, key_0, elem_0 >> exports_1:
+                                                      lst >> drctvs_0:
+                                                        mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`jsx compiles with expr params 1`] = `
+"
+rec >> exports_0:
+  = a >> jsxi_0:
+    rec >> props_0:
+      str 'foo' >> prpn_0
+        = foo >> prpv_0:
+          rec_s props_0, prpn_0, prpv_0 >> props_1:
+            str 'bar' >> prpn_1
+              int 1234 >> prpv_1:
+                rec_s props_1, prpn_1, prpv_1 >> props_2:
+                  lst >> chldrn_0:
+                    jxe jsxi_0, props_2, chldrn_0 >> elem_0:
+                      str 'elem' >> key_0
+                        rec_s exports_0, key_0, elem_0 >> exports_1:
+                          lst >> drctvs_0:
+                            mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`jsx compiles with expr params 2`] = `
+"
+rec >> exports_0:
+  = a >> jsxi_0:
+    rec >> props_0:
+      str 'foo' >> prpn_0
+        = foo >> prpv_0:
+          rec_s props_0, prpn_0, prpv_0 >> props_1:
+            str 'bar' >> prpn_1
+              str 'ni' >> str_0
+                strt str_0 >> prpv_1:
+                  rec_s props_1, prpn_1, prpv_1 >> props_2:
+                    lst >> chldrn_0:
+                      jxe jsxi_0, props_2, chldrn_0 >> elem_0:
+                        str 'elem' >> key_0
+                          rec_s exports_0, key_0, elem_0 >> exports_1:
+                            lst >> drctvs_0:
+                              mod exports_1, drctvs_0 >> mod_0:"
+`;
+
+exports[`jsx compiles with str params 1`] = `
+"
+rec >> exports_0:
+  = a >> jsxi_0:
+    rec >> props_0:
+      str 'foo' >> prpn_0
+        = foo >> prpv_0:
+          rec_s props_0, prpn_0, prpv_0 >> props_1:
+            str 'bar' >> prpn_1
+              str 'ni' >> str_0
+                strt str_0 >> prpv_1:
+                  rec_s props_1, prpn_1, prpv_1 >> props_2:
+                    lst >> chldrn_0:
+                      jxe jsxi_0, props_2, chldrn_0 >> elem_0:
+                        str 'elem' >> key_0
+                          rec_s exports_0, key_0, elem_0 >> exports_1:
+                            lst >> drctvs_0:
+                              mod exports_1, drctvs_0 >> mod_0:"
+`;

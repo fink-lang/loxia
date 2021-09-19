@@ -1,0 +1,110 @@
+{add, any, unique_ident} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+
+
+
+transform_prop_name = fn expr, ctx:
+  [key_id, next_ctx] = unique_ident 'prpn', ctx
+  [[['str', [expr.value], [key_id], {loc: expr.loc}]], key_id, next_ctx]
+
+
+
+transform_prop_val = fn expr, ctx:
+  match expr:
+    {name: {type: 'ident'}, value: false}:
+      transform expr.name, 'prpv', ctx
+    else:
+      transform expr.value, 'prpv', ctx
+
+
+
+transform_prop = fn expr, rec_id, ctx:
+  [next_rec_id, key_ctx] = unique_ident 'props', ctx
+  match expr:
+    {type: 'spread'}:
+      [val, val_id, next_ctx] = transform expr.right, 'sprd', key_ctx
+      [[...val, ['rec_m', [rec_id, val_id], [next_rec_id], {loc: expr.loc}]], next_rec_id , next_ctx]
+
+    else:
+      [key, key_id, val_ctx] = transform_prop_name expr.name, key_ctx
+      [val, val_id, next_ctx] = transform_prop_val expr, val_ctx
+      [[...key, ...val, ['rec_s', [rec_id, key_id, val_id], [next_rec_id], {loc: expr.loc}]], next_rec_id, next_ctx]
+
+
+
+transform_all_props = fn [expr=false, ...rest], rec_id, ctx, out=[]:
+  match expr:
+    false:
+      [out, rec_id, ctx]
+    else:
+      [kv, next_rec_id, next_ctx] = transform_prop expr, rec_id, ctx
+      transform_all_props rest, next_rec_id, next_ctx, [...out, ...kv]
+
+
+
+transform_props = fn props, meta, ctx:
+  [start_id, props_ctx] = unique_ident 'props', ctx
+  [out, rec_id, next_ctx] = transform_all_props props, start_id, props_ctx
+  [[['rec', [], [start_id], meta], ...out], rec_id, next_ctx]
+
+
+
+transform_child = fn expr, tpl_id, ctx:
+  [next_tpl_id, item_ctx] = unique_ident 'chldrn', ctx
+  [item, item_id, next_ctx] = transform expr, 'chld', item_ctx
+  [[...item, ['lst_a', [tpl_id, item_id], [next_tpl_id], {loc: expr.loc}]], next_tpl_id, next_ctx]
+
+
+
+transform_all_children = fn [expr=false, ...rest], tpl_id, ctx, out=[]:
+  match expr:
+    false:
+      [out, tpl_id, ctx]
+    else:
+      [child, out_tpl_id, next_ctx] = transform_child expr, tpl_id, ctx
+      transform_all_children rest, out_tpl_id, next_ctx, [...out, ...child]
+
+
+
+transform_children = fn exprs, meta, ctx:
+  [start_id, chldrn_ctx] = unique_ident 'chldrn', ctx
+  [out, tpl_id, next_ctx] = transform_all_children exprs, start_id, chldrn_ctx
+  [[['lst', [], [start_id], meta], ...out], tpl_id, next_ctx]
+
+
+
+transform_jsx_elem = fn node, res_id, ctx:
+  [name, name_id, props_ctx] = transform node.name, 'jsxi', ctx
+  [props, props_id, chldrn_ctx] = transform_props node.props, {loc: node.loc}, props_ctx
+  [chldrn, chldrn_id, next_ctx] = transform_children node.children, {loc: node.loc}, chldrn_ctx
+
+  elem = ['jxe', [name_id, props_id, chldrn_id], [res_id], {loc: node.loc}]
+  [[...name, ...props, ...chldrn, elem], next_ctx]
+
+
+
+transform_jsx_frag = fn node, res_id, ctx:
+  [chldrn, chldrn_id, next_ctx] = transform_children node.children, {loc: node.loc}, ctx
+  elem = ['jxf', [chldrn_id], [res_id], {loc: node.loc}]
+  [[...chldrn, elem], next_ctx]
+
+
+
+transform_jsx_text = fn node, res_id, ctx:
+  [[['str', [node.value], [res_id], {loc: node.loc}]], ctx]
+
+
+
+transform_jsx_expr_container = fn node, res_id, ctx:
+  [val, , next_ctx] = transform node.expr, res_id, ctx, false
+  [val, next_ctx]
+
+
+
+add_jsx = fn ctx:
+  pipe ctx:
+    add 'jsx:frag', any, transform_jsx_frag
+    add 'jsx:elem', any, transform_jsx_elem
+    add 'jsx:text', any, transform_jsx_text
+    add 'jsx:expr', any, transform_jsx_expr_container
+

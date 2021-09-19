@@ -1,0 +1,29 @@
+{map} = import '@fink/std-lib/iter.fnk'
+
+
+transform_comment = fn {op, value, loc}:
+  match op:
+    '---': {type: 'CommentBlock', value, loc}
+    else: {type: 'CommentLine', value, loc}
+
+
+transform_comments = fn comments:
+  pipe comments:
+    map fn comment: transform_comment comment
+
+
+get_comments = fn {comments={}}:
+  {leading=[], trailing=[]} = comments
+
+  rec:
+    leadingComments: [...transform_comments leading]
+    trailingComments: [...transform_comments trailing]
+
+
+wrap_with_comment_loc = fn js_node, larix_node:
+  comments = get_comments larix_node
+  {loc} = larix_node
+
+  match js_node:
+    {loc: {}}: {...js_node, ...comments}
+    else: {...js_node, ...comments, loc}

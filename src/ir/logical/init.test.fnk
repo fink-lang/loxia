@@ -1,0 +1,24 @@
+{fink2lir} = import '../../testing/generate.fnk'
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+describe 'logical', fn:
+  it 'compiles', fn:
+    expect
+      fink2lir "
+        foo = a or b or c
+        bar = a and b and c
+        spam = not a
+      "
+      to_match_snapshot
+
+
+  skip.it 'compiles as partial', fn:
+    expect
+      fink2lir "
+        ? or foo ?
+        ? and spam
+        not ?
+      "
+      to_match_snapshot
+

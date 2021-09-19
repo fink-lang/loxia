@@ -1,0 +1,231 @@
+{reverse} = import '@fink/std-lib/iter.fnk'
+
+{update_value, get_value} = import '../ir/context.fnk'
+
+
+
+replace_arg_alias = fn arg, ctx:
+  {alias: new_arg=arg} = get_value arg, ctx
+  match new_arg:
+    arg: arg
+    else: replace_arg_alias new_arg, ctx
+
+
+
+replace_args_aliases = fn [arg=false, ...args], ctx, out=[]:
+  match arg:
+    false:
+      out
+    else:
+      renamed_arg = replace_arg_alias arg, ctx
+      replace_args_aliases args, ctx, [...out, renamed_arg]
+
+
+
+add_alias = fn id, target, ctx:
+  update_value id, {alias: target}, ctx
+
+
+
+replace_tpl = fn expr, ctx:
+  [op, args, res, ...rest] = expr
+  [res_id] = res
+  nargs = replace_args_aliases args, ctx
+  next_ctx = update_value res_id, {empty_tpl: true, item_aliases: []},  ctx
+  [[op, nargs, res, ...rest], next_ctx]
+
+
+
+add_tpa_aliases = fn src_id, val_id, res_id, ctx:
+  {item_aliases=[]} = get_value src_id, ctx
+  update_value res_id, {item_aliases: [...item_aliases, val_id]}, ctx
+
+
+
+optimize_tpa = fn expr, ctx:
+  [op, args, res, ...rest] = expr
+  [res_id] = res
+  [src_tpl_id, val_id] = replace_args_aliases args, ctx
+  next_ctx = add_tpa_aliases src_tpl_id, val_id, res_id, ctx
+  [[op, [src_tpl_id, val_id], res, ...rest], next_ctx]
+
+
+
+optimize_tpc = fn expr, ctx:
+  [op, args, res, ...rest] = expr
+  [res_id] = res
+  [tpl1, tpl2] = replace_args_aliases args, ctx
+
+  match ctx.values:
+    {(tpl1): {empty_tpl: true}}:
+      next_ctx = add_alias res_id, tpl2, ctx
+      [[], next_ctx]
+
+    {(tpl2): {empty_tpl: true}}:
+      next_ctx = add_alias res_id, tpl1, ctx
+      [[], next_ctx]
+
+    else:
+      [[[op, [tpl1, tpl2], res, ...rest]], ctx]
+
+
+
+optimize_tph = fn expr, ctx:
+  [op, [orig_tpl_id], res, ...rest] = expr
+  [res_id] = res
+  tpl_id = replace_arg_alias orig_tpl_id, ctx
+  match ctx.values:
+    {(tpl_id): {item_aliases: [?]}}:
+      {item_aliases: [val_id]} = get_value tpl_id, ctx
+      next_ctx = add_alias res_id, val_id, ctx
+      [[], next_ctx]
+    else:
+      # console.log 'lst_h', orig_tpl_id, tpl_id, meta
+      [[[op, [tpl_id], res, ...rest]], ctx]
+
+
+
+create_tpl = fn [id=false, ...ids], tpl_id, meta, idx=0, out=[]:
+  match id:
+    # TODO gen unique ids
+    false:
+      [['lst', [], ['${tpl_id}_${idx + 1}'], ...meta], ...out]
+
+    else:
+      res_id = match idx:
+        0: tpl_id
+        else: '${tpl_id}_${idx}'
+
+      tpa = ['lst_a', ['${tpl_id}_${idx + 1}', id], [res_id], ...meta]
+      create_tpl ids, tpl_id, meta, idx + 1, [tpa, ...out]
+
+
+
+optimize_tpr = fn expr, ctx:
+  [op, [orig_tpl_id], res, ...rest] = expr
+  [res_id] = res
+  tpl_id = replace_arg_alias orig_tpl_id, ctx
+  match ctx.values:
+    {(tpl_id): {tpr: ?}}:
+      {tpr} = get_value tpl_id, ctx
+      next_ctx = add_alias res_id, tpr, ctx
+      [[], next_ctx]
+
+    {(tpl_id): {item_aliases: []}}:
+      {item_aliases: rev_aliases} = get_value tpl_id, ctx
+      # find existing tpl instead of creating
+      item_aliases = reverse rev_aliases
+      next_ctx = update_value res_id, {item_aliases, tpr: tpl_id}, ctx
+      next_tpl = create_tpl rev_aliases, res_id, rest
+      [next_tpl, next_ctx]
+
+    else:
+      next_ctx = update_value res_id, {tpr: tpl_id}, ctx
+      [[[op, [tpl_id], res, ...rest]], next_ctx]
+
+
+
+optimize_tpt = fn expr, ctx:
+  [op, [orig_tpl_id], res, ...rest] = expr
+  [res_id] = res
+  tpl_id = replace_arg_alias orig_tpl_id, ctx
+  # console.log orig_tpl_id, tpl_id, meta
+  match ctx.values:
+    {(tpl_id): {item_aliases: [?]}}:
+      {item_aliases: [, ...item_aliases]} = get_value tpl_id, ctx
+      next_ctx = update_value res_id, {item_aliases}, ctx
+      [[op, [tpl_id], res, ...rest], next_ctx]
+    else:
+      [[op, [tpl_id], res, ...rest], ctx]
+
+
+
+optimize_st = fn expr, ctx:
+  [op, args, ...rest] = expr
+  [[res_id]] = rest
+
+  ids = replace_args_aliases args, ctx
+  match ids:
+    [?, ?]: [[[op, ids, ...rest]], ctx]
+    [?]:
+      [sr_id] = ids
+      next_ctx = add_alias res_id, sr_id, ctx
+      [[], next_ctx]
+
+
+
+optimize_cn = fn expr, exprs, ctx, out:
+  [op, [args, body], ...rest] = expr
+  [[cont_id]] = rest
+  [[ac_op, [ac_id], [res_id]], [cc_op , [cc_ret_id, ret_arg]]=[,[]]] = exprs
+
+  match [ac_op, ac_id, cc_op, res_id]:
+    ['ac', cont_id, 'cc', ret_arg]:
+      [ret_id] = args
+      b_ctx = add_alias ret_id, cc_ret_id, ctx
+      [obody, next_ctx] = optimize_refs body, b_ctx, []
+      [, , ...oexprs] = exprs
+      optimize_refs oexprs, next_ctx, [...out, ...obody]
+    else:
+      [obody, next_ctx] = optimize_refs body, ctx, []
+      oexpr = [op, [args, obody], ...rest]
+      optimize_refs exprs, next_ctx, [...out, oexpr]
+
+
+
+optimize_refs = fn [expr=false, ...exprs], ctx, out=[]:
+  match expr:
+    false:
+      [out, ctx]
+
+    ['lst']:
+      [tpl, next_ctx] = replace_tpl expr, ctx
+      optimize_refs exprs, next_ctx, [...out, tpl]
+
+    ['lst_a']:
+      [tpa, next_ctx] = optimize_tpa expr, ctx
+      optimize_refs exprs, next_ctx, [...out, tpa]
+
+    ['lst_c']:
+      [tpc, next_ctx] = optimize_tpc expr, ctx
+      optimize_refs exprs, next_ctx, [...out, ...tpc]
+
+    ['lst_h']:
+      [tpa, next_ctx] = optimize_tph expr, ctx
+      optimize_refs exprs, next_ctx, [...out, ...tpa]
+
+    ['lst_t']:
+      [tpa, next_ctx] = optimize_tpt expr, ctx
+      optimize_refs exprs, next_ctx, [...out, tpa]
+
+    ['lst_r']:
+      [tpa, next_ctx] = optimize_tpr expr, ctx
+      optimize_refs exprs, next_ctx, [...out, ...tpa]
+
+    ['=']:
+      [, [target], [res_id]] = expr
+      next_ctx = add_alias res_id, target, ctx
+      optimize_refs exprs, next_ctx, out
+
+    [? in ['int', 'float', 'str']]:
+      optimize_refs exprs, ctx, [...out, expr]
+
+    [? in ['strt']]:
+      [sts, next_ctx] = optimize_st expr, ctx
+      optimize_refs exprs, next_ctx, [...out, ...sts]
+
+    ['cn']:
+      optimize_cn expr, exprs, ctx, out
+
+    ['fn']:
+      [op, [args, body], ...rest] = expr
+      [obody, next_ctx] = optimize_refs body, ctx, []
+      oexpr = [op, [args, obody], ...rest]
+      optimize_refs exprs, next_ctx , [...out, oexpr]
+
+    else:
+      [op, args, ...rest] = expr
+      nargs = replace_args_aliases args, ctx
+      optimize_refs exprs, ctx, [...out, [op, nargs, ...rest]]
+
+

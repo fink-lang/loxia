@@ -1,0 +1,110 @@
+{starts_with} = import '@fink/std-lib/str.fnk'
+{add, any, unique_ident} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+{get_key_val, bind} = import '../assignment/init.fnk'
+{transform_import} = import './import.fnk'
+
+
+
+
+transform_imp_rec = fn [expr=false, ...exprs], uri_id, ctx, out=[]:
+  match expr:
+    false:
+      [out, ctx]
+
+    {type: 'rec:kv'}:
+      [key, key_id, val_id, next_ctx] = get_key_val expr, ctx
+      imp = [...key, ['imp', [uri_id, key_id], [val_id], {loc: expr.loc}]]
+      transform_imp_rec exprs, uri_id, next_ctx, [...out, ...imp]
+
+
+
+transform_imp = fn node, uri_id, ctx:
+  match node:
+    {type: 'rec'}:
+      transform_imp_rec node.exprs, uri_id, ctx
+
+    {type: 'ident'}:
+      [val_id, next_ctx] = bind node, ctx
+      [[['imp', [uri_id], [val_id], {loc: node.loc}]], next_ctx]
+
+
+
+transform_exprs = fn [expr=false, ...rest], exp_id, ctx, out:
+  match expr:
+    false:
+      [out, exp_id, ctx]
+
+    {right.op: 'import'}:
+      [uri, uri_id, next_ctx] = transform expr.right.right, 'uri', ctx
+      [imps, end_ctx] = transform_imp expr.left, uri_id, next_ctx
+      transform_exprs rest, exp_id, end_ctx, [...out, ...uri, ...imps]
+
+    {op: 'import'}:
+      [uri, uri_id, next_ctx] = transform expr.right, 'uri', ctx
+      imp = ['imp', [uri_id], [], {loc: expr.loc}]
+      transform_exprs rest, exp_id, next_ctx, [...out, ...uri, imp]
+
+    {op: '=', left: {type: 'ident'}}:
+      [foo, , ex_ctx] = transform expr, 'ares', ctx
+      [..., [ , , [val_id]]] = foo
+
+      {left.value: name} = expr
+
+      [next_exp_id, key_ctx] = unique_ident 'exports', ex_ctx
+      [key_id, next_ctx] = unique_ident 'key', key_ctx
+      exp = list:
+        ['str', [name], [key_id], {loc: expr.loc}]
+        ['rec_s', [exp_id, key_id, val_id], [next_exp_id], {loc: expr.loc}]
+
+      transform_exprs rest, next_exp_id, next_ctx, [...out, ...foo, ...exp]
+
+    else:
+      [foo, , next_ctx] = transform expr, 'mex', ctx
+      transform_exprs rest, exp_id, next_ctx, [...out, ...foo]
+
+
+
+transform_directives = fn expr, ctx:
+  # TODO: directives should be handled as separate AST node
+
+  [dirs_id, next_ctx] = unique_ident 'drctvs', ctx
+  {exprs: [{comments}]} = expr
+
+  match comments:
+    {leading: [{op: '#', loc: {start: {line: 1}}, value: starts_with ?, '!'}]}:
+      [{value: shbang}] = comments.leading
+      [sh_id, tpl_ctx] = unique_ident 'shbng', next_ctx
+      [tpl_id, end_ctx] = unique_ident 'drctvs', tpl_ctx
+
+      dirs = list:
+        ['lst', [], [dirs_id], {loc: expr.loc}]
+        ['str', ['#${shbang}'], [sh_id], {loc: expr.loc}]
+        ['lst_a', [dirs_id, sh_id], [tpl_id], {loc: expr.loc}]
+
+      [dirs, tpl_id, end_ctx]
+    else:
+      [[['lst', [], [dirs_id], {loc: expr.loc}]], dirs_id, next_ctx]
+
+
+
+transform_module = fn expr, result, ctx:
+  [exp_id, dirs_ctx] = unique_ident 'exports', ctx
+  [directives, dirs_id, exprs_ctx] = transform_directives expr, dirs_ctx
+  [block, last_exp_id, next_ctx] = transform_exprs expr.exprs, exp_id, exprs_ctx, []
+
+  out = list:
+    ['rec', [], [exp_id], {loc: expr.loc}]
+    ...block
+    ...directives
+    ['mod', [last_exp_id, dirs_id], [result], {loc: expr.loc}]
+
+  [out, next_ctx]
+
+
+
+add_module = fn ctx:
+  pipe ctx:
+    add 'module', any, transform_module
+    add 'import', any, transform_import
+

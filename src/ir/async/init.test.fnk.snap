@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`await compiles 1`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    lst_h args_0 >> foo_0:
+      lst_t args_0 >> tail_0:
+        = foo_0 >> futr_0:
+          wt futr_0 >> right_0:
+            - right_0 >> result_0:
+              cc ret_0, result_0
+  >> task1_0:
+    str 'task1' >> key_0
+      rec_s exports_0, key_0, task1_0 >> exports_1:
+        fn args_1, ret_1:
+          lst_h args_1 >> foo_1:
+            lst_t args_1 >> tail_1:
+              = foo_1 >> left_0:
+                int 4 >> right_1:
+                  + left_0, right_1 >> futr_1:
+                    wt futr_1 >> result_1:
+                      cc ret_1, result_1
+        >> task2_0:
+          str 'task2' >> key_1
+            rec_s exports_1, key_1, task2_0 >> exports_2:
+              fn args_2, ret_2:
+                lst_h args_2 >> foo_2:
+                  lst_t args_2 >> tail_2:
+                    = foo_2 >> callee_0:
+                      lst >> cargs_0:
+                        af callee_0, cargs_0 >> futr_2:
+                          wt futr_2 >> spam_0:
+                            = bar >> left_1:
+                              int 123 >> right_2:
+                                + left_1, right_2 >> result_3:
+                                  cc ret_2, result_3
+              >> task3_0:
+                str 'task3' >> key_2
+                  rec_s exports_2, key_2, task3_0 >> exports_3:
+                    = unfold >> callee_1:
+                      lst >> cargs_1:
+                        fn args_3, ret_3:
+                          int 0 >> flbk_0:
+                            lst_h args_3 >> hdm_0:
+                              ifv hdm_0, hdm_0, flbk_0 >> curr_0:
+                                lst_t args_3 >> tail_3:
+                                  cn ret_4:
+                                    = shrub >> value_0:
+                                      cn:
+                                        = curr_0 >> left_2:
+                                          int 1 >> right_3:
+                                            + left_2, right_3 >> result_5:
+                                              cc ret_4, result_5
+                                      >> else_0:
+                                        = spam >> val_0:
+                                          == value_0, val_0 >> cond_0:
+                                            cn:
+                                              = ni >> callee_2:
+                                                lst >> cargs_2:
+                                                  = curr_0 >> arg_1:
+                                                    lst_a cargs_2, arg_1 >> cargs_3:
+                                                      af callee_2, cargs_3 >> futr_3:
+                                                        wt futr_3 >> result_6:
+                                                          cc ret_4, result_6
+                                            >> match_res_0:
+                                              cif cond_0, match_res_0, else_0
+                                  >> match_0:
+                                    ac match_0 >> result_4:
+                                      cc ret_3, result_4
+                        >> arg_0:
+                          lst_a cargs_1, arg_0 >> cargs_4:
+                            af callee_1, cargs_4 >> a_gen_0:
+                              str 'a_gen' >> key_3
+                                rec_s exports_3, key_3, a_gen_0 >> exports_4:
+                                  = ni >> futr_4:
+                                    wt futr_4 >> mex_0:
+                                      lst >> drctvs_0:
+                                        mod exports_4, drctvs_0 >> mod_0:"
+`;

@@ -1,0 +1,13 @@
+{add} = import '../context.fnk'
+
+
+
+transform_partial = fn expr, result, ctx:
+  {partial_ident=false} = ctx
+  [[['=', [partial_ident], [result], {loc: expr.loc}]], {...ctx, has_partial: true}]
+
+
+
+add_partial = fn ctx:
+  pipe ctx:
+    add 'partial', '?', transform_partial

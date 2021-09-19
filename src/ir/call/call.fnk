@@ -1,0 +1,176 @@
+{is_empty} = import '@fink/std-lib/iter.fnk'
+
+{transform} = import '../transform.fnk'
+{unique_ident} = import '../context.fnk'
+
+
+
+func = fn arg_id, res, res_id, fn_id, meta, ctx:
+  [args_id, ret_ctx] = unique_ident 'args', ctx
+  [ret_id, fn_ctx] = unique_ident 'ret', ret_ctx
+
+  body = list:
+    ['lst_h', [args_id], [arg_id], meta]
+    ...res
+    ['cc', [ret_id, res_id], [], meta]
+
+  [[['fn', [[args_id, ret_id], body], [fn_id], meta]], fn_ctx]
+
+
+
+tpl = fn name, meta, ctx:
+  [id, next_ctx] = unique_ident name, ctx
+  [[['lst', [], [id], meta]], id, next_ctx]
+
+
+add_arg = fn args_id, arg, arg_id, meta, ctx:
+  [next_args_id, next_ctx] = unique_ident 'cargs', ctx
+  [[...arg, ['lst_a', [args_id, arg_id], [next_args_id], meta]], next_args_id, next_ctx]
+
+
+
+spread_arg = fn args_id, arg, arg_id, meta, ctx:
+  [next_args_id, next_ctx] = unique_ident 'cargs', ctx
+  [[...arg, ['lst_c', [args_id, arg_id], [next_args_id], meta]], next_args_id, next_ctx]
+
+
+set_partial_ident = fn name, ctx:
+  [partial_ident, next_ctx] = unique_ident name, ctx
+  [partial_ident, {...next_ctx, partial_ident}]
+
+
+
+maybe_set_partial_ident = fn name, {has_partial: _, partial_ident=false, ...ctx}:
+  match partial_ident:
+    false:
+      [true, ...set_partial_ident name, ctx]
+    else:
+      [false, partial_ident, {...ctx, partial_ident}]
+
+
+
+transform_with_partial = fn expr, name, ctx:
+  [foo, prtl, foo_ctx] = maybe_set_partial_ident 'prtl', ctx
+
+  [arg, arg_id, {has_partial, ...next_ctx}] = transform expr, name, foo_ctx
+
+  match true:
+    foo and has_partial:
+      [fn_id, fn_ctx] = unique_ident 'pfn', next_ctx
+      [fun, end_ctx] = func prtl, arg, arg_id, fn_id, {loc: expr.loc}, fn_ctx
+      [fun, fn_id, end_ctx]
+    else:
+      [arg, arg_id, next_ctx]
+
+
+
+transform_arg = fn expr, args_id, ctx:
+  [arg, arg_id, {has_partial: _, ...next_ctx}] = transform_with_partial expr, 'arg', ctx
+  add_arg args_id, arg, arg_id, {loc: expr.loc}, next_ctx
+
+
+
+
+transform_spread_arg = fn expr, args_id, {partial_foo=false, has_partial, partial_ident=false, ...ctx}:
+  [prlt, p_ctx] = match partial_foo:
+    false: unique_ident 'prtl', ctx
+    else: [partial_foo, ctx]
+
+  match partial_ident:
+    false:
+      foo_ctx = {...p_ctx, partial_ident: prlt}
+      [arg, arg_id, {partial_ident:_, ...next_ctx}] = transform expr.right, 'sprd', foo_ctx
+      spread_arg args_id, arg, arg_id, {loc: expr.loc}, {...next_ctx, has_partial, partial_ident, partial_foo: prlt}
+
+    else:
+      [sprd, sprd_id, {partial_ident: _, ...next_ctx}] = transform expr.right, 'sprd', {...p_ctx, partial_ident, has_partial}
+      spread_arg args_id, sprd, sprd_id, {loc: expr.loc}, next_ctx
+
+
+
+
+transform_partial_arg = fn expr, args_id, {partial_foo=false, has_partial, partial_ident=false, ...ctx}:
+  [prlt, p_ctx] = match partial_foo:
+    false: unique_ident 'prtl', ctx
+    else: [partial_foo, ctx]
+
+  match partial_ident:
+    false:
+      foo_ctx = {...p_ctx, partial_ident: prlt}
+      [arg, arg_id, {partial_ident: _, ...next_ctx}] = transform expr, 'arg', foo_ctx
+      add_arg args_id, arg, arg_id, {loc: expr.loc}, {...next_ctx, has_partial, partial_ident, partial_foo: prlt}
+
+    else:
+      [a, b, c] = transform_arg expr, args_id, {...p_ctx, partial_ident, has_partial}
+      [a, b, {...c, has_partial: true}]
+
+
+
+transform_all_args = fn [expr=false, ...exprs], args_id, ctx, out=[]:
+  match expr:
+    false:
+      [out, args_id, ctx]
+
+    {type: 'spread'}:
+      [arg, next_args_id, next_ctx] = transform_spread_arg expr, args_id, ctx
+      transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
+
+    {type: 'empty'}:
+      [arg, next_args_id, next_ctx] = add_arg args_id, [], '_', {loc: expr.loc}, ctx
+      transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
+
+    {type: 'partial'}:
+      [arg, next_args_id, next_ctx] = transform_partial_arg expr, args_id, ctx
+      transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
+
+    else:
+      [arg, next_args_id, foo_ctx] = transform_arg expr, args_id, ctx
+      next_ctx = rec:
+        ...foo_ctx
+        partial_ident: ctx.partial_ident
+        # has_partial: ctx.has_partial or foo_ctx.has_partial
+      transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
+
+
+
+transform_args = fn exprs, meta, ctx:
+  all_args = match exprs:
+    # TODO should this be done in larix ?
+    [{type: 'empty'}, ...(is_empty ?)]: []
+    else: exprs
+
+  [empty_args, empty_args_id, args_ctx] = tpl 'cargs', meta, ctx
+  [out, args_id, next_ctx] = transform_all_args all_args, empty_args_id, args_ctx
+  [[...empty_args, ...out], args_id, next_ctx]
+
+
+
+transform_callee = fn expr, ctx:
+  [foo, prtl, foo_ctx] = maybe_set_partial_ident 'prtlc', ctx
+  [callee, callee_id, {has_partial: hp, ...next_ctx}] = transform expr, 'callee', foo_ctx
+
+  match true:
+    foo and hp:
+      [callee, callee_id, {...next_ctx, partial_foo: prtl, has_partial: true, partial_ident: ctx.partial_ident}]
+    else:
+      [callee, callee_id, {...next_ctx, has_partial: ctx.has_partial or hp, partial_ident: ctx.partial_ident}]
+
+
+
+transform_call = fn node, result, ctx:
+  # [callee, c_id, args_ctx] = transform node.callee, 'callee', ctx
+  [callee, c_id, args_ctx] = transform_callee node.callee, ctx
+  [args, args_id, {partial_foo, ...end_ctx}] = transform_args node.args, {loc: node.loc}, args_ctx
+
+  match partial_foo:
+    ?:
+      [res_id, foo_ctx] = unique_ident 'pfn', end_ctx
+      call = [...callee, ...args, ['af', [c_id, args_id], [res_id], {loc: node.loc}]]
+      func partial_foo, call, res_id, result, {loc: node.loc}, foo_ctx
+    else:
+      call = [...callee, ...args, ['af', [c_id, args_id], [result], {loc: node.loc}]]
+      [call, end_ctx]
+
+
+
+

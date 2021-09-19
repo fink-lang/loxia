@@ -1,0 +1,134 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`optimize optimizes ac ...>> res: cc ..., res 1`] = `
+"
+rec >> exports_0:
+  fnr args_0, ret_0:
+    lst_h args_0 >> x_0:
+      lst_t args_0 >> tail_0:
+        lst_h tail_0 >> y_0:
+          cn:
+            lst >> cargs_0:
+              lst_a cargs_0, y_0 >> cargs_1:
+                % x_0, y_0 >> arg_1:
+                  lst_a cargs_1, arg_1 >> cargs_2:
+                    cf gcd_0, cargs_2
+          >> else_0:
+            int 0 >> val_0:
+              == y_0, val_0 >> cond_0:
+                cn:
+                  cc ret_0, x_0
+                >> match_res_0:
+                  cif cond_0, match_res_0, else_0
+  >> gcd_0:
+    str 'gcd' >> key_0
+      rec_s exports_0, key_0, gcd_0 >> exports_1:
+        lst >> drctvs_0:
+          mod exports_1, drctvs_0 >> result_0:"
+`;
+
+exports[`optimize optimizes conts 1`] = `
+"
+rec >> exports_0:
+  int 123 >> ni_0:
+    str 'ni' >> key_0
+      rec_s exports_0, key_0, ni_0 >> exports_1:
+        fn args_0, ret_0:
+          lst_h args_0 >> foo_0:
+            lst_t args_0 >> tail_0:
+              lst_h tail_0 >> bar_0:
+                cn ret_1:
+                  cn:
+                    lst >> lst_1:
+                      int 2 >> item_1:
+                        lst_a lst_1, item_1 >> lst_0:
+                          int 2 >> right_1:
+                            * ni_0, right_1 >> item_0:
+                              lst_a lst_0, item_0 >> result_2:
+                                cc ret_1, result_2
+                  >> else_0:
+                    == foo_0, bar_0 >> cond_0:
+                      cn:
+                        lst >> lst_3:
+                          int 1 >> item_3:
+                            lst_a lst_3, item_3 >> lst_2:
+                              lst_a lst_2, ni_0 >> result_3:
+                                cc ret_1, result_3
+                      >> match_res_0:
+                        cif cond_0, match_res_0, else_0
+                >> match_0:
+                  ac match_0 >> right_0:
+                    lst_h right_0 >> spam_1:
+                      lst_t right_0 >> tail_2:
+                        lst_h tail_2 >> ham_0:
+                          + spam_1, ni_0 >> left_1:
+                            + left_1, ham_0 >> result_4:
+                              cc ret_0, result_4
+        >> spam_0:
+          str 'spam' >> key_1
+            rec_s exports_1, key_1, spam_0 >> exports_2:
+              lst >> cargs_0:
+                lst_a cargs_0, foo >> cargs_1:
+                  lst_a cargs_1, bar >> cargs_2:
+                    af spam_0, cargs_2 >> mex_0:
+                      lst >> drctvs_0:
+                        mod exports_2, drctvs_0 >> result_0:"
+`;
+
+exports[`optimize optimizes functions 1`] = `
+"
+rec >> exports_0:
+  int 123 >> ni_0:
+    str 'ni' >> key_0
+      rec_s exports_0, key_0, ni_0 >> exports_1:
+        fn args_0, ret_0:
+          lst_h args_0 >> foo_0:
+            lst_t args_0 >> tail_0:
+              lst_h tail_0 >> bar_0:
+                + bar_0, foo_0 >> left_0:
+                  + left_0, ni_0 >> result_2:
+                    cc ret_0, result_2
+        >> spam_0:
+          str 'spam' >> key_1
+            rec_s exports_1, key_1, spam_0 >> exports_2:
+              lst >> cargs_0:
+                lst_a cargs_0, foo >> cargs_1:
+                  lst_a cargs_1, bar >> cargs_2:
+                    af spam_0, cargs_2 >> mex_0:
+                      lst >> drctvs_0:
+                        mod exports_2, drctvs_0 >> result_0:"
+`;
+
+exports[`optimize optimizes values 1`] = `
+"
+rec >> exports_0:
+  lst >> lst_1:
+    int 1 >> item_1:
+      lst_a lst_1, item_1 >> lst_0:
+        int 2 >> item_0:
+          lst_a lst_0, item_0 >> y_0:
+            str 'y' >> key_0
+              rec_s exports_0, key_0, y_0 >> exports_1:
+                int 3 >> x_0:
+                  str 'x' >> key_1
+                    rec_s exports_1, key_1, x_0 >> exports_2:
+                      int 4 >> item_6:
+                        int 5 >> item_4:
+                          int 1 >> item_9:
+                            int 2 >> item_8:
+                              int 3 >> item_7:
+                                lst_a sp_0_2, item_9 >> sp_0_1:
+                                  lst_a sp_0_1, item_8 >> sp_0:
+                                    lst >> cargs_0:
+                                      lst_a cargs_0, item_6 >> cargs_1:
+                                        lst_a cargs_1, x_0 >> cargs_2:
+                                          lst_a cargs_2, item_4 >> cargs_3:
+                                            lst_a cargs_3, y_0 >> cargs_4:
+                                              lst_a cargs_4, item_7 >> cargs_5:
+                                                lst_a cargs_5, sp_0 >> cargs_6:
+                                                  lst_a cargs_6, item_9 >> cargs_7:
+                                                    lst_a cargs_7, lala >> cargs_8:
+                                                      af log, cargs_8 >> mex_5:
+                                                        lst >> drctvs_0:
+                                                          mod exports_2, drctvs_0 >> result_0:"
+`;

@@ -1,0 +1,23 @@
+{fink2lir} = import '../../testing/generate.fnk'
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+skip.describe 'comment', fn:
+  it 'compiles', fn:
+
+    expect
+      fink2lir '
+        # leading expression
+        spam = ni
+
+        ---
+        Shrub ni.
+        ---
+        bar = fn:
+          --- single line block ---
+          spam
+
+        # trailing module
+      '
+      to_match_snapshot
+
