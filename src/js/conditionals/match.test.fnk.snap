@@ -537,7 +537,8 @@ export const ;"
 `;
 
 exports[`match records matches value assertions 1`] = `
-"let ret_0;
+"import { _in_ } from \\"@fink/js-interop/runtime.js\\";
+let ret_0;
 
 ret_0: {
   const key_1 = \`spam\`;

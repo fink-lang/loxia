@@ -30,6 +30,8 @@ get_js = fn id, {values}:
       identifier id
 
 
+add_runtime_requirement = fn func, {runtime, ...ctx}:
+  {...ctx, runtime: {...runtime, (func): true}}
 
 
 get_js_literal = fn id, ctx:

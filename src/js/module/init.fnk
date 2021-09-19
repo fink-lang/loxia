@@ -14,6 +14,7 @@ types = import '@babel/types'
 {add, get_js, set_js, get_js_literal} = import '../context.fnk'
 {transform_exprs} = import '../transform.fnk'
 {escape_ident} = import '../identifier/init.fnk'
+{get_runtime_imports} = import './import.fnk'
 
 
 [no_result] = []
@@ -97,6 +98,7 @@ transform_mod_exports = fn expr, ctx:
 
 
 
+
 transfrom_module = fn exprs, ctx:
   [body, next_ctx] = transform_exprs exprs, ctx
   [..., last] = exprs
@@ -111,9 +113,11 @@ transfrom_module = fn exprs, ctx:
     else:
       []
 
+  runtime_imports = get_runtime_imports next_ctx
+
   js = file
     program
-      body
+      [...runtime_imports, ...body]
       []
       'module'
       ...directives

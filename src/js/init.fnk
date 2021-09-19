@@ -105,7 +105,7 @@ transform_ir = fn input_exprs, options:
   exprs = replace_idents input_exprs
   rev_expr = reverse exprs
 
-  ctx = pipe {trasformers: {}, values: {}, ...options}:
+  ctx = pipe {runtime: {}, trasformers: {}, values: {}, ...options}:
     init_ctx exprs, ?
     prepare_rets rev_expr, ?
     prepare_imports rev_expr, ?

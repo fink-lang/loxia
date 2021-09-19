@@ -10,7 +10,6 @@ types = import '@babel/types'
 
 
 
-
 resolve_ext = fn import_url, options:
   match import_url:
     not ends_with ?, '.fnk':
@@ -27,6 +26,22 @@ resolve_ext = fn import_url, options:
         {import: {ext: {abs: is_str ?}}}: options.import.ext.abs
         else: '.js'
       '${slice import_url, 0, -4}${ext}'
+
+
+
+get_runtime_imports = fn ctx:
+  specs = match ctx:
+    {runtime.in: true}:
+      list:
+        importSpecifier
+          identifier '_in_'
+          identifier '_in_'
+
+    else: []
+
+  match specs:
+    [?]: [importDeclaration specs, stringLiteral '@fink/js-interop/runtime.js']
+    else: []
 
 
 

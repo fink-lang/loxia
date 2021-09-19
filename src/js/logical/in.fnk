@@ -1,7 +1,7 @@
 types = import '@babel/types'
 {identifier, callExpression} = types
 
-{add, get_js, set_js} = import '../context.fnk'
+{add, get_js, set_js, add_runtime_requirement} = import '../context.fnk'
 
 
 
@@ -14,7 +14,9 @@ transform_in = fn expr, ctx:
       get_js left_id, ctx
       get_js right_id, ctx
 
-  set_js result_id, js, ctx
+  pipe ctx:
+    set_js result_id, js, ?
+    add_runtime_requirement 'in', ?
 
 
 
