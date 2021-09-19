@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`module handles comments 1`] = `
+exports[`module handles directives 1`] = `
 "#!/usr/bin/env node
 const foo_0 = 1234;
 export const foo = foo_0;"
@@ -21,4 +21,10 @@ export const ˆdelete = delete_0,
       π = π_0,
       foo_bar = foo_bar_0,
       fooᜭbar = fooᜭbar_0;"
+`;
+
+exports[`module handles side effects 1`] = `
+"foo(bar);
+shrub.ni(foo);
+export const spam = ni;"
 `;

@@ -615,13 +615,13 @@ rec >> exports_0:
   cn ret_0:
     = shrub >> value_0:
       = a >> key_0:
-        rec_g value_0, key_0 >> itm_0:
+        rec_go value_0, key_0 >> itm_0:
           str 'b' >> key_1
-            rec_g itm_0, key_1 >> itm_1:
+            rec_go itm_0, key_1 >> itm_1:
               = b >> val_1:
                 == itm_1, val_1 >> cond_1:
                   str 'c' >> key_2
-                    rec_g itm_0, key_2 >> itm_2:
+                    rec_go itm_0, key_2 >> itm_2:
                       = c >> val_0:
                         cn:
                           == itm_2, val_0 >> cond_0:
@@ -638,109 +638,180 @@ rec >> exports_0:
         mod exports_0, drctvs_0 >> mod_0:"
 `;
 
+exports[`match records matches member expr keys 1`] = `
+"
+rec >> exports_0:
+  cn ret_0:
+    = foo >> value_0:
+      str 'foo' >> key_0
+        rec_go value_0, key_0 >> itm_0:
+          str 'bar' >> key_1
+            rec_go itm_0, key_1 >> itm_1:
+              str 'spam' >> key_2
+                rec_go itm_1, key_2 >> itm_2:
+                  = ham >> val_0:
+                    == itm_2, val_0 >> cond_0:
+                      cn:
+                        = spam >> result_0:
+                          cc ret_0, result_0
+                      >> match_res_0:
+                        cif cond_0, match_res_0
+  >> match_0:
+    ac match_0 >> mex_0:
+      lst >> drctvs_0:
+        mod exports_0, drctvs_0 >> mod_0:"
+`;
+
+exports[`match records matches member expr keys 2`] = `
+"
+rec >> exports_0:
+  cn ret_0:
+    = foo >> value_0:
+      str 'foo' >> key_0
+        rec_go value_0, key_0 >> itm_0:
+          str 'bar' >> key_1
+            rec_go itm_0, key_1 >> itm_1:
+              str 'spam' >> key_2
+                rec_go itm_1, key_2 >> itm_2:
+                  str 'ham' >> key_3
+                    rec_go itm_2, key_3 >> itm_3:
+                      str 'ni' >> key_4
+                        rec_go itm_3, key_4 >> itm_4:
+                          = nu >> val_0:
+                            == itm_4, val_0 >> cond_0:
+                              cn:
+                                = spam >> result_0:
+                                  cc ret_0, result_0
+                              >> match_res_0:
+                                cif cond_0, match_res_0
+  >> match_0:
+    ac match_0 >> mex_0:
+      lst >> drctvs_0:
+        mod exports_0, drctvs_0 >> mod_0:"
+`;
+
 exports[`match records matches props 1`] = `
 "
 rec >> exports_0:
   cn ret_0:
     = shrub >> value_0:
       str 'ni' >> key_0
-        rec_g value_0, key_0 >> itm_0:
-          str 'len' >> key_3
-            rec_g itm_0, key_3 >> itm_3:
-              int 1 >> val_1:
-                cn:
-                  == itm_3, val_1 >> cond_1:
-                    str 'na' >> key_1
-                      rec_g value_0, key_1 >> itm_1:
-                        str 'len' >> key_2
-                          rec_g itm_1, key_2 >> itm_2:
-                            int 1 >> val_0:
-                              cn:
-                                == itm_2, val_0 >> cond_0:
-                                  cn:
-                                    = na >> result_0:
-                                      cc ret_0, result_0
-                                  >> match_res_0:
-                                    cif cond_0, match_res_0
-                              >> match_1:
-                                cif cond_1, match_1
-                >> match_2:
-                  str 'foo' >> key_4
-                    rec_g value_0, key_4 >> itm_4:
-                      int 1 >> val_4:
+        rec_go value_0, key_0 >> itm_0:
+          lst_h itm_0 >> itm_1:
+            = na >> val_1:
+              cn:
+                == itm_1, val_1 >> cond_1:
+                  lst_t itm_0 >> tail_0:
+                    lst_h tail_0 >> itm_2:
+                      int 123 >> val_0:
                         cn:
-                          == itm_4, val_4 >> cond_4:
-                            str 'foo' >> key_5
-                              rec_g value_0, key_5 >> itm_5:
-                                str 'bar' >> key_8
-                                  rec_g itm_5, key_8 >> itm_8:
-                                    str 'spam' >> str_1
-                                      strt str_1 >> val_3:
+                          == itm_2, val_0 >> cond_0:
+                            cn:
+                              = na >> result_0:
+                                cc ret_0, result_0
+                            >> match_res_0:
+                              cif cond_0, match_res_0
+                        >> match_1:
+                          cif cond_1, match_1
+              >> match_2:
+                str 'ni' >> key_1
+                  rec_go value_0, key_1 >> itm_3:
+                    str 'len' >> key_4
+                      rec_go itm_3, key_4 >> itm_6:
+                        int 1 >> val_3:
+                          cn:
+                            == itm_6, val_3 >> cond_3:
+                              str 'na' >> key_2
+                                rec_go value_0, key_2 >> itm_4:
+                                  str 'len' >> key_3
+                                    rec_go itm_4, key_3 >> itm_5:
+                                      int 1 >> val_2:
                                         cn:
-                                          == itm_8, val_3 >> cond_3:
-                                            str 'shrub' >> key_6
-                                              rec_g value_0, key_6 >> itm_6:
-                                                str 'na' >> key_7
-                                                  rec_g itm_6, key_7 >> itm_7:
-                                                    str 'nu' >> str_0
-                                                      strt str_0 >> val_2:
+                                          == itm_5, val_2 >> cond_2:
+                                            cn:
+                                              = na >> result_1:
+                                                cc ret_0, result_1
+                                            >> match_res_1:
+                                              cif cond_2, match_res_1, match_2
+                                        >> match_3:
+                                          cif cond_3, match_3, match_2
+                          >> match_4:
+                            str 'foo' >> key_5
+                              rec_go value_0, key_5 >> itm_7:
+                                int 1 >> val_6:
+                                  cn:
+                                    == itm_7, val_6 >> cond_6:
+                                      str 'foo' >> key_6
+                                        rec_go value_0, key_6 >> itm_8:
+                                          str 'bar' >> key_9
+                                            rec_go itm_8, key_9 >> itm_11:
+                                              str 'spam' >> str_1
+                                                strt str_1 >> val_5:
+                                                  cn:
+                                                    == itm_11, val_5 >> cond_5:
+                                                      str 'shrub' >> key_7
+                                                        rec_go value_0, key_7 >> itm_9:
+                                                          str 'na' >> key_8
+                                                            rec_go itm_9, key_8 >> itm_10:
+                                                              str 'nu' >> str_0
+                                                                strt str_0 >> val_4:
+                                                                  cn:
+                                                                    == itm_10, val_4 >> cond_4:
+                                                                      cn:
+                                                                        = ni >> result_2:
+                                                                          cc ret_0, result_2
+                                                                      >> match_res_2:
+                                                                        cif cond_4, match_res_2, match_4
+                                                                  >> match_5:
+                                                                    cif cond_5, match_5, match_4
+                                                  >> match_6:
+                                                    cif cond_6, match_6, match_4
+                                  >> match_7:
+                                    str 'foo' >> key_10
+                                      rec_go value_0, key_10 >> itm_12:
+                                        int 4 >> val_9:
+                                          cn:
+                                            == itm_12, val_9 >> cond_9:
+                                              str 'ni' >> key_11
+                                                rec_go value_0, key_11 >> itm_13:
+                                                  str 'na' >> key_12
+                                                    rec_go itm_13, key_12 >> itm_14:
+                                                      = na >> val_8:
                                                         cn:
-                                                          == itm_7, val_2 >> cond_2:
-                                                            cn:
-                                                              = ni >> result_1:
-                                                                cc ret_0, result_1
-                                                            >> match_res_1:
-                                                              cif cond_2, match_res_1, match_2
-                                                        >> match_3:
-                                                          cif cond_3, match_3, match_2
-                                        >> match_4:
-                                          cif cond_4, match_4, match_2
-                        >> match_5:
-                          str 'foo' >> key_9
-                            rec_g value_0, key_9 >> itm_9:
-                              int 4 >> val_7:
-                                cn:
-                                  == itm_9, val_7 >> cond_7:
-                                    str 'ni' >> key_10
-                                      rec_g value_0, key_10 >> itm_10:
-                                        str 'na' >> key_11
-                                          rec_g itm_10, key_11 >> itm_11:
-                                            = na >> val_6:
-                                              cn:
-                                                == itm_11, val_6 >> cond_6:
-                                                  str 'nu' >> key_12
-                                                    rec_g itm_10, key_12 >> itm_12:
-                                                      = nu >> val_5:
-                                                        cn:
-                                                          == itm_12, val_5 >> cond_5:
-                                                            cn:
-                                                              = spam >> left_0:
-                                                                = ni >> right_0:
-                                                                  + left_0, right_0 >> result_2:
-                                                                    cc ret_0, result_2
-                                                            >> match_res_2:
-                                                              cif cond_5, match_res_2, match_5
-                                                        >> match_6:
-                                                          cif cond_6, match_6, match_5
-                                              >> match_7:
-                                                cif cond_7, match_7, match_5
-                                >> match_8:
-                                  str 'foo' >> key_13
-                                    rec_g value_0, key_13 >> itm_13:
-                                      = foo >> val_9:
-                                        == itm_13, val_9 >> cond_9:
-                                          str 'bar' >> key_14
-                                            rec_g value_0, key_14 >> itm_14:
-                                              = bar >> val_8:
-                                                cn:
-                                                  == itm_14, val_8 >> cond_8:
-                                                    cn:
-                                                      = ni >> result_3:
-                                                        cc ret_0, result_3
-                                                    >> match_res_3:
-                                                      cif cond_8, match_res_3, match_8
-                                                >> match_9:
-                                                  cif cond_9, match_9, match_8
+                                                          == itm_14, val_8 >> cond_8:
+                                                            str 'nu' >> key_13
+                                                              rec_go itm_13, key_13 >> itm_15:
+                                                                = nu >> val_7:
+                                                                  cn:
+                                                                    == itm_15, val_7 >> cond_7:
+                                                                      cn:
+                                                                        = spam >> left_0:
+                                                                          = ni >> right_0:
+                                                                            + left_0, right_0 >> result_3:
+                                                                              cc ret_0, result_3
+                                                                      >> match_res_3:
+                                                                        cif cond_7, match_res_3, match_7
+                                                                  >> match_8:
+                                                                    cif cond_8, match_8, match_7
+                                                        >> match_9:
+                                                          cif cond_9, match_9, match_7
+                                          >> match_10:
+                                            str 'foo' >> key_14
+                                              rec_go value_0, key_14 >> itm_16:
+                                                = foo >> val_11:
+                                                  == itm_16, val_11 >> cond_11:
+                                                    str 'bar' >> key_15
+                                                      rec_go value_0, key_15 >> itm_17:
+                                                        = bar >> val_10:
+                                                          cn:
+                                                            == itm_17, val_10 >> cond_10:
+                                                              cn:
+                                                                = ni >> result_4:
+                                                                  cc ret_0, result_4
+                                                              >> match_res_4:
+                                                                cif cond_10, match_res_4, match_10
+                                                          >> match_11:
+                                                            cif cond_11, match_11, match_10
   >> match_0:
     ac match_0 >> mex_0:
       lst >> drctvs_0:
@@ -753,14 +824,14 @@ rec >> exports_0:
   cn ret_0:
     = shrub >> value_0:
       = foo >> key_0:
-        rec_g value_0, key_0 >> itm_0:
+        rec_go value_0, key_0 >> itm_0:
           rec_d value_0, key_0 >> spread_0:
             str 'bar' >> key_1
-              rec_g spread_0, key_1 >> itm_1:
+              rec_go spread_0, key_1 >> itm_1:
                 = bar >> val_1:
                   == itm_1, val_1 >> cond_1:
                     str 'spam' >> key_2
-                      rec_g spread_0, key_2 >> itm_2:
+                      rec_go spread_0, key_2 >> itm_2:
                         = spam >> val_0:
                           cn:
                             == itm_2, val_0 >> cond_0:
@@ -783,7 +854,7 @@ rec >> exports_0:
   cn ret_0:
     = foo >> value_0:
       str 'spam' >> key_0
-        rec_g value_0, key_0 >> itm_0:
+        rec_go value_0, key_0 >> itm_0:
           cn:
             isv itm_0 >> cond_0:
               cn:
@@ -793,7 +864,7 @@ rec >> exports_0:
                 cif cond_0, match_res_0
           >> match_1:
             str 'spam' >> key_1
-              rec_g value_0, key_1 >> itm_1:
+              rec_go value_0, key_1 >> itm_1:
                 = spam >> val_1:
                   cn:
                     == itm_1, val_1 >> cond_2:
@@ -813,7 +884,7 @@ rec >> exports_0:
                                   cif cond_2, match_2, match_1
                   >> match_3:
                     str 'spam' >> key_2
-                      rec_g value_0, key_2 >> itm_2:
+                      rec_go value_0, key_2 >> itm_2:
                         = spam >> val_3:
                           cn:
                             == itm_2, val_3 >> cond_4:
@@ -834,7 +905,7 @@ rec >> exports_0:
                                             cif cond_4, match_4, match_3
                           >> match_5:
                             str 'spam' >> key_3
-                              rec_g value_0, key_3 >> itm_3:
+                              rec_go value_0, key_3 >> itm_3:
                                 = is_foo >> callee_1:
                                   lst >> cargs_2:
                                     = itm_3 >> arg_1:
@@ -849,7 +920,7 @@ rec >> exports_0:
                                                 cif cond_5, match_res_3, match_5
                                           >> match_6:
                                             str 'spam' >> key_4
-                                              rec_g value_0, key_4 >> itm_4:
+                                              rec_go value_0, key_4 >> itm_4:
                                                 = itm_4 >> left_1:
                                                   str 'is_foo' >> key_5
                                                     rec_g left_1, key_5 >> callee_2:
@@ -864,7 +935,7 @@ rec >> exports_0:
                                                                 cif cond_6, match_res_4, match_6
                                                           >> match_7:
                                                             str 'spam' >> key_6
-                                                              rec_g value_0, key_6 >> itm_5:
+                                                              rec_go value_0, key_6 >> itm_5:
                                                                 = itm_5 >> callee_3:
                                                                   lst >> cargs_5:
                                                                     af callee_3, cargs_5 >> val_6:
@@ -877,7 +948,7 @@ rec >> exports_0:
                                                                             cif cond_7, match_res_5, match_7
                                                                       >> match_8:
                                                                         str 'spam' >> key_7
-                                                                          rec_g value_0, key_7 >> itm_6:
+                                                                          rec_go value_0, key_7 >> itm_6:
                                                                             = itm_6 >> left_2:
                                                                               int 123 >> right_1:
                                                                                 > left_2, right_1 >> val_7:
@@ -890,7 +961,7 @@ rec >> exports_0:
                                                                                         cif cond_8, match_res_6, match_8
                                                                                   >> match_9:
                                                                                     str 'spam' >> key_8
-                                                                                      rec_g value_0, key_8 >> itm_7:
+                                                                                      rec_go value_0, key_8 >> itm_7:
                                                                                         = itm_7 >> right_2:
                                                                                           not right_2 >> val_8:
                                                                                             == true, val_8 >> cond_9:

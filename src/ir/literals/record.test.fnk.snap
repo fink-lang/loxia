@@ -88,56 +88,57 @@ rec >> exports_0:
 `;
 
 exports[`record compiles member expr as keys 1`] = `
-"let _do_result;
-
-{
-  let ˆrec_1 = { ...bar
-  };
-  ˆrec_1 = { ...ˆrec_1,
-    spam: { ...ˆrec_1?.spam,
-      ham: { ...ˆrec_1?.spam?.ham,
-        ni: \`ni\`
-      }
-    }
-  };
-  ˆrec_1 = { ...ˆrec_1,
-    na: 1234
-  };
-  ˆrec_1 = { ...ˆrec_1,
-    ...nu
-  };
-  _do_result = ˆrec_1;
-}
-export const foo = _do_result;
-_do_result = undefined;"
+"
+rec >> exports_0:
+  rec >> rec_5:
+    = bar >> sprd_1:
+      rec_m rec_5, sprd_1 >> rec_2:
+        str 'spam' >> key_1
+          rec >> rec_3:
+            str 'ham' >> key_2
+              rec >> rec_4:
+                str 'ni' >> key_3
+                  str 'ni' >> str_0
+                    strt str_0 >> val_3:
+                      rec_s rec_4, key_3, val_3 >> val_2:
+                        rec_s rec_3, key_2, val_2 >> val_1:
+                          rec_s rec_2, key_1, val_1 >> rec_1:
+                            str 'na' >> key_0
+                              int 1234 >> val_0:
+                                rec_s rec_1, key_0, val_0 >> rec_0:
+                                  = nu >> sprd_0:
+                                    rec_m rec_0, sprd_0 >> foo_0:
+                                      str 'foo' >> key_4
+                                        rec_s exports_0, key_4, foo_0 >> exports_1:
+                                          lst >> drctvs_0:
+                                            mod exports_1, drctvs_0 >> mod_0:"
 `;
 
 exports[`record compiles member expr as keys 2`] = `
-"let _do_result;
-
-{
-  let ˆrec_1 = { ...bar
-  };
-  ˆrec_1 = { ...ˆrec_1,
-    spam: { ...ˆrec_1?.spam,
-      ham: (() => {
-        let ˆrec_2 = {};
-        ˆrec_2 = { ...ˆrec_2,
-          ni: { ...ˆrec_2?.ni,
-            na: \`ni\`
-          }
-        };
-        return ˆrec_2;
-      })()
-    }
-  };
-  ˆrec_1 = { ...ˆrec_1,
-    ...nu
-  };
-  _do_result = ˆrec_1;
-}
-export const foo = _do_result;
-_do_result = undefined;"
+"
+rec >> exports_0:
+  rec >> rec_5:
+    = bar >> sprd_1:
+      rec_m rec_5, sprd_1 >> rec_1:
+        str 'spam' >> key_0
+          rec >> rec_2:
+            str 'ham' >> key_1
+              rec >> rec_3:
+                str 'ni' >> key_2
+                  rec >> rec_4:
+                    str 'na' >> key_3
+                      str 'ni' >> str_0
+                        strt str_0 >> val_3:
+                          rec_s rec_4, key_3, val_3 >> val_2:
+                            rec_s rec_3, key_2, val_2 >> val_1:
+                              rec_s rec_2, key_1, val_1 >> val_0:
+                                rec_s rec_1, key_0, val_0 >> rec_0:
+                                  = nu >> sprd_0:
+                                    rec_m rec_0, sprd_0 >> foo_0:
+                                      str 'foo' >> key_4
+                                        rec_s exports_0, key_4, foo_0 >> exports_1:
+                                          lst >> drctvs_0:
+                                            mod exports_1, drctvs_0 >> mod_0:"
 `;
 
 exports[`record compiles shorthand 1`] = `
@@ -260,46 +261,60 @@ rec >> exports_0:
 `;
 
 exports[`unpacking record compiles member expr as keys 1`] = `
-"const {
-  spam: {
-    ham: {
-      ni: ni
-    }
-  },
-  ...rest
-} = foo;"
+"
+rec >> exports_0:
+  = foo >> right_0:
+    str 'spam' >> key_0
+      rec_g right_0, key_0 >> val_0:
+        str 'ham' >> key_1
+          rec_g val_0, key_1 >> val_1:
+            str 'ni' >> key_2
+              rec_g val_1, key_2 >> ni_0:
+                rec_d right_0, key_0 >> rest_0:
+                  lst >> drctvs_0:
+                    mod exports_0, drctvs_0 >> mod_0:"
 `;
 
 exports[`unpacking record compiles member expr as keys 2`] = `
-"const {
-  spam: {
-    ham: {
-      ni: {
-        ni: nu,
-        foo: {
-          bar: bar
-        }
-      }
-    }
-  },
-  ...rest
-} = foo;"
+"
+rec >> exports_0:
+  = foo >> right_0:
+    str 'spam' >> key_0
+      rec_g right_0, key_0 >> val_0:
+        str 'ham' >> key_1
+          rec_g val_0, key_1 >> val_1:
+            str 'ni' >> key_2
+              rec_g val_1, key_2 >> val_2:
+                str 'ni' >> key_3
+                  rec_g val_2, key_3 >> nu_0:
+                    str 'foo' >> key_4
+                      rec_g val_2, key_4 >> val_3:
+                        str 'bar' >> key_5
+                          rec_g val_3, key_5 >> bar_0:
+                            rec_d right_0, key_0 >> rest_0:
+                              lst >> drctvs_0:
+                                mod exports_0, drctvs_0 >> mod_0:"
 `;
 
 exports[`unpacking record compiles member expr as keys 3`] = `
-"const {
-  \\"foo-bar\\": {
-    \\"spam-ham\\": {
-      ni: {
-        ni: nu,
-        foo: {
-          bar: bar
-        }
-      }
-    }
-  },
-  ...rest
-} = foo;"
+"
+rec >> exports_0:
+  = foo >> right_0:
+    str 'foo-bar' >> key_0
+      rec_g right_0, key_0 >> val_0:
+        str 'spam-ham' >> key_1
+          rec_g val_0, key_1 >> val_1:
+            str 'ni' >> key_2
+              rec_g val_1, key_2 >> val_2:
+                str 'ni' >> key_3
+                  rec_g val_2, key_3 >> nu_0:
+                    str 'foo' >> key_4
+                      rec_g val_2, key_4 >> val_3:
+                        str 'bar' >> key_5
+                          rec_g val_3, key_5 >> bar_0:
+                            rec_d right_0, key_0 >> rest_0:
+                              lst >> drctvs_0:
+                                mod exports_0, drctvs_0 >> mod_0:"
 `;
 
 exports[`unpacking record compiles nested 1`] = `

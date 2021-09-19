@@ -4,12 +4,12 @@ exports[`func compiles 1`] = `
 "
 rec >> exports_0:
   fn args_0, ret_0:
-    tph args_0 >> a_0:
-      tpt args_0 >> tail_0:
-        tph tail_0 >> b_0:
-          tpt tail_0 >> tail_1:
-            tph tail_1 >> d_0:
-              tpt tail_1 >> tail_2:
+    lst_h args_0 >> a_0:
+      lst_t args_0 >> tail_0:
+        lst_h tail_0 >> b_0:
+          lst_t tail_0 >> tail_1:
+            lst_h tail_1 >> d_0:
+              lst_t tail_1 >> tail_2:
                 = a_0 >> left_1:
                   = b_0 >> right_0:
                     + left_1, right_0 >> left_0:
@@ -17,26 +17,26 @@ rec >> exports_0:
                         + left_0, right_1 >> result_0:
                           cc ret_0, result_0
   >> fun_0:
-    sr 'fun' >> key_0
-      rcs exports_0, key_0, fun_0 >> exports_1:
+    str 'fun' >> key_0
+      rec_s exports_0, key_0, fun_0 >> exports_1:
         fn args_1, ret_1:
-          tph args_1 >> foo_0:
-            tpt args_1 >> tail_3:
+          lst_h args_1 >> foo_0:
+            lst_t args_1 >> tail_3:
               fn args_2, ret_2:
-                tph args_2 >> bar_0:
-                  tpt args_2 >> tail_4:
+                lst_h args_2 >> bar_0:
+                  lst_t args_2 >> tail_4:
                     = foo_0 >> callee_0:
-                      tpl >> tpl_0:
-                        = bar_0 >> item_0:
-                          tpa tpl_0, item_0 >> args_3:
-                            af callee_0, args_3 >> result_2:
+                      lst >> cargs_0:
+                        = bar_0 >> arg_0:
+                          lst_a cargs_0, arg_0 >> cargs_1:
+                            af callee_0, cargs_1 >> result_2:
                               cc ret_2, result_2
               >> result_1:
                 cc ret_1, result_1
         >> f2_0:
-          sr 'f2' >> key_1
-            rcs exports_1, key_1, f2_0 >> exports_2:
-              tpl >> drctvs_0:
+          str 'f2' >> key_1
+            rec_s exports_1, key_1, f2_0 >> exports_2:
+              lst >> drctvs_0:
                 mod exports_2, drctvs_0 >> mod_0:"
 `;
 
@@ -44,27 +44,31 @@ exports[`func compiles defaults 1`] = `
 "
 rec >> exports_0:
   fn args_0, ret_0:
-    tph args_0 >> a_0:
-      tpt args_0 >> tail_0:
+    lst_h args_0 >> a_0:
+      lst_t args_0 >> tail_0:
         int 12 >> flbk_0:
-          tph tail_0 >> hdm_0:
+          lst_h tail_0 >> hdm_0:
             ifv hdm_0, hdm_0, flbk_0 >> b_0:
-              tpt tail_0 >> tail_1:
-                tph tail_1 >> c_0:
-                  tpt tail_1 >> tail_2:
-                    = shrub >> callee_0:
-                      tpl >> tpl_0:
-                        = a_0 >> items_0:
-                          tpc tpl_0, items_0 >> args_1:
-                            af callee_0, args_1 >> result_0:
-                              = bar >> callee_1:
-                                tpl >> args_2:
-                                  af callee_1, args_2 >> result_1:
-                                    cc ret_0, result_1
+              lst_t tail_0 >> tail_1:
+                lst_h tail_1 >> c_0:
+                  lst_t tail_1 >> tail_2:
+                    fn args_1, ret_1:
+                      lst_h args_1 >> prtl_0:
+                        = shrub >> callee_0:
+                          lst >> cargs_0:
+                            = a_0 >> sprd_0:
+                              lst_c cargs_0, sprd_0 >> cargs_1:
+                                af callee_0, cargs_1 >> pfn_0:
+                                  cc ret_1, pfn_0
+                    >> result_0:
+                      = bar >> callee_1:
+                        lst >> cargs_2:
+                          af callee_1, cargs_2 >> result_1:
+                            cc ret_0, result_1
   >> fun_0:
-    sr 'fun' >> key_0
-      rcs exports_0, key_0, fun_0 >> exports_1:
-        tpl >> drctvs_0:
+    str 'fun' >> key_0
+      rec_s exports_0, key_0, fun_0 >> exports_1:
+        lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
 `;
 
@@ -72,32 +76,32 @@ exports[`func compiles destructuring args 1`] = `
 "
 rec >> exports_0:
   fn args_0, ret_0:
-    tph args_0 >> items_0:
-      tpt args_0 >> tail_3:
-        tph items_0 >> a_0:
-          tpt items_0 >> tail_0:
-            tph tail_0 >> items_1:
-              tpt tail_0 >> tail_2:
-                tph items_1 >> b_0:
-                  tpt items_1 >> tail_1:
-                    tph tail_3 >> items_2:
-                      tpt tail_3 >> tail_5:
-                        tph items_2 >> c_0:
-                          tpt items_2 >> tail_4:
-                            tpr tail_4 >> rtail_0:
-                              tpr rtail_0 >> d_0:
-                                tpl >> tpl_1:
+    lst_h args_0 >> items_0:
+      lst_t args_0 >> tail_3:
+        lst_h items_0 >> a_0:
+          lst_t items_0 >> tail_0:
+            lst_h tail_0 >> items_1:
+              lst_t tail_0 >> tail_2:
+                lst_h items_1 >> b_0:
+                  lst_t items_1 >> tail_1:
+                    lst_h tail_3 >> items_2:
+                      lst_t tail_3 >> tail_5:
+                        lst_h items_2 >> c_0:
+                          lst_t items_2 >> tail_4:
+                            lst_r tail_4 >> rtail_0:
+                              lst_r rtail_0 >> d_0:
+                                lst >> lst_1:
                                   = a_0 >> left_0:
                                     = b_0 >> right_0:
                                       + left_0, right_0 >> item_1:
-                                        tpa tpl_1, item_1 >> tpl_0:
+                                        lst_a lst_1, item_1 >> lst_0:
                                           = c_0 >> item_0:
-                                            tpa tpl_0, item_0 >> result_0:
+                                            lst_a lst_0, item_0 >> result_0:
                                               cc ret_0, result_0
   >> fun_0:
-    sr 'fun' >> key_0
-      rcs exports_0, key_0, fun_0 >> exports_1:
-        tpl >> drctvs_0:
+    str 'fun' >> key_0
+      rec_s exports_0, key_0, fun_0 >> exports_1:
+        lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
 `;
 
@@ -105,30 +109,30 @@ exports[`func compiles destructuring recs 1`] = `
 "
 rec >> exports_0:
   fn args_0, ret_0:
-    tph args_0 >> drec_0:
-      tpt args_0 >> tail_0:
-        sr 'a' >> key_0
-          rcg drec_0, key_0 >> a_0:
-            sr 'b' >> key_1
-              rcg drec_0, key_1 >> b_0:
-                tph tail_0 >> items_0:
-                  tpt tail_0 >> tail_2:
-                    tph items_0 >> c_0:
-                      tpt items_0 >> tail_1:
-                        tpr tail_1 >> rtail_0:
-                          tpr rtail_0 >> d_0:
-                            tpl >> tpl_1:
+    lst_h args_0 >> drec_0:
+      lst_t args_0 >> tail_0:
+        str 'a' >> key_0
+          rec_g drec_0, key_0 >> a_0:
+            str 'b' >> key_1
+              rec_g drec_0, key_1 >> b_0:
+                lst_h tail_0 >> items_0:
+                  lst_t tail_0 >> tail_2:
+                    lst_h items_0 >> c_0:
+                      lst_t items_0 >> tail_1:
+                        lst_r tail_1 >> rtail_0:
+                          lst_r rtail_0 >> d_0:
+                            lst >> lst_1:
                               = a_0 >> left_0:
                                 = b_0 >> right_0:
                                   + left_0, right_0 >> item_1:
-                                    tpa tpl_1, item_1 >> tpl_0:
+                                    lst_a lst_1, item_1 >> lst_0:
                                       = c_0 >> item_0:
-                                        tpa tpl_0, item_0 >> result_0:
+                                        lst_a lst_0, item_0 >> result_0:
                                           cc ret_0, result_0
   >> fun_0:
-    sr 'fun' >> key_2
-      rcs exports_0, key_2, fun_0 >> exports_1:
-        tpl >> drctvs_0:
+    str 'fun' >> key_2
+      rec_s exports_0, key_2, fun_0 >> exports_1:
+        lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
 `;
 
@@ -136,20 +140,20 @@ exports[`func compiles empty arg 1`] = `
 "
 rec >> exports_0:
   fn args_0, ret_0:
-    tph args_0 >> a_0:
-      tpt args_0 >> tail_0:
-        tph tail_0 >> unused_0:
-          tpt tail_0 >> tail_1:
-            tph tail_1 >> unused_1:
-              tpt tail_1 >> tail_2:
-                tph tail_2 >> b_0:
-                  tpt tail_2 >> tail_3:
+    lst_h args_0 >> a_0:
+      lst_t args_0 >> tail_0:
+        lst_h tail_0 >> unused_0:
+          lst_t tail_0 >> tail_1:
+            lst_h tail_1 >> unused_1:
+              lst_t tail_1 >> tail_2:
+                lst_h tail_2 >> b_0:
+                  lst_t tail_2 >> tail_3:
                     = b_0 >> result_0:
                       cc ret_0, result_0
   >> fun_0:
-    sr 'fun' >> key_0
-      rcs exports_0, key_0, fun_0 >> exports_1:
-        tpl >> drctvs_0:
+    str 'fun' >> key_0
+      rec_s exports_0, key_0, fun_0 >> exports_1:
+        lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
 `;
 
@@ -157,16 +161,16 @@ exports[`func compiles empty arg 2`] = `
 "
 rec >> exports_0:
   fn args_0, ret_0:
-    tph args_0 >> unused_0:
-      tpt args_0 >> tail_0:
-        tph tail_0 >> b_0:
-          tpt tail_0 >> tail_1:
+    lst_h args_0 >> unused_0:
+      lst_t args_0 >> tail_0:
+        lst_h tail_0 >> b_0:
+          lst_t tail_0 >> tail_1:
             = b_0 >> result_0:
               cc ret_0, result_0
   >> fun_0:
-    sr 'fun' >> key_0
-      rcs exports_0, key_0, fun_0 >> exports_1:
-        tpl >> drctvs_0:
+    str 'fun' >> key_0
+      rec_s exports_0, key_0, fun_0 >> exports_1:
+        lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
 `;
 
@@ -174,25 +178,25 @@ exports[`func compiles func of func 1`] = `
 "
 rec >> exports_0:
   fn args_0, ret_0:
-    tph args_0 >> c_0:
-      tpt args_0 >> tail_0:
+    lst_h args_0 >> c_0:
+      lst_t args_0 >> tail_0:
         fn args_1, ret_1:
-          tph args_1 >> d_0:
-            tpt args_1 >> tail_1:
-              tph tail_1 >> e_0:
-                tpt tail_1 >> tail_2:
+          lst_h args_1 >> d_0:
+            lst_t args_1 >> tail_1:
+              lst_h tail_1 >> e_0:
+                lst_t tail_1 >> tail_2:
                   cn ret_2:
-                    tpl >> tpl_1:
+                    lst >> lst_1:
                       = d_0 >> item_1:
-                        tpa tpl_1, item_1 >> tpl_0:
+                        lst_a lst_1, item_1 >> lst_0:
                           = e_0 >> item_0:
-                            tpa tpl_0, item_0 >> value_0:
-                              tph value_0 >> itm_0:
+                            lst_a lst_0, item_0 >> value_0:
+                              lst_h value_0 >> itm_0:
                                 int 2 >> val_1:
                                   cn:
                                     == itm_0, val_1 >> cond_1:
-                                      tpt value_0 >> tail_3:
-                                        tph tail_3 >> itm_1:
+                                      lst_t value_0 >> tail_3:
+                                        lst_h tail_3 >> itm_1:
                                           int 1 >> val_0:
                                             cn:
                                               == itm_1, val_0 >> cond_0:
@@ -206,11 +210,11 @@ rec >> exports_0:
                                             >> match_1:
                                               cif cond_1, match_1
                                   >> match_2:
-                                    tph value_0 >> itm_2:
+                                    lst_h value_0 >> itm_2:
                                       int 1 >> val_3:
                                         == itm_2, val_3 >> cond_3:
-                                          tpt value_0 >> tail_4:
-                                            tph tail_4 >> itm_3:
+                                          lst_t value_0 >> tail_4:
+                                            lst_h tail_4 >> itm_3:
                                               int 2 >> val_2:
                                                 cn:
                                                   == itm_3, val_2 >> cond_2:
@@ -227,9 +231,9 @@ rec >> exports_0:
         >> result_0:
           cc ret_0, result_0
   >> fun5_0:
-    sr 'fun5' >> key_0
-      rcs exports_0, key_0, fun5_0 >> exports_1:
-        tpl >> drctvs_0:
+    str 'fun5' >> key_0
+      rec_s exports_0, key_0, fun5_0 >> exports_1:
+        lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
 `;
 
@@ -237,10 +241,10 @@ exports[`func compiles other 1`] = `
 "
 rec >> exports_0:
   fn args_0, ret_0:
-    tph args_0 >> c_0:
-      tpt args_0 >> tail_0:
-        tph tail_0 >> d_0:
-          tpt tail_0 >> tail_1:
+    lst_h args_0 >> c_0:
+      lst_t args_0 >> tail_0:
+        lst_h tail_0 >> d_0:
+          lst_t tail_0 >> tail_1:
             int 123 >> x_0:
               cn ret_1:
                 = ni >> value_0:
@@ -270,9 +274,9 @@ rec >> exports_0:
                 ac match_0 >> result_1:
                   cc ret_0, result_1
   >> fun_0:
-    sr 'fun' >> key_0
-      rcs exports_0, key_0, fun_0 >> exports_1:
-        tpl >> drctvs_0:
+    str 'fun' >> key_0
+      rec_s exports_0, key_0, fun_0 >> exports_1:
+        lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
 `;
 
@@ -280,24 +284,24 @@ exports[`func compiles spread 1`] = `
 "
 rec >> exports_0:
   fn args_0, ret_0:
-    tph args_0 >> a_0:
-      tpt args_0 >> tail_0:
-        tph tail_0 >> b_0:
-          tpt tail_0 >> tail_1:
-            tpr tail_1 >> rtail_0:
-              tpr rtail_0 >> c_0:
-                tpl >> tpl_1:
+    lst_h args_0 >> a_0:
+      lst_t args_0 >> tail_0:
+        lst_h tail_0 >> b_0:
+          lst_t tail_0 >> tail_1:
+            lst_r tail_1 >> rtail_0:
+              lst_r rtail_0 >> c_0:
+                lst >> lst_1:
                   = a_0 >> left_0:
                     = b_0 >> right_0:
                       + left_0, right_0 >> item_1:
-                        tpa tpl_1, item_1 >> tpl_0:
+                        lst_a lst_1, item_1 >> lst_0:
                           = c_0 >> item_0:
-                            tpa tpl_0, item_0 >> result_0:
+                            lst_a lst_0, item_0 >> result_0:
                               cc ret_0, result_0
   >> fun_0:
-    sr 'fun' >> key_0
-      rcs exports_0, key_0, fun_0 >> exports_1:
-        tpl >> drctvs_0:
+    str 'fun' >> key_0
+      rec_s exports_0, key_0, fun_0 >> exports_1:
+        lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
 `;
 
@@ -305,24 +309,24 @@ exports[`func compiles spread 2`] = `
 "
 rec >> exports_0:
   fn args_0, ret_0:
-    tph args_0 >> a_0:
-      tpt args_0 >> tail_0:
-        tpr tail_0 >> rtail_0:
-          tph rtail_0 >> c_0:
-            tpt rtail_0 >> tail_1:
-              tpr tail_1 >> b_0:
-                tpl >> tpl_2:
+    lst_h args_0 >> a_0:
+      lst_t args_0 >> tail_0:
+        lst_r tail_0 >> rtail_0:
+          lst_h rtail_0 >> c_0:
+            lst_t rtail_0 >> tail_1:
+              lst_r tail_1 >> b_0:
+                lst >> lst_2:
                   = a_0 >> item_2:
-                    tpa tpl_2, item_2 >> tpl_1:
+                    lst_a lst_2, item_2 >> lst_1:
                       = b_0 >> item_1:
-                        tpa tpl_1, item_1 >> tpl_0:
+                        lst_a lst_1, item_1 >> lst_0:
                           = c_0 >> item_0:
-                            tpa tpl_0, item_0 >> result_0:
+                            lst_a lst_0, item_0 >> result_0:
                               cc ret_0, result_0
   >> fun_0:
-    sr 'fun' >> key_0
-      rcs exports_0, key_0, fun_0 >> exports_1:
-        tpl >> drctvs_0:
+    str 'fun' >> key_0
+      rec_s exports_0, key_0, fun_0 >> exports_1:
+        lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
 `;
 

@@ -164,6 +164,7 @@ describe 'match records', fn:
           {foo: 4, ni: {na, nu}}: spam + ni
           {foo: 1, foo: {bar: 'spam'}, shrub: {na: 'nu'}}: ni
           {ni: {len: 1}, na: {len: 1}}: na
+          {ni: [na, 123]}: na
       "
       to_match_snapshot
 
@@ -188,7 +189,7 @@ describe 'match records', fn:
       to_match_snapshot
 
 
-  skip.it 'matches member expr keys', fn:
+  it 'matches member expr keys', fn:
     expect
       fink2lir '
         match foo:

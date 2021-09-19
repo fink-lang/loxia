@@ -206,6 +206,7 @@ describe 'match records', fn:
           {foo: 4, ni: {na, nu}}: spam + ni
           {foo: 1, foo: {bar: 'spam'}, shrub: {na: 'nu'}}: ni
           {ni: {len: 1}, na: {len: 1}}: na
+          {ni: [foo, 1234]}: na
       "
       to_match_snapshot
 
@@ -229,20 +230,16 @@ describe 'match records', fn:
       to_match_snapshot
 
 
-  skip.it 'matches member expr keys', fn:
+  it 'matches member expr keys', fn:
     expect
       fink2js '
-        match foo:
+        match shrub:
           {foo.bar.spam: ham}: spam
+          {foo.bar.spam: {ham.ni: nu}}: ham
+          {foo: {bar.spam: {ham.ni: nu}, spam}}: ham
       '
       to_match_snapshot
 
-    expect
-      fink2js '
-        match foo:
-          {foo.bar.spam: {ham.ni: nu}}: spam
-      '
-      to_match_snapshot
 
 
   it 'matches value assertions', fn:

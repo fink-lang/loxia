@@ -1,6 +1,6 @@
 types = import '@babel/types'
 {
-  binaryExpression, unaryExpression
+  binaryExpression, unaryExpression, expressionStatement
   identifier, variableDeclaration, variableDeclarator
 } = types
 
@@ -71,11 +71,11 @@ transform_exprs = fn [expr=false, ...exprs], ctx, body=[]:
       transform_exprs exprs, next_ctx, [...body, js]
 
     [ , , [?]]:
-      [, , [res_id]] = expr
+      [op, , [res_id]] = expr
       next_ctx = transform expr, ctx
 
-      match get_refs res_id, next_ctx:
-        ? > 1:
+      match [op, get_refs res_id, next_ctx]:
+        [, ? > 1]:
           val = get_js_literal res_id, next_ctx
           js = match val:
             {type: 'VariableDeclaration'}:
@@ -85,6 +85,13 @@ transform_exprs = fn [expr=false, ...exprs], ctx, body=[]:
               variableDeclaration 'const', [variableDeclarator id, val]
 
           transform_exprs exprs, next_ctx, [...body, js]
+
+        # unused calls assumed to have side effects
+        ['af', ? == 0]:
+          val = get_js_literal res_id, next_ctx
+          js = expressionStatement val
+          transform_exprs exprs, next_ctx, [...body, js]
+
         else:
           transform_exprs exprs, next_ctx, body
 

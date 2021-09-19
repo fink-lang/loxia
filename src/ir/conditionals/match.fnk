@@ -1,7 +1,7 @@
 
 {reverse} = import '@fink/std-lib/iter.fnk'
 
-{transform_key} = import '../literals/record.fnk'
+{transform_key, members_as_rec} = import '../literals/record.fnk'
 {transform} = import '../transform.fnk'
 {unique_ident} = import '../context.fnk'
 
@@ -130,6 +130,10 @@ match_rec = fn [expr=false, ...rest], rec_id, true_cont, true_id, else_ids, ret_
       [x, y, z] = match_expr val_id, expr.right, rest_cont, rest_cont_id, else_ids, ret_id, rest_ctx
       [[['rec_d', [rec_id, ...keys], [val_id], {loc: expr.loc}], ...x], y, z]
 
+    {type: 'rec:kv', left.type: 'member'}:
+      {exprs} = members_as_rec expr.left, expr.right
+      match_rec [...exprs, ...rest], rec_id, true_cont, true_id, else_ids, ret_id, ctx, keys
+
     {type: 'rec:kv'}:
       [val_id, key_ctx] = unique_ident 'itm', ctx
       [key, key_id, next_ctx] = transform_key expr.left, key_ctx
@@ -142,7 +146,7 @@ match_rec = fn [expr=false, ...rest], rec_id, true_cont, true_id, else_ids, ret_
         else: expr.right
 
       [x, y, z] = match_expr val_id, val_expr, rest_cont, rest_cont_id, else_ids, ret_id, rest_ctx
-      [[...key, ['rec_g', [rec_id, key_id], [val_id], {loc: expr.loc}], ...x], y, z]
+      [[...key, ['rec_go', [rec_id, key_id], [val_id], {loc: expr.loc}], ...x], y, z]
 
 
 
@@ -156,6 +160,7 @@ match_expr = fn val_id, expr, true_cont, true_cont_id, else_ids, ret_id, ctx:
 
     {type: 'rec'}:
       match_rec expr.exprs, val_id, true_cont, true_cont_id, else_ids, ret_id, ctx
+
 
     {type: 'partial'}:
       match_any val_id, true_cont, true_cont_id, else_ids, {loc: expr.loc}, ctx

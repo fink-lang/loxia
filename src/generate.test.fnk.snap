@@ -19,7 +19,11 @@ const {
 
 const {
   ˆif: if_0
-} = require(\\"es6-module\\");"
+} = require(\\"es6-module\\");
+
+exports.ˆdefault = ni_0;
+exports.ˆcase = ni_0;
+exports.shrub = ni_0;"
 `;
 
 exports[`module types compiles to mjs 1`] = `

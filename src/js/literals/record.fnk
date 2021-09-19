@@ -1,7 +1,7 @@
 types = import '@babel/types'
 {
   objectExpression, objectProperty, objectPattern
-  memberExpression, identifier
+  memberExpression, identifier, optionalMemberExpression
   spreadElement, restElement, variableDeclaration
   variableDeclarator, stringLiteral
 } = types
@@ -62,20 +62,24 @@ trandform_rec_set = fn expr, ctx:
 
 
 transform_rec_get = fn expr, ctx:
-  [ , [rec_id, key_id] , [result_id]] = expr
+  [op , [rec_id, key_id] , [result_id]] = expr
   rec_js = get_js rec_id, ctx
   key = get_js_literal key_id, ctx
 
-  js = match key:
+  [computed, final_key] = match key:
     {type: 'TemplateLiteral', quasis: [?, ?]}:
-      memberExpression rec_js, key, true
+      [true, key]
 
     {type: 'TemplateLiteral', quasis: [{value: {raw: is_js_ident ?}}]}:
       {quasis: [{value: {raw: value}}]} = key
-      memberExpression rec_js, identifier value
+      [false, identifier value]
 
     else:
-      memberExpression rec_js, key, true
+      [true, key]
+
+  js = match op:
+    'rec_go': optionalMemberExpression rec_js, final_key, computed, true
+    else: memberExpression rec_js, final_key, computed
 
   set_js result_id, js, ctx
 
@@ -135,6 +139,7 @@ add_record = fn ctx:
   pipe ctx:
     add 'rec', transform_rec
     add 'rec_g', transform_rec_get
+    add 'rec_go', transform_rec_get
     add 'rec_s', trandform_rec_set
     add 'rec_d', transform_rec_del_keys
     add 'rec_m', transform_rec_merge

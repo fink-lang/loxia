@@ -1,4 +1,4 @@
-{only, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 {fink2lir} = import '../../testing/generate.fnk'
 
 
@@ -97,7 +97,7 @@ describe 'func', fn:
       to_match_snapshot
 
 
-  only.it 'eliminates tail calls', fn:
+  it 'eliminates tail calls', fn:
     expect
       fink2lir '
         fun = fn a, b:

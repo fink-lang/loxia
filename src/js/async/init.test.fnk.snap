@@ -9,8 +9,8 @@ const task2_0 = async foo_1 => {
   return await (foo_1 + 4);
 };
 
-const task3_0 = foo_2 => {
-  return bar + 123;
+const task3_0 = async foo_2 => {
+  return bar + 123 + (await foo_2());
 };
 
 const a_gen_0 = unfold(async hdm_0 => {
@@ -27,25 +27,4 @@ export const task1 = task1_0,
       task2 = task2_0,
       task3 = task3_0,
       a_gen = a_gen_0;"
-`;
-
-exports[`await handles awaiting async iterables 1`] = `
-"let _do_result;
-
-{
-  let _do_result2;
-
-  {
-    let ˆpipe_result_3 = undefined;
-    _do_result2 = ˆpipe_result_3 = unfold(async (cntr = 0) => (await cntr) + 1)(ˆpipe_result_3);
-  }
-  const ˆitems_1 = _do_result2;
-  _do_result2 = undefined;
-  const ˆiter_2 = (
-  /*istanbul ignore next*/
-  ˆitems_1[Symbol.asyncIterator] || ˆitems_1[Symbol.iterator]).call(ˆitems_1);
-  _do_result = [(await ˆiter_2.next()).value, (await ˆiter_2.next()).value];
-}
-const [foo, bar] = _do_result;
-_do_result = undefined;"
 `;

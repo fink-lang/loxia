@@ -39,56 +39,30 @@ export const obj7 = obj7_0;"
 `;
 
 exports[`record compiles member expr as keys 1`] = `
-"let _do_result;
-
-{
-  let ˆrec_1 = { ...bar
-  };
-  ˆrec_1 = { ...ˆrec_1,
-    spam: { ...ˆrec_1?.spam,
-      ham: { ...ˆrec_1?.spam?.ham,
-        ni: \`ni\`
-      }
+"const foo_0 = { ...bar,
+  spam: {
+    ham: {
+      ni: \`ni\`
     }
-  };
-  ˆrec_1 = { ...ˆrec_1,
-    na: 1234
-  };
-  ˆrec_1 = { ...ˆrec_1,
-    ...nu
-  };
-  _do_result = ˆrec_1;
-}
-export const foo = _do_result;
-_do_result = undefined;"
+  },
+  na: 1234,
+  ...nu
+};
+export const foo = foo_0;"
 `;
 
 exports[`record compiles member expr as keys 2`] = `
-"let _do_result;
-
-{
-  let ˆrec_1 = { ...bar
-  };
-  ˆrec_1 = { ...ˆrec_1,
-    spam: { ...ˆrec_1?.spam,
-      ham: (() => {
-        let ˆrec_2 = {};
-        ˆrec_2 = { ...ˆrec_2,
-          ni: { ...ˆrec_2?.ni,
-            na: \`ni\`
-          }
-        };
-        return ˆrec_2;
-      })()
+"const foo_0 = { ...bar,
+  spam: {
+    ham: {
+      ni: {
+        na: \`ni\`
+      }
     }
-  };
-  ˆrec_1 = { ...ˆrec_1,
-    ...nu
-  };
-  _do_result = ˆrec_1;
-}
-export const foo = _do_result;
-_do_result = undefined;"
+  },
+  ...nu
+};
+export const foo = foo_0;"
 `;
 
 exports[`record compiles shorthand 1`] = `
@@ -170,46 +144,35 @@ export const out = out_0;"
 `;
 
 exports[`unpacking record compiles member expr as keys 1`] = `
-"const {
-  spam: {
-    ham: {
-      ni: ni
-    }
-  },
-  ...rest
-} = foo;"
+"const key_0 = \`spam\`;
+const {
+  spam: _key_0,
+  ...rest_0
+} = foo;
+const out_0 = [foo.spam.ham.ni, rest_0];
+export const out = out_0;"
 `;
 
 exports[`unpacking record compiles member expr as keys 2`] = `
-"const {
-  spam: {
-    ham: {
-      ni: {
-        ni: nu,
-        foo: {
-          bar: bar
-        }
-      }
-    }
-  },
-  ...rest
-} = foo;"
+"const key_0 = \`spam\`;
+const val_2 = foo.spam.ham.ni;
+const {
+  spam: _key_0,
+  ...rest_0
+} = foo;
+const out_0 = [val_2.ni, val_2.foo.bar, rest_0];
+export const out = out_0;"
 `;
 
 exports[`unpacking record compiles member expr as keys 3`] = `
-"const {
-  \\"foo-bar\\": {
-    \\"spam-ham\\": {
-      ni: {
-        ni: nu,
-        foo: {
-          bar: bar
-        }
-      }
-    }
-  },
-  ...rest
-} = foo;"
+"const key_0 = \`foo-bar\`;
+const val_2 = foo[\`foo-bar\`][\`spam-ham\`].ni;
+const {
+  \\"foo-bar\\": _key_0,
+  ...rest_0
+} = foo;
+const out_0 = [val_2.ni, val_2.foo.bar, rest_0];
+export const out = out_0;"
 `;
 
 exports[`unpacking record compiles non js idents 1`] = `

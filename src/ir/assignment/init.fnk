@@ -2,7 +2,7 @@
 
 {add, any, unique_ident} = import '../context.fnk'
 {transform} = import '../transform.fnk'
-
+{members_as_rec} = import '../literals/record.fnk'
 
 
 bind = fn {value: src_id}, ctx:
@@ -84,6 +84,10 @@ transform_dr = fn [expr=false, ...exprs], rec_id, ctx, keys=[], prev=[], fallbac
       transform_dr
         [{...expr, right: left}, ...exprs]
         rec_id, dl_ctx, keys, [...prev, ...flbk], flbk_id
+
+    {left.type: 'member'}:
+      {exprs: rx} = members_as_rec expr.left, expr.right
+      transform_dr [...rx, ...exprs], rec_id, ctx, keys, prev, fallback
 
     {right.type: ? in ['ident', 'empty']}:
       [key, key_id, val_id, next_ctx] = get_key_val expr, ctx

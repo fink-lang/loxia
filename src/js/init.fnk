@@ -30,8 +30,6 @@
 
 {inc_ref} = import '../ir/context.fnk'
 
-{timed} = import '../perf.fnk'
-
 
 add_transformers = fn ctx:
   pipe ctx:

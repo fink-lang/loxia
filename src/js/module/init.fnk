@@ -1,6 +1,6 @@
 types = import '@babel/types'
 {
-  file, program, exportNamedDeclaration, exportSpecifier, identifier
+  file, program, exportNamedDeclaration, identifier
   assignmentExpression, expressionStatement
   memberExpression, callExpression, objectProperty, objectPattern
   variableDeclaration, variableDeclarator
@@ -50,25 +50,24 @@ transform_specifiers = fn {specifiers, source}:
       expressionStatement init
 
 
-# ImportNamespaceSpecifier:
+
 module_transforms = rec:
   ImportDeclaration: fn path:
     path.replaceWith transform_specifiers path.node
     no_result
 
   ExportNamedDeclaration: fn path:
-    {specifiers} = path.node
+    {declaration: {declarations}} = path.node
+    exports = identifier 'exports'
 
-    pipe specifiers:
-      fold fn {local, exported}:
+    pipe declarations:
+      fold fn {id, init}:
         path.insertAfter
           expressionStatement
             assignmentExpression
               '='
-              memberExpression
-                identifier 'exports'
-                exported
-              local
+              memberExpression exports, id
+              init
 
     path.remove _
     no_result
@@ -80,7 +79,7 @@ transform_mod_exports = fn expr, ctx:
 
   decls = pipe get_js exports_id, ctx:
     ?.properties
-    map fn {key, value, loc}:
+    map fn {key, value}:
       name = match key:
         {type: 'StringLiteral'}: key.value
         else: key.name
@@ -126,4 +125,5 @@ transfrom_module = fn exprs, ctx:
 add_module = fn ctx:
   pipe ctx:
     add 'mod', transform_mod_exports
+
 

@@ -27,3 +27,4 @@ describe 'module', fn:
         foo-bar = 1234
       "
       to_match_snapshot
+

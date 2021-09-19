@@ -401,12 +401,12 @@ exports[`match records matches calculated props 1`] = `
 "let ret_0;
 
 ret_0: {
-  const itm_0 = shrub[a];
+  const itm_0 = shrub?.[a];
 
   /* istanbul ignore else */
-  if (itm_0.b === b) {
+  if (itm_0?.b === b) {
     /* istanbul ignore else */
-    if (itm_0.c === c) {
+    if (itm_0?.c === c) {
       ret_0 = ni;
       break ret_0;
     }
@@ -418,100 +418,60 @@ export const ;"
 `;
 
 exports[`match records matches member expr keys 1`] = `
-"{
-  ˆmatch_2: {
-    const ˆvalue_1 = foo;
+"let ret_0;
 
-    if (ˆvalue_1 != null) {
-      const {
-        foo: ˆp_3
-      } = ˆvalue_1;
+ret_0: {
+  const itm_0 = shrub?.foo;
 
-      if (ˆp_3 != null) {
-        const {
-          bar: ˆp_4
-        } = ˆp_3;
+  /* istanbul ignore else */
+  if (shrub?.foo?.bar?.spam === ham) {
+    ret_0 = spam;
+    break ret_0;
+  }
 
-        if (ˆp_4 != null) {
-          const {
-            spam: ˆp_5
-          } = ˆp_4;
+  /* istanbul ignore else */
+  if (shrub?.foo?.bar?.spam?.ham?.ni === nu) {
+    ret_0 = ham;
+    break ret_0;
+  }
 
-          if (ˆp_5 === ham) {
-            spam;
-            break ˆmatch_2;
-          }
-        }
-      }
+  /* istanbul ignore else */
+  if (itm_0?.bar?.spam?.ham?.ni === nu) {
+    /* istanbul ignore else */
+    if (itm_0?.spam === spam) {
+      ret_0 = ham;
+      break ret_0;
     }
   }
-}"
-`;
+}
 
-exports[`match records matches member expr keys 2`] = `
-"{
-  ˆmatch_2: {
-    const ˆvalue_1 = foo;
-
-    if (ˆvalue_1 != null) {
-      const {
-        foo: ˆp_3
-      } = ˆvalue_1;
-
-      if (ˆp_3 != null) {
-        const {
-          bar: ˆp_4
-        } = ˆp_3;
-
-        if (ˆp_4 != null) {
-          const {
-            spam: ˆp_5
-          } = ˆp_4;
-
-          if (ˆp_5 != null) {
-            const {
-              ham: ˆp_6
-            } = ˆp_5;
-
-            if (ˆp_6 != null) {
-              const {
-                ni: ˆp_7
-              } = ˆp_6;
-
-              if (ˆp_7 === nu) {
-                spam;
-                break ˆmatch_2;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}"
+const mex_0 = ret_0;
+export const ;"
 `;
 
 exports[`match records matches props 1`] = `
 "let ret_0;
 
 ret_0: {
+  const itm_0 = shrub?.ni;
+
   /* istanbul ignore else */
-  if (shrub.foo === foo) {
+  if (shrub?.foo === foo) {
     /* istanbul ignore else */
-    if (shrub.bar === bar) {
+    if (shrub?.bar === bar) {
       ret_0 = ni;
       break ret_0;
     }
   }
 
-  const itm_10 = shrub.ni;
+  const itm_13 = shrub?.ni;
 
   /* istanbul ignore else */
-  if (shrub.foo === 4) {
+  if (shrub?.foo === 4) {
     /* istanbul ignore else */
-    if (itm_10.na === na) {
+    if (itm_13?.na === na) {
       /* istanbul ignore else */
-      if (itm_10.nu === nu) {
+      if (itm_13?.nu === nu) {
         ret_0 = spam + ni;
         break ret_0;
       }
@@ -519,11 +479,11 @@ ret_0: {
   }
 
   /* istanbul ignore else */
-  if (shrub.foo === 1) {
+  if (shrub?.foo === 1) {
     /* istanbul ignore else */
-    if (shrub.foo.bar === \`spam\`) {
+    if (shrub?.foo?.bar === \`spam\`) {
       /* istanbul ignore else */
-      if (shrub.shrub.na === \`nu\`) {
+      if (shrub?.shrub?.na === \`nu\`) {
         ret_0 = ni;
         break ret_0;
       }
@@ -531,9 +491,18 @@ ret_0: {
   }
 
   /* istanbul ignore else */
-  if (shrub.ni.len === 1) {
+  if (shrub?.ni?.len === 1) {
     /* istanbul ignore else */
-    if (shrub.na.len === 1) {
+    if (shrub?.na?.len === 1) {
+      ret_0 = na;
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (itm_0[0] === foo) {
+    /* istanbul ignore else */
+    if (itm_0[1] === 1234) {
       ret_0 = na;
       break ret_0;
     }
@@ -554,9 +523,9 @@ ret_0: {
   } = shrub;
 
   /* istanbul ignore else */
-  if (spread_0.bar === bar) {
+  if (spread_0?.bar === bar) {
     /* istanbul ignore else */
-    if (spread_0.spam === spam) {
+    if (spread_0?.spam === spam) {
       ret_0 = ni;
       break ret_0;
     }
@@ -575,31 +544,31 @@ ret_0: {
   const key_2 = \`spam\`;
 
   /* istanbul ignore else */
-  if (true === !foo.spam) {
+  if (true === !foo?.spam) {
     ret_0 = ni;
     break ret_0;
   }
 
   /* istanbul ignore else */
-  if (true === foo.spam > 123) {
+  if (true === foo?.spam > 123) {
     ret_0 = ni;
     break ret_0;
   }
 
   /* istanbul ignore else */
-  if (true === foo.spam()) {
+  if (true === (foo?.spam)()) {
     ret_0 = ni;
     break ret_0;
   }
 
   /* istanbul ignore else */
-  if (true === foo.spam.is_foo()) {
+  if (true === (foo?.spam).is_foo()) {
     ret_0 = ni;
     break ret_0;
   }
 
   /* istanbul ignore else */
-  if (true === is_foo(foo.spam)) {
+  if (true === is_foo(foo?.spam)) {
     ret_0 = ni;
     break ret_0;
   }
@@ -610,7 +579,7 @@ ret_0: {
   } = foo;
 
   /* istanbul ignore else */
-  if (foo.spam === spam) {
+  if (foo?.spam === spam) {
     /* istanbul ignore else */
     if (true === is_empty(spread_1)) {
       ret_0 = ni;
@@ -624,7 +593,7 @@ ret_0: {
   } = foo;
 
   /* istanbul ignore else */
-  if (foo.spam === spam) {
+  if (foo?.spam === spam) {
     /* istanbul ignore else */
     if (true === _in_(\`foo\`, spread_0)) {
       ret_0 = ni;
@@ -633,7 +602,7 @@ ret_0: {
   }
 
   /* istanbul ignore else */
-  if (undefined !== foo.spam) {
+  if (undefined !== foo?.spam) {
     ret_0 = true;
     break ret_0;
   }

@@ -1,4 +1,4 @@
-{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 {fink2js} = import '../../testing/generate.fnk'
 
 
@@ -70,7 +70,7 @@ describe 'record', fn:
       to_match_snapshot
 
 
-  skip.it 'compiles member expr as keys', fn:
+  it 'compiles member expr as keys', fn:
     expect
       fink2js "foo = {...bar, spam.ham.ni: 'ni', na: 1234, ...nu}"
       to_match_snapshot
@@ -145,7 +145,7 @@ describe 'unpacking record', fn:
       to_match_snapshot
 
 
-  skip.it 'compiles member expr as keys', fn:
+  it 'compiles member expr as keys', fn:
     expect
       fink2js '
         {spam.ham.ni: ni, ...rest} = foo

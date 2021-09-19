@@ -4,6 +4,18 @@
 
 
 
+members_as_rec = fn expr, val:
+  match expr:
+    {type: 'member'}:
+      kv = {type: 'rec:kv', left: expr.right, right: val}
+      nval = {type: 'rec', exprs: [kv]}
+      members_as_rec expr.left, nval
+    else:
+      kv = {type: 'rec:kv', left: expr, right: val}
+      {type: 'rec', exprs: [kv]}
+
+
+
 transform_key = fn expr, ctx:
   match expr:
     {type: 'ident'}:
@@ -33,6 +45,7 @@ transform_kv = fn expr, out_id, ctx:
     {type: 'spread'}:
       [val, val_id, next_ctx] = transform expr.right, 'sprd', key_ctx
       [[...val, ['rec_m', [rec_id, val_id], [out_id], {loc: expr.loc}]], rec_id , next_ctx]
+
     else:
       [key, key_id, val_ctx] = transform_key expr.left, key_ctx
       [val, val_id, next_ctx] = transform_val expr, key_id, val_ctx
@@ -44,6 +57,11 @@ transform_entries = fn [expr=false, ...rest], ctx, result_id, out=[]:
   match expr:
     false:
       [out, result_id, ctx]
+
+    {left.type: 'member'}:
+      {exprs} = members_as_rec expr.left, expr.right
+      transform_entries [...exprs, ...rest], ctx, result_id, out
+
     else:
       [kv, rec_id, next_ctx] = transform_kv expr, result_id, ctx
       transform_entries rest, next_ctx, rec_id, [...kv, ...out]

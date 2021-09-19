@@ -12,10 +12,15 @@ babel_traverse = import '@babel/traverse'
 {transform_async} = import './js/async/init.fnk'
 
 
+try_catch_ = fn func:
+  r = func _
+  [false, r]
+
+
 transform_file = fn fink_ast, code, filename, options:
   ctx = init_ctx code, filename, options
 
-  [error, [js_ast]=[]] = try_catch fn:
+  [error, [js_ast]=[]] = try_catch_ fn:
     [lir] = transform fink_ast, 'mod', ctx
     [olir] = optimize lir, options
     {js} = transform_ir olir, options
