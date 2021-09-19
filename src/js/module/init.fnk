@@ -1,185 +1,129 @@
-babel_types = import '@babel/types'
+types = import '@babel/types'
 {
-  file, program, interpreterDirective, stringLiteral
-  importDeclaration, importSpecifier, importDefaultSpecifier
-  exportNamedDeclaration, exportDefaultDeclaration, identifier
-} = babel_types
-{starts_with, slice} = import '@fink/std-lib/str.fnk'
-{map_ac, filter, fold} = import '@fink/std-lib/iter.fnk'
+  file, program, exportNamedDeclaration, exportSpecifier, identifier
+  assignmentExpression, expressionStatement
+  memberExpression, callExpression, objectProperty, objectPattern
+  variableDeclaration, variableDeclarator
+  isImportDefaultSpecifier, isImportSpecifier, interpreterDirective
+} = types
 
-{add, any} = import '../context.fnk'
-{wrap_with_comment_loc} = import '../comments/init.fnk'
-{block_statement} = import '../block/init.fnk'
-{transform, is_ignorable_import} = import '../transform.fnk'
-{map_with_ctx, drop_if, collect_with_ctx} = import '../transform.fnk'
-
-{transform_import: transform_async_import, resolve_ext} = import './import.fnk'
-{set_runtime_impl, is_runtime_fn, get_runtime_imports} = import '../runtime.fnk'
+{map, fold} = import '@fink/std-lib/iter.fnk'
+{slice} = import '@fink/std-lib/str.fnk'
 
 
-
-get_hashbang = fn expr:
-  {comments} = expr
-  match comments:
-    {leading: [{op: '#', loc: {start: {line: 1}}, value: starts_with ?, '!'}]}:
-      [first, ...rest] = comments.leading
-      shebang = interpreterDirective '${slice first.value, 1}'
-      [[shebang], {...expr, comments: {...comments, leading: rest}}]
-    else:
-      [[], expr]
+{add, get_js, set_js, get_js_literal} = import '../context.fnk'
+{transform_exprs} = import '../transform.fnk'
+{escape_ident} = import '../identifier/init.fnk'
 
 
-
---- istanbul ignore next ---
-ignorable_import = fn expr, ctx:
-  match expr:
-    {type: 'assign', right: is_ignorable_import ?, ctx}:
-      true
-    else:
-      false
+[no_result] = []
 
 
+transform_specifiers = fn {specifiers, source}:
+  init = callExpression
+    identifier 'require'
+    [source]
 
-add_runtime_fn_overrides = fn expr, ctx:
-  match expr:
-    {type: 'assign', right.op: 'import', left.type: 'rec'}:
-      {right.right.exprs: [{value: uri}]} = expr
+  [first] = specifiers
 
-      next_ctx = pipe expr.left.exprs:
-        filter fn {left, right}:
-          match right:
-            false: is_runtime_fn left.value, ctx
-            else: is_runtime_fn right.value, ctx
+  match first:
+    isImportDefaultSpecifier ?:
+      [{local}] = specifiers
+      variableDeclaration 'const', [variableDeclarator local, init]
 
-        fold ctx, fn {left, right}, override_ctx:
-          name = match right:
-            false: left.value
-            else: right.value
-          set_runtime_impl name, uri, override_ctx
+    isImportSpecifier ?:
+      props = pipe specifiers:
+        map fn node:
+          objectProperty
+            node.imported
+            node.local
+            false
+            node.imported.name == node.local.name
+        [...?]
 
-      [expr, next_ctx]
-    else:
-      [expr, ctx]
-
-
-
-imported_specs = fn exprs, ctx:
-  pipe exprs:
-    map_ac fn prop, , imp_ctx:
-      [right, left_ctx] = match prop:
-        {right: false}:
-          transform prop.left, imp_ctx
-        else:
-          transform prop.right, imp_ctx
-
-      match prop:
-        {left.value: 'default'}:
-          imp = importSpecifier right, identifier prop.left.value
-          [imp, ,left_ctx]
-
-        else:
-          [left, next_ctx] = transform prop.left, left_ctx
-          imp = importSpecifier right, left
-          [imp, , next_ctx]
-
-    collect_with_ctx ctx
-
-
-
-transform_import = fn node, ctx:
-  {options} = ctx
-  {right: {right: {exprs: [{value: url}]}}} = node
-
-  [imports, end_ctx] = match node.left:
-    {type: 'ident'}:
-      [imp, next_ctx] = transform node.left, ctx
-      [[importDefaultSpecifier imp], next_ctx]
-
-    --- istanbul ignore next TODO: it is only else ---
-    {type: 'rec'}:
-      imported_specs node.left.exprs, ctx
-
-  js = importDeclaration
-    imports
-    wrap_with_comment_loc
-      stringLiteral resolve_ext url, options
-      node.right.right
-
-  [js, end_ctx]
-
-
-
-transform_body_expr = fn expr, expr_ctx:
-  match expr:
-    {op: 'import'}:
-      {right: {exprs: [url]}} = expr
-      js = wrap_with_comment_loc
-        importDeclaration
-          [], stringLiteral resolve_ext url.value, expr_ctx.options
-        expr
-      [js, expr_ctx]
-
-    {right: {op: 'import'}}:
-      [imp, next_ctx] = transform_import expr, expr_ctx
-      js = wrap_with_comment_loc imp, expr
-      [js, next_ctx]
-
-    {type: 'assign', left: {type: 'ident', value: 'default'}}:
-      [decl, next_ctx] = transform expr.right, expr_ctx
-      js = wrap_with_comment_loc
-        exportDefaultDeclaration decl
-        expr
-      [js, next_ctx]
-
-    {type: 'assign', left: {type: 'ident'}}:
-      # we don't want to double up on comments?
-      {comments: _, ...decl} = expr
-      [decl_st, next_ctx] = block_statement decl, expr_ctx
-      js = wrap_with_comment_loc
-        exportNamedDeclaration decl_st
-        expr
-      [js, next_ctx]
+      variableDeclaration 'const', list:
+        variableDeclarator
+          objectPattern [...props]
+          init
 
     else:
-      block_statement expr, expr_ctx
+      expressionStatement init
+
+
+# ImportNamespaceSpecifier:
+module_transforms = rec:
+  ImportDeclaration: fn path:
+    path.replaceWith transform_specifiers path.node
+    no_result
+
+  ExportNamedDeclaration: fn path:
+    {specifiers} = path.node
+
+    pipe specifiers:
+      fold fn {local, exported}:
+        path.insertAfter
+          expressionStatement
+            assignmentExpression
+              '='
+              memberExpression
+                identifier 'exports'
+                exported
+              local
+
+    path.remove _
+    no_result
 
 
 
-insert_imports = fn [body, ctx]:
-  [imports, end_ctx] = pipe ctx:
-    get_runtime_imports ?
-    drop_if ignorable_import
-    map_with_ctx transform_body_expr
-    collect_with_ctx ctx
+transform_mod_exports = fn expr, ctx:
+  [ , [exports_id], [res_id]] = expr
 
-  [[...imports, ...body], end_ctx]
+  decls = pipe get_js exports_id, ctx:
+    ?.properties
+    map fn {key, value, loc}:
+      name = match key:
+        {type: 'StringLiteral'}: key.value
+        else: key.name
+
+      ident = rec:
+        ...identifier escape_ident name
+        loc: key.loc
+
+      variableDeclarator ident, value
+    [...?]
+
+  js = exportNamedDeclaration variableDeclaration 'const', decls
+
+  set_js res_id, js, ctx
 
 
 
-transform_module = fn node, ctx:
-  [maybe_shebang_or_pragmas, ...rest] = node.exprs
-  [interpreter, first] = get_hashbang maybe_shebang_or_pragmas
+transfrom_module = fn exprs, ctx:
+  [body, next_ctx] = transform_exprs exprs, ctx
+  [..., last] = exprs
+  [ , [ , drctvs_id]] = last
 
-  [body, end_ctx] = pipe [first, ...rest]:
-    map_with_ctx add_runtime_fn_overrides
-    drop_if ignorable_import
-    map_with_ctx transform_body_expr
-    collect_with_ctx ctx
-    insert_imports
+  drctvs = get_js_literal drctvs_id, next_ctx
+
+  directives = match drctvs:
+    {elements: [{type: 'TemplateLiteral'}]}:
+      [{quasis: [{value: {raw: value}}]}] = drctvs.elements
+      [interpreterDirective slice value, 2]
+    else:
+      []
 
   js = file
     program
       body
       []
       'module'
-      ...interpreter
+      ...directives
 
-  [js, end_ctx]
+  {...next_ctx, js}
 
 
 
 add_module = fn ctx:
   pipe ctx:
-    add 'module', any, transform_module
-    add 'import', any, transform_async_import
+    add 'mod', transform_mod_exports
 

@@ -1,25 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`await compiles 1`] = `
-"export const task1 = async foo => -(await foo);
-export const task2 = async foo => await (foo + 4);
-export const task3 = async foo => {
-  const spam = await foo();
+"const task1_0 = async foo_0 => {
+  return -(await foo_0);
+};
+
+const task2_0 = async foo_1 => {
+  return await (foo_1 + 4);
+};
+
+const task3_0 = foo_2 => {
   return bar + 123;
 };
-export const a_gen = unfold(async (curr = 0) => {
-  const ˆvalue_1 = shrub;
+
+const a_gen_0 = unfold(async hdm_0 => {
+  const curr_0 = undefined === hdm_0 ? 0 : hdm_0;
 
   /* istanbul ignore else */
-  if (ˆvalue_1 === spam) {
-    return await ni(curr);
+  if (shrub === spam) {
+    return await ni(curr_0);
   }
 
-  {
-    return curr + 1;
-  }
+  return curr_0 + 1;
 });
-await ni;"
+export const task1 = task1_0,
+      task2 = task2_0,
+      task3 = task3_0,
+      a_gen = a_gen_0;"
 `;
 
 exports[`await handles awaiting async iterables 1`] = `

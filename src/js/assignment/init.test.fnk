@@ -1,5 +1,5 @@
-{fink2js} = import '../../testing/generate.fnk'
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{fink2js} = import '../../testing/generate.fnk'
 
 
 describe 'assignment', fn:
@@ -19,25 +19,8 @@ describe 'assignment', fn:
           + 234 +
           -567
           - 1111
+
+        foo-bar = spam
       '
       to_match_snapshot
 
-
-
-describe 'unpacking lists', fn:
-  it 'compiles leading, last', fn:
-    expect
-      fink2js "
-        [...leading, last] = '1234'
-      "
-      to_match_snapshot
-
-  it 'compiles first, some, last', fn:
-    expect
-      fink2js "
-        # enhanced destructuring
-        [foo, bar, ...spam, ni, shrub] = '123'
-
-        [a, , ..., b, c] = '123'
-      "
-      to_match_snapshot

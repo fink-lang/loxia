@@ -2,14 +2,23 @@
 
 exports[`module handles comments 1`] = `
 "#!/usr/bin/env node
-// leading comment
-// expr comment
-export const foo = 1234;"
+const foo_0 = 1234;
+export const foo = foo_0;"
 `;
 
 exports[`module handles exports 1`] = `
-"export const ˆdelete = () => true;
-export const π = () => true;
-export const foo_bar = 1234;
-export const fooᜭbar = 1234;"
+"const delete_0 = () => {
+  return true;
+};
+
+const π_0 = () => {
+  return true;
+};
+
+const foo_bar_0 = 1234;
+const fooᜭbar_0 = 1234;
+export const ˆdelete = delete_0,
+      π = π_0,
+      foo_bar = foo_bar_0,
+      fooᜭbar = fooᜭbar_0;"
 `;

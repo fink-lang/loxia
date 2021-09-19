@@ -1,19 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pipe compiles 1`] = `
-"{
-  let ˆpipe_result_1 = undefined;
-  ˆpipe_result_1 = foo(ˆpipe_result_1);
-  ˆpipe_result_1 = bar(ˆpipe_result_1, {
-    foo
-  });
-  ˆpipe_result_1 = spam(ˆpipe_result_1);
-  ˆpipe_result_1 = [...ˆpipe_result_1];
-}
-{
-  let ˆpipe_result_2 = [1, 2, 3];
-  ˆpipe_result_2 = map(item => item * 2)(ˆpipe_result_2);
-}"
+"const ppr_4 = (prtl_3 => {
+  return [4, 5, ...prtl_3];
+})((prtlc_1 => {
+  return prtlc_1.spam(456);
+})(spam((prtl_0 => {
+  return bar(prtl_0, 123);
+})(foo()))));
+
+const ppr_5 = map(item_5 => {
+  return item_5 * 2;
+})([1, 2, 3]);
+export const p1 = ppr_4,
+      p2 = ppr_5;"
 `;
 
 exports[`small pipe | handles precedence 1`] = `
@@ -21,4 +21,7 @@ exports[`small pipe | handles precedence 1`] = `
 export const bar = [ham(spam), ni(shrub)];"
 `;
 
-exports[`small pipe | pipes 1`] = `"export const foo = is_int(134);"`;
+exports[`small pipe | pipes 1`] = `
+"const foo_0 = is_int(134);
+export const foo = foo_0;"
+`;

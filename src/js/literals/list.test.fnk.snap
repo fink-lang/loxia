@@ -1,10 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`list compiles 1`] = `
-"export const array1 = [];
-export const array2 = [1];
-export const array3 = [1, 2, 4, a(), ...b];
-export const array4 = [a + 1 + 45 + b + c, [1, 2], (3 + 3) * 2];"
+"const array1_0 = [];
+const array2_0 = [1];
+const array3_0 = [1, 2];
+const array4_0 = [1,, 2];
+const array5_0 = [a + 1 + 45 + b + c, [1, 2], (3 + 3) * 2];
+export const array1 = array1_0,
+      array2 = array2_0,
+      array3 = array3_0,
+      array4 = array4_0,
+      array5 = array5_0;"
 `;
 
 exports[`list compiles as partial 1`] = `
@@ -13,44 +19,83 @@ exports[`list compiles as partial 1`] = `
 ˆpartial => [ˆpartial, ˆpartial];"
 `;
 
-exports[`unpacking list compiles 1`] = `
-"const [a, b, c] = ni;
-const [,, d] = ni;
-const [head, ...tail] = ni;
+exports[`list compiles spread 1`] = `
+"const bar_0 = [1, 2, ...b];
+const spam_0 = [1, 2, ...b, 123];
+export const foo = b,
+      bar = bar_0,
+      spam = spam_0;"
+`;
 
-let _do_result;
+exports[`list compiles spread 2`] = `
+"const foo_0 = [1, 2, 3];
+const bar_0 = [1, 2, 3, 4, 5, 6];
+const spam_0 = [7];
+const shrub_0 = [1, 2, 3, 4, 5, 6, 7];
+const ni_0 = [...nu, na];
+const ham_0 = [...nu, ...na];
+export const foo = foo_0,
+      bar = bar_0,
+      spam = spam_0,
+      shrub = shrub_0,
+      ni = ni_0,
+      ham = ham_0;"
+`;
 
-{
-  const [...ˆitems_1] = \`1234\`;
-  _do_result = [ˆitems_1.slice(0, -1), ˆitems_1.slice(-1)];
-}
-const [items, [last]] = _do_result;
-_do_result = undefined;
+exports[`unpacking list destructures empty 1`] = `
+"const out_0 = [foo[0], foo[2]];
+export const out = out_0;"
+`;
 
-let _do_result2;
+exports[`unpacking list destructures recs 1`] = `
+"const drec_0 = ni[0];
+const out_0 = [drec_0.a, drec_0.b, ni[1]];
+export const out = out_0;"
+`;
 
-{
-  const [...ˆitems_2] = \`123\`;
-  _do_result2 = [ˆitems_2, ˆitems_2.slice(2, -2), ˆitems_2.slice(-2)];
-}
-const [[first, second], middle, [penultimate, end]] = _do_result2;
-_do_result2 = undefined;
+exports[`unpacking list destructures simple 1`] = `
+"const item_3 = 1;
+const item_2 = 2;
+const foo_0 = [item_2, item_3];
+const out_0 = [item_3, item_2, 3, foo_0, 1 + 2, item_2, item_3];
+export const foo = foo_0,
+      out = out_0;"
+`;
 
-let _do_result3;
+exports[`unpacking list destructures spread 1`] = `
+"const out_0 = [foo[0], [...foo.slice(1)].reverse()[0]];
+export const out = out_0;"
+`;
 
-{
-  const [...ˆitems_3] = \`123\`;
-  _do_result3 = [ˆitems_3, ˆitems_3.slice(1, -1), ˆitems_3.slice(-1)];
-}
-const [[ni],, [nu]] = _do_result3;
-_do_result3 = undefined;
+exports[`unpacking list destructures spread 2`] = `
+"const rtail_0 = [...foo.slice(1)].reverse();
+const out_0 = [foo[0], rtail_0[1], rtail_0[0]];
+export const out = out_0;"
+`;
 
-let _do_result4;
+exports[`unpacking list destructures spread 3`] = `
+"const out_0 = [foo[0], ...foo.slice(1)];
+export const out = out_0;"
+`;
 
-{
-  const [...ˆitems_4] = \`123\`;
-  _do_result4 = [ˆitems_4.slice(0, -1), ˆitems_4.slice(-1)];
-}
-const [, [nuna]] = _do_result4;
-_do_result4 = undefined;"
+exports[`unpacking list destructures spread 4`] = `
+"const rtail_0 = [...foo.slice(1)].reverse();
+const out_0 = [foo[0], [...rtail_0.slice(1)].reverse(), rtail_0[0]];
+export const out = out_0;"
+`;
+
+exports[`unpacking list destructures with defaults 1`] = `
+"const hdm_0 = foo[0];
+const hdm_1 = foo[1];
+const out_0 = [undefined === hdm_0 ? 12 : hdm_0, undefined === hdm_1 ? 34 : hdm_1];
+export const out = out_0;"
+`;
+
+exports[`unpacking list destructures with defaults 2`] = `
+"const hdm_1 = foo[0];
+const items_0 = undefined === hdm_1 ? [1, 2] : hdm_1;
+const hdm_0 = items_0[1];
+const hdm_2 = foo[1];
+const out_0 = [items_0[0], undefined === hdm_0 ? 0 : hdm_0, undefined === hdm_2 ? 34 : hdm_2];
+export const out = out_0;"
 `;

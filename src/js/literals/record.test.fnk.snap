@@ -1,47 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`calculated props compiles 1`] = `
-"export const foo = {
-  [\`spam\`]: 456,
+exports[`record compiles calculated props 1`] = `
+"const foo_0 = {
+  spam: 456,
   [\`spam-\${ham}\`]: \`ni\`
-};"
-`;
-
-exports[`partial compiles 1`] = `
-"ˆpartial => ({
-  foo: bar,
-  ...ˆpartial
-});
-
-ˆpartial => ({
-  foo: ˆpartial,
-  bar: spam
-});"
+};
+export const foo = foo_0;"
 `;
 
 exports[`record compiles idents that are not js prop-names 1`] = `
-"export const foo = {
+"const foo_0 = {
   foo: bar,
   π: 3.12,
   ƒ: \`fink\`,
   \\"foo-bar\\": spam
-};"
+};
+export const foo = foo_0;"
 `;
 
 exports[`record compiles key:val 1`] = `
-"export const foo = {
+"const foo_0 = {
   a: 1,
   b: 123,
-  [\`c-d-e\`]: cde
-};"
+  \\"c-d-e\\": cde
+};
+export const foo = foo_0;"
 `;
 
 exports[`record compiles key:val 2`] = `
-"export const obj7 = {
+"const obj7_0 = {
   a: 123,
   b: 123 && 123 && 1345,
-  c: (a, b) => 134
-};"
+  c: () => {
+    return 134;
+  }
+};
+export const obj7 = obj7_0;"
 `;
 
 exports[`record compiles member expr as keys 1`] = `
@@ -97,88 +91,82 @@ export const foo = _do_result;
 _do_result = undefined;"
 `;
 
-exports[`record compiles multiline 1`] = `
-"export const foo = {
-  a: 123,
-  b: 123 && 123 && 1345,
-  c: (a, b) => 134,
-  d: foo(a + 3)
-};"
-`;
-
-exports[`record compiles multiline 2`] = `
-"export const foo = {
-  a: 123,
-  b: 123 && 123 && 1345,
-  c: (a, b) => 134,
-  d: foo(a + 3)
-};"
-`;
-
 exports[`record compiles shorthand 1`] = `
-"export const foo = {
-  foo,
-  π,
-  ƒ,
+"const foo_0 = {
+  bar: bar,
+  π: π,
+  ƒ: ƒ,
   \\"foo-bar\\": fooᜭbar
-};"
+};
+export const foo = foo_0;"
 `;
 
 exports[`record compiles shorthand 2`] = `
-"export const foo = {
-  a,
+"const foo_0 = {
+  a: a,
   \\"delete\\": ˆdelete,
-  true,
-  false
-};"
+  true: true,
+  false: false
+};
+export const foo = foo_0;"
 `;
 
 exports[`record compiles shorthand 3`] = `
-"export const foo = {
-  [\`foo\`]: \`foo\`
-};"
+"const str_0 = \`foo\`;
+const foo_0 = {
+  [str_0]: str_0
+};
+export const foo = foo_0;"
 `;
 
-exports[`record compiles simple 1`] = `"export const foo = {};"`;
+exports[`record compiles simple 1`] = `
+"const foo_0 = {};
+export const foo = foo_0;"
+`;
 
 exports[`record compiles spread 1`] = `
-"export const foo = {
-  a,
-  b,
+"const foo_0 = {
+  a: a,
+  b: b,
   ...c
-};"
+};
+const bar_0 = { ...foo_0,
+  ...ni
+};
+const spam_0 = { ...ham,
+  ni: ni
+};
+const ni_0 = { ...na,
+  ...nu
+};
+export const foo = foo_0,
+      bar = bar_0,
+      spam = spam_0,
+      ni = ni_0;"
 `;
 
 exports[`unpacking record compiles computed keys 1`] = `
-"const {
-  [\`n i\`]: ni
-} = foo;"
+"const out_0 = [foo[\`n i\`], foo[ni], foo[\`foo\${bar}\`].c];
+export const out = out_0;"
 `;
 
 exports[`unpacking record compiles defaults 1`] = `
-"const {
-  x = 1,
-  π = 2,
-  ni: {
-    y,
-    z
-  }
-} = {
-  ni: {
-    y: 1,
-    z: 2
-  }
-};"
+"const hdm_0 = foo.a;
+const hdm_1 = foo.b;
+const val_0 = foo.ni;
+const out_0 = [undefined === hdm_0 ? 1 : hdm_0, undefined === hdm_1 ? 2 : hdm_1, val_0.c, val_0.d];
+export const out = out_0;"
 `;
 
 exports[`unpacking record compiles empty 1`] = `
-"const {
-  foo: ˆunused_1,
-  bar
-} = {
-  foo: 12,
-  bar: 34
-};"
+"const key_1 = \`bar\`;
+const {
+  foo: _key_0,
+  bar: _key_1,
+  ...shrub_0
+} = foo;
+const out_0 = [foo.bar, shrub_0];
+export const out = out_0;"
 `;
 
 exports[`unpacking record compiles member expr as keys 1`] = `
@@ -225,29 +213,29 @@ exports[`unpacking record compiles member expr as keys 3`] = `
 `;
 
 exports[`unpacking record compiles non js idents 1`] = `
-"const {
-  foo,
-  π,
-  ƒ,
-  \\"delete\\": ˆdelete
-} = spam;"
+"const out_0 = [spam.foo, spam.π, spam.ƒ, spam[\`delete\`]];
+export const out = out_0;"
 `;
 
 exports[`unpacking record compiles simple 1`] = `
-"const {
-  a,
-  b,
-  c
-} = ni;"
+"const out_0 = [ni.a, ni.b, ni.c];
+export const out = out_0;"
 `;
 
 exports[`unpacking record compiles spread 1`] = `
-"const {
-  e,
-  ...f
-} = {
-  e: 0,
-  foo: 12,
-  bar: 34
-};"
+"const key_0 = \`a\`;
+const key_1 = \`b\`;
+const {
+  a: _key_0,
+  b: _key_1,
+  ...c_0
+} = foo;
+const out_0 = [foo.a, foo.b, c_0];
+export const out = out_0;"
+`;
+
+exports[`unpacking record destructuress tpls 1`] = `
+"const val_0 = shrub.foo;
+const out_0 = [val_0[1], val_0[0]];
+export const out = out_0;"
 `;

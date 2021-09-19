@@ -7,96 +7,113 @@ babel_types = import '@babel/types'
 
 {length} = import '@fink/std-lib/iter.fnk'
 
-{add, any} = import '../context.fnk'
-{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
+{add, set_js, get_js_literal} = import '../context.fnk'
 
 
 
-transform_jsx_elem = fn node, ctx:
-  id = jsxIdentifier node.name.value
+transform_prop_id = fn key:
+  match key:
+    {type: 'Identifier'}:
+      jsxIdentifier key.name
 
-  [attrs, children_ctx] = pipe node.props:
-    map_with_ctx fn expr, expr_ctx:
-      match expr:
-        {type: 'spread'}:
-          [attr, next_ctx] = transform expr.right, expr_ctx
-          spread = jsxSpreadAttribute attr
-          [spread, next_ctx]
-        else:
-          transform expr, expr_ctx
-    collect_with_ctx ctx
+    {type: 'StringLiteral'}:
+      jsxIdentifier key.value
 
-  [children, next_ctx] = pipe node.children:
-    map_with_ctx transform
-    collect_with_ctx children_ctx
+
+
+transform_prop_val = fn value:
+  match value:
+    {type: 'TemplateLiteral', quasis: 1 == length ?}:
+      # TODO: should happen at optimization level
+      {quasis: [{value: {raw: str}}]} = value
+      stringLiteral str
+    else:
+      jsxExpressionContainer value
+
+
+
+transform_props = fn [prop=false, ...props], out=[]:
+  match prop:
+    false:
+      out
+
+    {type: 'ObjectProperty'}:
+      attr = jsxAttribute
+        transform_prop_id prop.key
+        transform_prop_val prop.value
+      transform_props props, [...out, attr]
+
+    {type: 'SpreadElement'}:
+      attr = jsxSpreadAttribute prop.argument
+      transform_props props, [...out, attr]
+
+
+
+transform_children = fn [chld=false, ...children], out=[]:
+  match chld:
+    false:
+      out
+
+    {type: 'TemplateLiteral', quasis: 1 == length ?}:
+      # TODO: should happen at optimization level
+      {quasis: [{value: {raw: str}}]} = chld
+      js = jsxText str
+      transform_children children, [...out, js]
+
+    {type: 'JSXElement'}:
+      transform_children children, [...out, chld]
+
+    else:
+      js = jsxExpressionContainer chld
+      transform_children children, [...out, js]
+
+
+
+transform_jxe = fn expr, ctx:
+  [ , [name_id, props_id, chldrn_id], [res_id]] = expr
+
+  id = jsxIdentifier name_id
+
+  props = pipe props_id:
+    get_js_literal ?, ctx
+    ?.properties
+    transform_props
+
+  children = pipe chldrn_id:
+    get_js_literal ?, ctx
+    ?.elements
+    transform_children
+
 
   js = jsxElement
-    jsxOpeningElement id, attrs, node.self_closing
+    jsxOpeningElement id, props, 0 == length children
     jsxClosingElement id
     children
 
-  [js, next_ctx]
+  set_js res_id, js, ctx
 
 
 
-transform_jsx_frag = fn node, ctx:
-  [children, next_ctx] = pipe node.children:
-    map_with_ctx transform
-    collect_with_ctx ctx
+transform_jxf = fn expr, ctx:
+  [ , [chldrn_id], [res_id]] = expr
+
+  children = pipe chldrn_id:
+    get_js_literal ?, ctx
+    ?.elements
+    transform_children
 
   js = jsxFragment
     jsxOpeningFragment _
     jsxClosingFragment _
     children
 
-  [js, next_ctx]
-
-
-
-transform_jsx_attr = fn node, ctx:
-  {name} = node
-
-  [value, next_ctx] = match node:
-    {value: {type: 'string', exprs: 1 == length ?}}:
-      {exprs: [str]} = node.value
-      [[stringLiteral str.value], ctx]
-
-    {value: {type: 'jsx:expr'}}:
-      [val, next_ctx] = transform node.value, ctx
-      [[val], next_ctx]
-
-    {value: false}:
-      [val, next_ctx] = transform name, ctx
-      [[jsxExpressionContainer val], next_ctx]
-
-    else:
-      [val, next_ctx] = transform node.value, ctx
-      [[jsxExpressionContainer val], next_ctx]
-
-  id = jsxIdentifier name.value
-  js = jsxAttribute id, ...value
-  [js, next_ctx]
-
-
-
-transform_jsx_text = fn node, ctx:
-  js = jsxText node.value
-  [js, ctx]
-
-
-
-transform_jsx_expr_container = fn node, ctx:
-  [val, next_ctx] = transform node.expr, ctx
-  js = jsxExpressionContainer val
-  [js, next_ctx]
+  set_js res_id, js, ctx
 
 
 
 add_jsx = fn ctx:
   pipe ctx:
-    add 'jsx:frag', any, transform_jsx_frag
-    add 'jsx:elem', any, transform_jsx_elem
-    add 'jsx:attr', any, transform_jsx_attr
-    add 'jsx:text', any, transform_jsx_text
-    add 'jsx:expr', any, transform_jsx_expr_container
+    add 'jxe', transform_jxe
+    add 'jxf', transform_jxf
+
 

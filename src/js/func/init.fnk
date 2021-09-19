@@ -1,36 +1,126 @@
-babel_types = import '@babel/types'
-{arrowFunctionExpression} = babel_types
+types = import '@babel/types'
+{
+  arrowFunctionExpression, blockStatement, returnStatement
+  identifier, restElement
+  labeledStatement, doWhileStatement, booleanLiteral
+} = types
 
-{unique_ident} = import '../../js/types.fnk'
-{transform_left} = import '../../js/left.fnk'
-{add, any} = import '../context.fnk'
-{transform_block} = import '../block/init.fnk'
-{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
+{map} = import '@fink/std-lib/iter.fnk'
+
+{transform_exprs} = import '../transform.fnk'
+{add, set_js} = import '../context.fnk'
+{get_refs, update_value} = import '../../ir/context.fnk'
 
 
 
-transform_arg = fn arg, ctx:
-  match arg:
-    {type: 'empty'}:
-      unique_ident '', ctx
+
+clean_args = fn args:
+  [..., last] = args
+  pipe args:
+    map fn arg: match arg:
+      last: arg
+      {type: 'RestElement'}: arg.argument
+      else: arg
+    [...?]
+
+
+
+split_args_body = fn [expr=false, ...exprs], args_id, ctx, args=[], body=[]:
+  match expr:
+    false:
+      fn_args = clean_args args
+      [fn_args, body, ctx]
+
+    ['lst_h', [args_id]]:
+      [...prev, ] = match args:
+        [?, ?]: args
+        else: [...args, ]
+
+      [, , [arg_id]] = expr
+      arg = identifier arg_id
+      split_args_body exprs, args_id, ctx, [...prev, arg], body
+
+    ['lst_r', [args_id]]:
+      split_args_body [], args_id, ctx, args, [...body, expr, ...exprs]
+
+    ['lst_t', [args_id]]:
+      [, , [tail_id]] = expr
+      arg = identifier tail_id
+      rest = restElement arg
+
+      match get_refs tail_id, ctx:
+        # the rest is used for more than just getting next arg and tail
+        ? > 2:
+          split_args_body [], tail_id, ctx, [...args, rest], [...body, ...exprs]
+        # this is an ignored arg or last spread
+        else:
+          split_args_body exprs, tail_id, ctx, [...args, rest], body
+
     else:
-      [t_arg, next_ctx] = transform arg, ctx
-      js_arg = transform_left t_arg
-      [js_arg, next_ctx]
+      split_args_body exprs, args_id, ctx, args, [...body, expr]
 
 
 
-transform_func = fn node, ctx:
-  [params, next_ctx] = pipe node.args:
-    map_with_ctx transform_arg
-    collect_with_ctx ctx
-
-  [body, end_ctx] = transform_block node, next_ctx
-  js = arrowFunctionExpression params, body
-
-  [js, end_ctx]
 
 
-add_func = fn ctx:
+transform_fn = fn expr, ctx:
+  [, [fn_args, fn_block], [res_id]] = expr
+  [args_id, ret_id] = fn_args
+  ret = returnStatement _
+  body_ctx = set_js ret_id, ret, ctx
+
+  [args, block, fn_ctx] = split_args_body fn_block, args_id, body_ctx
+  [body, next_ctx] = transform_exprs block, fn_ctx
+
+  js = arrowFunctionExpression args, blockStatement body
+
+  set_js res_id, js, next_ctx
+
+
+
+transform_recursive_fn = fn expr, ctx:
+  [, [fn_args, block], [res_id]] = expr
+  [args_id, ret_id] = fn_args
+
+  ret = returnStatement _
+  tmp_ctx = set_js ret_id, ret, ctx
+  body_ctx = update_value res_id, {args_id}, tmp_ctx
+
+  [body, next_ctx] = transform_exprs block, body_ctx
+
+  js = arrowFunctionExpression
+    [restElement identifier args_id]
+    blockStatement list:
+      labeledStatement
+        identifier res_id
+        doWhileStatement
+          booleanLiteral true
+          blockStatement body
+
+  set_js res_id, js, next_ctx
+
+
+
+transform_cont = fn expr, ctx:
+  [, [args, block], [res_id]] = expr
+  [ret_id=false] = args
+  [body, next_ctx]= transform_exprs block, ctx
+
+  js = match ret_id:
+    false:
+      blockStatement body
+    else:
+      labeledStatement
+        identifier ret_id
+        blockStatement body
+
+  set_js res_id, js, next_ctx
+
+
+
+add_funcs = fn ctx:
   pipe ctx:
-    add any, 'fn', transform_func
+    add 'fn', transform_fn
+    add 'fnr', transform_recursive_fn
+    add 'cn', transform_cont
+

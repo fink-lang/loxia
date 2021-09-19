@@ -1,45 +1,27 @@
-babel_types = import '@babel/types'
-{logicalExpression, unaryExpression} = babel_types
+types = import '@babel/types'
+{logicalExpression} = types
 
-{add, add_with_runtime, any} = import '../context.fnk'
+{add, get_js, set_js} = import '../context.fnk'
 
-{transform_in} = import './in.fnk'
-{transform_with_partial_lr, transform_with_partial} = import '../partial/init.fnk'
-
-
-
-transform_op = rec:
-  'and': '&&'
-  'or': '||'
-  'not': '!'
+{transform_unary} = import '../transform.fnk'
 
 
 
-transform_not = fn node, ctx:
-  {(node.op): op} = transform_op
-  [wrap_partial, right, next_ctx] = transform_with_partial node.right, ctx
 
-  js = unaryExpression op, right
+transform_binary = fn jsop: fn expr, ctx:
+  [, [left_id, right_id], [result_id]] = expr
+  left = get_js left_id, ctx
+  right = get_js right_id, ctx
+  js = logicalExpression jsop, left, right
+  set_js result_id, js, ctx
 
-  wrap_partial js, next_ctx
 
-
-
-transform_logical = fn node, ctx:
-  {(node.op): op} = transform_op
-
-  [left, right, next_ctx, wrap_partial] = transform_with_partial_lr node.left, node.right, ctx
-
-  js = logicalExpression op, left, right
-
-  wrap_partial js, next_ctx
 
 
 
 add_logical = fn ctx:
   pipe ctx:
-    add any, 'and', transform_logical
-    add any, 'or', transform_logical
-    add any, 'not', transform_not
-    # TODO: should this live in iterables?
-    add_with_runtime any, 'in', transform_in
+    add 'and', transform_binary '&&'
+    add 'or', transform_binary '||'
+    add 'not', transform_unary
+

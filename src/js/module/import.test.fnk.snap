@@ -1,36 +1,62 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`import imports default export 1`] = `"import foo from \\"./foo.js\\";"`;
+exports[`import imports default export 1`] = `
+"import foo_0 from \\"./foo.js\\";
+export const ;"
+`;
 
-exports[`import imports dynamically with static URL 1`] = `"export const ni = await import(\`./shrub.js\`);"`;
+exports[`import imports dynamically with static URL 1`] = `
+"const ni_0 = () => {
+  return import(\`./shrub.fnk\`);
+};
+
+export const ni = ni_0;"
+`;
 
 exports[`import imports exported values 1`] = `
-"import { bar } from \\"./spam.js\\";
-import { foo as spam } from \\"./shrub.js\\";
-import { π, ˆdelete } from \\"./ni.js\\";
-import { fooᜭbar } from \\"./ham.js\\";"
+"import { bar as bar_0 } from \\"./spam.js\\";
+import { foo as spam_0 } from \\"./shrub.js\\";
+import { π as π_0 } from \\"./ni.js\\";
+import { ˆdelete as delete_0 } from \\"./ni.js\\";
+import { fooᜭbar as fooᜭbar_0 } from \\"./ham.js\\";
+import shrub_0 from \\"./shrub.js\\";
+const out_0 = [bar_0, spam_0, π_0, delete_0, fooᜭbar_0];
+export const out = out_0;"
 `;
 
 exports[`import imports module 1`] = `
 "import \\"shrub\\";
-import \\"@fink/foo/bar.js\\";"
+import \\"@fink/foo/bar.js\\";
+export const ;"
 `;
 
 exports[`import imports with dynamic URLs 1`] = `
-"export const foo = bar + spam;
-export const shrub = await import(foo);
-export const ni = await import(\`\${foo}\`);
-export const na = await import(\`./\${foo}.js\`);"
+"const shrub_0 = () => {
+  return import(foo);
+};
+
+const ni_0 = () => {
+  return import(\`\${foo}\`);
+};
+
+const na_0 = () => {
+  return import(\`./\${foo}.fnk\`);
+};
+
+export const shrub = shrub_0,
+      ni = ni_0,
+      na = na_0;"
 `;
 
 exports[`import imports without transforming ext 1`] = `
-"//
-import { is_str } from \\"@fink/std-lib/str.js\\";
-import { bar } from \\"./spam.fnk\\";
-const {
-  foo: spam
-} = await import(\`./shrub.fnk\`);
-export const na = await import(\`./\${foo}.fnk\`);
+"import { is_str as is_str_0 } from \\"@fink/std-lib/str.js\\";
+import { bar as bar_0 } from \\"./spam.fnk\\";
+
+const na_0 = () => {
+  return import(\`./\${foo}.fnk\`);
+};
+
 import \\"./foo.fnk\\";
-import ni from \\"../ni.fnk\\";"
+import ni_0 from \\"../ni.fnk\\";
+export const na = na_0;"
 `;

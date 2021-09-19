@@ -1,12 +1,12 @@
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 {fink2js} = import '../../testing/generate.fnk'
-{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
 describe 'in', fn:
   it 'compiles with default runtime', fn:
     expect
       fink2js "
-        foo = 1 in [1, 2, 3]
+        foo = 1 in [1, x, 3]
         bar = '2' in '1234'
         spam = key in {foo: bar}
         shrub = item in ni
@@ -14,11 +14,11 @@ describe 'in', fn:
       to_match_snapshot
 
 
-  it 'compiles with custom runtime', fn:
+  skip.it 'compiles with custom runtime', fn:
     expect
       fink2js "
         {better_in: _in_} = import './foo.fnk'
-        foo = 1 in [1, 2, 3]
+        foo = 1 in [1, x, 3]
         bar = '2' in '1234'
         spam = key in {foo: bar}
         shrub = item in ni
@@ -26,7 +26,7 @@ describe 'in', fn:
       to_match_snapshot
 
 
-  it 'compiles as partial', fn:
+  skip.it 'compiles as partial', fn:
     expect
       fink2js "
         ? in [1, 2, 3]
@@ -35,7 +35,7 @@ describe 'in', fn:
       to_match_snapshot
 
 
-  it 'compiles with custom runtime import', fn:
+  skip.it 'compiles with custom runtime import', fn:
     expect
       fink2js "
         {_in_} = import './foo.fnk'

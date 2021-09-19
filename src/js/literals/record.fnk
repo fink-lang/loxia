@@ -1,198 +1,141 @@
-babel_types = import '@babel/types'
+types = import '@babel/types'
 {
-  objectExpression, objectProperty, assignmentPattern, doExpression
-  blockStatement, expressionStatement, assignmentExpression, spreadElement
-  optionalMemberExpression, identifier
-} = babel_types
+  objectExpression, objectProperty, objectPattern
+  memberExpression, identifier
+  spreadElement, restElement, variableDeclaration
+  variableDeclarator, stringLiteral
+} = types
+{map} = import '@fink/std-lib/iter.fnk'
 
-{filter, filter_ac, while, is_empty} = import '@fink/std-lib/iter.fnk'
-{map, zip} = import '@fink/std-lib/iter.fnk'
-
-{raw_str, unique_ident, ident, lets} = import '../../js/types.fnk'
-{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
-{partial_wrapper, no_wrapper} = import '../partial/init.fnk'
-
-
-optional = true
-not_computed = false
+{inc_ref} = import '../../ir/context.fnk'
+{is_js_ident} = import '../identifier/init.fnk'
+{add, get_js, get_js_literal, set_js} = import '../context.fnk'
 
 
 
-has_member_keys = fn expr:
-  [found=false] = expr.exprs | filter fn expr:
-    match expr:
-      {left: {type: 'member'}}: true
-      else: false
-  found != false
+transform_rec = fn expr, ctx:
+  [ , , [result_id]] = expr
+  js = objectExpression []
+  set_js result_id, js, ctx
 
 
 
-get_path = fn expr:
-  match expr.type:
-    'member':
-      list:
-        ... get_path expr.left
-        ... get_path expr.right
+props_or_spread = fn obj:
+  match obj:
+    {type: 'ObjectExpression'}:
+      obj.properties
     else:
-      [identifier expr.value]
+      [spreadElement obj]
 
 
 
-transform_member_prop = fn [key, ...parents], rec_val, value:
-  next_value = match parents:
-    is_empty ?:
-      value
-    else:
-      next_rec_val = optionalMemberExpression rec_val, key, not_computed, optional
-      transform_member_prop parents, next_rec_val, value
+trandform_rec_set = fn expr, ctx:
+  [ , [rec_id, key_id, val_id], [result_id]] = expr
+  props = props_or_spread get_js rec_id, ctx
+  key = get_js key_id, ctx
+  val = get_js val_id, ctx
 
-  objectExpression list:
-    spreadElement rec_val
-    objectProperty key, next_value
+  prop = match key:
+    {type: 'TemplateLiteral', quasis: [?, ?]}:
+      objectProperty key, val, true
 
+    {type: 'TemplateLiteral', quasis: [{value: {raw: is_js_ident ?}}]}:
+      {quasis: [{value: {raw: value}}]} = key
+      objectProperty
+        identifier value
+        val
 
-
-transform_member_or_plain_prop = fn initial_rec: fn expr, ctx:
-  [val, next_ctx] = match expr:
-    {left: {type: 'member'}}:
-      path = get_path expr.left
-      [value, end_ctx] = transform expr.right, ctx
-      js = transform_member_prop path, initial_rec, value
-      [js, end_ctx]
+    {type: 'TemplateLiteral'}:
+      {quasis: [{value: {raw: value}}]} = key
+      # TODO: needs unescaping
+      objectProperty
+        stringLiteral value
+        val
 
     else:
-      [prop, end_ctx] = transform expr, ctx
-      js = objectExpression list:
-        spreadElement initial_rec
-        prop
-      [js, end_ctx]
+      objectProperty key, val, true
 
-  js = expressionStatement
-    assignmentExpression '=', initial_rec, val
-
-  [js, next_ctx]
+  js = objectExpression [...props, prop]
+  set_js result_id, js, ctx
 
 
 
-transform_rec_regular_props = fn rec_expr, ctx:
-  [...exprs] = rec_expr.exprs | while fn expr:
-    match expr:
-      {left: {type: 'member'}}: false
-      else: true
 
-  transform {...rec_expr, exprs}, ctx
+transform_rec_get = fn expr, ctx:
+  [ , [rec_id, key_id] , [result_id]] = expr
+  rec_js = get_js rec_id, ctx
+  key = get_js_literal key_id, ctx
 
+  js = match key:
+    {type: 'TemplateLiteral', quasis: [?, ?]}:
+      memberExpression rec_js, key, true
 
-
-transform_member_props = fn expr, ctx:
-  [initial_rec, next_ctx]  = unique_ident 'rec', ctx
-
-  [rec_updates, end_ctx] = pipe expr.exprs:
-    filter_ac fn expr, keep=false, ctx:
-      do_keep = match expr:
-        {left: {type: 'member'}}: true
-        else: keep
-      [do_keep, do_keep, ctx]
-    map_with_ctx transform_member_or_plain_prop initial_rec
-    collect_with_ctx next_ctx
-
-  [initial_rec, rec_updates, end_ctx]
-
-
-
-transform_with_member_expr_keys = fn expr, ctx:
-  [initial_rec, props_ctx] = transform_rec_regular_props expr, ctx
-
-  [tmp_rec, rec_updates, end_ctx] = transform_member_props expr, props_ctx
-
-  js = doExpression
-    blockStatement list:
-      lets tmp_rec, initial_rec
-      ...rec_updates
-      expressionStatement tmp_rec
-
-  [js, end_ctx]
-
-
-
-transform_record = fn expr, ctx:
-  match expr:
-    ctx.is_binding != true and has_member_keys ?:
-      transform_with_member_expr_keys expr, ctx
+    {type: 'TemplateLiteral', quasis: [{value: {raw: is_js_ident ?}}]}:
+      {quasis: [{value: {raw: value}}]} = key
+      memberExpression rec_js, identifier value
 
     else:
-      [props, next_ctx] = pipe expr.exprs:
-        map_with_ctx transform
-        collect_with_ctx ctx
+      memberExpression rec_js, key, true
 
-      [wrap_partial=no_wrapper] = pipe zip expr.exprs, props:
-        filter fn [prop, js_prop]: match prop:
-          {right.type: 'partial'}: true
-          {type: 'spread'}: js_prop.is_partial
-          else: false
-        map fn:
-          partial_wrapper
-
-      js = objectExpression props
-      wrap_partial js, next_ctx
+  set_js result_id, js, ctx
 
 
 
-str_key = fn {value, loc}, ctx:
-  str = raw_str value
-  [{...str, loc}, ctx]
+transform_rec_del_keys = fn expr, ctx:
+  [ , [rec_id, ...key_ids] , [result_id]] = expr
+  rec_js = get_js rec_id, ctx
 
+  ignored_props = pipe key_ids:
+    map fn key_id:
+      key = get_js_literal key_id, ctx
+      val = identifier '_${key_id}'
+      match key:
+        {type: 'TemplateLiteral', quasis: [?, ?]}:
+          objectProperty key, val, true
 
+        {type: 'TemplateLiteral', quasis: [{value: {raw: is_js_ident ?}}]}:
+          {quasis: [{value: {raw: value}}]} = key
+          objectProperty
+            identifier value
+            val
 
-get_key = fn {left: key}, ctx:
-  match key:
-    {type: 'group'}:
-      [true, ...transform key, ctx]
-    {type: 'string'}:
-      [true, ...transform key, ctx]
-    else:
-      id = ident key.value, ctx
-      match id:
-        {name: key.value}:
-          [false, id, ctx]
+        {type: 'TemplateLiteral'}:
+          {quasis: [{value: {raw: value}}]} = key
+          # TODO: needs unescaping
+          objectProperty
+            stringLiteral value
+            val
+
         else:
-          [false, ...str_key key, ctx]
+          objectProperty key, val, true
+
+    [...?]
+
+  js = variableDeclaration 'const', list:
+      variableDeclarator
+        objectPattern [...ignored_props, restElement identifier result_id]
+        rec_js
+
+  next_ctx = inc_ref result_id, ctx
+  set_js result_id, js, next_ctx
 
 
 
-get_value = fn {left, right}, ctx:
-  match right:
-    false:
-      transform left, ctx
-    {type: 'empty'}:
-      unique_ident 'unused', ctx
-    else:
-      transform right, ctx
+transform_rec_merge = fn expr, ctx:
+  [ , [rec1_id, rec2_id] , [result_id]] = expr
+  props1 = props_or_spread get_js rec1_id, ctx
+  props2 = props_or_spread get_js rec2_id, ctx
+  js = objectExpression [...props1, ...props2]
+  set_js result_id, js, ctx
 
 
 
-transform_kv = fn expr, ctx:
-  match expr:
-    {left: {type: 'member'}}:
-      {left, right} = expr.left
-      value = {type: 'rec', exprs: [{...expr, left: right}], loc: expr.loc}
-      prop = {...expr, left, right: value}
-      transform prop, ctx
 
-    else:
-      [computed, key, next_ctx] = get_key expr, ctx
-      [value, end_ctx] = get_value expr, next_ctx
-
-      shorthand = match expr:
-        {right: false}: true
-        else: false
-
-      final_value = match expr:
-        {right: {type: 'assign'}}:
-          assignmentPattern value.left, value.right
-        else:
-          value
-
-      js = objectProperty key, final_value, computed, shorthand
-      [js, end_ctx]
+add_record = fn ctx:
+  pipe ctx:
+    add 'rec', transform_rec
+    add 'rec_g', transform_rec_get
+    add 'rec_s', trandform_rec_set
+    add 'rec_d', transform_rec_del_keys
+    add 'rec_m', transform_rec_merge
 

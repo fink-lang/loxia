@@ -21,11 +21,18 @@ export const shrub = _in_(item, ni);"
 exports[`in compiles with custom runtime import 1`] = `"import { _in_ } from \\"./foo.js\\";"`;
 
 exports[`in compiles with default runtime 1`] = `
-"import { _in_ } from \\"@fink/js-interop/runtime.js\\";
-export const foo = _in_(1, [1, 2, 3]);
-export const bar = _in_(\`2\`, \`1234\`);
-export const spam = _in_(key, {
-  foo: bar
+"const foo_0 = _in_(1, [1, x, 3]);
+
+const bar_0 = _in_(\`2\`, \`1234\`);
+
+const spam_0 = _in_(key, {
+  foo: bar_0
 });
-export const shrub = _in_(item, ni);"
+
+const shrub_0 = _in_(item, ni);
+
+export const foo = foo_0,
+      bar = bar_0,
+      spam = spam_0,
+      shrub = shrub_0;"
 `;

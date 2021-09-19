@@ -1,33 +1,113 @@
-babel_types = import '@babel/types'
-{arrayExpression} = babel_types
+types = import '@babel/types'
+{
+  arrayExpression, spreadElement, memberExpression, numericLiteral
+  callExpression, identifier
+} = types
+
 {null} = import '@fink/js-interop/nullish.fnk'
-{map, filter, zip} = import '@fink/std-lib/iter.fnk'
 
-{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
-{partial_wrapper, no_wrapper} = import '../partial/init.fnk'
+{add, get_js, set_js, get_js_literal} = import '../context.fnk'
 
 
 
-transform_list = fn node, ctx:
-  [elems, next_ctx] = pipe node.exprs:
-    map_with_ctx fn elem, elem_ctx:
-      match elem:
-        {type: 'empty'}:
-          [null, elem_ctx]
-        else:
-          transform elem, elem_ctx
-    collect_with_ctx ctx
+set_tail_of = fn items_id, tail_of, {tails={}, ...ctx}:
+  {...ctx, tails: {...tails, (items_id): tail_of}}
 
-  # TODO: same as in call.fnk
-  [wrap_partial=no_wrapper] = pipe zip node.exprs, elems:
-    filter fn [arg, js_arg]: match arg:
-      {type: 'partial'}: true
-      {type: 'spread', right.type: 'partial'}: true
-      {type: 'spread'}: js_arg.is_partial
-      else: false
-    map fn:
-      partial_wrapper
 
-  js = arrayExpression elems
+get_tail_of = fn items_id, {tails={}}:
+  {(items_id): tail_of=[items_id, 0]} = tails
+  tail_of
 
-  wrap_partial js, next_ctx
+
+
+transform_empty_list = fn expr, ctx:
+  [ , , [result_id]] = expr
+  js = arrayExpression []
+  set_js result_id, js, ctx
+
+
+
+elems_or_spread = fn expr:
+  match expr:
+    {type: 'ArrayExpression'}:
+      expr.elements
+    else:
+      [spreadElement expr]
+
+
+
+transform_list_append = fn expr, ctx:
+  [ , [items_id, val_id], [result_id]] = expr
+  # TODO: inlining should be handled at optimization level in ir
+  elems = elems_or_spread get_js_literal items_id, ctx
+
+  elem = match val_id:
+    '_': null
+    else: get_js val_id, ctx
+
+  js = arrayExpression [...elems, elem]
+
+  set_js result_id, js, ctx
+
+
+
+transform_list_chain = fn expr, ctx:
+  [ , [items1_id, items2_id], [result_id]] = expr
+  # TODO: inlining should be handled at optimization level in ir
+  elems1 = elems_or_spread get_js_literal items1_id, ctx
+  elems2 = elems_or_spread get_js_literal items2_id, ctx
+
+  js =  arrayExpression [...elems1, ...elems2]
+  set_js result_id, js, ctx
+
+
+
+transform_list_head = fn expr, ctx:
+  [ , [items_id], [result_id]] = expr
+  [tail_src, idx] = get_tail_of items_id, ctx
+  arr = get_js tail_src, ctx
+  js_idx = numericLiteral idx
+  js = memberExpression arr, js_idx, true
+  set_js result_id, js, ctx
+
+
+
+transform_list_reverse = fn expr, ctx:
+  [ , [items_id], [result_id]] = expr
+  arr = get_js items_id, ctx
+
+  js = callExpression
+    memberExpression
+      arrayExpression [spreadElement arr]
+      identifier 'reverse'
+    []
+  set_js result_id, js, ctx
+
+
+
+transform_list_tail = fn expr, ctx:
+  [ , [items_id], [result_id]] = expr
+
+  items = get_js items_id, ctx
+  [tail_src, idx] = get_tail_of items_id, ctx
+
+  js = callExpression
+    memberExpression items, identifier 'slice'
+    [numericLiteral 1]
+
+  pipe ctx:
+    set_tail_of result_id, [tail_src, idx + 1], ?
+    set_js result_id, js, ?
+
+
+
+
+add_list = fn ctx:
+  pipe ctx:
+    add 'lst', transform_empty_list
+    add 'lst_a', transform_list_append
+    add 'lst_c', transform_list_chain
+    add 'lst_h', transform_list_head
+    add 'lst_t', transform_list_tail
+    add 'lst_r', transform_list_reverse
+

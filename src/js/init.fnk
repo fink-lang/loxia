@@ -1,62 +1,120 @@
-{add_assignment} = import './assignment/init.fnk'
-{add_func} = import './func/init.fnk'
-{add_conditionals} = import './conditionals/init.fnk'
-{add_call} = import './call/init.fnk'
-{add_literals} = import './literals/init.fnk'
-{add_spread} = import './spread/init.fnk'
-{add_async} = import './async/init.fnk'
-{add_logical} = import './logical/init.fnk'
-{add_group} = import './group/init.fnk'
-{add_module} = import './module/init.fnk'
-{add_member} = import './prop-access/init.fnk'
-{add_ident} = import './identifier/init.fnk'
-{add_comparison} = import './comparison/init.fnk'
-{add_jsx} = import './jsx/init.fnk'
-{add_arithmitic} = import './arithmitic/init.fnk'
-{add_block} = import './block/init.fnk'
-{add_partial} = import './partial/init.fnk'
-{init_runtimes} = import './runtime.fnk'
+{reverse} = import '@fink/std-lib/iter.fnk'
 
+{init_ctx, update_value} = import '../ir/context.fnk'
+
+{replace_idents} = import './identifier/init.fnk'
+
+{add_module, transfrom_module} = import './module/init.fnk'
+{add_import} = import './module/import.fnk'
+
+{add_number} = import './literals/number.fnk'
+{add_string} = import './literals/string.fnk'
+{add_list} = import './literals/list.fnk'
+{add_record} = import './literals/record.fnk'
+
+{add_conditionals} = import './conditionals/init.fnk'
+
+{add_logical} = import './logical/init.fnk'
+{add_in} = import './logical/in.fnk'
+
+{add_arithmitic} = import './arithmitic/init.fnk'
+
+{add_comparison} = import './comparison/init.fnk'
+
+{add_funcs} = import './func/init.fnk'
+{add_calls} = import './call/call.fnk'
+
+{add_jsx} = import './jsx/init.fnk'
+
+{add_async} = import './async/init.fnk'
+
+{inc_ref} = import '../ir/context.fnk'
+
+{timed} = import '../perf.fnk'
 
 
 add_transformers = fn ctx:
   pipe ctx:
     add_module
-    add_ident
-    add_partial
-    add_literals
-    add_group
-    add_member
+    add_import
+    add_number
+    add_string
+    add_list
+    add_record
+    add_in
     add_logical
     add_comparison
     add_arithmitic
-    add_assignment
-    add_spread
     add_async
-    add_func
+    add_funcs
     add_conditionals
-    add_call
-    add_async
+    add_calls
     add_jsx
-    add_block
 
 
 
-init_ctx = fn code, filename, options:
-  ctx = rec:
-    filename
-    code
-    errors: []
+prepare_rets = fn [expr=false, ...exprs], ctx:
+  match expr:
+    false:
+      ctx
 
-    options
+    ['ac']:
+      [, [cont_id], res_ids] = expr
+      next_ctx = update_value cont_id, {res_ids}, ctx
+      prepare_rets exprs, next_ctx
 
-    unique_id: 1
-    ident_prefix: 'ˆ'
+    else:
+      prepare_rets exprs, ctx
 
-    ignoreable_imports: []
 
-  pipe ctx:
-    init_runtimes
-    add_transformers
+
+prepare_exports = fn [expr=false, ...exprs], ctx, rec_id:
+  match expr:
+    false:
+      ctx
+
+    ['mod']:
+      [, [next_rec_id]] = expr
+      prepare_exports exprs, ctx, next_rec_id
+
+    ['rec_s', [], [rec_id]]:
+      [, [next_rec_id, , val_id]] = expr
+      ref_ctx = update_value next_rec_id, {export: true}, ctx
+      next_ctx = inc_ref val_id, ref_ctx
+      prepare_exports exprs, next_ctx, next_rec_id
+
+    else:
+      prepare_exports exprs, ctx, rec_id
+
+
+
+prepare_imports = fn [expr=false, ...exprs], ctx:
+  match expr:
+    false:
+      ctx
+
+    ['imp']:
+      [, [sr_id]] = expr
+      next_ctx = update_value sr_id, {refs: 1}, ctx
+      prepare_imports exprs, next_ctx
+
+    else:
+      prepare_imports exprs, ctx
+
+
+
+transform_ir = fn input_exprs, options:
+  exprs = replace_idents input_exprs
+  rev_expr = reverse exprs
+
+  ctx = pipe {trasformers: {}, values: {}, ...options}:
+    init_ctx exprs, ?
+    prepare_rets rev_expr, ?
+    prepare_imports rev_expr, ?
+    prepare_exports rev_expr, ?
+    add_transformers ?
+
+  transfrom_module exprs, ctx
+
 
 

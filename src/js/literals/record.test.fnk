@@ -1,4 +1,4 @@
-{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 {fink2js} = import '../../testing/generate.fnk'
 
 
@@ -11,7 +11,9 @@ describe 'record', fn:
 
   it 'compiles shorthand', fn:
     expect
-      fink2js 'foo = {foo, π, ƒ, foo-bar}'
+      fink2js '
+        foo = {bar, π, ƒ, foo-bar}
+      '
       to_match_snapshot
 
     expect
@@ -25,7 +27,12 @@ describe 'record', fn:
 
   it 'compiles spread', fn:
     expect
-      fink2js 'foo = {a, b, ...c}'
+      fink2js '
+        foo = {a, b, ...c}
+        bar = {...foo, ...ni}
+        spam = {...ham, ni}
+        ni = {...na, ...nu}
+      '
       to_match_snapshot
 
 
@@ -41,6 +48,16 @@ describe 'record', fn:
       to_match_snapshot
 
 
+  it 'compiles calculated props', fn:
+    expect
+      fink2js "
+        foo = rec:
+          'spam': 456
+          'spam-\${ham}': 'ni'
+        "
+      to_match_snapshot
+
+
   it 'compiles idents that are not js prop-names', fn:
     expect
       fink2js "
@@ -52,38 +69,8 @@ describe 'record', fn:
         "
       to_match_snapshot
 
-  it 'compiles multiline', fn:
-    expect
-      fink2js 'foo = {
-          a: 123
 
-          b: 123
-            and 123
-            and 1345
-
-          c: fn a, b: 134
-
-          d: foo a + 3
-        }
-      '
-      to_match_snapshot
-
-    expect
-      fink2js 'foo = rec:
-          a: 123
-
-          b: 123
-            and 123
-            and 1345
-
-          c: fn a, b: 134
-
-          d: foo a + 3
-       '
-      to_match_snapshot
-
-
-  it 'compiles member expr as keys', fn:
+  skip.it 'compiles member expr as keys', fn:
     expect
       fink2js "foo = {...bar, spam.ham.ni: 'ni', na: 1234, ...nu}"
       to_match_snapshot
@@ -94,78 +81,89 @@ describe 'record', fn:
 
 
 
-
-describe 'partial', fn:
-  it 'compiles', fn:
-    expect
-      fink2js '
-        {foo: bar, ...?}
-        {foo: ?, bar: spam}
-      '
-      to_match_snapshot
-
-
-
-describe 'calculated props', fn:
-  it 'compiles', fn:
-    expect
-      fink2js "
-        foo = rec:
-          'spam': 456
-          'spam-\${ham}': 'ni'
-        "
-      to_match_snapshot
-
-
-
-
 describe 'unpacking record', fn:
   it 'compiles simple', fn:
     expect
-      fink2js '{a, b, c} = ni'
+      fink2js '
+        {a, b, c: cc} = ni
+        out = [a, b, cc]
+      '
       to_match_snapshot
 
 
   it 'compiles non js idents', fn:
     expect
-      fink2js '{foo, π, ƒ, delete} = spam'
-      to_match_snapshot
-
-
-  it 'compiles spread', fn:
-    expect
-      fink2js '{e, ...f} = {e: 0, foo: 12, bar: 34}'
-      to_match_snapshot
-
-
-  it 'compiles empty', fn:
-    expect
-      fink2js '{foo: _ , bar} = {foo: 12, bar: 34}'
-      to_match_snapshot
-
-
-  it 'compiles defaults', fn:
-    expect
-      fink2js '{x=1, π=2, ni: {y, z}} = {ni: {y: 1, z: 2}}'
+      fink2js '
+        {foo, π, ƒ, delete} = spam
+        out = [foo, π, ƒ, delete]
+      '
       to_match_snapshot
 
 
   it 'compiles computed keys', fn:
     expect
-      fink2js "{'n i': ni} = foo"
+      fink2js "
+        {'n i': a, (ni): b, 'foo\${bar}': {c}} = foo
+        out = [a, b, c]
+      "
       to_match_snapshot
 
 
-  it 'compiles member expr as keys', fn:
+  it 'destructuress tpls', fn:
     expect
-      fink2js "{spam.ham.ni: ni, ...rest} = foo"
+      fink2js '
+        {foo: [bar, spam]} = shrub
+        out = [spam, bar]
+      '
+      to_match_snapshot
+
+
+  it 'compiles spread', fn:
+    expect
+      fink2js '
+        {a, b, ...c} = foo
+        out = [a, b, c]
+      '
+      to_match_snapshot
+
+
+  it 'compiles empty', fn:
+    expect
+      fink2js '
+        {foo: _ , bar, ...shrub} = foo
+        out = [bar, shrub]
+      '
+      to_match_snapshot
+
+
+  it 'compiles defaults', fn:
+    expect
+      fink2js '
+        {a=1, b: bb=2, ni: {c, d}} = foo
+        out = [a, bb, c, d]
+      '
+      to_match_snapshot
+
+
+  skip.it 'compiles member expr as keys', fn:
+    expect
+      fink2js '
+        {spam.ham.ni: ni, ...rest} = foo
+        out = [ni, rest]
+      '
       to_match_snapshot
 
     expect
-      fink2js "{spam.ham.ni: {ni: nu, foo.bar: bar}, ...rest} = foo"
+      fink2js '
+        {spam.ham.ni: {ni: nu, foo.bar: bar}, ...rest} = foo
+        out = [nu, bar, rest]
+      '
       to_match_snapshot
 
     expect
-      fink2js "{foo-bar.spam-ham.ni: {ni: nu, foo.bar: bar}, ...rest} = foo"
+      fink2js '
+        {foo-bar.spam-ham.ni: {ni: nu, foo.bar: bar}, ...rest} = foo
+        out = [nu, bar, rest]
+      '
       to_match_snapshot
 

@@ -3,35 +3,51 @@
 exports[`module types compiles to cjs 1`] = `
 "require(\\"foobar\\");
 
-const foo = require(\\"shrub\\");
+const foo_0 = require(\\"shrub\\");
 
 const {
-  bar: spam,
-  ni
+  bar: spam_0
 } = require(\\"ni\\");
 
-// reserved words import
 const {
-  default: dflt,
-  ˆif
+  ni: ni_0
+} = require(\\"ni\\");
+
+const {
+  ˆdefault: dflt_0
 } = require(\\"es6-module\\");
 
-const shrub = ni;
-exports.shrub = shrub;
-// reserved export
-const ˆcase = ni;
-exports.ˆcase = ˆcase;
-exports.default = shrub;"
+const {
+  ˆif: if_0
+} = require(\\"es6-module\\");"
 `;
 
 exports[`module types compiles to mjs 1`] = `
 "import \\"foobar\\";
-import foo from \\"shrub\\";
-import { bar as spam, ni } from \\"ni\\";
-// reserved words import
-import { default as dflt, ˆif } from \\"es6-module\\";
-export const shrub = ni;
-// reserved export
-export const ˆcase = ni;
-export default shrub;"
+import foo_0 from \\"shrub\\";
+import { bar as spam_0 } from \\"ni\\";
+import { ni as ni_0 } from \\"ni\\";
+import { ˆdefault as dflt_0 } from \\"es6-module\\";
+import { ˆif as if_0 } from \\"es6-module\\";
+export const shrub = ni_0,
+      ˆcase = ni_0,
+      ˆdefault = ni_0;"
+`;
+
+exports[`source maps compiles to mjs 1`] = `
+"const foo_0 = 12345;
+const str_0 = \`foo\`;
+const ham_0 = \`foo: \${foo_0} bar:\${str_0}\`;
+const ni_0 = spam + fooᜭbar;
+const item_1 = 1;
+const str_4 = \`ni\`;
+const a_0 = [item_1, str_4];
+const out_0 = [a_0, item_1, str_4];
+export const foo = foo_0,
+      bar = str_0,
+      ham = ham_0,
+      ni = ni_0,
+      a = a_0,
+      out = out_0;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRlc3QuZm5rIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Y0FDTyxLO2NBQ0EsUUFBRCxLQUFZLFFBQVosS0FBc0IsRTthQUN2QixjOztjQUNJLEkiLCJzb3VyY2VzQ29udGVudCI6WyJmb28gPSAxMjM0NVxuYmFyID0gJ2ZvbydcbmhhbSA9ICdmb286ICR7Zm9vfSBiYXI6JHtiYXJ9J1xubmkgPSBzcGFtICsgZm9vLWJhclxuYSA9IFsxLCAnbmknXVxuW2IsIGNdID0gYVxub3V0ID0gW2EsIGIsIGNdXG4iXX0="
 `;

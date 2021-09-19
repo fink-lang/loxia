@@ -1,10 +1,9 @@
-{fink2js} = import '../../testing/generate.fnk'
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{fink2js} = import '../../testing/generate.fnk'
 
 
 describe 'module', fn:
   it 'handles comments', fn:
-
     expect
       fink2js "
         #!/usr/bin/env node

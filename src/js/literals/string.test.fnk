@@ -1,5 +1,5 @@
-{fink2js} = import '../../testing/generate.fnk'
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{fink2js} = import '../../testing/generate.fnk'
 
 
 describe 'string', fn:
@@ -27,7 +27,7 @@ describe 'string', fn:
     expect
       fink2js "
         str1 = 'foo`bar\\nspam\\`ni'
-        str2 = \"foo\\\\\"
+        str2 = 'foo\\\\'
       "
       to_match_snapshot
 

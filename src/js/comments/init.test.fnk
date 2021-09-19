@@ -1,8 +1,8 @@
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 {fink2js} = import '../../testing/generate.fnk'
-{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
-describe 'comment', fn:
+skip.describe 'comment', fn:
   it 'compiles', fn:
 
     expect

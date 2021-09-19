@@ -1,33 +1,161 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`call compiles 1`] = `
-"export const call1 = a(ni, x = 123, ...x);
-export const call2 = a(ni);
-export const call3 = a();
-export const call4 = a(x => x * 2);
-export const call5 = a(foo, undefined, bar);"
+"const call1_0 = a(ni, x);
+const call2_0 = a(ni);
+const call3_0 = a();
+const call4_0 = a(x_0 => {
+  return x_0 * 2;
+});
+const call5_0 = a(foo, undefined, bar);
+
+const call6_0 = () => {
+  return a(foo, ...bar);
+};
+
+const call7_0 = () => {
+  return a(...foo);
+};
+
+export const call1 = call1_0,
+      call2 = call2_0,
+      call3 = call3_0,
+      call4 = call4_0,
+      call5 = call5_0,
+      call6 = call6_0,
+      call7 = call7_0;"
 `;
 
-exports[`call compiles as partial 1`] = `
-"ˆpartial => foo(ˆpartial);
+exports[`call compiles with partial arg 1`] = `
+"const p1_0 = prtl_0 => {
+  return foo(prtl_0);
+};
 
-ˆpartial => foo(ˆpartial, 123);
+const p2_0 = prtl_1 => {
+  return foo(prtl_1, 123, prtl_1);
+};
 
-ˆpartial => foo(...ˆpartial);
-
-ˆpartial => foo(...ˆpartial.bar);
-
-ˆpartial => ˆpartial(123);
-
-ˆpartial => ˆpartial(bar, spam);
-
-ˆpartial => ˆpartial.bar(spam);"
+export const p1 = p1_0,
+      p2 = p2_0;"
 `;
 
-exports[`call compiles with partial args 1`] = `
-"filter(ˆpartial => ˆpartial === 1);
-filter(ˆpartial => ˆpartial || foo(ˆpartial));
-filter(ˆpartial => !ˆpartial);
-map(ˆpartial => ˆpartial.foo);
-map(ˆpartial => ˆpartial % 2 === 0);"
+exports[`call compiles with partial callee 1`] = `
+"const p1_0 = prtlc_0 => {
+  return prtlc_0(123);
+};
+
+const p2_0 = prtlc_1 => {
+  return prtlc_1(bar, spam);
+};
+
+const p3_0 = prtlc_2 => {
+  return prtlc_2.bar(spam);
+};
+
+export const p1 = p1_0,
+      p2 = p2_0,
+      p3 = p3_0;"
+`;
+
+exports[`call compiles with partial exprs as args 1`] = `
+"const pa1_0 = filter(prtl_0 => {
+  return prtl_0 === 1;
+});
+const pa2_0 = filter(prtl_1 => {
+  return prtl_1 || foo(prtl_1);
+});
+const pa3_0 = filter(prtl_3 => {
+  return !prtl_3;
+});
+const pa4_0 = map(prtl_4 => {
+  return prtl_4.foo;
+});
+const pa5_0 = map(prtl_5 => {
+  return prtl_5 % 2 === 0;
+});
+const pa6_0 = foo(bar, prtl_7 => {
+  return spam === prtl_7;
+});
+export const pa1 = pa1_0,
+      pa2 = pa2_0,
+      pa3 = pa3_0,
+      pa4 = pa4_0,
+      pa5 = pa5_0,
+      pa6 = pa6_0;"
+`;
+
+exports[`call compiles with partial spread arg 1`] = `
+"const p1_0 = prtl_0 => {
+  return foo(...prtl_0);
+};
+
+const p2_0 = prtl_1 => {
+  return foo(...prtl_1.bar);
+};
+
+const p3_0 = prtl_2 => {
+  return foo(...prtl_2.bar.spam);
+};
+
+const p4_0 = prtl_3 => {
+  return foo(...bar(prtl_3));
+};
+
+const p7_0 = prtlc_4 => {
+  return prtlc_4(123);
+};
+
+const p8_0 = prtlc_5 => {
+  return prtlc_5(bar, spam);
+};
+
+const p9_0 = prtlc_6 => {
+  return prtlc_6.bar(spam);
+};
+
+export const p1 = p1_0,
+      p2 = p2_0,
+      p3 = p3_0,
+      p4 = p4_0,
+      p7 = p7_0,
+      p8 = p8_0,
+      p9 = p9_0;"
+`;
+
+exports[`tail call elimination compiles spread 1`] = `
+"const fun_0 = (...args_0) => {
+  fun_0: do {
+    const tail_0 = args_0.slice(1);
+    const b_0 = args_0[1];
+
+    /* istanbul ignore else */
+    if (args_0[0] === b_0) {
+      args_0 = tail_0.slice(1);
+      continue fun_0;
+    }
+
+    return b_0;
+  } while (true);
+};
+
+export { fun_0 as fun };"
+`;
+
+exports[`tail call elimination compiles to while loop 1`] = `
+"const gcd_0 = (...args_0) => {
+  gcd_0: do {
+    const x_0 = args_0[0];
+    const y_0 = args_0[1];
+
+    /* istanbul ignore else */
+    if (y_0 === 0) {
+      return x_0;
+    }
+
+    args_0 = [y_0, x_0 % y_0];
+    continue gcd_0;
+  } while (true);
+};
+
+export const gcd = gcd_0;"
 `;

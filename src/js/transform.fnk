@@ -1,78 +1,94 @@
-{is_str} = import '@fink/std-lib/str.fnk'
-{fold_ac, map_ac, filter} = import '@fink/std-lib/iter.fnk'
-{try_catch, throw_err} = import '@fink/js-interop/errors.fnk'
+types = import '@babel/types'
+{
+  binaryExpression, unaryExpression
+  identifier, variableDeclaration, variableDeclarator
+} = types
 
-{add_loc} = import '../js/types.fnk'
-
-{transform_error} = import './errors.fnk'
-{get_transformer} = import './context.fnk'
-
-{wrap_with_comment_loc} = import './comments/init.fnk'
-
-
---- istanbul ignore next ---
-add_ignorable_import = fn uri: fn ctx:
-  {...ctx, ignoreable_imports: [...ctx.ignoreable_imports, uri]}
+{get_transformer, get_js, get_js_literal, set_js} = import './context.fnk'
+{get_refs} = import '../ir/context.fnk'
 
 
 
-is_ignorable_import = fn expr, ctx:
+ops_to_js = rec:
+  '^': '**'
+  '==': '==='
+  '!=': '!=='
+  'not': '!'
+
+
+transform_binary = fn expr, ctx:
+  [op, [left_id, right_id], [result_id], {loc}] = expr
+  left = get_js left_id, ctx
+  right = get_js right_id, ctx
+  {(op): jsop=op} = ops_to_js
+  js = rec:
+    ...binaryExpression jsop, left, right
+    loc
+  set_js result_id, js, ctx
+
+
+
+transform_unary = fn expr, ctx:
+  [op, [right_id], [result_id], {loc}] = expr
+  right = get_js right_id, ctx
+  {(op): jsop=op} = ops_to_js
+  js = rec:
+    ...unaryExpression jsop, right
+    loc
+  set_js result_id, js, ctx
+
+
+
+transform_binary_or_unary = fn expr, ctx:
   match expr:
-    {op: 'import', right: {exprs: [{value: is_str ?}]}}:
-      [{value: uri}] = expr.right.exprs
-      uri in ctx.ignoreable_imports
-    else:
-      false
-
-
-wrap_node = fn ctx, js_node, node:
-  match ctx:
-    {wrap: 'loc'}:
-      add_loc node, js_node
-    else:
-      wrap_with_comment_loc js_node, node
-
-
-map_with_ctx = fn fnc:
-  map_ac fn item, , ctx:
-    [value, next_ctx] = fnc item, ctx
-    [value, , next_ctx]
-
-
-# TODO: std-lib
-drop_if = fn cond: filter fn item, , ctx:
-  not cond item, ctx
+    [, [, ?]]: transform_binary expr, ctx
+    else: transform_unary expr, ctx
 
 
 
-collect_with_ctx = fn ctx: fn items:
-  items | fold_ac [], ctx, fn item, items, , curr_ctx:
-    [[...items, item], , curr_ctx]
+transform = fn expr, ctx:
+  transform_expr = get_transformer expr, ctx
+  transform_expr expr, ctx
 
 
 
-transform_with_comments = fn transform_expr, node, ctx:
-  [err, result] = try_catch fn:
-    transform_expr node, ctx
+transform_exprs = fn [expr=false, ...exprs], ctx, body=[]:
+  match expr:
+    false: [body, ctx]
 
-  match err:
-    false:
-      [js_node, next_ctx] = result
-      js = wrap_node next_ctx, js_node, node
-      [js, next_ctx]
-    {transform_error: {}}:
-      throw_err err
-    else:
-      throw_err transform_error err, node, ctx
+    [? in ['cf', 'cc', 'cif', 'ac', 'imp']]:
+      [body_exprs, next_ctx] = transform expr, ctx
+      transform_exprs exprs, next_ctx, [...body, ...body_exprs]
+
+    ['cn']:
+      next_ctx = transform expr, ctx
+      transform_exprs exprs, next_ctx, body
+
+    ['mod']:
+      [, , [res_id]] = expr
+      next_ctx = transform expr, ctx
+      js = get_js_literal res_id, next_ctx
+      transform_exprs exprs, next_ctx, [...body, js]
+
+    [ , , [?]]:
+      [, , [res_id]] = expr
+      next_ctx = transform expr, ctx
+
+      match get_refs res_id, next_ctx:
+        ? > 1:
+          val = get_js_literal res_id, next_ctx
+          js = match val:
+            {type: 'VariableDeclaration'}:
+              val
+            else:
+              id = identifier res_id
+              variableDeclaration 'const', [variableDeclarator id, val]
+
+          transform_exprs exprs, next_ctx, [...body, js]
+        else:
+          transform_exprs exprs, next_ctx, body
 
 
 
-transform = fn node, ctx:
-  transform_expr = get_transformer node, ctx
 
-  match transform_expr:
-    false:
-      throw_err transform_error 'Unknown expression.', node, ctx
-    else:
-      transform_with_comments transform_expr, node, ctx
 

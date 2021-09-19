@@ -1,7 +1,32 @@
-{parse} = import '@fink/larix/parser.fnk'
 {is_empty} = import '@fink/std-lib/iter.fnk'
 
+{parse} = import '@fink/larix/parser.fnk'
+
 {generate} = import '../generate.fnk'
+{serialize} = import '../ir/serialize.fnk'
+{transform} = import '../ir/transform.fnk'
+{init_ctx} = import '../ir/init.fnk'
+{optimize} = import '../optimize/init.fnk'
+
+
+
+fink2lir = fn source, options:
+  filename = 'test.fnk'
+  ast = parse source, filename
+  ctx = init_ctx source, filename, options
+  [exprs] = transform ast, 'mod', ctx
+
+  serialize exprs
+
+
+
+fink2lir_o = fn source:
+  filename = 'test.fnk'
+  ast = parse source, filename
+  ctx = init_ctx source, filename
+  [lir] = transform ast, 'result', ctx
+  [out] = optimize lir
+  serialize out
 
 
 
@@ -19,4 +44,10 @@ fink2js = fn source, options:
           {errors}
     else:
       {errors: ast.errors}
+
+
+
+
+
+
 

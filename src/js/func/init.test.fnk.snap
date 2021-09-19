@@ -1,101 +1,115 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`func compiles defaults 1`] = `
-"export const fun = (a, b = 12, c) => {
-  shrub(...a);
-  return bar();
-};"
+exports[`compiles defaults 1`] = `
+"const fun_0 = (a_0, hdm_0) => {
+  const b_0 = undefined === hdm_0 ? 12 : hdm_0;
+  return bar(b_0, shrub(a_0, b_0));
+};
+
+export const fun = fun_0;"
 `;
 
-exports[`func compiles empty arg 1`] = `"export const fun = (a, ˆ_1, ˆ_2, b) => b;"`;
+exports[`compiles destructuring args 1`] = `
+"const fun_0 = (items_0, items_2) => {
+  return [items_0[0] + items_0[1][0], items_2[0], items_2.slice(1)];
+};
 
-exports[`func compiles func of func 1`] = `
-"export const fun5 = c => (d, e) => {
-  const ˆvalue_1 = [d, e];
+export const fun = fun_0;"
+`;
 
-  /* istanbul ignore else */
-  if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-    const [ˆa_3, ˆa_4] = ˆvalue_1;
+exports[`compiles destructuring args 2`] = `
+"const fun_0 = (drec_0, items_0) => {
+  return [drec_0.a + drec_0.b, items_0[0]];
+};
 
+export const fun = fun_0;"
+`;
+
+exports[`compiles destructuring args in body 1`] = `
+"const fun_0 = (a_0, b_0, ...tail_1) => {
+  return [a_0 + b_0, tail_1, tail_1[0], tail_1[1]];
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`compiles empty arg 1`] = `
+"const fun_0 = (a_0, tail_0, tail_1, b_0) => {
+  return a_0 + b_0;
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`compiles empty arg 2`] = `
+"const fun_0 = (tail_0, tail_1, b_0) => {
+  return b_0;
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`compiles empty arg 3`] = `
+"const fun_0 = (tail_0, a_0) => {
+  return a_0;
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`compiles func of func 1`] = `
+"const fun5_0 = c_0 => {
+  return (d_0, e_0) => {
     /* istanbul ignore else */
-    if (ˆa_3 === 1)
+    if (d_0 === 1) {
       /* istanbul ignore else */
-      if (ˆa_4 === 2) {
-        return c;
+      if (e_0 === 2) {
+        return c_0;
       }
-  }
-
-  /* istanbul ignore else */
-  if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-    const [ˆa_5, ˆa_6] = ˆvalue_1;
+    }
 
     /* istanbul ignore else */
-    if (ˆa_5 === 2)
+    if (d_0 === 2) {
       /* istanbul ignore else */
-      if (ˆa_6 === 1) {
-        return 1 / c;
+      if (e_0 === 1) {
+        return 1 / c_0;
       }
-  }
-};"
+    }
+  };
+};
+
+export const fun5 = fun5_0;"
 `;
 
-exports[`func compiles other 1`] = `
-"export const fun = (c, d) => {
-  const x = 123;
-  {
-    const ˆvalue_1 = ni;
+exports[`compiles middle spread 1`] = `
+"const fun_0 = (a_0, b_0, ...tail_1) => {
+  const rtail_0 = [...tail_1].reverse();
+  return [a_0 + b_0, [...rtail_0.slice(1)].reverse(), rtail_0[0]];
+};
 
-    /* istanbul ignore else */
-    if (ˆvalue_1 === c + x) {
-      return d;
-    }
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 === c + 1) {
-      return d + 1;
-    }
-  }
-};"
+export const fun = fun_0;"
 `;
 
-exports[`func compiles single line 1`] = `"export const fun = () => \`shrub\`;"`;
+exports[`compiles simple 1`] = `
+"const fun_0 = (a_0, b_0, c_0) => {
+  return a_0 + b_0 + c_0;
+};
 
-exports[`func compiles spread 1`] = `"export const fun = (a, b = 12, ...d) => a + b + c;"`;
-
-exports[`func eliminates tail calls 1`] = `
-"export const fun = (..._args) => {
-  while (true) {
-    const [a, b = 1] = _args;
-    const ˆvalue_1 = a;
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 === b) {
-      return a;
-    }
-
-    {
-      _args = [a - 1];
-      continue;
-    }
-  }
-};"
+export const fun = fun_0;"
 `;
 
-exports[`func eliminates tail calls 2`] = `
-"export const fun = (..._args) => {
-  while (true) {
-    const [...args] = _args;
-    const ˆvalue_1 = a;
+exports[`compiles spread 1`] = `
+"const fun_0 = (a_0, b_0, ...tail_1) => {
+  return [a_0 + b_0, tail_1];
+};
 
-    /* istanbul ignore else */
-    if (ˆvalue_1 === b) {
-      _args = [...args];
-      continue;
-    }
+export const fun = fun_0;"
+`;
 
-    {
-      return b;
-    }
-  }
-};"
+exports[`func compiles no args 1`] = `
+"const fun_0 = () => {
+  return \`shrub\`;
+};
+
+export const fun = fun_0;"
 `;

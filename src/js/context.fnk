@@ -1,38 +1,53 @@
-{is_fn} = import '@fink/std-lib/fn.fnk'
+babel_types = import '@babel/types'
+{identifier} = babel_types
 
-{add_runtime_fn, set_runtime_impl} = import './runtime.fnk'
-
-
-any = false
+{update_value} = import '../ir/context.fnk'
 
 
-add = fn type, op, transformer: fn {transformers, ...ctx}:
+
+set_js = fn id, js, ctx:
+  update_value id, {js}, ctx
+
+
+set_js2 = fn [, , [id], {loc}], js, ctx:
+  update_value id, {js: {...js, loc}}, ctx
+
+
+
+get_js = fn id, {values}:
+  {(id): val} = values
+  match val:
+    {refs: ? > 1}:
+      #  rec:
+      #    ...identifier id
+      #    loc: val.js.loc
+      identifier id
+
+    {js: ?}:
+      val.js
+
+    else:
+      identifier id
+
+
+
+
+get_js_literal = fn id, ctx:
+  # TODO: inlining should be handled at optimization level in ir
+  {values: {(id): {js=get_js id, ctx}}} = ctx
+  js
+
+
+
+add = fn name, transformer: fn {transformers, ...ctx}:
   next_transformers = rec:
     ...transformers
-    (type or op): transformer
+    (name): transformer
 
   {transformers: next_transformers, ...ctx}
 
 
 
-add_with_runtime = fn type, op, transformer, impl_uri: fn ctx:
-  built_in_name = '_${op}_'
-  pipe ctx:
-    add_runtime_fn built_in_name, ?
-    set_runtime_impl built_in_name, impl_uri, ?
-    add type, op, transformer
-
-
-
-get_transformer = fn {op, type}, {transformers}:
-  match transformers:
-    {(op): is_fn ?}:
-      {(op): transform} = transformers
-      transform
-
-    {(type): is_fn ?}:
-      {(type): transform} = transformers
-      transform
-
-    else:
-      false
+get_transformer = fn [name], {transformers}:
+  {(name): transform} = transformers
+  transform

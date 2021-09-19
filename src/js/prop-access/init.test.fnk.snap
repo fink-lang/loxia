@@ -1,12 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`member compiles 1`] = `
-"export const foo = spam.shrub;
-export const computed_member = item[\`bar spam\`];
-export const computed_member2 = item[get_key(foo)];
-export const reserved_prop = item.arguments;
-export const js_safe_unicode = [item.π, item.ƒ];
-export const js_unsfae = item[\\"foo-bar\\"];"
+"const foo_0 = spam.shrub;
+const computed_member_0 = item[\`bar spam\`];
+const computed_member2_0 = item[get_key(foo_0)];
+const reserved_prop_0 = item[\`arguments\`];
+const js_safe_unicode_0 = [item.π, item.ƒ];
+const js_unsafe_0 = item[\`foo-bar\`];
+export const foo = foo_0,
+      computed_member = computed_member_0,
+      computed_member2 = computed_member2_0,
+      reserved_prop = reserved_prop_0,
+      js_safe_unicode = js_safe_unicode_0,
+      js_unsafe = js_unsafe_0;"
 `;
 
 exports[`member compiles partial 1`] = `

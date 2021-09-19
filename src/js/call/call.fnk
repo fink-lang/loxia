@@ -1,65 +1,100 @@
-babel_types = import '@babel/types'
-{callExpression, identifier} = babel_types
+types = import '@babel/types'
+{
+  callExpression, breakStatement, assignmentExpression
+  expressionStatement, returnStatement, spreadElement
+  identifier, continueStatement, variableDeclaration, variableDeclarator
+} = types
+{null} = import '@fink/js-interop/nullish.fnk'
+{map} = import '@fink/std-lib/iter.fnk'
 
-{map, filter, zip, length} = import '@fink/std-lib/iter.fnk'
-
-{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
-{transform_with_partial, partial_wrapper, no_wrapper} = import '../partial/init.fnk'
-
-
-
-transform_multiple_args = fn args, ctx:
-  pipe args:
-    map_with_ctx fn expr, arg_ctx:
-      match expr:
-        {type: 'empty'}:
-          [(identifier 'undefined'), arg_ctx]
-        else:
-          transform expr, arg_ctx
-    collect_with_ctx ctx
+{add, get_js, get_js_literal, set_js} = import '../context.fnk'
+{get_value} = import '../../ir/context.fnk'
 
 
 
-transform_single_arg = fn [expr], ctx:
-  match expr:
-    {type: 'empty'}:
-      [[],  ctx]
+as_call_args = fn args:
+  match args:
+    {type: 'ArrayExpression'}:
+      pipe args:
+        ?.elements
+        map fn arg: match arg:
+          null: identifier 'undefined'
+          else: arg
+        [...?]
     else:
-      transform_multiple_args [expr], ctx
+      [spreadElement args]
 
 
 
-transform_args = fn args, ctx, default_wrap_partial:
-  [js_args, next_ctx] = match args:
-    1 == length ?:
-      transform_single_arg args, ctx
-    else:
-      transform_multiple_args args, ctx
-
-  [wrap_partial=default_wrap_partial] = pipe zip args, js_args:
-    filter fn [arg, js_arg]: match arg:
-      {type: 'partial'}: true
-      {type: 'spread', right: {type: 'partial'}}: true
-      {type: 'spread'}: js_arg.is_partial
-      else: false
-    map fn: partial_wrapper
-
-  [wrap_partial, js_args, next_ctx]
-
-
-
-
-transform_call = fn node, ctx:
-  [callee, wrap_partial, args, end_ctx] = match node.callee:
-    # TODO: small pipe foo | bar ?, spam
-    {type: 'call'}:
-      [callee, args_ctx] = transform node.callee, ctx
-      [callee, ...transform_args node.args, args_ctx, no_wrapper]
-    else:
-      [wrap_partial_callee, callee, args_ctx] = transform_with_partial node.callee, ctx
-      [callee, ...transform_args node.args, args_ctx, wrap_partial_callee]
-
+transform_apply_fn = fn expr, ctx:
+  [ , [callee_id, args_id], [result_id]] = expr
+  callee = get_js callee_id, ctx
+  args = as_call_args get_js args_id, ctx
   js = callExpression callee, args
+  set_js result_id, js, ctx
 
-  wrap_partial js, end_ctx
+
+
+transform_continue_with_fn = fn expr, ctx:
+  [ , [callee_id, new_args_id], []] = expr
+
+  {args_id} = get_value callee_id, ctx
+  new_args = get_js new_args_id, ctx
+  js = list:
+    expressionStatement
+      assignmentExpression
+        '='
+        identifier args_id
+        new_args
+    continueStatement identifier callee_id
+
+  [js, ctx]
+
+
+
+transform_apply_cont = fn expr, ctx:
+  [ , [cont_id], [res_id]] = expr
+  cont = get_js cont_id, ctx
+  {label: ret_ident} = cont
+  js = list:
+    # TODO should that happen inside the cn transform
+    variableDeclaration 'let', list:
+      variableDeclarator
+        ret_ident
+    cont
+    variableDeclaration 'const', list:
+      variableDeclarator
+        identifier res_id
+        ret_ident
+
+  [js, ctx]
+
+
+
+transform_continue_with_cont = fn expr, ctx:
+  [ , [ret_id, res_id]] = expr
+
+  ret = get_js_literal ret_id, ctx
+  res = get_js res_id, ctx
+
+  match ret:
+    {type: 'ReturnStatement'}:
+      [[returnStatement res], ctx]
+    else:
+      exprs = list:
+        expressionStatement
+          assignmentExpression '=', ret, res
+        breakStatement identifier ret_id
+      [exprs, ctx]
+
+
+
+
+
+add_calls = fn ctx:
+  pipe ctx:
+    add 'ac', transform_apply_cont
+    add 'cc', transform_continue_with_cont
+    add 'af', transform_apply_fn
+    add 'cf', transform_continue_with_fn
 

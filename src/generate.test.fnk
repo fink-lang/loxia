@@ -1,4 +1,4 @@
-{describe, it, expect, to_equal, to_match_snapshot} = import '@fink/jest/test.fnk'
+{only, skip, describe, it, expect, to_equal, to_match_snapshot} = import '@fink/jest/test.fnk'
 {slice} = import '@fink/std-lib/str.fnk'
 
 {generate} = import './generate.fnk'
@@ -35,7 +35,26 @@ describe 'module types', fn:
 
 
 
-describe 'errors', fn:
+only.describe 'source maps', fn:
+  code = "
+    foo = 12345
+    bar = 'foo'
+    ham = 'foo: \${foo} bar:\${bar}'
+    ni = spam + foo-bar
+    a = [1, 'ni']
+    [b, c] = a
+    out = [a, b, c]
+  "
+  js = fink2js code,  {module_type: 'mjs', source_maps: 'inline'}
+
+  it 'compiles to mjs', fn:
+    expect
+      js
+      to_match_snapshot
+
+
+
+skip.describe 'errors', fn:
   it 'handles parse errors', fn:
     {errors: [{error}]} = fink2js '
       foo = ['

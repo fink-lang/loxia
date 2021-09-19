@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`keywords transforms literals 1`] = `
-"export const x = false;
-export const y = true;"
+"export const x = false,
+      y = true;"
 `;

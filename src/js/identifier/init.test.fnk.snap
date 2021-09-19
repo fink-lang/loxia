@@ -1,67 +1,103 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`identifiers does not escape true, false 1`] = `"export const foo = [true, false];"`;
-
-exports[`identifiers does not escapes unicode names 1`] = `
-"export const ƒ = shrub;
-export const π = ni;
-export const ಠ_ಠ = 1234;"
+exports[`identifiers does not escape true, false 1`] = `
+"const foo_0 = [true, false];
+export const foo = foo_0;"
 `;
 
-exports[`identifiers escapes hyphenated idents 1`] = `"export const fooᜭbar = spamᜭni;"`;
+exports[`identifiers does not escapes unicode names 1`] = `
+"const ಠ_ಠ_0 = 1234;
+export const ƒ = shrub,
+      π = ni,
+      ಠ_ಠ = ಠ_ಠ_0;"
+`;
+
+exports[`identifiers escapes hyphenated idents 1`] = `
+"const fooᜭbar_0 = spam + niᜭni;
+export const fooᜭbar = fooᜭbar_0;"
+`;
 
 exports[`identifiers escapes reserved JS identifiers 1`] = `
-"const {
-  \\"do\\": ˆdo,
-  \\"if\\": ˆif,
-  \\"in\\": ˆin,
-  \\"for\\": ˆfor,
-  \\"let\\": ˆlet,
-  \\"new\\": ˆnew,
-  \\"try\\": ˆtry,
-  \\"var\\": ˆvar,
-  \\"case\\": ˆcase,
-  \\"enum\\": ˆenum,
-  \\"void\\": ˆvoid
-} = foobar;
-const {
-  \\"with\\": ˆwith,
-  \\"break\\": ˆbreak,
-  \\"catch\\": ˆcatch,
-  \\"class\\": ˆclass,
-  \\"const\\": ˆconst,
-  \\"super\\": ˆsuper,
-  \\"while\\": ˆwhile,
-  \\"yield\\": ˆyield,
-  \\"delete\\": ˆdelete
-} = spam;
-const {
-  \\"export\\": ˆexport,
-  \\"import\\": ˆimport,
-  \\"public\\": ˆpublic,
-  \\"return\\": ˆreturn,
-  \\"static\\": ˆstatic,
-  \\"switch\\": ˆswitch,
-  \\"typeof\\": ˆtypeof,
-  \\"default\\": ˆdefault
-} = ham;
-const {
-  \\"extends\\": ˆextends,
-  \\"finally\\": ˆfinally,
-  \\"package\\": ˆpackage,
-  \\"private\\": ˆprivate,
-  \\"continue\\": ˆcontinue,
-  \\"function\\": ˆfunction
-} = ni;
-const {
-  \\"arguments\\": ˆarguments,
-  \\"interface\\": ˆinterface,
-  \\"protected\\": ˆprotected,
-  \\"implements\\": ˆimplements,
-  \\"instanceof\\": ˆinstanceof
-} = nu;
-const {
-  \\"undefined\\": ˆundefined,
-  \\"null\\": ˆnull
-} = nu;"
+"const do_0 = 1;
+const if_0 = 1;
+const in_0 = 1;
+const for_0 = 1;
+const let_0 = 1;
+const new_0 = 1;
+const try_0 = 1;
+const var_0 = 1;
+const case_0 = 1;
+const enum_0 = 1;
+const void_0 = 1;
+const with_0 = 1;
+const break_0 = 1;
+const catch_0 = 1;
+const class_0 = 1;
+const const_0 = 1;
+const super_0 = 1;
+const while_0 = 1;
+const yield_0 = 1;
+const delete_0 = 1;
+const export_0 = 1;
+const import_0 = 1;
+const public_0 = 1;
+const return_0 = 1;
+const static_0 = 1;
+const switch_0 = 1;
+const typeof_0 = 1;
+const default_0 = 1;
+const extends_0 = 1;
+const finally_0 = 1;
+const package_0 = 1;
+const private_0 = 1;
+const continue_0 = 1;
+const function_0 = 1;
+const arguments_0 = 1;
+const interface_0 = 1;
+const protected_0 = 1;
+const implements_0 = 1;
+const instanceof_0 = 1;
+const undefined_0 = 1;
+const null_0 = 1;
+export const ˆdo = do_0,
+      ˆif = if_0,
+      ˆin = in_0,
+      ˆfor = for_0,
+      ˆlet = let_0,
+      ˆnew = new_0,
+      ˆtry = try_0,
+      ˆvar = var_0,
+      ˆcase = case_0,
+      ˆenum = enum_0,
+      ˆvoid = void_0,
+      ˆwith = with_0,
+      ˆbreak = break_0,
+      ˆcatch = catch_0,
+      ˆclass = class_0,
+      ˆconst = const_0,
+      ˆsuper = super_0,
+      ˆwhile = while_0,
+      ˆyield = yield_0,
+      ˆdelete = delete_0,
+      ˆexport = export_0,
+      ˆimport = import_0,
+      ˆpublic = public_0,
+      ˆreturn = return_0,
+      ˆstatic = static_0,
+      ˆswitch = switch_0,
+      ˆtypeof = typeof_0,
+      ˆdefault = default_0,
+      ˆextends = extends_0,
+      ˆfinally = finally_0,
+      ˆpackage = package_0,
+      ˆprivate = private_0,
+      ˆcontinue = continue_0,
+      ˆfunction = function_0,
+      ˆarguments = arguments_0,
+      ˆinterface = interface_0,
+      ˆprotected = protected_0,
+      ˆimplements = implements_0,
+      ˆinstanceof = instanceof_0,
+      ˆundefined = undefined_0,
+      ˆnull = null_0;"
 `;

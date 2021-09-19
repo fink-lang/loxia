@@ -1,20 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`numbers transforms floats 1`] = `
-"export const x = 1.234578;
-export const y = 1.23e+45;
-export const z = 1.23e-45;
-export const a = 1.23e+45;"
+"const x_0 = 1.234578;
+const y_0 = 1.23e+45;
+const z_0 = 1.23e-45;
+const a_0 = 1.23e+45;
+export const x = x_0,
+      y = y_0,
+      z = z_0,
+      a = a_0;"
 `;
 
 exports[`numbers transforms hex, octet, binary 1`] = `
-"export const h = 0x123456789ABCDEF0;
-export const o = 0o12345670;
-export const b = 0b01010;"
+"const h_0 = 0x123456789ABCDEF0;
+const o_0 = 0o12345670;
+const b_0 = 0b01010;
+export const h = h_0,
+      o = o_0,
+      b = b_0;"
 `;
 
 exports[`numbers transforms integers 1`] = `
-"export const x = 1234578;
-export const y = 0123;
-export const z = 123_456_789;"
+"const x_0 = 1234578;
+const y_0 = 0123;
+const z_0 = 123_456_789;
+export const x = x_0,
+      y = y_0,
+      z = z_0;"
 `;

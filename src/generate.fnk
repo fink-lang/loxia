@@ -4,21 +4,22 @@ babel_traverse = import '@babel/traverse'
 {transformFromAstSync} = import '@babel/core'
 {try_catch} = import '@fink/js-interop/errors.fnk'
 
-{transform} = import './js/transform.fnk'
-{init_ctx} = import './js/init.fnk'
-
-{transform_do_expr} = import './js/do-expression.fnk'
-{transform_async} = import './js/async.fnk'
-{module_transforms} = import './js/module.fnk'
-{transform_tail_call} = import './js/tail-call.fnk'
-
+{transform} = import './ir/transform.fnk'
+{init_ctx} = import './ir/init.fnk'
+{optimize} = import './optimize/init.fnk'
+{transform_ir} = import './js/init.fnk'
+{module_transforms} = import './js/module/init.fnk'
+{transform_async} = import './js/async/init.fnk'
 
 
 transform_file = fn fink_ast, code, filename, options:
   ctx = init_ctx code, filename, options
 
   [error, [js_ast]=[]] = try_catch fn:
-    transform fink_ast, ctx
+    [lir] = transform fink_ast, 'mod', ctx
+    [olir] = optimize lir, options
+    {js} = transform_ir olir, options
+    [js]
 
   extras = match options:
     {module_type: 'cjs'}: module_transforms
@@ -27,9 +28,7 @@ transform_file = fn fink_ast, code, filename, options:
   match error:
     false:
       traverse js_ast, rec:
-        DoExpression: transform_do_expr
         AwaitExpression: {enter: transform_async}
-        ArrowFunctionExpression: {exit: transform_tail_call}
         ...extras
 
       {...js_ast, errors: []}
@@ -67,3 +66,4 @@ generate = fn ast, filename, source, options={}:
       {code: '', source_map: '', errors: js_ast.errors}
     else:
       babel_generate js_ast, filename, source, options
+

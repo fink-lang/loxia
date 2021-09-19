@@ -1,35 +1,14 @@
-babel_types = import '@babel/types'
-{binaryExpression, logicalExpression} = babel_types
-
-{add, any} = import '../context.fnk'
-{transform_with_partial_lr} = import '../partial/init.fnk'
-
-
-
-transform_op = rec:
-  '==': '==='
-  '!=': '!=='
-
-
-
-transform_comp = fn {op, left, right}, ctx:
-  {(op): operator=op} = transform_op
-
-  [bin_left, bin_right, next_ctx, wrap_partial] = transform_with_partial_lr left, right, ctx
-
-  js = match left:
-    {op: ? in ['<', '>', '<=', '>=', '==', '!=']}:
-      logicalExpression '&&',
-        bin_left
-        binaryExpression operator, bin_left.right, bin_right
-    else:
-      binaryExpression operator, bin_left, bin_right
-
-  wrap_partial js, next_ctx
+{add} = import '../context.fnk'
+{transform_binary} = import '../transform.fnk'
 
 
 
 add_comparison = fn ctx:
   pipe ctx:
-    add 'comp', any, transform_comp
+    add '==', transform_binary
+    add '!=', transform_binary
+    add '>', transform_binary
+    add '<', transform_binary
+    add '<=', transform_binary
+    add '>=', transform_binary
 
