@@ -11,6 +11,7 @@ babel_traverse = import '@babel/traverse'
 {module_transforms} = import './js/module/init.fnk'
 {transform_async} = import './js/async/init.fnk'
 
+{timed, log_timings} = import './perf.fnk'
 
 try_catch_ = fn func:
   r = func _
@@ -21,10 +22,12 @@ transform_file = fn fink_ast, code, filename, options:
   ctx = init_ctx code, filename, options
 
   [error, [js_ast]=[]] = try_catch_ fn:
-    [lir] = transform fink_ast, 'mod', ctx
-    [olir] = optimize lir, options
-    {js} = transform_ir olir, options
+    [lir] = (timed transform) fink_ast, 'mod', ctx
+    [olir] = (timed optimize) lir, options
+    {js} = (timed transform_ir) olir, options
     [js]
+
+  log_timings 'transform ${filename}'
 
   extras = match options:
     {module_type: 'cjs'}: module_transforms

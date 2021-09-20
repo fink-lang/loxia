@@ -2,12 +2,12 @@ types = import '@babel/types'
 {conditionalExpression, binaryExpression, identifier, ifStatement} = types
 
 {dec_ref} = import '../../ir/context.fnk'
-{add, get_js, set_js} = import '../context.fnk'
+{add, get_js, set_js2} = import '../context.fnk'
 
 
 
 transform_if_val = fn expr, ctx:
-  [, [val_id, true_id, false_id], [result_id]] = expr
+  [, [val_id, true_id, false_id]] = expr
   val = get_js val_id, ctx
   true_js = get_js true_id, ctx
   false_js = get_js false_id, ctx
@@ -20,12 +20,12 @@ transform_if_val = fn expr, ctx:
     false_js
     true_js
 
-  set_js result_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 
 transform_is_val = fn expr, ctx:
-  [, [val_id], [result_id]] = expr
+  [, [val_id]] = expr
   val = get_js val_id, ctx
 
   js = binaryExpression
@@ -33,17 +33,18 @@ transform_is_val = fn expr, ctx:
     identifier 'undefined'
     val
 
-  set_js result_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 
 transform_if = fn expr, ctx:
-  [ , [cond_id, true_id, else_id=false], []] = expr
+  [ , [cond_id, true_id, else_id=false], [], {loc}] = expr
   cond_c = get_js cond_id, ctx
   true_c = get_js true_id, ctx
   if_true_js = rec:
     ...ifStatement cond_c, true_c
     leadingComments: [{type: 'CommentBlock', value: ' istanbul ignore else '}]
+    loc
 
   match else_id:
     false:

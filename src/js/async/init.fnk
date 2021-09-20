@@ -2,7 +2,7 @@ types = import '@babel/types'
 {awaitExpression, isArrowFunctionExpression} = types
 {set_props} = import '@fink/js-interop/reflect.fnk'
 
-{add, get_js, set_js} = import '../context.fnk'
+{add, get_js, set_js2} = import '../context.fnk'
 
 
 [no_result] = []
@@ -22,12 +22,9 @@ transform_async = fn path:
 
 
 transform_wt = fn expr, ctx:
-  [, [right_id], [result_id]] = expr
-
-  js = awaitExpression
-    get_js right_id, ctx
-
-  set_js result_id, js, ctx
+  [, [right_id]] = expr
+  js = awaitExpression  get_js right_id, ctx
+  set_js2 expr, js, ctx
 
 
 

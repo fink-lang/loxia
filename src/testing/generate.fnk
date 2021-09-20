@@ -1,3 +1,4 @@
+{new} = import '@fink/js-interop/reflect.js'
 {is_empty} = import '@fink/std-lib/iter.fnk'
 
 {parse} = import '@fink/larix/parser.fnk'
@@ -48,6 +49,29 @@ fink2js = fn source, options:
 
 
 
+encode = fn str:
+  pipe str:
+    encodeURIComponent
+    unescape
+    new Buffer, ?
+    ?.toString 'base64'
 
 
+
+fink2js_sm = fn source:
+  filename = 'test.fnk'
+  ast = parse source, filename
+
+  options = {module_type: 'mjs', source_maps: 'both'}
+  match ast:
+    {errors: is_empty ?}:
+      {code, errors, source_map} = generate ast, filename, source, options
+      # console.log 'https://sokra.github.io/source-map-visualization/#base64,${encode code},${encode JSON.stringify source_map},${encode source}'
+      match errors:
+        is_empty ?:
+          code
+        else:
+          {errors}
+    else:
+      {errors: ast.errors}
 

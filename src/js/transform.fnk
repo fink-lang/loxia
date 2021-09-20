@@ -4,7 +4,7 @@ types = import '@babel/types'
   identifier, variableDeclaration, variableDeclarator
 } = types
 
-{get_transformer, get_js, get_js_literal, set_js} = import './context.fnk'
+{get_transformer, get_js, get_js_literal, set_js2, with_loc} = import './context.fnk'
 {get_refs} = import '../ir/context.fnk'
 
 
@@ -17,25 +17,21 @@ ops_to_js = rec:
 
 
 transform_binary = fn expr, ctx:
-  [op, [left_id, right_id], [result_id], {loc}] = expr
+  [op, [left_id, right_id]] = expr
   left = get_js left_id, ctx
   right = get_js right_id, ctx
   {(op): jsop=op} = ops_to_js
-  js = rec:
-    ...binaryExpression jsop, left, right
-    loc
-  set_js result_id, js, ctx
+  js = binaryExpression jsop, left, right
+  set_js2 expr, js, ctx
 
 
 
 transform_unary = fn expr, ctx:
-  [op, [right_id], [result_id], {loc}] = expr
+  [op, [right_id]] = expr
   right = get_js right_id, ctx
   {(op): jsop=op} = ops_to_js
-  js = rec:
-    ...unaryExpression jsop, right
-    loc
-  set_js result_id, js, ctx
+  js = unaryExpression jsop, right
+  set_js2 expr, js, ctx
 
 
 
@@ -71,7 +67,7 @@ transform_exprs = fn [expr=false, ...exprs], ctx, body=[]:
       transform_exprs exprs, next_ctx, [...body, js]
 
     [ , , [?]]:
-      [op, , [res_id]] = expr
+      [op, , [res_id], todo] = expr
       next_ctx = transform expr, ctx
 
       match [op, get_refs res_id, next_ctx]:
@@ -79,9 +75,11 @@ transform_exprs = fn [expr=false, ...exprs], ctx, body=[]:
           val = get_js_literal res_id, next_ctx
           js = match val:
             {type: 'VariableDeclaration'}:
-              val
+              # TODO: use loc from meta or from val
+              with_loc todo, val
             else:
-              id = identifier res_id
+              # TODO: use loc from meta or from val
+              id = with_loc todo, identifier res_id
               variableDeclaration 'const', [variableDeclarator id, val]
 
           transform_exprs exprs, next_ctx, [...body, js]

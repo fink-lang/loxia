@@ -7,17 +7,17 @@ babel_types = import '@babel/types'
 
 {length} = import '@fink/std-lib/iter.fnk'
 
-{add, set_js, get_js_literal} = import '../context.fnk'
+{add, set_js2, get_js_literal, with_loc} = import '../context.fnk'
 
 
 
 transform_prop_id = fn key:
   match key:
     {type: 'Identifier'}:
-      jsxIdentifier key.name
+      with_loc key, jsxIdentifier key.name
 
     {type: 'StringLiteral'}:
-      jsxIdentifier key.value
+      with_loc key, jsxIdentifier key.value
 
 
 
@@ -26,9 +26,9 @@ transform_prop_val = fn value:
     {type: 'TemplateLiteral', quasis: 1 == length ?}:
       # TODO: should happen at optimization level
       {quasis: [{value: {raw: str}}]} = value
-      stringLiteral str
+      with_loc value, stringLiteral str
     else:
-      jsxExpressionContainer value
+      with_loc value, jsxExpressionContainer value
 
 
 
@@ -57,20 +57,20 @@ transform_children = fn [chld=false, ...children], out=[]:
     {type: 'TemplateLiteral', quasis: 1 == length ?}:
       # TODO: should happen at optimization level
       {quasis: [{value: {raw: str}}]} = chld
-      js = jsxText str
+      js = with_loc chld, jsxText str
       transform_children children, [...out, js]
 
     {type: 'JSXElement'}:
       transform_children children, [...out, chld]
 
     else:
-      js = jsxExpressionContainer chld
+      js = with_loc chld, jsxExpressionContainer chld
       transform_children children, [...out, js]
 
 
 
 transform_jxe = fn expr, ctx:
-  [ , [name_id, props_id, chldrn_id], [res_id]] = expr
+  [ , [name_id, props_id, chldrn_id]] = expr
 
   id = jsxIdentifier name_id
 
@@ -84,18 +84,17 @@ transform_jxe = fn expr, ctx:
     ?.elements
     transform_children
 
-
   js = jsxElement
     jsxOpeningElement id, props, 0 == length children
     jsxClosingElement id
     children
 
-  set_js res_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 
 transform_jxf = fn expr, ctx:
-  [ , [chldrn_id], [res_id]] = expr
+  [ , [chldrn_id]] = expr
 
   children = pipe chldrn_id:
     get_js_literal ?, ctx
@@ -107,7 +106,7 @@ transform_jxf = fn expr, ctx:
     jsxClosingFragment _
     children
 
-  set_js res_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 

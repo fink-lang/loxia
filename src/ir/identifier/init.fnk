@@ -5,9 +5,12 @@
 
 get_ident = fn id, [scope, ...scopes]=[]:
   match scope:
-    {(id): ?}: scope.(id)
-    ?: get_ident id, scopes
-    else: id
+    {(id): ?}:
+      scope.(id)
+    ?:
+      get_ident id, scopes
+    else:
+      id
 
 
 

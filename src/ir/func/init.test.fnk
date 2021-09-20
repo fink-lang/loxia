@@ -1,4 +1,4 @@
-{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 {fink2lir} = import '../../testing/generate.fnk'
 
 
@@ -104,6 +104,18 @@ describe 'func', fn:
           match a:
             b: a
             else: fun a - 1
+        '
+      to_match_snapshot
+
+
+  skip.it 'handles mutually recursive calls', fn:
+    expect
+      fink2lir '
+        foo = fn a:
+          bar a
+
+        bar = fn b:
+          foo b
         '
       to_match_snapshot
 

@@ -2,8 +2,9 @@
 {optimize_unused} = import './unused.fnk'
 {optimize_refs} = import './refs.fnk'
 {optimize_tails} = import './tail-calls.fnk'
-{optimize_ids} = import './short-ids.fnk'
+# {optimize_ids} = import './short-ids.fnk'
 
+import '../perf.fnk'
 
 optimize = fn exprs:
 
@@ -16,7 +17,7 @@ optimize = fn exprs:
   u_meta = init_ctx u_ir
   [end_il, end_meta] = optimize_unused u_ir, u_meta
 
-  optimize_ids end_il, end_meta
+  # optimize_ids end_il, end_meta
 
   # log add_type_info end_meta, end_il
   # short_il = optimize_ids un_il

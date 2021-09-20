@@ -158,7 +158,6 @@ transform_callee = fn expr, ctx:
 
 
 transform_call = fn node, result, ctx:
-  # [callee, c_id, args_ctx] = transform node.callee, 'callee', ctx
   [callee, c_id, args_ctx] = transform_callee node.callee, ctx
   [args, args_id, {partial_foo, ...end_ctx}] = transform_args node.args, {loc: node.loc}, args_ctx
 

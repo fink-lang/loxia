@@ -39,19 +39,84 @@ export const shrub = ni_0,
 `;
 
 exports[`source maps compiles to mjs 1`] = `
-"const foo_0 = 12345;
-const str_0 = \`foo\`;
-const ham_0 = \`foo: \${foo_0} bar:\${str_0}\`;
+"const nanu_0 = 345;
+const foo_0 = {
+  bar: 12345,
+  \\"spam ni\\": nanu_0,
+  nanu: nanu_0
+};
+const str_1 = \`foo\`;
+const ham_0 = \`foo: \${foo_0} bar:\${str_1}\`;
+const el_0 = <Foo>bar {123} <div foo={134} bar={str_1} spam={nanu_0} /></Foo>;
 const ni_0 = spam + fooᜭbar;
 const item_1 = 1;
-const str_4 = \`ni\`;
-const a_0 = [item_1, str_4];
-const out_0 = [a_0, item_1, str_4];
-export const foo = foo_0,
-      bar = str_0,
+const str_5 = \`ni\`;
+const a_0 = [item_1, str_5];
+const out_0 = [a_0, item_1, str_5];
+
+const func_0 = (x_0, y_0) => {
+  return x_0 + y_0 + item_1;
+};
+
+const y_1 = func_0(str_1, a_0, item_1);
+export const nanu = nanu_0,
+      foo = foo_0,
+      bar = str_1,
       ham = ham_0,
+      el = el_0,
       ni = ni_0,
       a = a_0,
-      out = out_0;
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRlc3QuZm5rIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Y0FDTyxLO2NBQ0EsUUFBRCxLQUFZLFFBQVosS0FBc0IsRTthQUN2QixjOztjQUNJLEkiLCJzb3VyY2VzQ29udGVudCI6WyJmb28gPSAxMjM0NVxuYmFyID0gJ2ZvbydcbmhhbSA9ICdmb286ICR7Zm9vfSBiYXI6JHtiYXJ9J1xubmkgPSBzcGFtICsgZm9vLWJhclxuYSA9IFsxLCAnbmknXVxuW2IsIGNdID0gYVxub3V0ID0gW2EsIGIsIGNdXG4iXX0="
+      out = out_0,
+      func = func_0,
+      y = y_1;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRlc3QuZm5rIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJNQUFPLE0sR0FBQSxHO01BQzZCLEssR0FBQTtBQUE3QixFQUFBLEdBQTZCLEVBQXhCLEtBQXdCO0FBQWhCLFdBQWdCLEVBRDdCLE1BQzZCO0FBQUEsRUFBQSxJQUFJLEVBRGpDO0FBQzZCLEM7TUFDN0IsSyxHQUFBLEs7TUFDRCxLLEdBQUMsUUFGNkIsS0FFbEIsUUFEWCxLQUNxQixFO01BQ3ZCLEksR0FBQSxLQUFLLElBQUssS0FBSSxDQUFDLEtBQUssR0FBTCxDQUFTLEtBQVQsQ0FBYSxHQUFiLENBRmIsQ0FBQSxLQUFHLENBRVUsQ0FBaUIsSUFBakIsQ0FKYixDQUFBLE1BQUcsQ0FJVSxHQUFmLE07TUFDQSxJLEdBQUEsYztNQUNBLE0sR0FBQSxDO01BQUksSyxHQUFBLEk7TUFBRCxHLEdBQUEsQ0FBSCxNQUFHLEVBQUMsS0FBRCxDO01BRUssSyxHQUFBLENBRkwsR0FFSyxFQUZSLE1BRVEsRUFGSixLQUVJLEM7O01BQ04sTSxHQUFBLENBQUcsR0FBSCxFQUFNLEdBQU47QUFDTCxTQURRLEdBQ1IsR0FEVyxHQUNYLEdBSkcsTUFJSDtBQURLLEM7O01BRUgsRyxHQUZHLE1BRUgsQ0FURyxLQVNILEVBTEksR0FLSixFQUxDLE1BS0QsQztBQVhKLGFBQUEsSUFBVSxHQUFILE1BQVA7QUFBQSxNQUNBLEdBREEsR0FDb0MsS0FEcEM7QUFBQSxNQUVBLEdBRkEsR0FFTyxLQUZQO0FBQUEsTUFHQSxHQUhBLEdBR00sS0FITjtBQUFBLE1BSUEsRUFKQSxHQUlLLElBSkw7QUFBQSxNQUtBLEVBTEEsR0FLSyxJQUxMO0FBQUEsTUFNQSxDQU5BLEdBTVEsR0FOUjtBQUFBLE1BUUEsR0FSQSxHQVFhLEtBUmI7QUFBQSxNQVNBLElBVEEsR0FTTyxNQVRQO0FBQUEsTUFXQSxDQVhBLEdBV0ksR0FYSiIsInNvdXJjZXNDb250ZW50IjpbIm5hbnUgPSAzNDVcbmZvbyA9IHtiYXI6IDEyMzQ1LCAnc3BhbSBuaSc6IG5hbnUsIG5hbnV9XG5iYXIgPSAnZm9vJ1xuaGFtID0gJ2ZvbzogJHtmb299IGJhcjoke2Jhcn0nXG5lbCA9IDxGb28+YmFyIHsxMjN9IDxkaXYgZm9vPTEzNCBiYXIgc3BhbT1uYW51PjwvZGl2PjwvRm9vPlxubmkgPSBzcGFtICsgZm9vLWJhclxuYSA9IFsxLCAnbmknXVxuW2IsIGNdID0gYVxub3V0ID0gW2EsIGIsIGNdXG5mdW5jID0gZm4geCwgeTpcbiAgeCArIHkgKyBiXG55ID0gZnVuYyBiYXIsIGEsIGJcbiJdfQ=="
+`;
+
+exports[`source maps compiles to mjs 2`] = `
+"import { _in_ } from \\"@fink/js-interop/runtime.js\\";
+
+const remove_unused_0 = (...args_0) => {
+  remove_unused_0: do {
+    const items_0 = args_0[0];
+    const tail_1 = args_0.slice(1);
+    const hdm_0 = items_0[0];
+    const expr_0 = undefined === hdm_0 ? false : hdm_0;
+    const tail_0 = items_0.slice(1);
+    const ctx_0 = args_0[1];
+    const out_0 = args_0[2];
+    const itm_4 = expr_0[2][0];
+
+    /* istanbul ignore else */
+    if (expr_0 === false) {
+      return [out_0, ctx_0];
+    }
+
+    /* istanbul ignore else */
+    if (true === _in_(expr_0[0], [\`mod\`, \`imp\`, \`af\`, \`ac\`, \`cc\`, \`cif\`, \`cf\`])) {
+      args_0 = [tail_0, ctx_0, [expr_0, ...args_0[2]]];
+      continue remove_unused_0;
+    }
+
+    /* istanbul ignore else */
+    if (itm_4 === is_unused(itm_4, ctx_0)) {
+      args_0 = [tail_0, dec_refs(get_ref_args(expr_0), ctx_0), out_0];
+      continue remove_unused_0;
+    }
+
+    /* istanbul ignore else */
+    if (true === _in_(expr_0[0], [\`fn\`, \`fnr\`, \`cn\`])) {
+      const tail_4 = expr_0.slice(1);
+      const items_2 = expr_0[1];
+      const right_1 = remove_unused_0(reverse(items_2[1]), ctx_0, []);
+      args_0 = [tail_0, right_1[1], [[expr_0[0], [items_2[0], right_1[0]], ...tail_4.slice(1)], ...args_0[2]]];
+      continue remove_unused_0;
+    }
+
+    args_0 = [tail_0, ctx_0, [expr_0, ...args_0[2]]];
+    continue remove_unused_0;
+  } while (true);
+};
+
+export const remove_unused = remove_unused_0;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRlc3QuZm5rIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O01BQWdCLGUsR0FBQTtBQUFBO0FBQUEsVUFBRyxPQUFILEdBQUcsU0FBSDtBQUFBLFVBQUcsTUFBSCxHQUFHLGVBQUg7QUFBQSxVQUFJLEtBQUosR0FBRyxPQUFDLEdBQUo7QUFBQSxVQUFJLE1BQUosR0FBSSxjQUFBLEtBQUksV0FBSixLQUFKO0FBQUEsVUFBSSxNQUFKLEdBQUcsT0FBQyxTQUFKO0FBQUEsVUFBMkIsS0FBM0IsR0FBMkIsU0FBM0I7QUFBQSxVQUFnQyxLQUFoQyxHQUFnQyxTQUFoQztBQUFBLFVBUU4sS0FSTSxHQUFJLE1BUVgsR0FBQyxHQVJNOztBQUFBO0FBRVosUUFGZ0IsTUFFaEI7QUFDUSxjQUhvQyxLQUdwQyxFQUgrQixLQUcvQjtBQUFJOztBQUhBO0FBS1gsc0JBTGUsTUFLZixLQUE2QyxDQUF0QyxLQUFzQyxFQUEvQixLQUErQixFQUF4QixJQUF3QixFQUFsQixJQUFrQixFQUFaLElBQVksRUFBTixLQUFNLEVBQUMsSUFBRCxDQUE3QyxHQUFEO0FBQUEsZUFDNEIsQ0FOWixNQU1ZLEVBTlcsS0FNWCxFQUFPLENBTm5CLE1BTW1CLEVBTlMsWUFNVCxDQUFQLENBRDVCO0FBQUE7QUFDMEM7O0FBTjlCO0FBUU4sUUFBQSxLQUFnQixLQUFoQixVQUFBLEtBQWdCLEVBUmlCLEtBUWpCLENBQWhCLEVBQU47QUFBQSxlQUdpQyxDQVhqQixNQVdpQixFQURwQixTQURKLGFBVE8sTUFTUCxDQUNJLEVBVjBCLEtBVTFCLENBQ29CLEVBWFcsS0FXWCxDQUhqQztBQUFBO0FBR29DOztBQVh4QjtBQWFYLHNCQWJlLE1BYWYsS0FBbUIsQ0FBWixJQUFZLEVBQU4sS0FBTSxFQUFDLElBQUQsQ0FBbkIsR0FBRDtBQUFBLFlBQ0csTUFESCxHQWJnQixNQWNiLFNBREg7QUFBQSxZQUNPLE9BRFAsR0FiZ0IsTUFjVCxHQURQO0FBQUEsWUFHc0IsT0FIdEIsR0FHc0IsZ0JBRFosUUFESCxPQUFPLEdBQ0osQ0FDWSxFQWhCaUIsS0FnQmpCLEVBQTBCLEVBQTFCLENBSHRCO0FBQUEsZUFLaUMsQ0FsQmpCLE1Ba0JpQixFQUZYLE9BQVosR0FFdUIsRUFBUSxDQURYLENBakJkLE1BY2IsR0FHMkIsRUFBUixDQUhmLE9BQUMsR0FHYyxFQURBLE9BQW5CLEdBQ21CLENBQVEsRUFIdkIsR0FBSixNQUFJLFNBR3VCLENBQ1csRUFsQkcsWUFrQkgsQ0FBUixDQUxqQztBQUFBO0FBS2dEOztBQWxCcEMsYUFxQmdCLENBckJaLE1BcUJZLEVBckJXLEtBcUJYLEVBQU8sQ0FyQm5CLE1BcUJtQixFQXJCUyxZQXFCVCxDQUFQLENBckJoQjtBQUFBO0FBQUE7QUFBQSxDOztBQUFoQixhQUFBLGFBc0JBLEdBdEJnQixlQUFoQiIsInNvdXJjZXNDb250ZW50IjpbInJlbW92ZV91bnVzZWQgPSBmbiBbZXhwcj1mYWxzZSwgLi4uZXhwcnNdLCBjdHgsIG91dDpcbiAgbWF0Y2ggZXhwcjpcbiAgICBmYWxzZTpcbiAgICAgIFtvdXQsIGN0eF1cblxuICAgIFs/IGluIFsnbW9kJywgJ2ltcCcsICdhZicsICdhYycsICdjYycsICdjaWYnLCAnY2YnXV06XG4gICAgICByZW1vdmVfdW51c2VkIGV4cHJzLCBjdHgsIFtleHByLCAuLi5vdXRdXG5cbiAgICBbLCAsIFtpc191bnVzZWQgPywgY3R4XV06XG4gICAgICBhcmdzID0gZ2V0X3JlZl9hcmdzIGV4cHJcbiAgICAgIG5leHRfY3R4ID0gZGVjX3JlZnMgYXJncywgY3R4XG4gICAgICByZW1vdmVfdW51c2VkIGV4cHJzLCBuZXh0X2N0eCwgb3V0XG5cbiAgICBbPyBpbiBbJ2ZuJywgJ2ZucicsICdjbiddXTpcbiAgICAgIFtvcCwgW2FyZ3MsIGJvZHldLCAuLi5yZXN0XSA9IGV4cHJcbiAgICAgIHJib2R5ID0gcmV2ZXJzZSBib2R5XG4gICAgICBbb2JvZHksIG5leHRfY3R4XSA9IHJlbW92ZV91bnVzZWQgcmJvZHksIGN0eCwgW11cbiAgICAgIG9leHByID0gW29wLCBbYXJncywgb2JvZHldLCAuLi5yZXN0XVxuICAgICAgcmVtb3ZlX3VudXNlZCBleHBycywgbmV4dF9jdHgsIFtvZXhwciwgLi4ub3V0XVxuXG4gICAgZWxzZTpcbiAgICAgIHJlbW92ZV91bnVzZWQgZXhwcnMsIGN0eCwgW2V4cHIsIC4uLm91dF1cbiJdfQ=="
 `;

@@ -13,15 +13,19 @@ set_js2 = fn [, , [id], {loc}], js, ctx:
   update_value id, {js: {...js, loc}}, ctx
 
 
+with_loc = fn {loc}, expr:
+  {...expr, loc}
+
 
 get_js = fn id, {values}:
   {(id): val} = values
   match val:
     {refs: ? > 1}:
-      #  rec:
-      #    ...identifier id
-      #    loc: val.js.loc
-      identifier id
+      # identifier id
+      {js: {loc}={}} = val
+      rec:
+        ...identifier id
+        loc
 
     {js: ?}:
       val.js

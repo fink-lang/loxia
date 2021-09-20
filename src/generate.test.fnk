@@ -2,7 +2,7 @@
 {slice} = import '@fink/std-lib/str.fnk'
 
 {generate} = import './generate.fnk'
-{fink2js} = import './testing/generate.fnk'
+{fink2js, fink2js_sm} = import './testing/generate.fnk'
 
 
 
@@ -37,20 +37,54 @@ describe 'module types', fn:
 
 describe 'source maps', fn:
   code = "
-    foo = 12345
+    nanu = 345
+    foo = {bar: 12345, 'spam ni': nanu, nanu}
     bar = 'foo'
     ham = 'foo: \${foo} bar:\${bar}'
+    el = <Foo>bar {123} <div foo=134 bar spam=nanu></div></Foo>
     ni = spam + foo-bar
     a = [1, 'ni']
     [b, c] = a
     out = [a, b, c]
+    func = fn x, y:
+      x + y + b
+    y = func bar, a, b
   "
-  js = fink2js code,  {module_type: 'mjs', source_maps: 'inline'}
+  js = fink2js_sm code
 
   it 'compiles to mjs', fn:
     expect
       js
       to_match_snapshot
+
+  it 'compiles to mjs', fn:
+    expect
+      fink2js_sm "
+        remove_unused = fn [expr=false, ...exprs], ctx, out:
+          match expr:
+            false:
+              [out, ctx]
+
+            [? in ['mod', 'imp', 'af', 'ac', 'cc', 'cif', 'cf']]:
+              remove_unused exprs, ctx, [expr, ...out]
+
+            [, , [is_unused ?, ctx]]:
+              args = get_ref_args expr
+              next_ctx = dec_refs args, ctx
+              remove_unused exprs, next_ctx, out
+
+            [? in ['fn', 'fnr', 'cn']]:
+              [op, [args, body], ...rest] = expr
+              rbody = reverse body
+              [obody, next_ctx] = remove_unused rbody, ctx, []
+              oexpr = [op, [args, obody], ...rest]
+              remove_unused exprs, next_ctx, [oexpr, ...out]
+
+            else:
+              remove_unused exprs, ctx, [expr, ...out]
+      "
+      to_match_snapshot
+
 
 
 

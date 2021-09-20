@@ -6,7 +6,7 @@ types = import '@babel/types'
 
 {null} = import '@fink/js-interop/nullish.fnk'
 
-{add, get_js, set_js, get_js_literal} = import '../context.fnk'
+{add, get_js, set_js2, get_js_literal, with_loc} = import '../context.fnk'
 
 
 
@@ -21,9 +21,8 @@ get_tail_of = fn items_id, {tails={}}:
 
 
 transform_empty_list = fn expr, ctx:
-  [ , , [result_id]] = expr
   js = arrayExpression []
-  set_js result_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 
@@ -32,12 +31,12 @@ elems_or_spread = fn expr:
     {type: 'ArrayExpression'}:
       expr.elements
     else:
-      [spreadElement expr]
+      [with_loc expr, spreadElement expr]
 
 
 
 transform_list_append = fn expr, ctx:
-  [ , [items_id, val_id], [result_id]] = expr
+  [ , [items_id, val_id]] = expr
   # TODO: inlining should be handled at optimization level in ir
   elems = elems_or_spread get_js_literal items_id, ctx
 
@@ -46,34 +45,33 @@ transform_list_append = fn expr, ctx:
     else: get_js val_id, ctx
 
   js = arrayExpression [...elems, elem]
-
-  set_js result_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 
 transform_list_chain = fn expr, ctx:
-  [ , [items1_id, items2_id], [result_id]] = expr
+  [ , [items1_id, items2_id]] = expr
   # TODO: inlining should be handled at optimization level in ir
   elems1 = elems_or_spread get_js_literal items1_id, ctx
   elems2 = elems_or_spread get_js_literal items2_id, ctx
 
   js =  arrayExpression [...elems1, ...elems2]
-  set_js result_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 
 transform_list_head = fn expr, ctx:
-  [ , [items_id], [result_id]] = expr
+  [ , [items_id]] = expr
   [tail_src, idx] = get_tail_of items_id, ctx
   arr = get_js tail_src, ctx
   js_idx = numericLiteral idx
   js = memberExpression arr, js_idx, true
-  set_js result_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 
 transform_list_reverse = fn expr, ctx:
-  [ , [items_id], [result_id]] = expr
+  [ , [items_id]] = expr
   arr = get_js items_id, ctx
 
   js = callExpression
@@ -81,7 +79,7 @@ transform_list_reverse = fn expr, ctx:
       arrayExpression [spreadElement arr]
       identifier 'reverse'
     []
-  set_js result_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 
@@ -97,7 +95,7 @@ transform_list_tail = fn expr, ctx:
 
   pipe ctx:
     set_tail_of result_id, [tail_src, idx + 1], ?
-    set_js result_id, js, ?
+    set_js2 expr, js, ?
 
 
 

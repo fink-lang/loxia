@@ -7,11 +7,7 @@
 } = import 'perf_hooks'
 
 
-obs = new PerformanceObserver, fn items:
-  pipe items.getEntries _:
-    fold fn entry:
-      console.log entry.name, entry.duration, 'ms'
-  obs.disconnect _
+obs = new PerformanceObserver, fn: obs.disconnect _
 
 
 obs.observe {entryTypes: ['function'] }
@@ -21,3 +17,11 @@ timed = fn func:
   wrapped = performance.timerify func
   wrapped
 
+
+log_timings = fn name:
+  console.log '=======${name}======'
+  pipe obs:
+    ?.takeRecords _
+    ?.getEntries _
+    fold fn entry:
+      console.log entry.name, entry.duration, 'ms'

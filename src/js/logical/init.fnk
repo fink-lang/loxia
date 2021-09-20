@@ -1,7 +1,7 @@
 types = import '@babel/types'
 {logicalExpression} = types
 
-{add, get_js, set_js} = import '../context.fnk'
+{add, get_js, set_js2} = import '../context.fnk'
 
 {transform_unary} = import '../transform.fnk'
 
@@ -9,11 +9,11 @@ types = import '@babel/types'
 
 
 transform_binary = fn jsop: fn expr, ctx:
-  [, [left_id, right_id], [result_id]] = expr
+  [, [left_id, right_id]] = expr
   left = get_js left_id, ctx
   right = get_js right_id, ctx
   js = logicalExpression jsop, left, right
-  set_js result_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 

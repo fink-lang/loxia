@@ -11,7 +11,7 @@ types = import '@babel/types'
 {slice} = import '@fink/std-lib/str.fnk'
 
 
-{add, get_js, set_js, get_js_literal} = import '../context.fnk'
+{add, get_js, set_js2, get_js_literal, with_loc} = import '../context.fnk'
 {transform_exprs} = import '../transform.fnk'
 {escape_ident} = import '../identifier/init.fnk'
 {get_runtime_imports} = import './import.fnk'
@@ -76,7 +76,7 @@ module_transforms = rec:
 
 
 transform_mod_exports = fn expr, ctx:
-  [ , [exports_id], [res_id]] = expr
+  [ , [exports_id]] = expr
 
   decls = pipe get_js exports_id, ctx:
     ?.properties
@@ -85,16 +85,13 @@ transform_mod_exports = fn expr, ctx:
         {type: 'StringLiteral'}: key.value
         else: key.name
 
-      ident = rec:
-        ...identifier escape_ident name
-        loc: key.loc
-
+      ident = with_loc key, identifier escape_ident name
       variableDeclarator ident, value
     [...?]
 
   js = exportNamedDeclaration variableDeclaration 'const', decls
 
-  set_js res_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 

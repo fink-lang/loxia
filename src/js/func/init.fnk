@@ -8,9 +8,8 @@ types = import '@babel/types'
 {map} = import '@fink/std-lib/iter.fnk'
 
 {transform_exprs} = import '../transform.fnk'
-{add, set_js} = import '../context.fnk'
+{add, set_js, set_js2} = import '../context.fnk'
 {get_refs, update_value} = import '../../ir/context.fnk'
-
 
 
 
@@ -24,6 +23,12 @@ clean_args = fn args:
     [...?]
 
 
+res_ident = fn expr:
+  [, , [id], {loc}] = expr
+  rec:
+    ...identifier id
+    loc
+
 
 split_args_body = fn [expr=false, ...exprs], args_id, ctx, args=[], body=[]:
   match expr:
@@ -36,17 +41,19 @@ split_args_body = fn [expr=false, ...exprs], args_id, ctx, args=[], body=[]:
         [?, ?]: args
         else: [...args, ]
 
-      [, , [arg_id]] = expr
-      arg = identifier arg_id
-      split_args_body exprs, args_id, ctx, [...prev, arg], body
+      arg = res_ident expr
+      next_ctx = set_js2 expr, arg, ctx
+      split_args_body exprs, args_id, next_ctx, [...prev, arg], body
 
     ['lst_r', [args_id]]:
       split_args_body [], args_id, ctx, args, [...body, expr, ...exprs]
 
     ['lst_t', [args_id]]:
       [, , [tail_id]] = expr
-      arg = identifier tail_id
-      rest = restElement arg
+      arg = res_ident expr
+      rest = rec:
+        ...restElement arg
+        loc: arg.loc
 
       match get_refs tail_id, ctx:
         # the rest is used for more than just getting next arg and tail
@@ -61,11 +68,10 @@ split_args_body = fn [expr=false, ...exprs], args_id, ctx, args=[], body=[]:
 
 
 
-
-
 transform_fn = fn expr, ctx:
-  [, [fn_args, fn_block], [res_id]] = expr
+  [, [fn_args, fn_block]] = expr
   [args_id, ret_id] = fn_args
+
   ret = returnStatement _
   body_ctx = set_js ret_id, ret, ctx
 
@@ -74,7 +80,7 @@ transform_fn = fn expr, ctx:
 
   js = arrowFunctionExpression args, blockStatement body
 
-  set_js res_id, js, next_ctx
+  set_js2 expr, js, next_ctx
 
 
 
@@ -97,12 +103,12 @@ transform_recursive_fn = fn expr, ctx:
           booleanLiteral true
           blockStatement body
 
-  set_js res_id, js, next_ctx
+  set_js2 expr, js, next_ctx
 
 
 
 transform_cont = fn expr, ctx:
-  [, [args, block], [res_id]] = expr
+  [, [args, block]] = expr
   [ret_id=false] = args
   [body, next_ctx]= transform_exprs block, ctx
 
@@ -114,7 +120,7 @@ transform_cont = fn expr, ctx:
         identifier ret_id
         blockStatement body
 
-  set_js res_id, js, next_ctx
+  set_js2 expr, js, next_ctx
 
 
 

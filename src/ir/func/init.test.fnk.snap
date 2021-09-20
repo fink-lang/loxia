@@ -366,3 +366,34 @@ rec >> exports_0:
         lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
 `;
+
+exports[`func handles mutually recursive calls 1`] = `
+"
+rec >> exports_0:
+  fn args_0, ret_0:
+    lst_h args_0 >> a_0:
+      lst_t args_0 >> tail_0:
+        = bar_0 >> callee_0:
+          lst >> cargs_0:
+            = a_0 >> arg_0:
+              lst_a cargs_0, arg_0 >> cargs_1:
+                af callee_0, cargs_1 >> result_0:
+                  cc ret_0, result_0
+  >> foo_0:
+    str 'foo' >> key_0
+      rec_s exports_0, key_0, foo_0 >> exports_1:
+        fn args_1, ret_1:
+          lst_h args_1 >> b_0:
+            lst_t args_1 >> tail_1:
+              = foo_0 >> callee_1:
+                lst >> cargs_2:
+                  = b_0 >> arg_1:
+                    lst_a cargs_2, arg_1 >> cargs_3:
+                      af callee_1, cargs_3 >> result_1:
+                        cc ret_1, result_1
+        >> bar_0:
+          str 'bar' >> key_1
+            rec_s exports_1, key_1, bar_0 >> exports_2:
+              lst >> drctvs_0:
+                mod exports_2, drctvs_0 >> mod_0:"
+`;

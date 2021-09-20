@@ -3,25 +3,25 @@ types = import '@babel/types'
 
 {parse_int, parse_float} = import '@fink/std-lib/num.js'
 
-{add, set_js} = import '../context.fnk'
+{add, set_js2} = import '../context.fnk'
 
 
 
 transform_int = fn expr, ctx:
-  [, [value], [result_id]] = expr
+  [, [value]] = expr
   # TODO parse_int does not parse 0[bxo].+ nor 1_000
   val = parse_int value
   js = rec:
     ...numericLiteral val
     extra: {rawValue: val, raw: value}
 
-  set_js result_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 transform_float = fn expr, ctx:
-  [, [value], [result_id]] = expr
+  [, [value]] = expr
   js = numericLiteral parse_float value
-  set_js result_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 

@@ -1,16 +1,17 @@
 {is_fn} = import '@fink/std-lib/fn.fnk'
+# {set_props, set} = import '@fink/js-interop/reflect.js'
 
 
 
 any = false
 
 
-add = fn type, op, transformer: fn {transformers, ...ctx}:
+add = fn type, op, transformer: fn ctx:
   next_transformers = rec:
-    ...transformers
+    ...ctx.transformers
     (type or op): transformer
 
-  {transformers: next_transformers, ...ctx}
+  {...ctx, transformers: next_transformers}
 
 
 
@@ -27,15 +28,23 @@ get_transformer = fn {op, type}, {transformers}:
 
 
 unique_ident = fn name, ctx:
-  {unique_ids: {(name): cntr=0, ...ids}={}} = ctx
+  {unique_ids={}} = ctx
+  {(name): cntr=0} = unique_ids
   uid = '${name}_${cntr}'
-  [uid, {...ctx, unique_ids: {...ids, (name): cntr + 1}}]
+  [uid, {...ctx, unique_ids: {...unique_ids, (name): cntr + 1}}]
 
 
 
-update_value = fn id, updates, {values, ...ctx}:
-  {(id): curr={}} = values
-  {...ctx, values: {...values, (id): {...curr, ...updates}}}
+update_value = fn id, updates, ctx:
+  # match ctx:
+  #   {values: {(id): ?}}:
+  #     set_props ctx.values.(id), updates
+  #   else:
+  #     set ctx.values, id, updates
+  # ctx
+  {(id): curr={}} = ctx.values
+  {...ctx, values: {...ctx.values, (id): {...curr, ...updates}}}
+
 
 
 

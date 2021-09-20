@@ -9,14 +9,13 @@ types = import '@babel/types'
 
 {inc_ref} = import '../../ir/context.fnk'
 {is_js_ident} = import '../identifier/init.fnk'
-{add, get_js, get_js_literal, set_js} = import '../context.fnk'
+{add, get_js, get_js_literal, set_js2, with_loc} = import '../context.fnk'
 
 
 
 transform_rec = fn expr, ctx:
-  [ , , [result_id]] = expr
   js = objectExpression []
-  set_js result_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 
@@ -25,12 +24,12 @@ props_or_spread = fn obj:
     {type: 'ObjectExpression'}:
       obj.properties
     else:
-      [spreadElement obj]
+      [with_loc obj, spreadElement obj]
 
 
 
 trandform_rec_set = fn expr, ctx:
-  [ , [rec_id, key_id, val_id], [result_id]] = expr
+  [ , [rec_id, key_id, val_id]] = expr
   props = props_or_spread get_js rec_id, ctx
   key = get_js key_id, ctx
   val = get_js val_id, ctx
@@ -42,27 +41,27 @@ trandform_rec_set = fn expr, ctx:
     {type: 'TemplateLiteral', quasis: [{value: {raw: is_js_ident ?}}]}:
       {quasis: [{value: {raw: value}}]} = key
       objectProperty
-        identifier value
+        with_loc key, identifier value
         val
 
     {type: 'TemplateLiteral'}:
       {quasis: [{value: {raw: value}}]} = key
       # TODO: needs unescaping
       objectProperty
-        stringLiteral value
+        with_loc key, stringLiteral value
         val
 
     else:
       objectProperty key, val, true
 
   js = objectExpression [...props, prop]
-  set_js result_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 
 
 transform_rec_get = fn expr, ctx:
-  [op , [rec_id, key_id] , [result_id]] = expr
+  [op , [rec_id, key_id]] = expr
   rec_js = get_js rec_id, ctx
   key = get_js_literal key_id, ctx
 
@@ -72,7 +71,7 @@ transform_rec_get = fn expr, ctx:
 
     {type: 'TemplateLiteral', quasis: [{value: {raw: is_js_ident ?}}]}:
       {quasis: [{value: {raw: value}}]} = key
-      [false, identifier value]
+      [false, with_loc key, identifier value]
 
     else:
       [true, key]
@@ -81,7 +80,7 @@ transform_rec_get = fn expr, ctx:
     'rec_go': optionalMemberExpression rec_js, final_key, computed, true
     else: memberExpression rec_js, final_key, computed
 
-  set_js result_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 
@@ -121,16 +120,16 @@ transform_rec_del_keys = fn expr, ctx:
         rec_js
 
   next_ctx = inc_ref result_id, ctx
-  set_js result_id, js, next_ctx
+  set_js2 expr, js, next_ctx
 
 
 
 transform_rec_merge = fn expr, ctx:
-  [ , [rec1_id, rec2_id] , [result_id]] = expr
+  [ , [rec1_id, rec2_id]] = expr
   props1 = props_or_spread get_js rec1_id, ctx
   props2 = props_or_spread get_js rec2_id, ctx
   js = objectExpression [...props1, ...props2]
-  set_js result_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 

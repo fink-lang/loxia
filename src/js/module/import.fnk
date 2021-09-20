@@ -5,7 +5,7 @@ types = import '@babel/types'
 } = types
 {ends_with, starts_with, slice, is_str} = import '@fink/std-lib/str.fnk'
 
-{add, set_js, get_js, get_js_literal} = import '../context.fnk'
+{add, set_js2, get_js, get_js_literal} = import '../context.fnk'
 {escape_ident} = import '../identifier/init.fnk'
 
 
@@ -70,15 +70,14 @@ transform_import = fn expr, ctx:
 
 
 transform_dyn_import = fn expr, ctx:
-  [ , [uri_id], [res_id]] = expr
-
+  [ , [uri_id]] = expr
   uri = get_js uri_id, ctx
 
   js = callExpression
     import_js _
     [uri]
 
-  set_js res_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 

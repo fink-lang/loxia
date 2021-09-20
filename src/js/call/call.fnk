@@ -7,7 +7,7 @@ types = import '@babel/types'
 {null} = import '@fink/js-interop/nullish.fnk'
 {map} = import '@fink/std-lib/iter.fnk'
 
-{add, get_js, get_js_literal, set_js} = import '../context.fnk'
+{add, get_js, get_js_literal, set_js2, with_loc} = import '../context.fnk'
 {get_value} = import '../../ir/context.fnk'
 
 
@@ -27,11 +27,11 @@ as_call_args = fn args:
 
 
 transform_apply_fn = fn expr, ctx:
-  [ , [callee_id, args_id], [result_id]] = expr
+  [ , [callee_id, args_id]] = expr
   callee = get_js callee_id, ctx
   args = as_call_args get_js args_id, ctx
   js = callExpression callee, args
-  set_js result_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 
@@ -40,6 +40,7 @@ transform_continue_with_fn = fn expr, ctx:
 
   {args_id} = get_value callee_id, ctx
   new_args = get_js new_args_id, ctx
+
   js = list:
     expressionStatement
       assignmentExpression
@@ -64,7 +65,7 @@ transform_apply_cont = fn expr, ctx:
     cont
     variableDeclaration 'const', list:
       variableDeclarator
-        identifier res_id
+        with_loc cont, identifier res_id
         ret_ident
 
   [js, ctx]
@@ -79,14 +80,14 @@ transform_continue_with_cont = fn expr, ctx:
 
   match ret:
     {type: 'ReturnStatement'}:
-      [[returnStatement res], ctx]
+      js = with_loc res, returnStatement res
+      [[js], ctx]
     else:
       exprs = list:
-        expressionStatement
+        with_loc res, expressionStatement
           assignmentExpression '=', ret, res
-        breakStatement identifier ret_id
+        with_loc res, breakStatement identifier ret_id
       [exprs, ctx]
-
 
 
 

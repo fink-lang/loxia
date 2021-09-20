@@ -3,13 +3,13 @@ types = import '@babel/types'
 
 {rx, replace_all} = import '@fink/std-lib/regex.fnk'
 
-{add, get_js, set_js, set_js2} = import '../context.fnk'
+{add, get_js, set_js2} = import '../context.fnk'
 
 
 
 
 transform_str = fn expr, ctx:
-  [, [value], [res_id], {loc}] = expr
+  [, [value], , {loc}] = expr
   raw = replace_all
     value
     rx'\\([\s\S])|([`])'
@@ -21,7 +21,7 @@ transform_str = fn expr, ctx:
         ...templateElement {raw}
         loc
     []
-  set_js res_id, js, ctx
+  set_js2 expr, js, ctx
 
 
 
