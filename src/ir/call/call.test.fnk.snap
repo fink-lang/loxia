@@ -117,38 +117,51 @@ rec >> exports_0:
                           cc ret_3, pfn_3
         >> mex_3:
           fn args_4, ret_4:
-            lst_h args_4 >> prtlc_4:
-              = prtlc_4 >> callee_4:
+            lst_h args_4 >> prtl_5:
+              = foo >> callee_4:
                 lst >> cargs_9:
-                  int 123 >> arg_3:
+                  = prtl_5 >> arg_3:
                     lst_a cargs_9, arg_3 >> cargs_10:
-                      af callee_4, cargs_10 >> pfn_4:
-                        cc ret_4, pfn_4
+                      = prtl_5 >> left_1:
+                        str 'bar' >> key_1
+                          rec_g left_1, key_1 >> sprd_2:
+                            lst_c cargs_10, sprd_2 >> cargs_11:
+                              af callee_4, cargs_11 >> pfn_4:
+                                cc ret_4, pfn_4
           >> mex_4:
             fn args_5, ret_5:
               lst_h args_5 >> prtlc_5:
                 = prtlc_5 >> callee_5:
-                  lst >> cargs_11:
-                    = bar >> arg_4:
-                      lst_a cargs_11, arg_4 >> cargs_12:
-                        = spam >> arg_5:
-                          lst_a cargs_12, arg_5 >> cargs_13:
-                            af callee_5, cargs_13 >> pfn_5:
-                              cc ret_5, pfn_5
+                  lst >> cargs_12:
+                    int 123 >> arg_4:
+                      lst_a cargs_12, arg_4 >> cargs_13:
+                        af callee_5, cargs_13 >> pfn_5:
+                          cc ret_5, pfn_5
             >> mex_5:
               fn args_6, ret_6:
                 lst_h args_6 >> prtlc_6:
-                  = prtlc_6 >> left_1:
-                    str 'bar' >> key_1
-                      rec_g left_1, key_1 >> callee_6:
-                        lst >> cargs_14:
+                  = prtlc_6 >> callee_6:
+                    lst >> cargs_14:
+                      = bar >> arg_5:
+                        lst_a cargs_14, arg_5 >> cargs_15:
                           = spam >> arg_6:
-                            lst_a cargs_14, arg_6 >> cargs_15:
-                              af callee_6, cargs_15 >> pfn_6:
+                            lst_a cargs_15, arg_6 >> cargs_16:
+                              af callee_6, cargs_16 >> pfn_6:
                                 cc ret_6, pfn_6
               >> mex_6:
-                lst >> drctvs_0:
-                  mod exports_0, drctvs_0 >> mod_0:"
+                fn args_7, ret_7:
+                  lst_h args_7 >> prtlc_7:
+                    = prtlc_7 >> left_2:
+                      str 'bar' >> key_2
+                        rec_g left_2, key_2 >> callee_7:
+                          lst >> cargs_17:
+                            = spam >> arg_7:
+                              lst_a cargs_17, arg_7 >> cargs_18:
+                                af callee_7, cargs_18 >> pfn_7:
+                                  cc ret_7, pfn_7
+                >> mex_7:
+                  lst >> drctvs_0:
+                    mod exports_0, drctvs_0 >> mod_0:"
 `;
 
 exports[`call compiles with partial args 1`] = `

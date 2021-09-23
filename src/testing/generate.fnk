@@ -66,7 +66,7 @@ fink2js_sm = fn source:
   match ast:
     {errors: is_empty ?}:
       {code, errors, source_map} = generate ast, filename, source, options
-      # console.log 'https://sokra.github.io/source-map-visualization/#base64,${encode code},${encode JSON.stringify source_map},${encode source}'
+      console.log 'https://sokra.github.io/source-map-visualization/#base64,${encode code},${encode JSON.stringify source_map},${encode source}'
       match errors:
         is_empty ?:
           code

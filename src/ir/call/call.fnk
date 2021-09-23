@@ -71,20 +71,14 @@ transform_arg = fn expr, args_id, ctx:
 
 
 
-transform_spread_arg = fn expr, args_id, {partial_foo=false, has_partial, partial_ident=false, ...ctx}:
+transform_spread_arg = fn expr, args_id, {partial_foo=false, has_partial, ...ctx}:
   [prlt, p_ctx] = match partial_foo:
     false: unique_ident 'prtl', ctx
     else: [partial_foo, ctx]
 
-  match partial_ident:
-    false:
-      foo_ctx = {...p_ctx, partial_ident: prlt}
-      [arg, arg_id, {partial_ident:_, ...next_ctx}] = transform expr.right, 'sprd', foo_ctx
-      spread_arg args_id, arg, arg_id, {loc: expr.loc}, {...next_ctx, has_partial, partial_ident, partial_foo: prlt}
-
-    else:
-      [sprd, sprd_id, {partial_ident: _, ...next_ctx}] = transform expr.right, 'sprd', {...p_ctx, partial_ident, has_partial}
-      spread_arg args_id, sprd, sprd_id, {loc: expr.loc}, next_ctx
+  foo_ctx = {...p_ctx, partial_ident: prlt}
+  [arg, arg_id, {partial_ident:_, ...next_ctx}] = transform expr.right, 'sprd', foo_ctx
+  spread_arg args_id, arg, arg_id, {loc: expr.loc}, {...next_ctx, has_partial, partial_foo: prlt}
 
 
 
@@ -116,7 +110,7 @@ transform_all_args = fn [expr=false, ...exprs], args_id, ctx, out=[]:
       transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
 
     {type: 'empty'}:
-      [arg, next_args_id, next_ctx] = add_arg args_id, [], '_', {loc: expr.loc}, ctx
+      [arg, next_args_id, next_ctx] = add_arg args_id, [], '_', expr, ctx
       transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
 
     {type: 'partial'}:
@@ -133,14 +127,14 @@ transform_all_args = fn [expr=false, ...exprs], args_id, ctx, out=[]:
 
 
 
-transform_args = fn exprs, meta, ctx:
-  all_args = match exprs:
+transform_args = fn expr, ctx:
+  args = match expr.args:
     # TODO should this be done in larix ?
     [{type: 'empty'}, ...(is_empty ?)]: []
-    else: exprs
+    else: expr.args
 
-  [empty_args, empty_args_id, args_ctx] = tpl 'cargs', meta, ctx
-  [out, args_id, next_ctx] = transform_all_args all_args, empty_args_id, args_ctx
+  [empty_args, empty_args_id, args_ctx] = tpl 'cargs', expr, ctx
+  [out, args_id, next_ctx] = transform_all_args args, empty_args_id, args_ctx
   [[...empty_args, ...out], args_id, next_ctx]
 
 
@@ -159,15 +153,15 @@ transform_callee = fn expr, ctx:
 
 transform_call = fn node, result, ctx:
   [callee, c_id, args_ctx] = transform_callee node.callee, ctx
-  [args, args_id, {partial_foo, ...end_ctx}] = transform_args node.args, {loc: node.loc}, args_ctx
+  [args, args_id, {partial_foo, ...end_ctx}] = transform_args node, args_ctx
 
   match partial_foo:
     ?:
       [res_id, foo_ctx] = unique_ident 'pfn', end_ctx
-      call = [...callee, ...args, ['af', [c_id, args_id], [res_id], {loc: node.loc}]]
-      func partial_foo, call, res_id, result, {loc: node.loc}, foo_ctx
+      call = [...callee, ...args, ['af', [c_id, args_id], [res_id], node]]
+      func partial_foo, call, res_id, result, node, foo_ctx
     else:
-      call = [...callee, ...args, ['af', [c_id, args_id], [result], {loc: node.loc}]]
+      call = [...callee, ...args, ['af', [c_id, args_id], [result], node]]
       [call, end_ctx]
 
 

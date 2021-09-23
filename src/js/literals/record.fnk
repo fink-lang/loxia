@@ -61,7 +61,7 @@ trandform_rec_set = fn expr, ctx:
 
 
 transform_rec_get = fn expr, ctx:
-  [op , [rec_id, key_id]] = expr
+  [ , [rec_id, key_id]] = expr
   rec_js = get_js rec_id, ctx
   key = get_js_literal key_id, ctx
 

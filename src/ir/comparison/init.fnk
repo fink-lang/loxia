@@ -9,10 +9,10 @@ transform_comp = fn node, res_id, ctx:
     {left.type: 'comp'}:
       {left} = node
       right = {...node, left: left.right}
-      transform_binary 'and', left, right, res_id, {loc: node.loc}, ctx
+      transform_binary 'and', left, right, res_id, node, ctx
 
     else:
-      transform_binary node.op, node.left, node.right, res_id, {loc: node.loc}, ctx
+      transform_binary node.op, node.left, node.right, res_id, node, ctx
 
 
 add_comparison = fn ctx:

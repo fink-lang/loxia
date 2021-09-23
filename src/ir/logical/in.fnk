@@ -3,7 +3,7 @@
 
 
 transform_in = fn node, res_id, ctx:
-  transform_binary 'in', node.left, node.right, res_id, {loc: node.loc}, ctx
+  transform_binary 'in', node.left, node.right, res_id, node, ctx
 
 
 

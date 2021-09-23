@@ -25,6 +25,7 @@ describe 'call', fn:
         foo ?, 123
         foo ...?
         foo ...?.bar
+        foo ?, ...?.bar
         ? 123
         ? bar, spam
         ?.bar spam

@@ -5,12 +5,12 @@
 
 
 transform_not = fn node, res_id, ctx:
-  transform_unary node.op, node.right, res_id, {loc: node.loc}, ctx
+  transform_unary node.op, node.right, res_id, node, ctx
 
 
 
 transform_logical = fn node, res_id, ctx:
-  transform_binary node.op, node.left, node.right, res_id, {loc: node.loc}, ctx
+  transform_binary node.op, node.left, node.right, res_id, node, ctx
 
 
 

@@ -1,5 +1,5 @@
 {fink2lir} = import '../../testing/generate.fnk'
-{only, skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
 describe 'match', fn:
