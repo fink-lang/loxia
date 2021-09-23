@@ -1,7 +1,7 @@
 types = import '@babel/types'
 {conditionalExpression, binaryExpression, identifier, ifStatement} = types
 
-{dec_ref} = import '../../ir/context.fnk'
+{dec_ref, get_refs} = import '../../ir/context.fnk'
 {add, get_js, set_js2} = import '../context.fnk'
 
 
@@ -36,6 +36,30 @@ transform_is_val = fn expr, ctx:
   set_js2 expr, js, ctx
 
 
+transform_is_rec = fn expr, ctx:
+  [, [val_id]] = expr
+  val = get_js val_id, ctx
+
+  js = binaryExpression
+    '!='
+    identifier 'null'
+    val
+
+  set_js2 expr, js, ctx
+
+
+transform_is_lst = fn expr, ctx:
+  [, [val_id]] = expr
+  val = get_js val_id, ctx
+
+  js = binaryExpression
+    '!='
+    identifier 'null'
+    val
+
+  set_js2 expr, js, ctx
+
+
 
 transform_if = fn expr, ctx:
   [ , [cond_id, true_id, else_id=false], [], {loc}] = expr
@@ -46,21 +70,17 @@ transform_if = fn expr, ctx:
     leadingComments: [{type: 'CommentBlock', value: ' istanbul ignore else '}]
     loc
 
-  match else_id:
-    false:
-      [[if_true_js], ctx]
+  match get_refs else_id, ctx:
+    ? == 1:
+      else_js = get_js else_id, ctx
+      else_exprs = match else_js:
+        {type: 'BlockStatement'}:
+          else_js.body
+      [[if_true_js, ...else_exprs], ctx]
 
-    else: match ctx.values:
-      {(else_id): {refs: 1}}:
-        else_js = get_js else_id, ctx
-        else_exprs = match else_js:
-          {type: 'BlockStatement'}:
-            else_js.body
-        [[if_true_js, ...else_exprs], ctx]
-
-      {(else_id): {refs: ? > 1}}:
-        next_ctx = dec_ref else_id, ctx
-        [[if_true_js], next_ctx]
+    ? > 1:
+      next_ctx = dec_ref else_id, ctx
+      [[if_true_js], next_ctx]
 
 
 
@@ -68,4 +88,6 @@ add_conditionals = fn ctx:
   pipe ctx:
     add 'ifv', transform_if_val
     add 'isv', transform_is_val
+    add 'is_r', transform_is_rec
+    add 'is_l', transform_is_lst
     add 'cif', transform_if

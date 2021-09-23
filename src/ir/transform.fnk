@@ -12,7 +12,10 @@ transform = fn expr, name_or_id, ctx, gen_id=true:
 
   transform_expr = get_transformer expr, ctx
 
-  [out, end_ctx] = transform_expr expr, id, next_ctx
+  [out, end_ctx] = match transform_expr:
+    ?: transform_expr expr, id, next_ctx
+    else: throw_err transform_error 'Unknown expression.', expr, ctx
+
   [out, id, end_ctx]
 
 

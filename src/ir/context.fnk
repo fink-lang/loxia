@@ -1,7 +1,6 @@
 {is_fn} = import '@fink/std-lib/fn.fnk'
-# {set_props, set} = import '@fink/js-interop/reflect.js'
-
-
+hamt = import 'hamt'
+{set, tryGet, empty} = hamt
 
 any = false
 
@@ -28,29 +27,33 @@ get_transformer = fn {op, type}, {transformers}:
 
 
 unique_ident = fn name, ctx:
-  {unique_ids={}} = ctx
+  {unique_ids} = ctx
   {(name): cntr=0} = unique_ids
   uid = '${name}_${cntr}'
   [uid, {...ctx, unique_ids: {...unique_ids, (name): cntr + 1}}]
 
 
 
-update_value = fn id, updates, ctx:
-  # match ctx:
-  #   {values: {(id): ?}}:
-  #     set_props ctx.values.(id), updates
-  #   else:
-  #     set ctx.values, id, updates
-  # ctx
-  {(id): curr={}} = ctx.values
-  {...ctx, values: {...ctx.values, (id): {...curr, ...updates}}}
+
+# get_value = fn id, {values}:
+#   {(id): val={}} = values
+#   val
 
 
+
+# update_value = fn id, updates, ctx:
+#   {(id): curr={}} = ctx.values
+#   {...ctx, values: {...ctx.values, (id): {...curr, ...updates}}}
 
 
 get_value = fn id, {values}:
-  {(id): val={}} = values
-  val
+  tryGet {}, id, values
+
+
+update_value = fn id, updates, ctx:
+  curr = get_value id, ctx
+  values = set id, {...curr, ...updates}, ctx.values
+  {...ctx, values}
 
 
 
@@ -100,7 +103,7 @@ is_unused = fn id, ctx:
 
 
 
-init_ctx = fn [expr=false, ...rest], ctx={values: {}}:
+init_ref_counts = fn [expr=false, ...rest], ctx:
   match expr:
     false: ctx
     else:
@@ -108,7 +111,7 @@ init_ctx = fn [expr=false, ...rest], ctx={values: {}}:
       rest_ctx = match op:
         ? in ['fn', 'cn', 'fnr']:
           [fn_args, body] = args
-          init_ctx body, init_refs [...fn_args, ...res], ctx
+          init_ref_counts body, init_refs [...fn_args, ...res], ctx
 
         ? in ['int', 'float', 'str']:
           init_refs res, ctx
@@ -116,5 +119,11 @@ init_ctx = fn [expr=false, ...rest], ctx={values: {}}:
         else:
           init_refs res, inc_refs args, ctx
 
-      init_ctx rest, rest_ctx
+      init_ref_counts rest, rest_ctx
+
+
+
+init_ctx = fn exprs, options={}:
+  pipe {transformers:{}, runtime: {}, unique_ids: {}, values: empty, ...options}:
+    init_ref_counts exprs, ?
 

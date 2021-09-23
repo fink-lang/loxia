@@ -60,21 +60,31 @@ export const fun = fun_0;"
 exports[`compiles func of func 1`] = `
 "const fun5_0 = c_0 => {
   return (d_0, e_0) => {
+    const value_0 = [d_0, e_0];
+
     /* istanbul ignore else */
-    if (d_0 === 1) {
+    if (null != value_0) {
       /* istanbul ignore else */
-      if (e_0 === 2) {
-        return c_0;
+      if (d_0 === 1) {
+        /* istanbul ignore else */
+        if (e_0 === 2) {
+          return c_0;
+        }
       }
     }
 
     /* istanbul ignore else */
-    if (d_0 === 2) {
+    if (null != value_0) {
       /* istanbul ignore else */
-      if (e_0 === 1) {
-        return 1 / c_0;
+      if (d_0 === 2) {
+        /* istanbul ignore else */
+        if (e_0 === 1) {
+          return 1 / c_0;
+        }
       }
     }
+
+    return;
   };
 };
 

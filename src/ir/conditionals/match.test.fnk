@@ -1,5 +1,5 @@
 {fink2lir} = import '../../testing/generate.fnk'
-{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{only, skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
 describe 'match', fn:
@@ -117,7 +117,6 @@ describe 'match iterables', fn:
         match shrub:
           [1, ..., 3]: foo
           [..., 4]: foo
-          [5, ...[6, 7], 9]: foo
       '
       to_match_snapshot
 
@@ -142,7 +141,7 @@ describe 'match iterables', fn:
           [?.is_foo _]: ni
 
           # nested as call arg
-          [is_foo ?]: ni
+          [is_foo ?, bar]: ni
 
           [1, ...is_empty ?]: ni
           [1, ...(1 < length ?)]: ni
@@ -184,7 +183,7 @@ describe 'match records', fn:
       fink2lir '
         match shrub:
           # spread
-          {(foo): {}, ...{bar, spam}}: ni
+          {(foo): {x}, ...{bar, spam}}: ni
       '
       to_match_snapshot
 
@@ -231,4 +230,5 @@ describe 'match records', fn:
           {spam: ?}: true
       '
       to_match_snapshot
+
 

@@ -1,7 +1,7 @@
 types = import '@babel/types'
 {
   objectExpression, objectProperty, objectPattern
-  memberExpression, identifier, optionalMemberExpression
+  memberExpression, identifier
   spreadElement, restElement, variableDeclaration
   variableDeclarator, stringLiteral
 } = types
@@ -76,9 +76,7 @@ transform_rec_get = fn expr, ctx:
     else:
       [true, key]
 
-  js = match op:
-    'rec_go': optionalMemberExpression rec_js, final_key, computed, true
-    else: memberExpression rec_js, final_key, computed
+  js = memberExpression rec_js, final_key, computed
 
   set_js2 expr, js, ctx
 
@@ -133,12 +131,10 @@ transform_rec_merge = fn expr, ctx:
 
 
 
-
 add_record = fn ctx:
   pipe ctx:
     add 'rec', transform_rec
     add 'rec_g', transform_rec_get
-    add 'rec_go', transform_rec_get
     add 'rec_s', trandform_rec_set
     add 'rec_d', transform_rec_del_keys
     add 'rec_m', transform_rec_merge

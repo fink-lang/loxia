@@ -1,7 +1,7 @@
 babel_types = import '@babel/types'
 {identifier} = babel_types
 
-{update_value} = import '../ir/context.fnk'
+{update_value, get_value} = import '../ir/context.fnk'
 
 
 
@@ -17,8 +17,9 @@ with_loc = fn {loc}, expr:
   {...expr, loc}
 
 
-get_js = fn id, {values}:
-  {(id): val} = values
+get_js = fn id, ctx:
+  val = get_value id, ctx
+
   match val:
     {refs: ? > 1}:
       # identifier id
@@ -40,8 +41,9 @@ add_runtime_requirement = fn func, {runtime, ...ctx}:
 
 get_js_literal = fn id, ctx:
   # TODO: inlining should be handled at optimization level in ir
-  {values: {(id): {js=get_js id, ctx}}} = ctx
+  {js=get_js id, ctx} = get_value id, ctx
   js
+
 
 
 

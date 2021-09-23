@@ -6,15 +6,16 @@
 
 import '../perf.fnk'
 
-optimize = fn exprs:
 
-  meta = init_ctx exprs
+optimize = fn exprs, options:
+
+  meta = init_ctx exprs, options
   [tail_ir] = optimize_refs exprs, meta
 
-  tail_meta = init_ctx tail_ir
+  tail_meta = init_ctx tail_ir, options
   [u_ir] = optimize_tails tail_ir, tail_meta
 
-  u_meta = init_ctx u_ir
+  u_meta = init_ctx u_ir, options
   [end_il, end_meta] = optimize_unused u_ir, u_meta
 
   # optimize_ids end_il, end_meta

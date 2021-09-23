@@ -45,8 +45,8 @@ rec >> exports_0:
                             lst_h args_3 >> hdm_0:
                               ifv hdm_0, hdm_0, flbk_0 >> curr_0:
                                 lst_t args_3 >> tail_3:
-                                  cn ret_4:
-                                    = shrub >> value_0:
+                                  = shrub >> value_0:
+                                    cn ret_4:
                                       cn:
                                         = curr_0 >> left_2:
                                           int 1 >> right_3:
@@ -65,9 +65,9 @@ rec >> exports_0:
                                                           cc ret_4, result_6
                                             >> match_res_0:
                                               cif cond_0, match_res_0, else_0
-                                  >> match_0:
-                                    ac match_0 >> result_4:
-                                      cc ret_3, result_4
+                                    >> match_0:
+                                      ac match_0 >> result_4:
+                                        cc ret_3, result_4
                         >> arg_0:
                           lst_a cargs_1, arg_0 >> cargs_4:
                             af callee_1, cargs_4 >> a_gen_0:

@@ -40,16 +40,10 @@ add_transformers = fn ctx:
 
 init_ctx = fn code, filename, options:
   ctx = rec:
-    filename
-    code
-    errors: []
-
+    filename, code
     options
-
-    unique_id: 1
-    ident_prefix: 'ˆ'
-
-    ignoreable_imports: []
+    unique_ids: {}
+    errors: []
 
   pipe ctx:
     add_transformers

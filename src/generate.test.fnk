@@ -88,7 +88,7 @@ describe 'source maps', fn:
 
 
 
-skip.describe 'errors', fn:
+describe 'errors', fn:
   it 'handles parse errors', fn:
     {errors: [{error}]} = fink2js '
       foo = ['
@@ -103,7 +103,7 @@ skip.describe 'errors', fn:
         Expected `,` or indented(>=1) new line or `]`.
         '
 
-  it 'errors with code snippet', fn:
+  skip.it 'errors with code snippet', fn:
     {errors: [{message}]} = fink2js '
       foo = bar
       123 = foo

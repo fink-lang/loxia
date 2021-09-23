@@ -20,9 +20,10 @@ exports[`list compiles as partial 1`] = `
 `;
 
 exports[`list compiles spread 1`] = `
-"const bar_0 = [1, 2, ...b];
+"const foo_0 = [...b];
+const bar_0 = [1, 2, ...b];
 const spam_0 = [1, 2, ...b, 123];
-export const foo = b,
+export const foo = foo_0,
       bar = bar_0,
       spam = spam_0;"
 `;

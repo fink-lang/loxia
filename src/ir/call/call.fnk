@@ -128,7 +128,7 @@ transform_all_args = fn [expr=false, ...exprs], args_id, ctx, out=[]:
       next_ctx = rec:
         ...foo_ctx
         partial_ident: ctx.partial_ident
-        # has_partial: ctx.has_partial or foo_ctx.has_partial
+        has_partial: ctx.has_partial or foo_ctx.has_partial
       transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
 
 

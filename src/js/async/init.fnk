@@ -14,7 +14,7 @@ transform_async = fn path:
     isArrowFunctionExpression ?:
       set_props path.node, {async: true}
 
-    {parentPath: {}}:
+    {parentPath: ?}:
       transform_async path.parentPath
 
   no_result

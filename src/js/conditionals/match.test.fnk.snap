@@ -121,6 +121,8 @@ exports[`match compiles nested match 1`] = `
     const result_1 = ret_2;
     return bar;
   }
+
+  return;
 };
 
 export const test = test_0;"
@@ -141,39 +143,88 @@ const mex_0 = ret_0;
 export const ;"
 `;
 
+exports[`match iterables handles non iterables 1`] = `
+"import { _in_ } from \\"@fink/js-interop/runtime.js\\";
+const hdm_0 = args[0];
+const expr_0 = undefined === hdm_0 ? false : hdm_0;
+const tail_0 = args.slice(1);
+let ret_0;
+
+ret_0: {
+  /* istanbul ignore else */
+  if (expr_0 === false) {
+    ret_0 = [out, ctx];
+    break ret_0;
+  }
+
+  /* istanbul ignore else */
+  if (null != expr_0) {
+    /* istanbul ignore else */
+    if (true === _in_(expr_0[0], [1, 2])) {
+      ret_0 = foo(tail_0, expr_0);
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != expr_0) {
+    const itm_0 = expr_0[2];
+
+    /* istanbul ignore else */
+    if (null != itm_0) {
+      /* istanbul ignore else */
+      if (true === foo(itm_0[0], ctx)) {
+        ret_0 = foo(expr_0, tail_0);
+        break ret_0;
+      }
+    }
+  }
+}
+
+const mex_1 = ret_0;
+export const ;"
+`;
+
 exports[`match iterables matches spread 1`] = `
 "let ret_0;
 
 ret_0: {
   /* istanbul ignore else */
-  if (shrub[0] === 1) {
+  if (null != shrub) {
     /* istanbul ignore else */
-    if ([...shrub.slice(1)].reverse()[0] === 3) {
+    if (shrub[0] === 1) {
+      /* istanbul ignore else */
+      if ([...shrub.slice(1)].reverse()[0] === 3) {
+        ret_0 = foo;
+        break ret_0;
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != shrub) {
+    /* istanbul ignore else */
+    if ([...shrub].reverse()[0] === 4) {
       ret_0 = foo;
       break ret_0;
     }
   }
 
   /* istanbul ignore else */
-  if ([...shrub].reverse()[0] === 4) {
-    ret_0 = foo;
-    break ret_0;
-  }
-
-  const rtail_0 = [...shrub.slice(1)].reverse();
-
-  /* istanbul ignore else */
-  if (shrub[0] === 5) {
-    const spread_0 = [...rtail_0.slice(1)].reverse();
-
+  if (null != shrub) {
     /* istanbul ignore else */
-    if (rtail_0[0] === 9) {
+    if (shrub[0] === 5) {
+      const tail_0 = shrub.slice(1);
+
       /* istanbul ignore else */
-      if (spread_0[0] === 6) {
+      if (null != tail_0) {
         /* istanbul ignore else */
-        if (spread_0[1] === 7) {
-          ret_0 = foo;
-          break ret_0;
+        if (shrub[1] === 6) {
+          /* istanbul ignore else */
+          if (shrub[2] === 7) {
+            ret_0 = foo;
+            break ret_0;
+          }
         }
       }
     }
@@ -189,56 +240,89 @@ exports[`match iterables matches value assertions 1`] = `
 
 ret_0: {
   /* istanbul ignore else */
-  if (true === !foo[0]) {
-    ret_0 = ni;
-    break ret_0;
-  }
-
-  /* istanbul ignore else */
-  if (undefined !== foo[0]) {
-    ret_0 = true;
-    break ret_0;
-  }
-
-  /* istanbul ignore else */
-  if (true === foo[0] > 123) {
-    ret_0 = ni;
-    break ret_0;
-  }
-
-  /* istanbul ignore else */
-  if (true === foo[0]()) {
-    ret_0 = ni;
-    break ret_0;
-  }
-
-  /* istanbul ignore else */
-  if (true === foo[0].is_foo()) {
-    ret_0 = ni;
-    break ret_0;
-  }
-
-  /* istanbul ignore else */
-  if (true === is_foo(foo[0])) {
-    ret_0 = ni;
-    break ret_0;
-  }
-
-  /* istanbul ignore else */
-  if (foo[0] === 1) {
+  if (null != foo) {
     /* istanbul ignore else */
-    if (true === is_empty([...[...foo.slice(1)].reverse().slice(1)].reverse())) {
+    if (true === !foo[0]) {
       ret_0 = ni;
       break ret_0;
     }
   }
 
   /* istanbul ignore else */
-  if (foo[0] === 1) {
+  if (null != foo) {
     /* istanbul ignore else */
-    if (true === 1 < length([...[...foo.slice(1)].reverse().slice(1)].reverse())) {
+    if (undefined !== foo[0]) {
+      ret_0 = true;
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (true === foo[0] > 123) {
       ret_0 = ni;
       break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (true === foo[0]()) {
+      ret_0 = ni;
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (true === foo[0].is_foo()) {
+      ret_0 = ni;
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (true === is_foo(foo[0])) {
+      ret_0 = ni;
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (true === is_foo(foo[0], bar)) {
+      ret_0 = ni;
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (foo[0] === 1) {
+      /* istanbul ignore else */
+      if (true === is_empty(foo.slice(1))) {
+        ret_0 = ni;
+        break ret_0;
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (foo[0] === 1) {
+      /* istanbul ignore else */
+      if (true === 1 < length(foo.slice(1))) {
+        ret_0 = ni;
+        break ret_0;
+      }
     }
   }
 }
@@ -251,62 +335,88 @@ exports[`match iterables matches values 1`] = `
 "let ret_0;
 
 ret_0: {
-  const tail_9 = shrub.slice(1);
-
   /* istanbul ignore else */
-  if (shrub[0] === 1) {
+  if (null != shrub) {
     /* istanbul ignore else */
-    if (shrub[1] === 2) {
-      /* istanbul ignore else */
-      if (shrub[2][0] === ni) {
-        ret_0 = ni;
-        break ret_0;
-      }
-    }
-  }
+    if (shrub[0] === 1) {
+      const tail_15 = shrub.slice(1);
 
-  const tail_6 = shrub.slice(1);
-  const itm_11 = shrub[1];
-
-  /* istanbul ignore else */
-  if (shrub[0] === 1) {
-    /* istanbul ignore else */
-    if (itm_11[0] === 2) {
       /* istanbul ignore else */
-      if (itm_11[1] === 3) {
+      if (shrub[1] === 2) {
+        const itm_17 = shrub[2];
+
         /* istanbul ignore else */
-        if (shrub[2] === 4) {
-          ret_0 = bar;
-          break ret_0;
+        if (null != itm_17) {
+          /* istanbul ignore else */
+          if (itm_17[0] === ni) {
+            ret_0 = ni;
+            break ret_0;
+          }
         }
       }
     }
   }
 
-  const tail_0 = shrub.slice(1);
-  const itm_1 = shrub[1];
+  /* istanbul ignore else */
+  if (null != shrub) {
+    /* istanbul ignore else */
+    if (shrub[0] === 1) {
+      const tail_10 = shrub.slice(1);
+      const itm_11 = shrub[1];
+
+      /* istanbul ignore else */
+      if (null != itm_11) {
+        /* istanbul ignore else */
+        if (itm_11[0] === 2) {
+          /* istanbul ignore else */
+          if (itm_11[1] === 3) {
+            /* istanbul ignore else */
+            if (shrub[2] === 4) {
+              ret_0 = bar;
+              break ret_0;
+            }
+          }
+        }
+      }
+    }
+  }
 
   /* istanbul ignore else */
-  if (shrub[0] === 1) {
-    const itm_7 = itm_1[1];
-
+  if (null != shrub) {
     /* istanbul ignore else */
-    if (itm_1[0] === 2) {
-      /* istanbul ignore else */
-      if (itm_7[0] === 3) {
-        const tail_1 = tail_0.slice(1);
-        const itm_2 = shrub[2];
+    if (shrub[0] === 1) {
+      const tail_0 = shrub.slice(1);
+      const itm_1 = shrub[1];
 
+      /* istanbul ignore else */
+      if (null != itm_1) {
         /* istanbul ignore else */
-        if (itm_7[1] === 4) {
+        if (itm_1[0] === 2) {
+          const itm_3 = itm_1[1];
+
           /* istanbul ignore else */
-          if (itm_2[0] === 5) {
+          if (null != itm_3) {
             /* istanbul ignore else */
-            if (itm_2[1] === 6) {
+            if (itm_3[0] === 3) {
               /* istanbul ignore else */
-              if (shrub[3] === 7) {
-                ret_0 = spam;
-                break ret_0;
+              if (itm_3[1] === 4) {
+                const tail_1 = tail_0.slice(1);
+                const itm_6 = shrub[2];
+
+                /* istanbul ignore else */
+                if (null != itm_6) {
+                  /* istanbul ignore else */
+                  if (itm_6[0] === 5) {
+                    /* istanbul ignore else */
+                    if (itm_6[1] === 6) {
+                      /* istanbul ignore else */
+                      if (shrub[3] === 7) {
+                        ret_0 = spam;
+                        break ret_0;
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -325,11 +435,14 @@ exports[`match iterables matches with ignored items 1`] = `
 
 ret_0: {
   /* istanbul ignore else */
-  if (shrub[0] === 1) {
+  if (null != shrub) {
     /* istanbul ignore else */
-    if (shrub[2] === 2) {
-      ret_0 = foo;
-      break ret_0;
+    if (shrub[0] === 1) {
+      /* istanbul ignore else */
+      if (shrub[2] === 2) {
+        ret_0 = foo;
+        break ret_0;
+      }
     }
   }
 }
@@ -357,11 +470,10 @@ export const ;"
 `;
 
 exports[`match matches value assertions 1`] = `
-"let ret_0;
+"const value_0 = 123;
+let ret_0;
 
 ret_0: {
-  const value_0 = 123;
-
   /* istanbul ignore else */
   if (true === !value_0) {
     ret_0 = ni;
@@ -401,14 +513,20 @@ exports[`match records matches calculated props 1`] = `
 "let ret_0;
 
 ret_0: {
-  const itm_0 = shrub?.[a];
-
   /* istanbul ignore else */
-  if (itm_0?.b === b) {
+  if (null != shrub) {
+    const itm_0 = shrub[a];
+
     /* istanbul ignore else */
-    if (itm_0?.c === c) {
-      ret_0 = ni;
-      break ret_0;
+    if (null != itm_0) {
+      /* istanbul ignore else */
+      if (itm_0.b === b) {
+        /* istanbul ignore else */
+        if (itm_0.c === c) {
+          ret_0 = ni;
+          break ret_0;
+        }
+      }
     }
   }
 }
@@ -421,26 +539,83 @@ exports[`match records matches member expr keys 1`] = `
 "let ret_0;
 
 ret_0: {
-  const itm_0 = shrub?.foo;
-
   /* istanbul ignore else */
-  if (shrub?.foo?.bar?.spam === ham) {
-    ret_0 = spam;
-    break ret_0;
-  }
+  if (null != shrub) {
+    const itm_11 = shrub.foo;
 
-  /* istanbul ignore else */
-  if (shrub?.foo?.bar?.spam?.ham?.ni === nu) {
-    ret_0 = ham;
-    break ret_0;
-  }
-
-  /* istanbul ignore else */
-  if (itm_0?.bar?.spam?.ham?.ni === nu) {
     /* istanbul ignore else */
-    if (itm_0?.spam === spam) {
-      ret_0 = ham;
-      break ret_0;
+    if (null != itm_11) {
+      const itm_12 = itm_11.bar;
+
+      /* istanbul ignore else */
+      if (null != itm_12) {
+        /* istanbul ignore else */
+        if (itm_12.spam === ham) {
+          ret_0 = spam;
+          break ret_0;
+        }
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != shrub) {
+    const itm_6 = shrub.foo;
+
+    /* istanbul ignore else */
+    if (null != itm_6) {
+      const itm_7 = itm_6.bar;
+
+      /* istanbul ignore else */
+      if (null != itm_7) {
+        const itm_8 = itm_7.spam;
+
+        /* istanbul ignore else */
+        if (null != itm_8) {
+          const itm_9 = itm_8.ham;
+
+          /* istanbul ignore else */
+          if (null != itm_9) {
+            /* istanbul ignore else */
+            if (itm_9.ni === nu) {
+              ret_0 = ham;
+              break ret_0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != shrub) {
+    const itm_0 = shrub.foo;
+
+    /* istanbul ignore else */
+    if (null != itm_0) {
+      const itm_1 = itm_0.bar;
+
+      /* istanbul ignore else */
+      if (null != itm_1) {
+        const itm_2 = itm_1.spam;
+
+        /* istanbul ignore else */
+        if (null != itm_2) {
+          const itm_3 = itm_2.ham;
+
+          /* istanbul ignore else */
+          if (null != itm_3) {
+            /* istanbul ignore else */
+            if (itm_3.ni === nu) {
+              /* istanbul ignore else */
+              if (itm_0.spam === spam) {
+                ret_0 = ham;
+                break ret_0;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -453,37 +628,12 @@ exports[`match records matches props 1`] = `
 "let ret_0;
 
 ret_0: {
-  const itm_0 = shrub?.ni;
-
   /* istanbul ignore else */
-  if (shrub?.foo === foo) {
+  if (null != shrub) {
     /* istanbul ignore else */
-    if (shrub?.bar === bar) {
-      ret_0 = ni;
-      break ret_0;
-    }
-  }
-
-  const itm_13 = shrub?.ni;
-
-  /* istanbul ignore else */
-  if (shrub?.foo === 4) {
-    /* istanbul ignore else */
-    if (itm_13?.na === na) {
+    if (shrub.foo === foo) {
       /* istanbul ignore else */
-      if (itm_13?.nu === nu) {
-        ret_0 = spam + ni;
-        break ret_0;
-      }
-    }
-  }
-
-  /* istanbul ignore else */
-  if (shrub?.foo === 1) {
-    /* istanbul ignore else */
-    if (shrub?.foo?.bar === \`spam\`) {
-      /* istanbul ignore else */
-      if (shrub?.shrub?.na === \`nu\`) {
+      if (shrub.bar === bar) {
         ret_0 = ni;
         break ret_0;
       }
@@ -491,20 +641,86 @@ ret_0: {
   }
 
   /* istanbul ignore else */
-  if (shrub?.ni?.len === 1) {
+  if (null != shrub) {
     /* istanbul ignore else */
-    if (shrub?.na?.len === 1) {
-      ret_0 = na;
-      break ret_0;
+    if (shrub.foo === 4) {
+      const itm_13 = shrub.ni;
+
+      /* istanbul ignore else */
+      if (null != itm_13) {
+        /* istanbul ignore else */
+        if (itm_13.na === na) {
+          /* istanbul ignore else */
+          if (itm_13.nu === nu) {
+            ret_0 = spam + ni;
+            break ret_0;
+          }
+        }
+      }
     }
   }
 
   /* istanbul ignore else */
-  if (itm_0[0] === foo) {
+  if (null != shrub) {
     /* istanbul ignore else */
-    if (itm_0[1] === 1234) {
-      ret_0 = na;
-      break ret_0;
+    if (shrub.foo === 1) {
+      const itm_8 = shrub.foo;
+
+      /* istanbul ignore else */
+      if (null != itm_8) {
+        /* istanbul ignore else */
+        if (itm_8.bar === \`spam\`) {
+          const itm_10 = shrub.shrub;
+
+          /* istanbul ignore else */
+          if (null != itm_10) {
+            /* istanbul ignore else */
+            if (itm_10.na === \`nu\`) {
+              ret_0 = ni;
+              break ret_0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != shrub) {
+    const itm_3 = shrub.ni;
+
+    /* istanbul ignore else */
+    if (null != itm_3) {
+      /* istanbul ignore else */
+      if (itm_3.len === 1) {
+        const itm_5 = shrub.na;
+
+        /* istanbul ignore else */
+        if (null != itm_5) {
+          /* istanbul ignore else */
+          if (itm_5.len === 1) {
+            ret_0 = na;
+            break ret_0;
+          }
+        }
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != shrub) {
+    const itm_0 = shrub.ni;
+
+    /* istanbul ignore else */
+    if (null != itm_0) {
+      /* istanbul ignore else */
+      if (itm_0[0] === foo) {
+        /* istanbul ignore else */
+        if (itm_0[1] === 1234) {
+          ret_0 = na;
+          break ret_0;
+        }
+      }
     }
   }
 }
@@ -517,17 +733,26 @@ exports[`match records matches spread 1`] = `
 "let ret_0;
 
 ret_0: {
-  const {
-    [foo]: _foo,
-    ...spread_0
-  } = shrub;
-
   /* istanbul ignore else */
-  if (spread_0?.bar === bar) {
+  if (null != shrub) {
     /* istanbul ignore else */
-    if (spread_0?.spam === spam) {
-      ret_0 = ni;
-      break ret_0;
+    if (undefined !== shrub[foo]) {
+      const {
+        [foo]: _foo,
+        ...spread_0
+      } = shrub;
+
+      /* istanbul ignore else */
+      if (null != spread_0) {
+        /* istanbul ignore else */
+        if (spread_0.bar === bar) {
+          /* istanbul ignore else */
+          if (spread_0.spam === spam) {
+            ret_0 = ni;
+            break ret_0;
+          }
+        }
+      }
     }
   }
 }
@@ -541,71 +766,96 @@ exports[`match records matches value assertions 1`] = `
 let ret_0;
 
 ret_0: {
-  const key_1 = \`spam\`;
-  const key_2 = \`spam\`;
-
   /* istanbul ignore else */
-  if (true === !foo?.spam) {
-    ret_0 = ni;
-    break ret_0;
-  }
-
-  /* istanbul ignore else */
-  if (true === foo?.spam > 123) {
-    ret_0 = ni;
-    break ret_0;
-  }
-
-  /* istanbul ignore else */
-  if (true === (foo?.spam)()) {
-    ret_0 = ni;
-    break ret_0;
-  }
-
-  /* istanbul ignore else */
-  if (true === (foo?.spam).is_foo()) {
-    ret_0 = ni;
-    break ret_0;
-  }
-
-  /* istanbul ignore else */
-  if (true === is_foo(foo?.spam)) {
-    ret_0 = ni;
-    break ret_0;
-  }
-
-  const {
-    spam: _key_2,
-    ...spread_1
-  } = foo;
-
-  /* istanbul ignore else */
-  if (foo?.spam === spam) {
+  if (null != foo) {
     /* istanbul ignore else */
-    if (true === is_empty(spread_1)) {
-      ret_0 = ni;
-      break ret_0;
-    }
-  }
-
-  const {
-    spam: _key_1,
-    ...spread_0
-  } = foo;
-
-  /* istanbul ignore else */
-  if (foo?.spam === spam) {
-    /* istanbul ignore else */
-    if (true === _in_(\`foo\`, spread_0)) {
+    if (true === !foo.spam) {
       ret_0 = ni;
       break ret_0;
     }
   }
 
   /* istanbul ignore else */
-  if (undefined !== foo?.spam) {
-    ret_0 = true;
-    break ret_0;
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (true === foo.spam > 123) {
+      ret_0 = ni;
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (true === foo.spam()) {
+      ret_0 = ni;
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (true === foo.spam.is_foo()) {
+      ret_0 = ni;
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (true === is_foo(foo.spam)) {
+      ret_0 = ni;
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    const key_2 = \`spam\`;
+
+    /* istanbul ignore else */
+    if (foo.spam === spam) {
+      const {
+        spam: _key_2,
+        ...spread_1
+      } = foo;
+
+      /* istanbul ignore else */
+      if (true === is_empty(spread_1)) {
+        ret_0 = ni;
+        break ret_0;
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    const key_1 = \`spam\`;
+
+    /* istanbul ignore else */
+    if (foo.spam === spam) {
+      const {
+        spam: _key_1,
+        ...spread_0
+      } = foo;
+
+      /* istanbul ignore else */
+      if (true === _in_(\`foo\`, spread_0)) {
+        ret_0 = ni;
+        break ret_0;
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (undefined !== foo.spam) {
+      ret_0 = true;
+      break ret_0;
+    }
   }
 }
 

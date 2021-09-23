@@ -51,17 +51,25 @@ optimize_tpa = fn expr, ctx:
 
 
 
+is_empty_tpl = fn id, ctx:
+  match get_value id, ctx:
+    {empty_tpl: true}: true
+    else: false
+
+
+
 optimize_tpc = fn expr, ctx:
   [op, args, res, ...rest] = expr
   [res_id] = res
   [tpl1, tpl2] = replace_args_aliases args, ctx
 
-  match ctx.values:
-    {(tpl1): {empty_tpl: true}}:
-      next_ctx = add_alias res_id, tpl2, ctx
-      [[], next_ctx]
+  match ctx:
+    # TODO only if the other is a tuple
+    # is_empty_tpl tpl1, ?:
+    #   next_ctx = add_alias res_id, tpl2, ctx
+    #   [[], next_ctx]
 
-    {(tpl2): {empty_tpl: true}}:
+    is_empty_tpl tpl2, ?:
       next_ctx = add_alias res_id, tpl1, ctx
       [[], next_ctx]
 
@@ -74,8 +82,9 @@ optimize_tph = fn expr, ctx:
   [op, [orig_tpl_id], res, ...rest] = expr
   [res_id] = res
   tpl_id = replace_arg_alias orig_tpl_id, ctx
-  match ctx.values:
-    {(tpl_id): {item_aliases: [?]}}:
+
+  match get_value tpl_id, ctx:
+    {item_aliases: [?]}:
       {item_aliases: [val_id]} = get_value tpl_id, ctx
       next_ctx = add_alias res_id, val_id, ctx
       [[], next_ctx]
@@ -105,14 +114,16 @@ optimize_tpr = fn expr, ctx:
   [op, [orig_tpl_id], res, ...rest] = expr
   [res_id] = res
   tpl_id = replace_arg_alias orig_tpl_id, ctx
-  match ctx.values:
-    {(tpl_id): {tpr: ?}}:
-      {tpr} = get_value tpl_id, ctx
+  tpl_val = get_value tpl_id, ctx
+
+  match tpl_val:
+    {tpr: ?}:
+      {tpr} = tpl_val
       next_ctx = add_alias res_id, tpr, ctx
       [[], next_ctx]
 
-    {(tpl_id): {item_aliases: []}}:
-      {item_aliases: rev_aliases} = get_value tpl_id, ctx
+    {item_aliases: ?}:
+      {item_aliases: rev_aliases} = tpl_val
       # find existing tpl instead of creating
       item_aliases = reverse rev_aliases
       next_ctx = update_value res_id, {item_aliases, tpr: tpl_id}, ctx
@@ -130,9 +141,10 @@ optimize_tpt = fn expr, ctx:
   [res_id] = res
   tpl_id = replace_arg_alias orig_tpl_id, ctx
   # console.log orig_tpl_id, tpl_id, meta
-  match ctx.values:
-    {(tpl_id): {item_aliases: [?]}}:
-      {item_aliases: [, ...item_aliases]} = get_value tpl_id, ctx
+  tpl_val = get_value tpl_id, ctx
+  match tpl_val:
+    {item_aliases: [?]}:
+      {item_aliases: [, ...item_aliases]} = tpl_val
       next_ctx = update_value res_id, {item_aliases}, ctx
       [[op, [tpl_id], res, ...rest], next_ctx]
     else:
@@ -154,7 +166,7 @@ optimize_st = fn expr, ctx:
 
 
 
-optimize_cn = fn expr, exprs, ctx, out:
+optimize_cn = fn expr, exprs, ctx, optimize_refs, out:
   [op, [args, body], ...rest] = expr
   [[cont_id]] = rest
   [[ac_op, [ac_id], [res_id]], [cc_op , [cc_ret_id, ret_arg]]=[,[]]] = exprs
@@ -166,6 +178,7 @@ optimize_cn = fn expr, exprs, ctx, out:
       [obody, next_ctx] = optimize_refs body, b_ctx, []
       [, , ...oexprs] = exprs
       optimize_refs oexprs, next_ctx, [...out, ...obody]
+
     else:
       [obody, next_ctx] = optimize_refs body, ctx, []
       oexpr = [op, [args, obody], ...rest]
@@ -215,7 +228,8 @@ optimize_refs = fn [expr=false, ...exprs], ctx, out=[]:
       optimize_refs exprs, next_ctx, [...out, ...sts]
 
     ['cn']:
-      optimize_cn expr, exprs, ctx, out
+      orf = optimize_refs
+      optimize_cn expr, exprs, ctx, orf, out
 
     ['fn']:
       [op, [args, body], ...rest] = expr

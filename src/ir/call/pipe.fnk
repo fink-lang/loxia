@@ -30,15 +30,15 @@ pipe_all =  fn [expr=false, ...exprs], prev_res_id, ctx, out=[]:
 
     {type: ? in ['ident', 'call']}:
       [callee, callee_id, next_ctx] = transform expr, 'pfn', ctx
-      [call, res_id, end_ctx] = apply_fun callee_id, prev_res_id, {loc: expr.loc}, next_ctx
+      [call, res_id, end_ctx] = apply_fun callee_id, prev_res_id, expr, next_ctx
       pipe_all exprs, res_id, end_ctx, [...out, ...callee, ...call]
 
     else:
       # [res, res_id, {partial_ident, has_partial, ...next_ctx}] = transform expr, 'res', {...ctx, partial_ident: prev_res_id}
       # pipe_all exprs, res_id, next_ctx, [...out, ...res]
 
-      [callee, callee_id, next_ctx] = transform_with_partial expr, 'pfn', ctx
-      [call, res_id, end_ctx] = apply_fun callee_id, prev_res_id, {loc: expr.loc}, next_ctx
+      [callee, callee_id, {has_partial: _, partial_ident: _, ...next_ctx}] = transform_with_partial expr, 'pfn', ctx
+      [call, res_id, end_ctx] = apply_fun callee_id, prev_res_id, expr, next_ctx
       pipe_all exprs, res_id, end_ctx, [...out, ...callee, ...call]
 
 

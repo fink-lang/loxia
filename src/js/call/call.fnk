@@ -73,21 +73,29 @@ transform_apply_cont = fn expr, ctx:
 
 
 transform_continue_with_cont = fn expr, ctx:
-  [ , [ret_id, res_id]] = expr
-
+  [ , [ret_id, res_id='_']] = expr
   ret = get_js_literal ret_id, ctx
-  res = get_js res_id, ctx
 
-  match ret:
-    {type: 'ReturnStatement'}:
-      js = with_loc res, returnStatement res
-      [[js], ctx]
+  match res_id:
+    '_':
+      match ret:
+        {type: 'ReturnStatement'}:
+          [[ret], ctx]
+        else:
+          [[], ctx]
+
     else:
-      exprs = list:
-        with_loc res, expressionStatement
-          assignmentExpression '=', ret, res
-        with_loc res, breakStatement identifier ret_id
-      [exprs, ctx]
+      res = get_js res_id, ctx
+      match ret:
+        {type: 'ReturnStatement'}:
+          js = with_loc res, returnStatement res
+          [[js], ctx]
+        else:
+          exprs = list:
+            with_loc res, expressionStatement
+              assignmentExpression '=', ret, res
+            with_loc res, breakStatement identifier ret_id
+          [exprs, ctx]
 
 
 

@@ -4,6 +4,9 @@ types = import '@babel/types'
   identifier, variableDeclaration, variableDeclarator
 } = types
 
+# {throw_err} = import '@fink/js-interop/errors.fnk'
+# {transform_error} = import '../ir/errors.fnk'
+
 {get_transformer, get_js, get_js_literal, set_js2, with_loc} = import './context.fnk'
 {get_refs} = import '../ir/context.fnk'
 
@@ -44,6 +47,13 @@ transform_binary_or_unary = fn expr, ctx:
 
 transform = fn expr, ctx:
   transform_expr = get_transformer expr, ctx
+  # match transform_expr:
+  #   ?:
+  #     transform_expr expr, ctx
+  #   else:
+  #     [, , , fnk_expr] = expr
+  #     throw_err transform_error 'Unknown expression.', fnk_expr, ctx
+
   transform_expr expr, ctx
 
 

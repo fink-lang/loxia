@@ -97,15 +97,19 @@ rec >> exports_0:
                               af pfn_4, args_7 >> ppr_2:
                                 = shrub >> callee_2:
                                   lst >> cargs_5:
-                                    = prtl_3 >> left_0:
-                                      int 1 >> right_0:
-                                        > left_0, right_0 >> arg_3:
-                                          lst_a cargs_5, arg_3 >> cargs_6:
-                                            af callee_2, cargs_6 >> pfn_5:
-                                              lst >> args_8:
-                                                lst_a args_8, ppr_2 >> args_9:
-                                                  af pfn_5, args_9 >> ppr_3:
-                                                    = ppr_3 >> mex_0:
-                                                      lst >> drctvs_0:
-                                                        mod exports_0, drctvs_0 >> mod_0:"
+                                    fn args_8, ret_2:
+                                      lst_h args_8 >> prtl_4:
+                                        = prtl_4 >> left_0:
+                                          int 1 >> right_0:
+                                            > left_0, right_0 >> arg_3:
+                                              cc ret_2, arg_3
+                                    >> pfn_6:
+                                      lst_a cargs_5, pfn_6 >> cargs_6:
+                                        af callee_2, cargs_6 >> pfn_5:
+                                          lst >> args_9:
+                                            lst_a args_9, ppr_2 >> args_10:
+                                              af pfn_5, args_10 >> ppr_3:
+                                                = ppr_3 >> mex_0:
+                                                  lst >> drctvs_0:
+                                                    mod exports_0, drctvs_0 >> mod_0:"
 `;

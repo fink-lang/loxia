@@ -134,12 +134,29 @@ describe 'match iterables', fn:
       to_match_snapshot
 
 
-   it 'matches with ignored items', fn:
+  it 'matches with ignored items', fn:
     expect
       fink2js '
         match shrub:
           [1, ,2]: foo
       '
+      to_match_snapshot
+
+
+  it 'handles non iterables', fn:
+    expect
+      fink2js "
+        [expr=false, ...exprs] = args
+        match expr:
+          false:
+            [out, ctx]
+
+          [? in [1, 2]]:
+            foo exprs, expr
+
+          [, , [foo ?, ctx]]:
+            foo expr, exprs
+      "
       to_match_snapshot
 
 
@@ -185,6 +202,7 @@ describe 'match iterables', fn:
 
           # nested as call arg
           [is_foo ?]: ni
+          [is_foo ?, bar]: ni
 
           [1, ...is_empty ?]: ni
           [1, ...(1 < length ?)]: ni
@@ -225,7 +243,7 @@ describe 'match records', fn:
       fink2js '
         match shrub:
           # spread
-          {(foo): {}, ...{bar, spam}}: ni
+          {(foo): ?, ...{bar, spam}}: ni
       '
       to_match_snapshot
 

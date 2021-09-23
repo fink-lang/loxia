@@ -62,9 +62,10 @@
     "@babel/core": "^7.10.5",
     "@babel/traverse": "^7.10.5",
     "@babel/types": "^7.10.5",
-    "@fink/js-interop": ">=3.1.1",
+    "@fink/js-interop": ">=2.5",
     "@fink/snippet": "^2.2.0",
-    "@fink/std-lib": "^8.5.0"
+    "@fink/std-lib": "^8.5.0",
+    "hamt": "^2.2.2"
   },
   "config": {
     "commitizen": {

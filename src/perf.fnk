@@ -1,11 +1,13 @@
 
 {new} = import '@fink/js-interop/reflect.fnk'
+{console} = import '@fink/js-interop/globals.fnk'
 {fold} = import '@fink/std-lib/iter.fnk'
 {
   performance,
   PerformanceObserver
 } = import 'perf_hooks'
 
+{log} = console
 
 obs = new PerformanceObserver, fn: obs.disconnect _
 
@@ -19,9 +21,10 @@ timed = fn func:
 
 
 log_timings = fn name:
-  console.log '=======${name}======'
+  log '=======${name}======'
   pipe obs:
     ?.takeRecords _
     ?.getEntries _
     fold fn entry:
-      console.log entry.name, entry.duration, 'ms'
+      log entry.name, entry.duration, 'ms'
+  false

@@ -185,49 +185,60 @@ rec >> exports_0:
             lst_t args_1 >> tail_1:
               lst_h tail_1 >> e_0:
                 lst_t tail_1 >> tail_2:
-                  cn ret_2:
-                    lst >> lst_1:
-                      = d_0 >> item_1:
-                        lst_a lst_1, item_1 >> lst_0:
-                          = e_0 >> item_0:
-                            lst_a lst_0, item_0 >> value_0:
-                              lst_h value_0 >> itm_0:
-                                int 2 >> val_1:
-                                  cn:
-                                    == itm_0, val_1 >> cond_1:
-                                      lst_t value_0 >> tail_3:
-                                        lst_h tail_3 >> itm_1:
-                                          int 1 >> val_0:
+                  lst >> lst_1:
+                    = d_0 >> item_1:
+                      lst_a lst_1, item_1 >> lst_0:
+                        = e_0 >> item_0:
+                          lst_a lst_0, item_0 >> value_0:
+                            cn ret_2:
+                              cn:
+                                cn:
+                                  cc ret_2, 
+                                >> else_0:
+                                  is_l value_0 >> is_lst_0:
+                                    cn:
+                                      lst_h value_0 >> itm_0:
+                                        int 2 >> val_0:
+                                          == itm_0, val_0 >> cond_0:
                                             cn:
-                                              == itm_1, val_0 >> cond_0:
-                                                cn:
-                                                  int 1 >> left_0:
-                                                    = c_0 >> right_0:
-                                                      / left_0, right_0 >> result_2:
-                                                        cc ret_2, result_2
-                                                >> match_res_0:
-                                                  cif cond_0, match_res_0
+                                              lst_t value_0 >> tail_3:
+                                                lst_h tail_3 >> itm_1:
+                                                  int 1 >> val_1:
+                                                    == itm_1, val_1 >> cond_1:
+                                                      cn:
+                                                        int 1 >> left_0:
+                                                          = c_0 >> right_0:
+                                                            / left_0, right_0 >> result_2:
+                                                              cc ret_2, result_2
+                                                      >> match_res_0:
+                                                        cif cond_1, match_res_0, else_0
                                             >> match_1:
-                                              cif cond_1, match_1
-                                  >> match_2:
+                                              cif cond_0, match_1, else_0
+                                    >> match_0:
+                                      cif is_lst_0, match_0, else_0
+                              >> match_lst_0:
+                                is_l value_0 >> is_lst_1:
+                                  cn:
                                     lst_h value_0 >> itm_2:
-                                      int 1 >> val_3:
-                                        == itm_2, val_3 >> cond_3:
-                                          lst_t value_0 >> tail_4:
-                                            lst_h tail_4 >> itm_3:
-                                              int 2 >> val_2:
-                                                cn:
-                                                  == itm_3, val_2 >> cond_2:
+                                      int 1 >> val_2:
+                                        == itm_2, val_2 >> cond_2:
+                                          cn:
+                                            lst_t value_0 >> tail_5:
+                                              lst_h tail_5 >> itm_3:
+                                                int 2 >> val_3:
+                                                  == itm_3, val_3 >> cond_3:
                                                     cn:
                                                       = c_0 >> result_3:
                                                         cc ret_2, result_3
                                                     >> match_res_1:
-                                                      cif cond_2, match_res_1, match_2
-                                                >> match_3:
-                                                  cif cond_3, match_3, match_2
-                  >> match_0:
-                    ac match_0 >> result_1:
-                      cc ret_1, result_1
+                                                      cif cond_3, match_res_1, match_lst_0
+                                          >> match_3:
+                                            cif cond_2, match_3, match_lst_0
+                                  >> match_2:
+                                    cif is_lst_1, match_2, match_lst_0
+                            >> match_lst_1:
+                              ac match_lst_1 >> result_1:
+                                cc ret_1, result_1
         >> result_0:
           cc ret_0, result_0
   >> fun5_0:
@@ -246,33 +257,36 @@ rec >> exports_0:
         lst_h tail_0 >> d_0:
           lst_t tail_0 >> tail_1:
             int 123 >> x_0:
-              cn ret_1:
-                = ni >> value_0:
-                  = c_0 >> left_1:
-                    int 1 >> right_1:
-                      + left_1, right_1 >> val_0:
-                        cn:
-                          == value_0, val_0 >> cond_0:
+              = ni >> value_0:
+                cn ret_1:
+                  cn:
+                    cn:
+                      cc ret_1, 
+                    >> else_0:
+                      = c_0 >> left_0:
+                        int 1 >> right_0:
+                          + left_0, right_0 >> val_0:
+                            == value_0, val_0 >> cond_0:
+                              cn:
+                                = d_0 >> left_1:
+                                  int 1 >> right_1:
+                                    + left_1, right_1 >> result_2:
+                                      cc ret_1, result_2
+                              >> match_res_0:
+                                cif cond_0, match_res_0, else_0
+                  >> match_0:
+                    = c_0 >> left_2:
+                      = x_0 >> right_2:
+                        + left_2, right_2 >> val_1:
+                          == value_0, val_1 >> cond_1:
                             cn:
-                              = d_0 >> left_0:
-                                int 1 >> right_0:
-                                  + left_0, right_0 >> result_2:
-                                    cc ret_1, result_2
-                            >> match_res_0:
-                              cif cond_0, match_res_0
-                        >> match_1:
-                          = c_0 >> left_2:
-                            = x_0 >> right_2:
-                              + left_2, right_2 >> val_1:
-                                == value_0, val_1 >> cond_1:
-                                  cn:
-                                    = d_0 >> result_3:
-                                      cc ret_1, result_3
-                                  >> match_res_1:
-                                    cif cond_1, match_res_1, match_1
-              >> match_0:
-                ac match_0 >> result_1:
-                  cc ret_0, result_1
+                              = d_0 >> result_3:
+                                cc ret_1, result_3
+                            >> match_res_1:
+                              cif cond_1, match_res_1, match_0
+                >> match_1:
+                  ac match_1 >> result_1:
+                    cc ret_0, result_1
   >> fun_0:
     str 'fun' >> key_0
       rec_s exports_0, key_0, fun_0 >> exports_1:
@@ -338,8 +352,8 @@ rec >> exports_0:
       lst_t args_0 >> tail_0:
         lst_h tail_0 >> b_0:
           lst_t tail_0 >> tail_1:
-            cn ret_1:
-              = a_0 >> value_0:
+            = a_0 >> value_0:
+              cn ret_1:
                 cn:
                   = fun_0 >> callee_0:
                     lst >> cargs_0:
@@ -357,9 +371,9 @@ rec >> exports_0:
                           cc ret_1, result_2
                       >> match_res_0:
                         cif cond_0, match_res_0, else_0
-            >> match_0:
-              ac match_0 >> result_0:
-                cc ret_0, result_0
+              >> match_0:
+                ac match_0 >> result_0:
+                  cc ret_0, result_0
   >> fun_0:
     str 'fun' >> key_0
       rec_s exports_0, key_0, fun_0 >> exports_1:
