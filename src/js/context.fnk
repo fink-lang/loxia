@@ -1,7 +1,5 @@
-babel_types = import '@babel/types'
-{identifier} = babel_types
-
 {update_value, get_value} = import '../ir/context.fnk'
+{ident} = import './identifier/init.fnk'
 
 
 
@@ -9,7 +7,7 @@ set_js = fn id, js, ctx:
   update_value id, {js}, ctx
 
 
-set_js2 = fn [, , [id], {loc}], js, ctx:
+set_js2 = fn [{loc}, [id]], js, ctx:
   update_value id, {js: {...js, loc}}, ctx
 
 
@@ -19,20 +17,10 @@ with_loc = fn {loc}, expr:
 
 get_js = fn id, ctx:
   val = get_value id, ctx
-
   match val:
-    {refs: ? > 1}:
-      # identifier id
-      {js: {loc}={}} = val
-      rec:
-        ...identifier id
-        loc
-
-    {js: ?}:
-      val.js
-
-    else:
-      identifier id
+    {refs: ? > 1}: ident id
+    {js: ?}: val.js
+    else: ident id
 
 
 add_runtime_requirement = fn func, {runtime, ...ctx}:
@@ -56,6 +44,6 @@ add = fn name, transformer: fn {transformers, ...ctx}:
 
 
 
-get_transformer = fn [name], {transformers}:
+get_transformer = fn [{f: name}], {transformers}:
   {(name): transform} = transformers
   transform

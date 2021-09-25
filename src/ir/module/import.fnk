@@ -1,6 +1,25 @@
-{transform} = import '../transform.fnk'
+{transform, ir_fn} = import '../transform.fnk'
+
+
+
+impd = fn uri_id, res_id, {loc}, ctx:
+  expr = ir_fn 'impd', [uri_id], {loc}
+  [[[expr, [res_id]]], res_id, ctx]
+
+
+
+imp = fn uri_id, key_id, res_id, {loc}, ctx:
+  expr = match key_id:
+    false: ir_fn 'imp', [uri_id], {loc}
+    else: ir_fn 'imp', [uri_id, key_id], {loc}
+
+  match res_id:
+    false: [[[expr, []]], , ctx]
+    else: [[[expr, [res_id]]], res_id, ctx]
+
 
 
 transform_import = fn node, res_id, ctx:
   [loc, loc_id, next_ctx] = transform node.right, 'src', ctx
-  [[...loc, ['impd', [loc_id], [res_id], {loc: node.loc}]], next_ctx]
+  [imps, , end_ctx] = impd loc_id, res_id, node, next_ctx
+  [[...loc, ...imps], end_ctx]

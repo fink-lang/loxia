@@ -6,7 +6,7 @@ rec >> exports_0:
   = foo >> value_0:
     cn ret_0:
       cn:
-        cc ret_0, 
+        cc ret_0
       >> else_0:
         = bar >> val_0:
           == value_0, val_0 >> cond_0:
@@ -14,7 +14,7 @@ rec >> exports_0:
               = spam >> value_1:
                 cn ret_1:
                   cn:
-                    cc ret_1, 
+                    cc ret_1
                   >> else_1:
                     = shrub >> val_1:
                       == value_1, val_1 >> cond_1:
@@ -40,7 +40,7 @@ rec >> exports_0:
   = shrub >> value_0:
     cn ret_0:
       cn:
-        cc ret_0, 
+        cc ret_0
       >> else_0:
         int 123 >> val_0:
           == value_0, val_0 >> cond_0:
@@ -63,7 +63,7 @@ rec >> exports_0:
       cn:
         cn:
           cn:
-            cc ret_0, 
+            cc ret_0
           >> else_0:
             is_l value_0 >> is_lst_0:
               cn:
@@ -253,7 +253,7 @@ rec >> exports_0:
     cn ret_0:
       cn:
         cn:
-          cc ret_0, 
+          cc ret_0
         >> else_0:
           is_l value_0 >> is_lst_0:
             cn:
@@ -335,7 +335,7 @@ rec >> exports_0:
     cn ret_0:
       cn:
         cn:
-          cc ret_0, 
+          cc ret_0
         >> else_0:
           is_l value_0 >> is_lst_0:
             cn:
@@ -390,7 +390,7 @@ rec >> exports_0:
                 cn:
                   cn:
                     cn:
-                      cc ret_0, 
+                      cc ret_0
                     >> else_0:
                       is_l value_0 >> is_lst_0:
                         cn:
@@ -640,7 +640,7 @@ rec >> exports_0:
           cn:
             cn:
               cn:
-                cc ret_0, 
+                cc ret_0
               >> else_0:
                 isv value_0 >> cond_0:
                   cn:
@@ -701,7 +701,7 @@ rec >> exports_0:
   = shrub >> value_0:
     cn ret_0:
       cn:
-        cc ret_0, 
+        cc ret_0
       >> else_0:
         cn:
           = a >> key_0:
@@ -741,7 +741,7 @@ rec >> exports_0:
   = foo >> value_0:
     cn ret_0:
       cn:
-        cc ret_0, 
+        cc ret_0
       >> else_0:
         cn:
           str 'foo' >> key_0
@@ -780,7 +780,7 @@ rec >> exports_0:
   = foo >> value_0:
     cn ret_0:
       cn:
-        cc ret_0, 
+        cc ret_0
       >> else_0:
         cn:
           str 'foo' >> key_0
@@ -835,7 +835,7 @@ rec >> exports_0:
           cn:
             cn:
               cn:
-                cc ret_0, 
+                cc ret_0
               >> else_0:
                 cn:
                   str 'ni' >> key_0
@@ -1006,7 +1006,7 @@ rec >> exports_0:
   = shrub >> value_0:
     cn ret_0:
       cn:
-        cc ret_0, 
+        cc ret_0
       >> else_0:
         cn:
           = foo >> key_0:
@@ -1065,7 +1065,7 @@ rec >> exports_0:
                 cn:
                   cn:
                     cn:
-                      cc ret_0, 
+                      cc ret_0
                     >> else_0:
                       cn:
                         str 'spam' >> key_0

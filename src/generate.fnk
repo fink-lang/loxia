@@ -20,7 +20,7 @@ try_catch_ = fn f:
 transform_file = fn fink_ast, code, filename, options:
   ctx = init_ctx code, filename, options
 
-  [error, [js_ast]=[]] = try_catch_ fn:
+  [error, [js_ast]=[]] = try_catch fn:
     [lir] = (timed transform) fink_ast, 'mod', ctx
     [olir] = (timed optimize) lir, options
     {js} = (timed transform_ir) olir, options

@@ -1,4 +1,7 @@
+{ir_fn} = import '../transform.fnk'
 
 
 transform_keyword = fn {value, loc}, result, ctx:
-  [[['=', [value], [result], {loc}]], ctx]
+  # transform {type: 'ident', value, loc}, result, ctx, false
+  expr = ir_fn '=', [{i: value, loc}], {loc}
+  [[[expr, [result]]], ctx]

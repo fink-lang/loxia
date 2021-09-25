@@ -76,7 +76,7 @@ module_transforms = rec:
 
 
 transform_mod_exports = fn expr, ctx:
-  [ , [exports_id]] = expr
+  [{args: [exports_id]}] = expr
 
   decls = pipe get_js exports_id, ctx:
     ?.properties
@@ -99,7 +99,7 @@ transform_mod_exports = fn expr, ctx:
 transfrom_module = fn exprs, ctx:
   [body, next_ctx] = transform_exprs exprs, ctx
   [..., last] = exprs
-  [ , [ , drctvs_id]] = last
+  [{args: [ , drctvs_id]}] = last
 
   drctvs = get_js_literal drctvs_id, next_ctx
 

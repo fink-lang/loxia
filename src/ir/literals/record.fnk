@@ -1,6 +1,21 @@
 {reverse} = import '@fink/std-lib/iter.fnk'
-{transform} = import '../transform.fnk'
-{unique_ident} = import '../context.fnk'
+{transform, ir_fn} = import '../transform.fnk'
+{unique_name} = import '../context.fnk'
+
+{str} = import './string.fnk'
+
+
+
+rec_m = fn rec1_id, rec2_id, {loc}:
+  ir_fn 'rec_m', [rec1_id, rec2_id], {loc}
+
+
+rec_s = fn rec_id, key_id, val_id, {loc}:
+  ir_fn 'rec_s', [rec_id, key_id, val_id], {loc}
+
+
+rec_empty = fn {loc}:
+  ir_fn 'rec', [], {loc}
 
 
 
@@ -8,19 +23,18 @@ members_as_rec = fn expr, val:
   match expr:
     {type: 'member'}:
       kv = {type: 'rec:kv', left: expr.right, right: val}
-      nval = {type: 'rec', exprs: [kv]}
+      nval = {type: 'rec', exprs: [kv], loc: expr.loc}
       members_as_rec expr.left, nval
     else:
       kv = {type: 'rec:kv', left: expr, right: val}
-      {type: 'rec', exprs: [kv]}
+      {type: 'rec', exprs: [kv], loc: expr.loc}
 
 
 
 transform_key = fn expr, ctx:
   match expr:
     {type: 'ident'}:
-      [key_id, next_ctx] = unique_ident 'key', ctx
-      [[['str', [expr.value], [key_id], {loc: expr.loc}]], key_id, next_ctx]
+      str expr.value, 'key', expr, ctx
     else:
       transform expr, 'key', ctx
 
@@ -40,16 +54,18 @@ transform_val = fn expr, key_id, ctx:
 
 
 transform_kv = fn expr, out_id, ctx:
-  [rec_id, key_ctx] = unique_ident 'rec', ctx
+  [rec_id, key_ctx] = unique_name 'rec', expr, ctx
   match expr:
     {type: 'spread'}:
       [val, val_id, next_ctx] = transform expr.right, 'sprd', key_ctx
-      [[...val, ['rec_m', [rec_id, val_id], [out_id], {loc: expr.loc}]], rec_id , next_ctx]
+      rec_fn = rec_m rec_id, val_id, expr
+      [[...val, [rec_fn, [out_id]]], rec_id , next_ctx]
 
     else:
       [key, key_id, val_ctx] = transform_key expr.left, key_ctx
       [val, val_id, next_ctx] = transform_val expr, key_id, val_ctx
-      [[...key, ...val, ['rec_s', [rec_id, key_id, val_id], [out_id], {loc: expr.loc}]], rec_id, next_ctx]
+      rec_fn = rec_s rec_id, key_id, val_id, expr
+      [[...key, ...val, [rec_fn, [out_id]]], rec_id, next_ctx]
 
 
 
@@ -71,5 +87,6 @@ transform_entries = fn [expr=false, ...rest], ctx, result_id, out=[]:
 transform_record = fn node, result, ctx:
   exprs = reverse node.exprs
   [out, rec_id, next_ctx] = transform_entries exprs, ctx, result
-  [[['rec', [], [rec_id], {loc: node.loc}], ...out], next_ctx]
+  rec_fn = rec_empty node
+  [[[rec_fn, [rec_id]], ...out], next_ctx]
 

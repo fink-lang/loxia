@@ -3,10 +3,15 @@
 
 
 
-a2s = fn args:
-  match args:
-    [?]: ' ${args | join ', '}'
-    else: ''
+
+a2s = fn [arg=false, ...args], out=[]:
+  match arg:
+    false: match out:
+      [?]: ' ${out | join ', '}'
+      else: ''
+    {i: ?}: a2s args, [...out, arg.i]
+    else: a2s args, [...out, arg]
+
 
 
 raw = fn s:
@@ -15,42 +20,43 @@ raw = fn s:
 
 
 serialize = fn [curr=false, ...rest], out='', indent='':
-  # match curr:
-  #   false: false
-  #   [ , , , ?]: false
-  #   else: console.log 'missing loc', curr
-
   match curr:
     false:
       out
 
-    [? in ['cn', 'fn', 'fnr']]:
-      [op, [args, body], ids] = curr
+    [{f: 'str'}]:
+      [{f, args: [val]}, ids] = curr
+      serialize
+        rest
+        '${out}\n${indent}${f} \'${raw val}\' >>${a2s ids}'
+        '  ${indent}'
+
+    [{f: ? in ['cn', 'fn', 'fnr']}]:
+      [{f: op, args: [args, body]}, ids] = curr
       serialize
         rest
         '${out}\n${indent}${op}${a2s args}:${serialize body, '', '  ${indent}'}
           ${indent}>>${a2s ids}:'
         '  ${indent}'
 
-    ['str']:
-      [op, [val], ids] = curr
-      serialize
-        rest
-        '${out}\n${indent}${op} \'${raw val}\' >>${a2s ids}'
-        '  ${indent}'
-
-
-    [ , , [?]]:
-      [op, args, ids] = curr
-      serialize
-        rest
-        '${out}\n${indent}${op}${a2s args} >>${a2s ids}:'
-        '  ${indent}'
-
-    else:
-      [op, args] = curr
+    [{f: ? in ['cc', 'cif']}]:
+      [{f: op, args}] = curr
       serialize
         rest
         '${out}\n${indent}${op}${a2s args}'
+        '  ${indent}'
+
+    [, [?]]:
+      [{f, args}, ids] = curr
+      serialize
+        rest
+        '${out}\n${indent}${f}${a2s args} >>${a2s ids}:'
+        '  ${indent}'
+
+    else:
+      [{f, args}] = curr
+      serialize
+        rest
+        '${out}\n${indent}${f}${a2s args}'
         '  ${indent}'
 

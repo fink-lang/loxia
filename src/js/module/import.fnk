@@ -6,7 +6,7 @@ types = import '@babel/types'
 {ends_with, starts_with, slice, is_str} = import '@fink/std-lib/str.fnk'
 
 {add, set_js2, get_js, get_js_literal} = import '../context.fnk'
-{escape_ident} = import '../identifier/init.fnk'
+{escape_ident, ident} = import '../identifier/init.fnk'
 
 
 
@@ -47,7 +47,7 @@ get_runtime_imports = fn ctx:
 
 
 transform_import = fn expr, ctx:
-  [ , [uri_id, key_id=false], [res_id=false]] = expr
+  [{args: [uri_id, key_id=false]}, [res_id=false]] = expr
 
   {quasis: [{value: {raw: value}}]} = get_js_literal uri_id, ctx
   uri = stringLiteral resolve_ext value, ctx
@@ -56,12 +56,12 @@ transform_import = fn expr, ctx:
     [false]:
       []
     [, false]:
-      [importDefaultSpecifier identifier res_id]
+      [importDefaultSpecifier ident res_id]
     else:
       {quasis: [{value: {raw: key}}]} = get_js key_id, ctx
       list:
         importSpecifier
-          identifier res_id
+          ident res_id
           identifier escape_ident key
 
   js = importDeclaration specs, uri
@@ -70,7 +70,7 @@ transform_import = fn expr, ctx:
 
 
 transform_dyn_import = fn expr, ctx:
-  [ , [uri_id]] = expr
+  [{args: [uri_id]}] = expr
   uri = get_js uri_id, ctx
 
   js = callExpression

@@ -1,3 +1,6 @@
+types = import '@babel/types'
+{identifier} = types
+
 {rx , matches, replace} = import '@fink/std-lib/regex.fnk'
 
 
@@ -40,7 +43,7 @@ replace_refs = fn [id=false, ...ids], renames, out=[]:
     false:
       out
     else:
-      {(id): new_id=escape_ident id} = renames
+      {(id.i): new_id={...id, i: escape_ident id.i}} = renames
       replace_refs ids, renames, [...out, new_id]
 
 
@@ -50,37 +53,49 @@ rename = fn [id=false, ...ids], renames, out=[]:
     false:
       [out, renames]
     else:
-      new_id = escape_ident id
-      nrs = {...renames, (id): new_id}
+      new_id = {...id, i: escape_ident id.i}
+      nrs = {...renames, (id.i): new_id}
       rename ids, nrs, [...out, new_id]
 
 
 
-safe_names = fn [expr=false, ...exprs], renames={}, out=[]:
-  match expr:
+
+safe_names = fn [curr=false, ...exprs], renames={}, out=[]:
+  match curr:
     false: [out, renames]
 
-    [? in ['int', 'float', 'str']]:
-      [op, args, res, ...rest] = expr
+    [{f: ? in ['int', 'float', 'str']}]:
+      [expr, res] = curr
       [nres, next_ren] = rename res, renames
-      safe_names exprs, next_ren, [...out, [op, args, nres, ...rest]]
+      safe_names exprs, next_ren, [...out, [expr, nres]]
 
 
-    [? in ['fn', 'fnr', 'cn']]:
-      [op, [args, body], res, ...rest] = expr
+    [{f: ? in ['fn', 'fnr', 'cn']}]:
+      [expr, res] = curr
+      {args: [args, body]} = expr
       [nargs, bod_ren] = rename args, renames
       [nbody, res_ren] = safe_names body, bod_ren
+      nexpr = {...expr, args: [nargs, nbody]}
       [nres, next_ren] = rename res, res_ren
-      safe_names exprs, next_ren, [...out, [op, [nargs, nbody], nres, ...rest]]
+      safe_names exprs, next_ren, [...out, [nexpr, nres]]
 
     else:
-      [op, args, res, ...rest] = expr
+      [expr, res] = curr
+      {args} = expr
       nargs = replace_refs args, renames
+      nexpr = {...expr, args: nargs}
       [nres, next_ren] = rename res, renames
-      safe_names exprs, next_ren, [...out, [op, nargs, nres, ...rest]]
+      safe_names exprs, next_ren, [...out, [nexpr, nres]]
 
 
 
 replace_idents = fn exprs:
   [out] = safe_names exprs
   out
+
+
+ident = fn {i, loc}:
+  rec:
+    ...identifier i
+    loc
+

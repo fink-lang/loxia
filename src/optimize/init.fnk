@@ -9,18 +9,18 @@ import '../perf.fnk'
 
 optimize = fn exprs, options:
 
-  meta = init_ctx exprs, options
-  [tail_ir] = optimize_refs exprs, meta
+  ctx = init_ctx exprs, options
+  [tail_ir] = optimize_refs exprs, ctx
 
-  tail_meta = init_ctx tail_ir, options
-  [u_ir] = optimize_tails tail_ir, tail_meta
+  tail_ctx = init_ctx tail_ir, options
+  [u_ir] = optimize_tails tail_ir, tail_ctx
 
-  u_meta = init_ctx u_ir, options
-  [end_il, end_meta] = optimize_unused u_ir, u_meta
+  u_ctx = init_ctx u_ir, options
+  [end_il, end_ctx] = optimize_unused u_ir, u_ctx
 
   # optimize_ids end_il, end_meta
 
   # log add_type_info end_meta, end_il
   # short_il = optimize_ids un_il
-  [end_il, end_meta]
+  [end_il, end_ctx]
 

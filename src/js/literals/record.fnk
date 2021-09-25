@@ -8,7 +8,7 @@ types = import '@babel/types'
 {map} = import '@fink/std-lib/iter.fnk'
 
 {inc_ref} = import '../../ir/context.fnk'
-{is_js_ident} = import '../identifier/init.fnk'
+{is_js_ident, ident} = import '../identifier/init.fnk'
 {add, get_js, get_js_literal, set_js2, with_loc} = import '../context.fnk'
 
 
@@ -29,7 +29,7 @@ props_or_spread = fn obj:
 
 
 trandform_rec_set = fn expr, ctx:
-  [ , [rec_id, key_id, val_id]] = expr
+  [{args: [rec_id, key_id, val_id]}] = expr
   props = props_or_spread get_js rec_id, ctx
   key = get_js key_id, ctx
   val = get_js val_id, ctx
@@ -61,7 +61,7 @@ trandform_rec_set = fn expr, ctx:
 
 
 transform_rec_get = fn expr, ctx:
-  [ , [rec_id, key_id]] = expr
+  [{args: [rec_id, key_id]}] = expr
   rec_js = get_js rec_id, ctx
   key = get_js_literal key_id, ctx
 
@@ -83,13 +83,13 @@ transform_rec_get = fn expr, ctx:
 
 
 transform_rec_del_keys = fn expr, ctx:
-  [ , [rec_id, ...key_ids] , [result_id]] = expr
+  [{args: [rec_id, ...key_ids]}, [result_id]] = expr
   rec_js = get_js rec_id, ctx
 
   ignored_props = pipe key_ids:
     map fn key_id:
       key = get_js_literal key_id, ctx
-      val = identifier '_${key_id}'
+      val = identifier '_${key_id.i}'
       match key:
         {type: 'TemplateLiteral', quasis: [?, ?]}:
           objectProperty key, val, true
@@ -114,7 +114,7 @@ transform_rec_del_keys = fn expr, ctx:
 
   js = variableDeclaration 'const', list:
       variableDeclarator
-        objectPattern [...ignored_props, restElement identifier result_id]
+        objectPattern [...ignored_props, restElement ident result_id]
         rec_js
 
   next_ctx = inc_ref result_id, ctx
@@ -123,7 +123,7 @@ transform_rec_del_keys = fn expr, ctx:
 
 
 transform_rec_merge = fn expr, ctx:
-  [ , [rec1_id, rec2_id]] = expr
+  [{args: [rec1_id, rec2_id]}] = expr
   props1 = props_or_spread get_js rec1_id, ctx
   props2 = props_or_spread get_js rec2_id, ctx
   js = objectExpression [...props1, ...props2]

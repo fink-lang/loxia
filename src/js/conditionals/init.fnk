@@ -7,7 +7,7 @@ types = import '@babel/types'
 
 
 transform_if_val = fn expr, ctx:
-  [, [val_id, true_id, false_id]] = expr
+  [{args: [val_id, true_id, false_id]}] = expr
   val = get_js val_id, ctx
   true_js = get_js true_id, ctx
   false_js = get_js false_id, ctx
@@ -25,7 +25,7 @@ transform_if_val = fn expr, ctx:
 
 
 transform_is_val = fn expr, ctx:
-  [, [val_id]] = expr
+  [{args: [val_id]}] = expr
   val = get_js val_id, ctx
 
   js = binaryExpression
@@ -37,7 +37,7 @@ transform_is_val = fn expr, ctx:
 
 
 transform_is_rec = fn expr, ctx:
-  [, [val_id]] = expr
+  [{args: [val_id]}] = expr
   val = get_js val_id, ctx
 
   js = binaryExpression
@@ -49,7 +49,7 @@ transform_is_rec = fn expr, ctx:
 
 
 transform_is_lst = fn expr, ctx:
-  [, [val_id]] = expr
+  [{args: [val_id]}] = expr
   val = get_js val_id, ctx
 
   js = binaryExpression
@@ -62,9 +62,10 @@ transform_is_lst = fn expr, ctx:
 
 
 transform_if = fn expr, ctx:
-  [ , [cond_id, true_id, else_id=false], [], {loc}] = expr
+  [{args: [cond_id, true_id, else_id=false], loc}] = expr
   cond_c = get_js cond_id, ctx
   true_c = get_js true_id, ctx
+
   if_true_js = rec:
     ...ifStatement cond_c, true_c
     leadingComments: [{type: 'CommentBlock', value: ' istanbul ignore else '}]

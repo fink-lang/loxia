@@ -9,6 +9,7 @@ types = import '@babel/types'
 
 {get_transformer, get_js, get_js_literal, set_js2, with_loc} = import './context.fnk'
 {get_refs} = import '../ir/context.fnk'
+{ident} = import './identifier/init.fnk'
 
 
 
@@ -20,7 +21,7 @@ ops_to_js = rec:
 
 
 transform_binary = fn expr, ctx:
-  [op, [left_id, right_id]] = expr
+  [{f: op, args: [left_id, right_id]}] = expr
   left = get_js left_id, ctx
   right = get_js right_id, ctx
   {(op): jsop=op} = ops_to_js
@@ -30,7 +31,7 @@ transform_binary = fn expr, ctx:
 
 
 transform_unary = fn expr, ctx:
-  [op, [right_id]] = expr
+  [{f: op, args: [right_id]}] = expr
   right = get_js right_id, ctx
   {(op): jsop=op} = ops_to_js
   js = unaryExpression jsop, right
@@ -40,7 +41,7 @@ transform_unary = fn expr, ctx:
 
 transform_binary_or_unary = fn expr, ctx:
   match expr:
-    [, [, ?]]: transform_binary expr, ctx
+    [{args: [, ?]}]: transform_binary expr, ctx
     else: transform_unary expr, ctx
 
 
@@ -62,22 +63,22 @@ transform_exprs = fn [expr=false, ...exprs], ctx, body=[]:
   match expr:
     false: [body, ctx]
 
-    [? in ['cf', 'cc', 'cif', 'ac', 'imp']]:
+    [{f: ? in ['cf', 'cc', 'cif', 'ac', 'imp']}]:
       [body_exprs, next_ctx] = transform expr, ctx
       transform_exprs exprs, next_ctx, [...body, ...body_exprs]
 
-    ['cn']:
+    [{f: 'cn'}]:
       next_ctx = transform expr, ctx
       transform_exprs exprs, next_ctx, body
 
-    ['mod']:
-      [, , [res_id]] = expr
+    [{f: 'mod'}]:
+      [, [res_id]] = expr
       next_ctx = transform expr, ctx
       js = get_js_literal res_id, next_ctx
       transform_exprs exprs, next_ctx, [...body, js]
 
-    [ , , [?]]:
-      [op, , [res_id], todo] = expr
+    [ , [?]]:
+      [{f: op, loc: todo}, [res_id]] = expr
       next_ctx = transform expr, ctx
 
       match [op, get_refs res_id, next_ctx]:
@@ -85,11 +86,11 @@ transform_exprs = fn [expr=false, ...exprs], ctx, body=[]:
           val = get_js_literal res_id, next_ctx
           js = match val:
             {type: 'VariableDeclaration'}:
-              # TODO: use loc from meta or from val
-              with_loc todo, val
+              # TODO: use loc from res_id or from val
+              with_loc {loc: todo}, val
             else:
-              # TODO: use loc from meta or from val
-              id = with_loc todo, identifier res_id
+              # TODO: use loc from res_id?
+              id = with_loc {loc: todo}, ident res_id
               variableDeclaration 'const', [variableDeclarator id, val]
 
           transform_exprs exprs, next_ctx, [...body, js]

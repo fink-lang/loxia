@@ -1,10 +1,11 @@
 {add} = import '../context.fnk'
 
+{let} = import '../identifier/init.fnk'
 
 
 transform_partial = fn expr, result, ctx:
   {partial_ident=false} = ctx
-  [[['=', [partial_ident], [result], {loc: expr.loc}]], {...ctx, has_partial: true}]
+  [[let partial_ident, result, expr], {...ctx, has_partial: true}]
 
 
 

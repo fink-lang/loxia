@@ -9,6 +9,7 @@ types = import '@babel/types'
 
 {add, get_js, get_js_literal, set_js2, with_loc} = import '../context.fnk'
 {get_value} = import '../../ir/context.fnk'
+{ident} = import '../identifier/init.fnk'
 
 
 
@@ -27,7 +28,7 @@ as_call_args = fn args:
 
 
 transform_apply_fn = fn expr, ctx:
-  [ , [callee_id, args_id]] = expr
+  [{args: [callee_id, args_id]}] = expr
   callee = get_js callee_id, ctx
   args = as_call_args get_js args_id, ctx
   js = callExpression callee, args
@@ -36,7 +37,7 @@ transform_apply_fn = fn expr, ctx:
 
 
 transform_continue_with_fn = fn expr, ctx:
-  [ , [callee_id, new_args_id], []] = expr
+  [{args: [callee_id, new_args_id]}] = expr
 
   {args_id} = get_value callee_id, ctx
   new_args = get_js new_args_id, ctx
@@ -45,18 +46,20 @@ transform_continue_with_fn = fn expr, ctx:
     expressionStatement
       assignmentExpression
         '='
-        identifier args_id
+        ident args_id
         new_args
-    continueStatement identifier callee_id
+    continueStatement ident callee_id
 
   [js, ctx]
 
 
 
 transform_apply_cont = fn expr, ctx:
-  [ , [cont_id], [res_id]] = expr
+  [{args: [cont_id]}, [res_id]] = expr
+
   cont = get_js cont_id, ctx
   {label: ret_ident} = cont
+
   js = list:
     # TODO should that happen inside the cn transform
     variableDeclaration 'let', list:
@@ -65,7 +68,8 @@ transform_apply_cont = fn expr, ctx:
     cont
     variableDeclaration 'const', list:
       variableDeclarator
-        with_loc cont, identifier res_id
+        # with_loc cont, identifier res_id.i
+        ident res_id
         ret_ident
 
   [js, ctx]
@@ -73,7 +77,8 @@ transform_apply_cont = fn expr, ctx:
 
 
 transform_continue_with_cont = fn expr, ctx:
-  [ , [ret_id, res_id='_']] = expr
+  # TODO: use false not _
+  [{args: [ret_id, res_id='_']}] = expr
   ret = get_js_literal ret_id, ctx
 
   match res_id:
@@ -94,7 +99,7 @@ transform_continue_with_cont = fn expr, ctx:
           exprs = list:
             with_loc res, expressionStatement
               assignmentExpression '=', ret, res
-            with_loc res, breakStatement identifier ret_id
+            with_loc res, breakStatement ident ret_id
           [exprs, ctx]
 
 

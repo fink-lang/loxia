@@ -1,5 +1,6 @@
 {add, any} = import '../context.fnk'
 
+{ir_fn} = import '../transform.fnk'
 
 
 
@@ -10,13 +11,18 @@ get_ident = fn id, [scope, ...scopes]=[]:
     ?:
       get_ident id, scopes
     else:
-      id
+      {i: id, loc: {}}
+
+
+let = fn id, res_id, {loc}:
+  expr = ir_fn '=', [id], {loc}
+  [expr, [res_id]]
 
 
 
-transform_ident = fn ident, res_id, ctx:
-  id = get_ident ident.value, ctx.scopes
-  [[['=', [id], [res_id], {loc: ident.loc}]], ctx]
+transform_ident = fn {value, loc}, res_id, ctx:
+  id = get_ident value, ctx.scopes
+  [[let id, res_id, {loc}], ctx]
 
 
 

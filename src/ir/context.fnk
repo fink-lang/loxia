@@ -26,12 +26,11 @@ get_transformer = fn {op, type}, {transformers}:
 
 
 
-unique_ident = fn name, ctx:
+unique_name = fn prefix, {loc}, ctx:
   {unique_ids} = ctx
-  {(name): cntr=0} = unique_ids
-  uid = '${name}_${cntr}'
-  [uid, {...ctx, unique_ids: {...unique_ids, (name): cntr + 1}}]
-
+  {(prefix): cntr=0} = unique_ids
+  id = {i: '${prefix}_${cntr}', loc}
+  [id, {...ctx, unique_ids: {...unique_ids, (prefix): cntr + 1}}]
 
 
 
@@ -46,13 +45,13 @@ unique_ident = fn name, ctx:
 #   {...ctx, values: {...ctx.values, (id): {...curr, ...updates}}}
 
 
-get_value = fn id, {values}:
+get_value = fn {i: id}, {values}:
   tryGet {}, id, values
 
 
 update_value = fn id, updates, ctx:
   curr = get_value id, ctx
-  values = set id, {...curr, ...updates}, ctx.values
+  values = set id.i, {...curr, ...updates}, ctx.values
   {...ctx, values}
 
 
@@ -107,7 +106,7 @@ init_ref_counts = fn [expr=false, ...rest], ctx:
   match expr:
     false: ctx
     else:
-      [op, args, res] = expr
+      [{f: op, args}, res] = expr
       rest_ctx = match op:
         ? in ['fn', 'cn', 'fnr']:
           [fn_args, body] = args
@@ -122,8 +121,20 @@ init_ref_counts = fn [expr=false, ...rest], ctx:
       init_ref_counts rest, rest_ctx
 
 
+pass = fn f: fn rs:
+  f rs
+  rs
+
+
 
 init_ctx = fn exprs, options={}:
-  pipe {transformers:{}, runtime: {}, unique_ids: {}, values: empty, ...options}:
+  ctx = rec:
+    transformers: {}
+    runtime: {}
+    unique_ids: {}
+    values: empty
+    ...options
+
+  pipe ctx:
     init_ref_counts exprs, ?
 

@@ -7,15 +7,12 @@ types = import '@babel/types'
 
 
 
-
 transform_binary = fn jsop: fn expr, ctx:
-  [, [left_id, right_id]] = expr
+  [{args: [left_id, right_id]}] = expr
   left = get_js left_id, ctx
   right = get_js right_id, ctx
   js = logicalExpression jsop, left, right
   set_js2 expr, js, ctx
-
-
 
 
 

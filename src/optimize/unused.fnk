@@ -5,10 +5,10 @@
 
 
 
-get_ref_args = fn [op, args]:
+get_ref_args = fn [{f: op, args}]:
   match op:
     ? in ['int', 'float', 'str']: []
-    else:  args
+    else: args
 
 
 
@@ -18,20 +18,20 @@ remove_unused = fn [expr=false, ...exprs], ctx, out:
     false:
       [out, ctx]
 
-    [? in ['mod', 'imp', 'af', 'ac', 'cc', 'cif', 'cf']]:
+    [{f: ? in ['mod', 'imp', 'af', 'ac', 'cc', 'cif', 'cf']}]:
       remove_unused exprs, ctx, [expr, ...out]
 
-    [, , [is_unused ?, ctx]]:
+    [, [is_unused ?, ctx]]:
       args = get_ref_args expr
       next_ctx = dec_refs args, ctx
       remove_unused exprs, next_ctx, out
 
-    [? in ['fn', 'fnr', 'cn']]:
-      [op, [args, body], ...rest] = expr
+    [{f: ? in ['fn', 'fnr', 'cn']}]:
+      [{f: op, args: [args, body], ...rest}, res] = expr
       rbody = reverse body
       [obody, next_ctx] = remove_unused rbody, ctx, []
-      oexpr = [op, [args, obody], ...rest]
-      remove_unused exprs, next_ctx, [oexpr, ...out]
+      oexpr = {f: op, args: [args, obody], ...rest}
+      remove_unused exprs, next_ctx, [[oexpr, res], ...out]
 
     else:
       remove_unused exprs, ctx, [expr, ...out]

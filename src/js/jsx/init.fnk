@@ -70,9 +70,9 @@ transform_children = fn [chld=false, ...children], out=[]:
 
 
 transform_jxe = fn expr, ctx:
-  [ , [name_id, props_id, chldrn_id]] = expr
+  [{args: [name_id, props_id, chldrn_id]}] = expr
 
-  id = jsxIdentifier name_id
+  id = jsxIdentifier name_id.i
 
   props = pipe props_id:
     get_js_literal ?, ctx
@@ -94,7 +94,7 @@ transform_jxe = fn expr, ctx:
 
 
 transform_jxf = fn expr, ctx:
-  [ , [chldrn_id]] = expr
+  [{args: [chldrn_id]}] = expr
 
   children = pipe chldrn_id:
     get_js_literal ?, ctx

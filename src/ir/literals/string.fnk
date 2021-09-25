@@ -1,5 +1,15 @@
-{transform} = import '../transform.fnk'
-{unique_ident} = import '../context.fnk'
+{transform, ir_fn} = import '../transform.fnk'
+{unique_name} = import '../context.fnk'
+
+
+
+str = fn value, name_or_id, {loc}, ctx:
+  [str_id, next_ctx] = match name_or_id:
+    {i: ?}: [name_or_id, ctx]
+    else: unique_name name_or_id, {loc}, ctx
+
+  expr = ir_fn 'str', [value], {loc}
+  [[[expr, [str_id]]], str_id, next_ctx]
 
 
 
@@ -9,9 +19,8 @@ transform_parts = fn [expr=false, ...rest], ctx, ids=[], out=[]:
       [out, ids, ctx]
 
     {type: 'string:text'}:
-      [str_id, next_ctx] = unique_ident 'str', ctx
-      item = ['str', [expr.value], [str_id], {loc: expr.loc}]
-      transform_parts rest, next_ctx, [...ids, str_id], [...out, item]
+      [exprs, str_id, next_ctx] = str expr.value, 'str', expr, ctx
+      transform_parts rest, next_ctx, [...ids, str_id], [...out, ...exprs]
 
     else:
       [item, id, next_ctx] = transform expr, 'sx', ctx
@@ -23,7 +32,9 @@ transform_string = fn node, result, ctx:
   [out, ids, next_ctx] = transform_parts node.exprs, ctx
   match node:
     {tag: false}:
-      [[...out, ['strt', ids, [result], {loc: node.loc}]], next_ctx]
+      expr = ir_fn 'strt', ids, node
+      [[...out, [expr, [result]]], next_ctx]
     else:
       [tag, tag_id, st_ctx] = transform node.tag, 'tag', next_ctx
-      [[...tag, ...out, ['strtt', [tag_id, ...ids], [result], {loc: node.loc}]], st_ctx]
+      expr = ir_fn 'strtt', [tag_id, ...ids], node
+      [[...tag, ...out, [expr, [result]]], st_ctx]

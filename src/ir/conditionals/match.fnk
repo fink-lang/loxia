@@ -1,9 +1,56 @@
 
 {reverse} = import '@fink/std-lib/iter.fnk'
 
+{transform, ir_fn} = import '../transform.fnk'
+{unique_name} = import '../context.fnk'
 {transform_key, members_as_rec} = import '../literals/record.fnk'
-{transform} = import '../transform.fnk'
-{unique_ident} = import '../context.fnk'
+{cc} = import '../func/init.fnk'
+
+{lst_h_x, lst_t, lst_r_x, rec_g_x, rec_d_x} = import '../assignment/init.fnk'
+
+
+ac = fn cont_id, res_id, {loc}:
+  expr = ir_fn 'ac', [cont_id], {loc}
+  [[expr, [res_id]]]
+
+
+
+cn = fn args, body, name_or_id, {loc}, ctx:
+  [res_id, next_ctx] = match name_or_id:
+    {i: ?}: [name_or_id, ctx]
+    else: unique_name name_or_id, {loc}, ctx
+
+  expr = ir_fn 'cn', [args, [...body]], {loc}
+  [[[expr, [res_id]]], res_id, next_ctx]
+
+
+
+cif = fn cond_id, true_id, else_id, {loc}:
+  expr = ir_fn 'cif', [cond_id, true_id, else_id], {loc}
+  [[expr, []]]
+
+
+is_val = fn val_id, name, {loc}, ctx:
+  [res_id, next_ctx] = unique_name name, {loc}, ctx
+  expr = ir_fn 'isv', [val_id], {loc}
+  [[[expr, [res_id]]], res_id, next_ctx]
+
+
+is_l = fn val_id, res_id, {loc}:
+  expr = ir_fn 'is_l', [val_id], {loc}
+  [[expr, [res_id]]]
+
+
+is_r = fn val_id, res_id, {loc}:
+  expr = ir_fn 'is_r', [val_id], {loc}
+  [[expr, [res_id]]]
+
+
+is_eq = fn left_id, right_id, name, {loc}, ctx:
+  [res_id, next_ctx] = unique_name name, {loc}, ctx
+  expr = ir_fn '==', [left_id, right_id], {loc}
+  [[[expr, [res_id]]], res_id, next_ctx]
+
 
 
 
@@ -17,21 +64,13 @@ transform_exprs = fn [expr=false, ...rest], ctx, out, last_id:
 
 
 
-cont = fn exprs, name, ret_id, meta, ctx:
-  [id, r_ctx] = unique_ident name, ctx
-  # [ret_id, b_ctx] = unique_ident 'ret', r_ctx
-  [block, res_id, next_ctx] = transform_exprs exprs, r_ctx, []
-  body = [...block, ['cc', [ret_id, res_id], [], meta]]
-  [[['cn', [[], body], [id], meta]], id, next_ctx]
-
-
 ht = fn [items_id, items=[]], expr, ctx:
-  [head_id, tail_ctx] = unique_ident 'itm', ctx
-  [tail_id, next_ctx] = unique_ident 'tail', tail_ctx
+  [head, head_id, tail_ctx] = lst_h_x items_id, 'itm', expr, ctx
+  [tail, tail_id, next_ctx] = lst_t items_id, expr, tail_ctx
 
   list:
-    [head_id, [...items, ['lst_h', [items_id], [head_id], expr]]]
-    [tail_id, [['lst_t', [items_id], [tail_id], expr]]]
+    [head_id, [...items, ...head]]
+    [tail_id, [...tail]]
     next_ctx
 
 
@@ -43,57 +82,58 @@ transform_with_partial = fn expr, name, val_id, {partial_ident, ...ctx}:
 
 
 match_any = fn [val_id, val=[]], expr, gen_true, else_id, ctx:
-  [match_id, cond_ctx] = unique_ident 'match', ctx
-  [cond_id, true_ctx] = unique_ident 'cond', cond_ctx
+  [match_id, cond_ctx] = unique_name 'match', expr, ctx
 
+  [val_cond, cond_id, true_ctx] = is_val val_id, 'cond', expr, cond_ctx
   [true_cont, true_id, next_ctx] = gen_true true_ctx
 
-  body = [
+  body = list:
     ...val
-    ['isv', [val_id], [cond_id], expr]
+    ...val_cond
     ...true_cont
-    ['cif', [cond_id, true_id, else_id], [], expr]
-  ]
-  [[['cn', [[], body], [match_id], expr]], match_id, next_ctx]
+    ...cif cond_id, true_id, else_id, expr
+
+  cn [], body, match_id, expr, next_ctx
 
 
 
 
 match_eq = fn [val_id, val=[]], expr, gen_true, else_id, ctx:
-  [match_id, right_ctx] = unique_ident 'match', ctx
+  [match_id, right_ctx] = unique_name 'match', expr, ctx
   [right, right_id, {has_partial, ...cond_ctx}] = transform_with_partial expr, 'val', val_id, right_ctx
 
   left_id = match has_partial:
-    true: 'true'
+    true: {i: 'true'}
     else: val_id
 
-  [cond_id, true_ctx] = unique_ident 'cond', cond_ctx
+  [eq_cond, cond_id, true_ctx] = is_eq left_id, right_id, 'cond', expr, cond_ctx
   [true_cont, true_id, next_ctx] = gen_true true_ctx
 
   body = list:
     ...val
     ...right
-    ['==', [left_id, right_id], [cond_id], expr]
+    ...eq_cond
     ...true_cont
-    ['cif', [cond_id, true_id, else_id], [], expr]
+    ...cif cond_id, true_id, else_id, expr
 
-  [[['cn', [[], body], [match_id], expr]], match_id, next_ctx]
+  cn [], body, match_id, expr, next_ctx
 
 
 
 match_items = fn items, [expr, ...rest], gen_true, else_id, ctx, match_expr:
   match expr:
     {type: 'empty'}:
-      [tail_id, next_ctx] = unique_ident 'tail', ctx
-      [foo_id, foo] = items
-      tail = [tail_id, [...foo, ['lst_t', [foo_id], [tail_id], expr]]]
+      # [tail_id, next_ctx] = unique_name 'tail', expr, ctx
+      [items_id, foo] = items
+      [lst, tail_id, next_ctx] = lst_t items_id, expr, ctx
+      tail = [tail_id, [...foo, ...lst]]
       match_items tail, rest, gen_true, else_id, next_ctx, match_expr
 
 
     {type: 'spread', right: false}:
-      [tail_id, next_ctx] = unique_ident 'rtail', ctx
-      [foo_id, foo] = items
-      tail = [tail_id, [...foo, ['lst_r', [foo_id], [tail_id], expr]]]
+      [items_id, foo] = items
+      [lst, tail_id, next_ctx] = lst_r_x items_id, 'rtail', expr, ctx
+      tail = [tail_id, [...foo, ...lst]]
       rev_rest = reverse rest
       match_items tail, rev_rest, gen_true, else_id, next_ctx, match_expr
 
@@ -116,28 +156,28 @@ match_items = fn items, [expr, ...rest], gen_true, else_id, ctx, match_expr:
 
 
 match_list = fn [val_id, val_prereq], expr, gen_true, else_id, ctx, match_expr:
-  [is_tpl_id, match_ctx] = unique_ident 'is_lst', ctx
-  [match_lst_id, items_ctx] = unique_ident 'match_lst', match_ctx
+  [is_lst_id, match_ctx] = unique_name 'is_lst', expr, ctx
+  [match_lst_id, items_ctx] = unique_name 'match_lst', expr, match_ctx
   [items_match, match_id, next_ctx] = match_items
     [val_id, []], expr.exprs, gen_true, else_id, items_ctx, match_expr
 
   body = list:
     ...val_prereq
-    ['is_l', [val_id], [is_tpl_id], expr]
+    ...is_l val_id, is_lst_id, expr
     ...items_match
-    ['cif', [is_tpl_id, match_id, else_id], [], expr]
+    ...cif is_lst_id, match_id, else_id, expr
 
-  [[['cn', [[], body], [match_lst_id], expr]], match_lst_id, next_ctx]
+  cn [], body, match_lst_id, expr, next_ctx
+
 
 
 
 match_props = fn rec_val, [expr, ...rest], gen_true, else_id, ctx, match_expr, keys=[]:
   match expr:
     {type: 'spread'}:
-      [val_id, next_ctx] = unique_ident 'spread', ctx
       [rec_id, val] = rec_val
-      foo = [val_id, [...val, ['rec_d', [rec_id, ...keys], [val_id], {loc: expr.loc}]]]
-      match_expr foo, expr.right, gen_true, else_id, next_ctx
+      [sprd, val_id, next_ctx] = rec_d_x rec_id, keys, 'spread', expr, ctx
+      match_expr [val_id, [...val, ...sprd]], expr.right, gen_true, else_id, next_ctx
 
 
     {type: 'rec:kv', left.type: 'member'}:
@@ -146,10 +186,9 @@ match_props = fn rec_val, [expr, ...rest], gen_true, else_id, ctx, match_expr, k
 
 
     {type: 'rec:kv'}:
-      [item_id, key_ctx] = unique_ident 'itm', ctx
-      [key, key_id, next_ctx] = transform_key expr.left, key_ctx
       [rec_id, val] = rec_val
-      item = [item_id, [...val, ...key, ['rec_g', [rec_id, key_id], [item_id], expr]]]
+      [key, key_id, rec_ctx] = transform_key expr.left, ctx
+      [item, item_id, next_ctx] = rec_g_x rec_id, key_id, 'itm', expr, rec_ctx
 
       val_expr = match expr:
         {right: false}: expr.left
@@ -161,23 +200,25 @@ match_props = fn rec_val, [expr, ...rest], gen_true, else_id, ctx, match_expr, k
         else:
           gen_true
 
-      match_expr item, val_expr, match_rest, else_id, next_ctx
+      match_expr [item_id, [...val, ...key, ...item]], val_expr, match_rest, else_id, next_ctx
 
 
 
 match_rec = fn [val_id, val_prereq], expr, gen_true, else_id, ctx, match_expr:
-  [is_rec_id, match_ctx] = unique_ident 'is_rec', ctx
-  [match_lst_id, items_ctx] = unique_ident 'match_rec', match_ctx
+  [is_rec_id, match_ctx] = unique_name 'is_rec', expr, ctx
+  [match_rec_id, rec_ctx] = unique_name 'match_rec', expr, match_ctx
   [props_match, match_id, next_ctx] = match_props
-    [val_id, []], expr.exprs, gen_true, else_id, items_ctx, match_expr
+    [val_id, []], expr.exprs, gen_true, else_id, rec_ctx, match_expr
 
   body = list:
     ...val_prereq
+    # TODO: move down like in list?
     ...props_match
-    ['is_r', [val_id], [is_rec_id], expr]
-    ['cif', [is_rec_id, match_id, else_id], [], expr]
+    ...is_r val_id, is_rec_id, expr
+    ...cif is_rec_id, match_id, else_id, expr
 
-  [[['cn', [[], body], [match_lst_id], expr]], match_lst_id, next_ctx]
+  cn [], body, match_rec_id, expr, next_ctx
+
 
 
 
@@ -198,20 +239,27 @@ match_expr = fn val, expr, gen_true, else_id, ctx:
 
 
 
+match_res_exprs = fn exprs, name, ret_id, {loc}, ctx:
+  [id, r_ctx] = unique_name name, {loc}, ctx
+  [block, res_id, next_ctx] = transform_exprs exprs, r_ctx, []
+  ret = cc ret_id, res_id, {loc}
+  cn [], [...block, ret], id, {loc}, next_ctx
+
+
 
 match_conditions = fn [expr=false, ...else_exprs], [val_id, val=[]], ret_id, ctx:
   match expr:
     false:
-      cont [], 'else', ret_id, {todo: 'loc'}, ctx
+      match_res_exprs [], 'else', ret_id, {todo: 'loc'}, ctx
 
     {op: 'else'}:
-      cont expr.exprs, 'else', ret_id, {loc: expr.loc}, ctx
+      match_res_exprs expr.exprs, 'else', ret_id, {loc: expr.loc}, ctx
 
     else:
       {left, right: true_expr} = expr
 
       gen_true = fn ctx:
-        cont true_expr.exprs, 'match_res', ret_id, true_expr, ctx
+        match_res_exprs true_expr.exprs, 'match_res', ret_id, true_expr, ctx
 
       [el, else_id, next_ctx] = match_conditions else_exprs, [val_id, []], ret_id, ctx
 
@@ -221,18 +269,19 @@ match_conditions = fn [expr=false, ...else_exprs], [val_id, val=[]], ret_id, ctx
 
 
 transform_match = fn node, result, ctx:
-  # [match_id, r_ctx] = unique_ident 'match', ctx
-  [ret_id, v_ctx] = unique_ident 'ret', ctx
+  [ret_id, v_ctx] = unique_name 'ret', node, ctx
 
   [input] = node.args
   [value, val_id, cond_ctx] = transform input, 'value', v_ctx
-  exprs =  node.exprs #reverse node.exprs
-  # [conds, next_ctx] = match_conditions exprs, val_id, [], ret_id, cond_ctx
-  [[[, [, conds]]], match_id, next_ctx] = match_conditions exprs, [val_id, []], ret_id, cond_ctx
+  exprs = node.exprs
+  [[[{args: [, conds]}]], match_id, next_ctx] = match_conditions exprs, [val_id, []], ret_id, cond_ctx
+
+  [cont, , end_ctx] = cn [ret_id], conds, match_id, node, next_ctx
 
   out = list:
     ...value
-    ['cn', [[ret_id], conds], [match_id], {loc: node.loc}]
-    ['ac', [match_id], [result], {loc: node.loc}]
-  [out, next_ctx]
+    ...cont
+    ...ac match_id, result, node
+
+  [out, end_ctx]
 

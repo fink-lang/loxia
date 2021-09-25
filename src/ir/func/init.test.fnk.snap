@@ -193,7 +193,7 @@ rec >> exports_0:
                             cn ret_2:
                               cn:
                                 cn:
-                                  cc ret_2, 
+                                  cc ret_2
                                 >> else_0:
                                   is_l value_0 >> is_lst_0:
                                     cn:
@@ -261,7 +261,7 @@ rec >> exports_0:
                 cn ret_1:
                   cn:
                     cn:
-                      cc ret_1, 
+                      cc ret_1
                     >> else_0:
                       = c_0 >> left_0:
                         int 1 >> right_0:

@@ -22,8 +22,8 @@ transform_async = fn path:
 
 
 transform_wt = fn expr, ctx:
-  [, [right_id]] = expr
-  js = awaitExpression  get_js right_id, ctx
+  [{args: [right_id]}] = expr
+  js = awaitExpression get_js right_id, ctx
   set_js2 expr, js, ctx
 
 

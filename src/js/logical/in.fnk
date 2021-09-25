@@ -6,7 +6,7 @@ types = import '@babel/types'
 
 
 transform_in = fn expr, ctx:
-  [, [left_id, right_id]] = expr
+  [{args: [left_id, right_id]}] = expr
 
   js = callExpression
     identifier '_in_'

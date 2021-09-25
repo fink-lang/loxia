@@ -1,6 +1,6 @@
 {reverse} = import '@fink/std-lib/iter.fnk'
 
-{init_ctx, update_value} = import '../ir/context.fnk'
+{init_ctx, update_value, get_value} = import '../ir/context.fnk'
 
 {replace_idents} = import './identifier/init.fnk'
 
@@ -56,8 +56,8 @@ prepare_rets = fn [expr=false, ...exprs], ctx:
     false:
       ctx
 
-    ['ac']:
-      [, [cont_id], res_ids] = expr
+    [{f: 'ac'}]:
+      [{args: [cont_id]}, res_ids] = expr
       next_ctx = update_value cont_id, {res_ids}, ctx
       prepare_rets exprs, next_ctx
 
@@ -71,12 +71,12 @@ prepare_exports = fn [expr=false, ...exprs], ctx, rec_id:
     false:
       ctx
 
-    ['mod']:
-      [, [next_rec_id]] = expr
+    [{f: 'mod'}]:
+      [{args: [next_rec_id]}] = expr
       prepare_exports exprs, ctx, next_rec_id
 
-    ['rec_s', , [rec_id]]:
-      [, [next_rec_id, , val_id]] = expr
+    [{f:'rec_s'}, [{i: rec_id.i}]]:
+      [{args: [next_rec_id, , val_id]}] = expr
       ref_ctx = update_value next_rec_id, {export: true}, ctx
       next_ctx = inc_ref val_id, ref_ctx
       prepare_exports exprs, next_ctx, next_rec_id
@@ -91,8 +91,8 @@ prepare_imports = fn [expr=false, ...exprs], ctx:
     false:
       ctx
 
-    ['imp']:
-      [, [sr_id]] = expr
+    [{f: 'imp'}]:
+      [{args: [sr_id]}] = expr
       next_ctx = update_value sr_id, {refs: 1}, ctx
       prepare_imports exprs, next_ctx
 

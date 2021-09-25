@@ -8,7 +8,7 @@ types = import '@babel/types'
 
 
 transform_int = fn expr, ctx:
-  [, [value]] = expr
+  [{args: [value]}] = expr
   # TODO parse_int does not parse 0[bxo].+ nor 1_000
   val = parse_int value
   js = rec:
@@ -19,7 +19,7 @@ transform_int = fn expr, ctx:
 
 
 transform_float = fn expr, ctx:
-  [, [value]] = expr
+  [{args: [value]}] = expr
   js = numericLiteral parse_float value
   set_js2 expr, js, ctx
 

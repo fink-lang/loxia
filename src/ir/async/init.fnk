@@ -1,11 +1,16 @@
 {add, any} = import '../context.fnk'
-{transform} = import '../transform.fnk'
+{transform, ir_fn} = import '../transform.fnk'
+
+
+wt = fn future_id, {loc}:
+  ir_fn 'wt', [future_id], {loc}
 
 
 
 transform_await = fn node, result, ctx:
   [future, future_id, next_ctx] = transform node.right, 'futr', ctx
-  [[...future, ['wt', [future_id], [result], {loc: node.loc}]], next_ctx]
+  expr = wt future_id, node
+  [[...future, [expr, [result]]], next_ctx]
 
 
 

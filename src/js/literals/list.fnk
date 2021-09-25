@@ -11,11 +11,11 @@ types = import '@babel/types'
 
 
 set_tail_of = fn items_id, tail_of, {tails={}, ...ctx}:
-  {...ctx, tails: {...tails, (items_id): tail_of}}
+  {...ctx, tails: {...tails, (items_id.i): tail_of}}
 
 
 get_tail_of = fn items_id, {tails={}}:
-  {(items_id): tail_of=[items_id, 0]} = tails
+  {(items_id.i): tail_of=[items_id, 0]} = tails
   tail_of
 
 
@@ -36,12 +36,12 @@ elems_or_spread = fn expr:
 
 
 transform_list_append = fn expr, ctx:
-  [ , [items_id, val_id]] = expr
+  [{args: [items_id, val_id]}] = expr
   # TODO: inlining should be handled at optimization level in ir
   elems = elems_or_spread get_js_literal items_id, ctx
 
   elem = match val_id:
-    '_': null
+    {i: '_'}: null
     else: get_js val_id, ctx
 
   js = arrayExpression [...elems, elem]
@@ -50,7 +50,7 @@ transform_list_append = fn expr, ctx:
 
 
 transform_list_chain = fn expr, ctx:
-  [ , [items1_id, items2_id]] = expr
+  [{args: [items1_id, items2_id]}] = expr
   # TODO: inlining should be handled at optimization level in ir
   elems1 = elems_or_spread get_js_literal items1_id, ctx
   elems2 = elems_or_spread get_js_literal items2_id, ctx
@@ -61,7 +61,7 @@ transform_list_chain = fn expr, ctx:
 
 
 transform_list_head = fn expr, ctx:
-  [ , [items_id]] = expr
+  [{args: [items_id]}] = expr
   [tail_src, idx] = get_tail_of items_id, ctx
   arr = get_js tail_src, ctx
   js_idx = numericLiteral idx
@@ -71,7 +71,7 @@ transform_list_head = fn expr, ctx:
 
 
 transform_list_reverse = fn expr, ctx:
-  [ , [items_id]] = expr
+  [{args: [items_id]}] = expr
   arr = get_js items_id, ctx
 
   js = callExpression
@@ -84,7 +84,7 @@ transform_list_reverse = fn expr, ctx:
 
 
 transform_list_tail = fn expr, ctx:
-  [ , [items_id], [result_id]] = expr
+  [{args: [items_id]}, [result_id]] = expr
 
   items = get_js items_id, ctx
   [tail_src, idx] = get_tail_of items_id, ctx

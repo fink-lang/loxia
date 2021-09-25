@@ -3,6 +3,17 @@
 
 
 describe 'optimize', fn:
+  it 'foo', fn:
+    expect
+      fink2lir_o '
+        a = 1
+        b = 2
+        c = [a, b]
+        [d, e] = c
+        f = d + e
+      '
+      to_match_snapshot
+
   it 'optimizes values', fn:
     expect
       fink2lir_o '

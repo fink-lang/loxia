@@ -9,7 +9,7 @@ types = import '@babel/types'
 
 
 transform_str = fn expr, ctx:
-  [, [value], , {loc}] = expr
+  [{args: [value], loc}] = expr
   raw = replace_all
     value
     rx'\\([\s\S])|([`])'
@@ -40,7 +40,7 @@ split_exprs = fn [part=false, ...parts], ctx, isq=true, quasis=[], exprs=[]:
 
 
 transform_template = fn expr, ctx:
-  [ , parts] = expr
+  [{args: parts}] = expr
   [quasis, exprs] = split_exprs parts, ctx
   js = templateLiteral quasis, exprs
   set_js2 expr, js, ctx
@@ -48,7 +48,7 @@ transform_template = fn expr, ctx:
 
 
 transform_tagged_template = fn expr, ctx:
-  [ , [tag_id, ...parts]] = expr
+  [{args: [tag_id, ...parts]}] = expr
   tag = get_js tag_id, ctx
   [quasis, exprs] = split_exprs parts, ctx
   tl = templateLiteral quasis, exprs

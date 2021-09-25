@@ -1,15 +1,15 @@
 types = import '@babel/types'
 {
-  arrowFunctionExpression, blockStatement, returnStatement
-  identifier, restElement
+  arrowFunctionExpression, blockStatement, returnStatement, restElement
   labeledStatement, doWhileStatement, booleanLiteral
 } = types
 
 {map} = import '@fink/std-lib/iter.fnk'
 
+{get_refs, update_value} = import '../../ir/context.fnk'
 {transform_exprs} = import '../transform.fnk'
 {add, set_js, set_js2} = import '../context.fnk'
-{get_refs, update_value} = import '../../ir/context.fnk'
+{ident} = import '../identifier/init.fnk'
 
 
 
@@ -24,10 +24,8 @@ clean_args = fn args:
 
 
 res_ident = fn expr:
-  [, , [id], {loc}] = expr
-  rec:
-    ...identifier id
-    loc
+  [, [id]] = expr
+  ident id
 
 
 split_args_body = fn [expr=false, ...exprs], args_id, ctx, args=[], body=[]:
@@ -36,21 +34,22 @@ split_args_body = fn [expr=false, ...exprs], args_id, ctx, args=[], body=[]:
       fn_args = clean_args args
       [fn_args, body, ctx]
 
-    ['lst_h', [args_id]]:
+    [{f: 'lst_h', args: [{i: args_id.i}]}]:
       [...prev, ] = match args:
         [?, ?]: args
         else: [...args, ]
 
-      arg = res_ident expr
+      [, [head_id]] = expr
+      arg = ident head_id
       next_ctx = set_js2 expr, arg, ctx
       split_args_body exprs, args_id, next_ctx, [...prev, arg], body
 
-    ['lst_r', [args_id]]:
+    [{f: 'lst_r', args: [{i: args_id.i}]}]:
       split_args_body [], args_id, ctx, args, [...body, expr, ...exprs]
 
-    ['lst_t', [args_id]]:
-      [, , [tail_id]] = expr
-      arg = res_ident expr
+    [{f: 'lst_t', args: [{i: args_id.i}]}]:
+      [, [tail_id]] = expr
+      arg = ident tail_id
       rest = rec:
         ...restElement arg
         loc: arg.loc
@@ -69,7 +68,7 @@ split_args_body = fn [expr=false, ...exprs], args_id, ctx, args=[], body=[]:
 
 
 transform_fn = fn expr, ctx:
-  [, [fn_args, fn_block]] = expr
+  [{args: [fn_args, fn_block]}] = expr
   [args_id, ret_id] = fn_args
 
   ret = returnStatement _
@@ -85,7 +84,7 @@ transform_fn = fn expr, ctx:
 
 
 transform_recursive_fn = fn expr, ctx:
-  [, [fn_args, block], [res_id]] = expr
+  [{args: [fn_args, block]}, [res_id]] = expr
   [args_id, ret_id] = fn_args
 
   ret = returnStatement _
@@ -95,10 +94,10 @@ transform_recursive_fn = fn expr, ctx:
   [body, next_ctx] = transform_exprs block, body_ctx
 
   js = arrowFunctionExpression
-    [restElement identifier args_id]
+    [restElement ident args_id]
     blockStatement list:
       labeledStatement
-        identifier res_id
+        ident res_id
         doWhileStatement
           booleanLiteral true
           blockStatement body
@@ -108,7 +107,7 @@ transform_recursive_fn = fn expr, ctx:
 
 
 transform_cont = fn expr, ctx:
-  [, [args, block]] = expr
+  [{args: [args, block]}] = expr
 
   [ret_id=false] = args
   [body, next_ctx]= transform_exprs block, ctx
@@ -118,7 +117,7 @@ transform_cont = fn expr, ctx:
       blockStatement body
     else:
       labeledStatement
-        identifier ret_id
+        ident ret_id
         blockStatement body
 
   set_js2 expr, js, next_ctx

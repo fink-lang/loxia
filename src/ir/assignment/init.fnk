@@ -1,13 +1,16 @@
 {reverse} = import '@fink/std-lib/iter.fnk'
 
-{add, any, unique_ident} = import '../context.fnk'
-{transform} = import '../transform.fnk'
+{add, any, unique_name} = import '../context.fnk'
+{transform, ir_fn} = import '../transform.fnk'
 {members_as_rec} = import '../literals/record.fnk'
+{str} = import '../literals/string.fnk'
 
 
-bind = fn {value: src_id}, ctx:
+
+bind = fn {value: src_id, loc}, ctx:
   {scopes: [scope, ...scopes]=[]} = ctx
-  [id, next_ctx] = unique_ident src_id, ctx
+  [id, next_ctx] = unique_name src_id, {loc}, ctx
+
   end_ctx = rec:
     ...next_ctx
     scopes: list:
@@ -18,31 +21,85 @@ bind = fn {value: src_id}, ctx:
 
 
 
-rec_get = fn rec_id, key_id, val_id, meta, ctx, fallback=false:
+lst_h = fn lst_id, {loc}:
+  ir_fn 'lst_h', [lst_id], {loc}
+
+
+
+lst_h_x = fn lst_id, name_or_id, {loc}, ctx:
+  [val_id, next_ctx] = match name_or_id:
+    {i: ?}: [name_or_id, ctx]
+    else: unique_name name_or_id, {loc}, ctx
+  val = ir_fn 'lst_h', [lst_id], {loc}
+  [[[val, [val_id]]], val_id, next_ctx]
+
+
+
+lst_r = fn lst_id, {loc}:
+  ir_fn 'lst_r', [lst_id], {loc}
+
+
+lst_r_x = fn lst_id, name, {loc}, ctx:
+  [rev_id, next_ctx] = unique_name name, {loc}, ctx
+  rev_lst = ir_fn 'lst_r', [lst_id], {loc}
+  [[[rev_lst, [rev_id]]], rev_id, next_ctx]
+
+
+lst_t = fn lst_id, {loc}, ctx:
+  [tail_id, next_ctx] = unique_name 'tail', {loc}, ctx
+  tail = ir_fn 'lst_t', [lst_id], {loc}
+  [[[tail, [tail_id]]], tail_id, next_ctx]
+
+
+if_v = fn val_id, true_val_id, false_val_id, {loc}:
+  ir_fn 'ifv', [val_id, true_val_id, false_val_id], {loc}
+
+
+rec_d = fn rec_id, keys, {loc}:
+  ir_fn 'rec_d', [rec_id, ...keys], {loc}
+
+
+rec_g = fn rec_id, key_id, {loc}:
+  ir_fn 'rec_g', [rec_id, key_id], {loc}
+
+
+rec_get = fn rec_id, key_id, val_id, fallback, {loc}, ctx:
   [val, next_ctx] = match fallback:
     false:
-      [[['rec_g', [rec_id, key_id], [val_id], meta]], ctx]
+      rg = rec_g rec_id, key_id, {loc}
+      [[[rg, [val_id]]], ctx]
     else:
-      [tmp_id, next_ctx] = unique_ident 'hdm', ctx
-      out = [['rec_g', [rec_id, key_id], [tmp_id], meta], ['ifv', [tmp_id, tmp_id, fallback], [val_id], meta]]
-      [out, next_ctx]
+      [tmp_id, next_ctx] = unique_name 'hdm', {loc}, ctx
+      rg = rec_g rec_id, key_id, {loc}
+      fb = if_v tmp_id, tmp_id, fallback, {loc}
+      [[[rg, [tmp_id]], [fb, [val_id]]], next_ctx]
 
   [val, next_ctx]
 
 
+rec_g_x = fn rec_id, key_id, name, {loc}, ctx:
+  [val_id, next_ctx] = unique_name name, {loc}, ctx
+  expr = rec_g rec_id, key_id, {loc}
+  [[[expr, [val_id]]], val_id, next_ctx]
 
-get_key_val = fn expr, ctx:
-  match expr:
+
+rec_d_x = fn rec_id, keys, name, {loc}, ctx:
+  [val_id, next_ctx] = unique_name name, {loc}, ctx
+  expr = rec_d rec_id, keys, {loc}
+  [[[expr, [val_id]]], val_id, next_ctx]
+
+
+
+get_key_val = fn rec_id, expr, fallback, ctx:
+  [key, key_id, val_id, next_ctx] = match expr:
     {left.type: 'ident', right: false}:
       [val_id, key_ctx] = bind expr.left, ctx
-      [key_id, next_ctx] = unique_ident 'key', key_ctx
-      key = [['str', [expr.left.value], [key_id], {loc: expr.left.loc}]]
+      [key, key_id, next_ctx] = str expr.left.value, 'key', expr.left, key_ctx
       [key, key_id, val_id, next_ctx]
 
     {left.type: 'ident', right.type: 'ident'}:
       [val_id, key_ctx] = bind expr.right, ctx
-      [key_id, next_ctx] = unique_ident 'key', key_ctx
-      key = [['str', [expr.left.value], [key_id], {loc: expr.left.loc}]]
+      [key, key_id, next_ctx] = str expr.left.value, 'key', expr.left, key_ctx
       [key, key_id, val_id, next_ctx]
 
     {right.type: 'ident'}:
@@ -51,102 +108,107 @@ get_key_val = fn expr, ctx:
       [key, key_id, val_id, next_ctx]
 
     {left.type: 'ident'}:
-      [val_id, key_ctx] = unique_ident 'val', ctx
-      [key_id, next_ctx] = unique_ident 'key', key_ctx
-      key = [['str', [expr.left.value], [key_id], {loc: expr.left.loc}]]
+      [val_id, key_ctx] = unique_name 'val', expr, ctx
+      [key, key_id, next_ctx] = str expr.left.value, 'key', expr.left, key_ctx
       [key, key_id, val_id, next_ctx]
 
     else:
-      [val_id, key_ctx] = unique_ident 'val', ctx
+      [val_id, key_ctx] = unique_name 'val', expr, ctx
       [key, key_id, next_ctx] = transform expr.left, 'key', key_ctx
       [key, key_id, val_id, next_ctx]
 
+  [val, end_ctx] = rec_get rec_id, key_id, val_id, fallback, expr, next_ctx
+  [[...key, ...val], key_id, val_id, end_ctx]
 
 
-transform_dr = fn [expr=false, ...exprs], rec_id, ctx, transform_dl, keys=[], prev=[], fallback:
+
+transform_dr = fn [expr=false, ...exprs], rec_id, ctx, transform_dl, keys=[], prev=[], fallback=false:
   match expr:
     false:
       [prev, rec_id, ctx]
 
     {type: 'spread'}:
       [val_id, next_ctx] = bind expr.right, ctx
-      out = ['rec_d', [rec_id, ...keys], [val_id], {loc: expr.loc}]
-      transform_dr exprs, rec_id, next_ctx, transform_dl, keys, [...prev, out]
+      sprd = rec_d rec_id, keys, expr
+      out = [...prev, [sprd, [val_id]]]
+      transform_dr exprs, rec_id, next_ctx, transform_dl, keys, out
 
     {right: false}:
-      [key, key_id, val_id, next_ctx] = get_key_val expr, ctx
-      [val, end_ctx] = rec_get rec_id, key_id, val_id, {loc: expr.loc}, next_ctx, fallback
-      transform_dr exprs, rec_id, end_ctx, transform_dl, [...keys, key_id], [...prev, ...key, ...val]
+      [key_val, key_id, , next_ctx] = get_key_val rec_id, expr, fallback, ctx
+      out = [...prev, ...key_val]
+      transform_dr exprs, rec_id, next_ctx, transform_dl, [...keys, key_id], out
 
     {right.type: 'assign'}:
       {left, right} = expr.right
       [flbk, flbk_id, dl_ctx] = transform right, 'flbk', ctx
-      transform_dr
-        [{...expr, right: left}, ...exprs]
-        rec_id, dl_ctx, transform_dl, keys, [...prev, ...flbk], flbk_id
+      out = [...prev, ...flbk]
+      next_exprs = [{...expr, right: left}, ...exprs]
+      transform_dr next_exprs, rec_id, dl_ctx, transform_dl, keys, out, flbk_id
 
     {left.type: 'member'}:
       {exprs: rx} = members_as_rec expr.left, expr.right
       transform_dr [...rx, ...exprs], rec_id, ctx, transform_dl, keys, prev, fallback
 
     {right.type: ? in ['ident', 'empty']}:
-      [key, key_id, val_id, next_ctx] = get_key_val expr, ctx
-      [val, end_ctx] = rec_get rec_id, key_id, val_id, {loc: expr.loc}, next_ctx, fallback
-      transform_dr exprs, rec_id, end_ctx, transform_dl, [...keys, key_id], [...prev, ...key, ...val]
+      [key_val, key_id, , next_ctx] = get_key_val rec_id, expr, fallback, ctx
+      out = [...prev, ...key_val]
+      transform_dr exprs, rec_id, next_ctx, transform_dl, [...keys, key_id], out
 
     {right.type: 'rec'}:
-      [key, key_id, val_id, next_ctx] = get_key_val expr, ctx
-      [val, items_ctx] = rec_get rec_id, key_id, val_id, {loc: expr.loc}, next_ctx, fallback
-      [out, , end_ctx] = transform_dr expr.right.exprs, val_id, items_ctx, transform_dl
-      transform_dr exprs, rec_id, end_ctx, transform_dl, [...keys, key_id], [...prev, ...key, ...val, ...out]
+      [key_val, key_id, val_id, next_ctx] = get_key_val rec_id, expr, fallback, ctx
+      [rec_out, , end_ctx] = transform_dr expr.right.exprs, val_id, next_ctx, transform_dl
+      out = [...prev, ...key_val, ...rec_out]
+      transform_dr exprs, rec_id, end_ctx, transform_dl, [...keys, key_id], out
 
     {right.type: 'list'}:
-      [key, key_id, val_id, next_ctx] = get_key_val expr, ctx
-      [rest, items_ctx] = rec_get rec_id, key_id, val_id, {loc: expr.loc}, next_ctx, fallback
-      [out, , end_ctx] = transform_dl expr.right.exprs, val_id, items_ctx, []
-      transform_dr exprs, rec_id, end_ctx, transform_dl, [...keys, key_id], [...prev, ...key, ...rest, ...out]
+      [key_val, key_id, val_id, next_ctx] = get_key_val rec_id, expr, fallback, ctx
+      [lst_out, , end_ctx] = transform_dl expr.right.exprs, val_id, next_ctx, []
+      out = [...prev, ...key_val, ...lst_out]
+      transform_dr exprs, rec_id, end_ctx, transform_dl, [...keys, key_id], out
 
 
 
-head_tail = fn tpl_id, val_id, meta, ctx, fallback=false:
-  [tail_id, val_ctx] = unique_ident 'tail', ctx
+head_tail = fn lst_id, val_id, {loc}, ctx, fallback=false:
+  hd = lst_h lst_id, {loc}
+  [tail, tail_id, val_ctx] = lst_t lst_id, {loc}, ctx
+
   [val, next_ctx] = match fallback:
     false:
-      [[['lst_h', [tpl_id], [val_id], meta]], val_ctx]
+      [[[hd, [val_id]]], val_ctx]
     else:
-      [hd_id, next_ctx] = unique_ident 'hdm', val_ctx
-      out = [['lst_h', [tpl_id], [hd_id], meta], ['ifv', [hd_id, hd_id, fallback], [val_id], meta]]
+      [hd_id, next_ctx] = unique_name 'hdm', {loc}, val_ctx
+      fb = if_v hd_id, hd_id, fallback, {loc}
+      out = [[hd, [hd_id]], [fb, [val_id]]]
       [out, next_ctx]
 
-  rest = ['lst_t', [tpl_id], [tail_id], meta]
-  [[...val, rest], tail_id, next_ctx]
+  [[...val, ...tail], tail_id, next_ctx]
 
 
 
-transform_dl = fn [expr=false, ...exprs], tpl_id, ctx, prev=[], fallback:
+transform_dl = fn [expr=false, ...exprs], lst_id, ctx, prev=[], fallback:
   match expr:
     false:
-      [prev, tpl_id, ctx]
+      [prev, lst_id, ctx]
 
     {type: 'ident'}:
       [val_id, next_ctx] = bind expr, ctx
-      [out, tail_id, end_ctx] = head_tail tpl_id, val_id, {loc: expr.loc}, next_ctx, fallback
+      [out, tail_id, end_ctx] = head_tail lst_id, val_id, expr, next_ctx, fallback
       transform_dl exprs, tail_id, end_ctx, [...prev, ...out]
 
     {type: 'assign'}:
       {left, right} = expr
-      [r, r_id, dl_ctx] = transform right, 'flbk', ctx
-      out = [...r]
-      transform_dl [left, ...exprs], tpl_id, dl_ctx, [...prev, ...out], r_id
+      [out, flbk_id, dl_ctx] = transform right, 'flbk', ctx
+      transform_dl [left, ...exprs], lst_id, dl_ctx, [...prev, ...out], flbk_id
 
     {type: 'empty'}:
-      [val_id, next_ctx] = unique_ident 'unused', ctx
-      [out, tail_id, end_ctx] = head_tail tpl_id, val_id, {loc: expr.loc}, next_ctx
+      [val_id, next_ctx] = unique_name 'unused', expr, ctx
+      [out, tail_id, end_ctx] = head_tail lst_id, val_id, expr, next_ctx
       transform_dl exprs, tail_id, end_ctx, [...prev, ...out]
 
     {type: 'spread'}:
-      [rev_id, next_ctx] = unique_ident 'rtail', ctx
-      rev = [...prev, ['lst_r', [tpl_id], [rev_id], {loc: expr.loc}]]
+      [rev_id, next_ctx] = unique_name 'rtail', expr, ctx
+      rev_tail = lst_r lst_id, expr
+      rev = [...prev, [rev_tail, [rev_id]]]
       rev_exprs = reverse exprs
       [out, tail_id, spread_ctx] = transform_dl rev_exprs, rev_id, next_ctx, rev
 
@@ -155,20 +217,21 @@ transform_dl = fn [expr=false, ...exprs], tpl_id, ctx, prev=[], fallback:
           [out, tail_id, spread_ctx]
         else:
           [id, end_ctx] = bind expr.right, spread_ctx
-          [[...out, ['lst_r', [tail_id], [id], {loc: expr.loc}]], id, end_ctx]
+          rev = lst_r tail_id, expr
+          [[...out, [rev, [id]]], id, end_ctx]
 
     {type: 'list'}:
-      [val_id, items_ctx] = unique_ident 'items', ctx
+      [val_id, items_ctx] = unique_name 'items', expr, ctx
       # TODO: reverse next two lines?
       [out, , rest_ctx] = transform_dl expr.exprs, val_id, items_ctx, []
-      [items, tail_id, end_ctx] = head_tail tpl_id, val_id, {loc: expr.loc}, rest_ctx, fallback
+      [items, tail_id, end_ctx] = head_tail lst_id, val_id, expr, rest_ctx, fallback
       transform_dl exprs, tail_id, end_ctx, [...prev, ...items, ...out]
 
     {type: 'rec'}:
-      [val_id, items_ctx] = unique_ident 'drec', ctx
+      [val_id, items_ctx] = unique_name 'drec', expr, ctx
       # TODO: reverse next two lines?
       [out, , rest_ctx] = transform_dr expr.exprs, val_id, items_ctx, transform_dl, []
-      [items, tail_id, end_ctx] = head_tail tpl_id, val_id, {loc: expr.loc}, rest_ctx, fallback
+      [items, tail_id, end_ctx] = head_tail lst_id, val_id, expr, rest_ctx, fallback
       transform_dl exprs, tail_id, end_ctx, [...prev, ...items, ...out]
 
 

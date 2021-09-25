@@ -1,5 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`optimize foo 1`] = `
+"
+rec >> exports_0:
+  int 1 >> a_0:
+    str 'a' >> key_0
+      rec_s exports_0, key_0, a_0 >> exports_1:
+        int 2 >> b_0:
+          str 'b' >> key_1
+            rec_s exports_1, key_1, b_0 >> exports_2:
+              lst >> lst_1:
+                lst_a lst_1, a_0 >> lst_0:
+                  lst_a lst_0, b_0 >> c_0:
+                    str 'c' >> key_2
+                      rec_s exports_2, key_2, c_0 >> exports_3:
+                        + a_0, b_0 >> f_0:
+                          str 'f' >> key_3
+                            rec_s exports_3, key_3, f_0 >> exports_4:
+                              lst >> drctvs_0:
+                                mod exports_4, drctvs_0 >> result_0:"
+`;
+
 exports[`optimize optimizes ac ...>> res: cc ..., res 1`] = `
 "
 rec >> exports_0:
