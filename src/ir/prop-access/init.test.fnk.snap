@@ -4,15 +4,15 @@ exports[`member compiles 1`] = `
 "
 rec >> exports_0:
   = spam >> left_0:
-    str 'shrub' >> key_0
+    str 'shrub' >> key_0:
       rec_g left_0, key_0 >> foo_0:
-        str 'foo' >> key_1
+        str 'foo' >> key_1:
           rec_s exports_0, key_1, foo_0 >> exports_1:
             = item >> left_1:
-              str 'bar spam' >> str_0
+              str 'bar spam' >> str_0:
                 strt str_0 >> key_2:
                   rec_g left_1, key_2 >> computed_member_0:
-                    str 'computed_member' >> key_3
+                    str 'computed_member' >> key_3:
                       rec_s exports_1, key_3, computed_member_0 >> exports_2:
                         = item >> left_2:
                           = get_key >> callee_0:
@@ -21,28 +21,28 @@ rec >> exports_0:
                                 lst_a cargs_0, arg_0 >> cargs_1:
                                   af callee_0, cargs_1 >> key_4:
                                     rec_g left_2, key_4 >> computed_member2_0:
-                                      str 'computed_member2' >> key_5
+                                      str 'computed_member2' >> key_5:
                                         rec_s exports_2, key_5, computed_member2_0 >> exports_3:
                                           = item >> left_3:
-                                            str 'arguments' >> key_6
+                                            str 'arguments' >> key_6:
                                               rec_g left_3, key_6 >> reserved_prop_0:
-                                                str 'reserved_prop' >> key_7
+                                                str 'reserved_prop' >> key_7:
                                                   rec_s exports_3, key_7, reserved_prop_0 >> exports_4:
                                                     lst >> lst_1:
                                                       = item >> left_5:
-                                                        str 'π' >> key_9
+                                                        str 'π' >> key_9:
                                                           rec_g left_5, key_9 >> item_1:
                                                             lst_a lst_1, item_1 >> lst_0:
                                                               = item >> left_4:
-                                                                str 'ƒ' >> key_8
+                                                                str 'ƒ' >> key_8:
                                                                   rec_g left_4, key_8 >> item_0:
                                                                     lst_a lst_0, item_0 >> js_safe_unicode_0:
-                                                                      str 'js_safe_unicode' >> key_10
+                                                                      str 'js_safe_unicode' >> key_10:
                                                                         rec_s exports_4, key_10, js_safe_unicode_0 >> exports_5:
                                                                           = item >> left_6:
-                                                                            str 'foo-bar' >> key_11
+                                                                            str 'foo-bar' >> key_11:
                                                                               rec_g left_6, key_11 >> js_unsfae_0:
-                                                                                str 'js_unsfae' >> key_12
+                                                                                str 'js_unsfae' >> key_12:
                                                                                   rec_s exports_5, key_12, js_unsfae_0 >> exports_6:
                                                                                     lst >> drctvs_0:
                                                                                       mod exports_6, drctvs_0 >> mod_0:"

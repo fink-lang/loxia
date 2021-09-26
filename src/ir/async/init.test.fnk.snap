@@ -11,7 +11,7 @@ rec >> exports_0:
             - right_0 >> result_0:
               cc ret_0, result_0
   >> task1_0:
-    str 'task1' >> key_0
+    str 'task1' >> key_0:
       rec_s exports_0, key_0, task1_0 >> exports_1:
         fn args_1, ret_1:
           lst_h args_1 >> foo_1:
@@ -22,7 +22,7 @@ rec >> exports_0:
                     wt futr_1 >> result_1:
                       cc ret_1, result_1
         >> task2_0:
-          str 'task2' >> key_1
+          str 'task2' >> key_1:
             rec_s exports_1, key_1, task2_0 >> exports_2:
               fn args_2, ret_2:
                 lst_h args_2 >> foo_2:
@@ -36,7 +36,7 @@ rec >> exports_0:
                                 + left_1, right_2 >> result_3:
                                   cc ret_2, result_3
               >> task3_0:
-                str 'task3' >> key_2
+                str 'task3' >> key_2:
                   rec_s exports_2, key_2, task3_0 >> exports_3:
                     = unfold >> callee_1:
                       lst >> cargs_1:
@@ -71,7 +71,7 @@ rec >> exports_0:
                         >> arg_0:
                           lst_a cargs_1, arg_0 >> cargs_4:
                             af callee_1, cargs_4 >> a_gen_0:
-                              str 'a_gen' >> key_3
+                              str 'a_gen' >> key_3:
                                 rec_s exports_3, key_3, a_gen_0 >> exports_4:
                                   = ni >> futr_4:
                                     wt futr_4 >> mex_0:

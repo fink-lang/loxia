@@ -4,9 +4,9 @@ exports[`regex compiles escape char 1`] = `
 "
 rec >> exports_0:
   = rx >> tag_0:
-    str '.+/\\\\#.+\\\\\\\\' >> str_0
+    str '.+/\\\\#.+\\\\\\\\' >> str_0:
       strtt tag_0, str_0 >> regex_0:
-        str 'regex' >> key_0
+        str 'regex' >> key_0:
           rec_s exports_0, key_0, regex_0 >> exports_1:
             lst >> drctvs_0:
               mod exports_1, drctvs_0 >> mod_0:"
@@ -16,9 +16,9 @@ exports[`regex compiles multiline 1`] = `
 "
 rec >> exports_0:
   = rx >> tag_0:
-    str '(?<year>\\\\d{4})-    # year part of a date\\\\n(?<month>\\\\d{2})-   # month part of a date\\\\n(?<day>\\\\d{2})      # day part of a date\\\\n' >> str_0
+    str '(?<year>\\\\d{4})-    # year part of a date\\\\n(?<month>\\\\d{2})-   # month part of a date\\\\n(?<day>\\\\d{2})      # day part of a date\\\\n' >> str_0:
       strtt tag_0, str_0 >> regex_0:
-        str 'regex' >> key_0
+        str 'regex' >> key_0:
           rec_s exports_0, key_0, regex_0 >> exports_1:
             lst >> drctvs_0:
               mod exports_1, drctvs_0 >> mod_0:"
@@ -28,9 +28,9 @@ exports[`regex compiles single line 1`] = `
 "
 rec >> exports_0:
   = rx >> tag_0:
-    str '(?<year>\\\\d{4})-(?<month>\\\\d{2})-(?<day>\\\\d{2})' >> str_0
+    str '(?<year>\\\\d{4})-(?<month>\\\\d{2})-(?<day>\\\\d{2})' >> str_0:
       strtt tag_0, str_0 >> regex_0:
-        str 'regex' >> key_0
+        str 'regex' >> key_0:
           rec_s exports_0, key_0, regex_0 >> exports_1:
             lst >> drctvs_0:
               mod exports_1, drctvs_0 >> mod_0:"

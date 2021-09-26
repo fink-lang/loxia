@@ -4,19 +4,19 @@ exports[`list compiles 1`] = `
 "
 rec >> exports_0:
   lst >> array1_0:
-    str 'array1' >> key_0
+    str 'array1' >> key_0:
       rec_s exports_0, key_0, array1_0 >> exports_1:
         lst >> lst_0:
           int 1 >> item_0:
             lst_a lst_0, item_0 >> array2_0:
-              str 'array2' >> key_1
+              str 'array2' >> key_1:
                 rec_s exports_1, key_1, array2_0 >> exports_2:
                   lst >> lst_2:
                     int 1 >> item_2:
                       lst_a lst_2, item_2 >> lst_1:
                         int 2 >> item_1:
                           lst_a lst_1, item_1 >> array3_0:
-                            str 'array3' >> key_2
+                            str 'array3' >> key_2:
                               rec_s exports_2, key_2, array3_0 >> exports_3:
                                 lst >> lst_5:
                                   int 1 >> item_4:
@@ -24,7 +24,7 @@ rec >> exports_0:
                                       lst_a lst_4, _ >> lst_3:
                                         int 2 >> item_3:
                                           lst_a lst_3, item_3 >> array4_0:
-                                            str 'array4' >> key_3
+                                            str 'array4' >> key_3:
                                               rec_s exports_3, key_3, array4_0 >> exports_4:
                                                 lst >> lst_10:
                                                   = a >> left_5:
@@ -49,7 +49,7 @@ rec >> exports_0:
                                                                                         int 2 >> right_1:
                                                                                           * left_0, right_1 >> item_5:
                                                                                             lst_a lst_6, item_5 >> array5_0:
-                                                                                              str 'array5' >> key_4
+                                                                                              str 'array5' >> key_4:
                                                                                                 rec_s exports_4, key_4, array5_0 >> exports_5:
                                                                                                   lst >> drctvs_0:
                                                                                                     mod exports_5, drctvs_0 >> mod_0:"
@@ -65,7 +65,7 @@ rec >> exports_0:
           lst_a lst_1, item_0 >> lst_0:
             = b >> items_0:
               lst_c lst_0, items_0 >> array1_0:
-                str 'array1' >> key_0
+                str 'array1' >> key_0:
                   rec_s exports_0, key_0, array1_0 >> exports_1:
                     lst >> lst_7:
                       int 1 >> item_5:
@@ -78,7 +78,7 @@ rec >> exports_0:
                                     lst_a lst_4, item_3 >> lst_3:
                                       int 4 >> item_2:
                                         lst_a lst_3, item_2 >> array2_0:
-                                          str 'array2' >> key_1
+                                          str 'array2' >> key_1:
                                             rec_s exports_1, key_1, array2_0 >> exports_2:
                                               lst >> drctvs_0:
                                                 mod exports_2, drctvs_0 >> mod_0:"
@@ -89,14 +89,14 @@ exports[`optimizations ignores empty concats 1`] = `
 rec >> exports_0:
   lst >> lst_0:
     lst_c lst_0, b >> foo_0:
-      str 'foo' >> key_0
+      str 'foo' >> key_0:
         rec_s exports_0, key_0, foo_0 >> exports_1:
           lst >> ham_0:
-            str 'ham' >> key_1
+            str 'ham' >> key_1:
               rec_s exports_1, key_1, ham_0 >> exports_2:
                 lst >> lst_2:
                   lst_a lst_2, foo_0 >> lst_1:
-                    str 'spam' >> key_2
+                    str 'spam' >> key_2:
                       rec_s exports_2, key_2, lst_1 >> exports_3:
                         lst >> drctvs_0:
                           mod exports_3, drctvs_0 >> mod_0:"
@@ -111,7 +111,7 @@ rec >> exports_0:
         lst >> lst_5:
           lst_a lst_5, item_2 >> lst_4:
             lst_a lst_4, item_3 >> foo_0:
-              str 'foo' >> key_0
+              str 'foo' >> key_0:
                 rec_s exports_0, key_0, foo_0 >> exports_1:
                   int 1 >> left_1:
                     int 2 >> right_3:
@@ -135,9 +135,9 @@ rec >> exports_0:
   = ni >> right_0:
     lst_h right_0 >> drec_0:
       lst_t right_0 >> tail_0:
-        str 'a' >> key_0
+        str 'a' >> key_0:
           rec_g drec_0, key_0 >> a_0:
-            str 'b' >> key_1
+            str 'b' >> key_1:
               rec_g drec_0, key_1 >> b_0:
                 lst_h tail_0 >> c_0:
                   lst_t tail_0 >> tail_1:
@@ -170,7 +170,7 @@ rec >> exports_0:
                                         lst_a lst_5, item_5 >> lst_4:
                                           = a_0 >> item_4:
                                             lst_a lst_4, item_4 >> foo_0:
-                                              str 'foo' >> key_0
+                                              str 'foo' >> key_0:
                                                 rec_s exports_0, key_0, foo_0 >> exports_1:
                                                   lst >> lst_7:
                                                     int 1 >> left_1:
@@ -214,13 +214,13 @@ rec >> exports_0:
                                   lst_t right_2 >> tail_6:
                                     lst_r tail_6 >> rtail_0:
                                       lst_r rtail_0 >> tail_7:
-                                        str '1234' >> str_0
+                                        str '1234' >> str_0:
                                           strt str_0 >> right_3:
                                             lst_r right_3 >> rtail_1:
                                               lst_h rtail_1 >> last_0:
                                                 lst_t rtail_1 >> tail_8:
                                                   lst_r tail_8 >> items_0:
-                                                    str '123' >> str_1
+                                                    str '123' >> str_1:
                                                       strt str_1 >> right_4:
                                                         lst_h right_4 >> first_0:
                                                           lst_t right_4 >> tail_9:
@@ -232,14 +232,14 @@ rec >> exports_0:
                                                                       lst_h tail_11 >> penultimate_0:
                                                                         lst_t tail_11 >> tail_12:
                                                                           lst_r tail_12 >> middle_0:
-                                                                            str '123' >> str_2
+                                                                            str '123' >> str_2:
                                                                               strt str_2 >> right_5:
                                                                                 lst_h right_5 >> ni_0:
                                                                                   lst_t right_5 >> tail_13:
                                                                                     lst_r tail_13 >> rtail_3:
                                                                                       lst_h rtail_3 >> nu_0:
                                                                                         lst_t rtail_3 >> tail_14:
-                                                                                          str '123' >> str_3
+                                                                                          str '123' >> str_3:
                                                                                             strt str_3 >> right_6:
                                                                                               lst_r right_6 >> rtail_4:
                                                                                                 lst_h rtail_4 >> nuna_0:
@@ -265,7 +265,7 @@ rec >> exports_0:
                         lst_a lst_1, item_1 >> lst_0:
                           = b_0 >> item_0:
                             lst_a lst_0, item_0 >> out_0:
-                              str 'out' >> key_0
+                              str 'out' >> key_0:
                                 rec_s exports_0, key_0, out_0 >> exports_1:
                                   lst >> drctvs_0:
                                     mod exports_1, drctvs_0 >> mod_0:"
@@ -300,7 +300,7 @@ rec >> exports_0:
                                                 lst_a lst_3, item_3 >> lst_2:
                                                   = c_0 >> item_2:
                                                     lst_a lst_2, item_2 >> out_0:
-                                                      str 'out' >> key_0
+                                                      str 'out' >> key_0:
                                                         rec_s exports_0, key_0, out_0 >> exports_1:
                                                           lst >> drctvs_0:
                                                             mod exports_1, drctvs_0 >> mod_0:"

@@ -8,18 +8,18 @@ rec >> exports_0:
       = c >> right_1:
         or left_1, right_1 >> right_0:
           or left_0, right_0 >> foo_0:
-            str 'foo' >> key_0
+            str 'foo' >> key_0:
               rec_s exports_0, key_0, foo_0 >> exports_1:
                 = a >> left_2:
                   = b >> left_3:
                     = c >> right_3:
                       and left_3, right_3 >> right_2:
                         and left_2, right_2 >> bar_0:
-                          str 'bar' >> key_1
+                          str 'bar' >> key_1:
                             rec_s exports_1, key_1, bar_0 >> exports_2:
                               = a >> right_4:
                                 not right_4 >> spam_0:
-                                  str 'spam' >> key_2
+                                  str 'spam' >> key_2:
                                     rec_s exports_2, key_2, spam_0 >> exports_3:
                                       lst >> drctvs_0:
                                         mod exports_3, drctvs_0 >> mod_0:"

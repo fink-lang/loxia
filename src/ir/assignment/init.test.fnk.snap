@@ -4,7 +4,7 @@ exports[`assignment compiles simple 1`] = `
 "
 rec >> exports_0:
   = bar >> foo_0:
-    str 'foo' >> key_0
+    str 'foo' >> key_0:
       rec_s exports_0, key_0, foo_0 >> exports_1:
         lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
@@ -14,7 +14,7 @@ exports[`assignment compiles with scopes 1`] = `
 "
 rec >> exports_0:
   int 123 >> foo_0:
-    str 'foo' >> key_0
+    str 'foo' >> key_0:
       rec_s exports_0, key_0, foo_0 >> exports_1:
         fn args_0, ret_0:
           lst_h args_0 >> foo_1:
@@ -24,7 +24,7 @@ rec >> exports_0:
                   + left_0, right_0 >> result_0:
                     cc ret_0, result_0
         >> ni_0:
-          str 'ni' >> key_1
+          str 'ni' >> key_1:
             rec_s exports_1, key_1, ni_0 >> exports_2:
               lst >> drctvs_0:
                 mod exports_2, drctvs_0 >> mod_0:"

@@ -20,27 +20,27 @@ rec >> exports_0:
               int 3 >> item_0:
                 lst_a lst_0, item_0 >> right_0:
                   in left_0, right_0 >> foo_0:
-                    str 'foo' >> key_0
+                    str 'foo' >> key_0:
                       rec_s exports_0, key_0, foo_0 >> exports_1:
-                        str '2' >> str_0
+                        str '2' >> str_0:
                           strt str_0 >> left_1:
-                            str '1234' >> str_1
+                            str '1234' >> str_1:
                               strt str_1 >> right_1:
                                 in left_1, right_1 >> bar_0:
-                                  str 'bar' >> key_1
+                                  str 'bar' >> key_1:
                                     rec_s exports_1, key_1, bar_0 >> exports_2:
                                       = key >> left_2:
                                         rec >> rec_0:
-                                          str 'foo' >> key_2
+                                          str 'foo' >> key_2:
                                             = bar_0 >> val_0:
                                               rec_s rec_0, key_2, val_0 >> right_2:
                                                 in left_2, right_2 >> spam_0:
-                                                  str 'spam' >> key_3
+                                                  str 'spam' >> key_3:
                                                     rec_s exports_2, key_3, spam_0 >> exports_3:
                                                       = item >> left_3:
                                                         = ni >> right_3:
                                                           in left_3, right_3 >> shrub_0:
-                                                            str 'shrub' >> key_4
+                                                            str 'shrub' >> key_4:
                                                               rec_s exports_3, key_4, shrub_0 >> exports_4:
                                                                 lst >> drctvs_0:
                                                                   mod exports_4, drctvs_0 >> mod_0:"

@@ -463,7 +463,7 @@ rec >> exports_0:
                   cn:
                     lst_h value_0 >> itm_3:
                       = itm_3 >> left_1:
-                        str 'is_foo' >> key_0
+                        str 'is_foo' >> key_0:
                           rec_g left_1, key_0 >> callee_3:
                             lst >> cargs_7:
                               af callee_3, cargs_7 >> val_5:
@@ -707,12 +707,12 @@ rec >> exports_0:
           = a >> key_0:
             rec_g value_0, key_0 >> itm_0:
               cn:
-                str 'b' >> key_1
+                str 'b' >> key_1:
                   rec_g itm_0, key_1 >> itm_1:
                     = b >> val_0:
                       == itm_1, val_0 >> cond_0:
                         cn:
-                          str 'c' >> key_2
+                          str 'c' >> key_2:
                             rec_g itm_0, key_2 >> itm_2:
                               = c >> val_1:
                                 == itm_2, val_1 >> cond_1:
@@ -744,13 +744,13 @@ rec >> exports_0:
         cc ret_0
       >> else_0:
         cn:
-          str 'foo' >> key_0
+          str 'foo' >> key_0:
             rec_g value_0, key_0 >> itm_0:
               cn:
-                str 'bar' >> key_1
+                str 'bar' >> key_1:
                   rec_g itm_0, key_1 >> itm_1:
                     cn:
-                      str 'spam' >> key_2
+                      str 'spam' >> key_2:
                         rec_g itm_1, key_2 >> itm_2:
                           = ham >> val_0:
                             == itm_2, val_0 >> cond_0:
@@ -783,19 +783,19 @@ rec >> exports_0:
         cc ret_0
       >> else_0:
         cn:
-          str 'foo' >> key_0
+          str 'foo' >> key_0:
             rec_g value_0, key_0 >> itm_0:
               cn:
-                str 'bar' >> key_1
+                str 'bar' >> key_1:
                   rec_g itm_0, key_1 >> itm_1:
                     cn:
-                      str 'spam' >> key_2
+                      str 'spam' >> key_2:
                         rec_g itm_1, key_2 >> itm_2:
                           cn:
-                            str 'ham' >> key_3
+                            str 'ham' >> key_3:
                               rec_g itm_2, key_3 >> itm_3:
                                 cn:
-                                  str 'ni' >> key_4
+                                  str 'ni' >> key_4:
                                     rec_g itm_3, key_4 >> itm_4:
                                       = nu >> val_0:
                                         == itm_4, val_0 >> cond_0:
@@ -838,7 +838,7 @@ rec >> exports_0:
                 cc ret_0
               >> else_0:
                 cn:
-                  str 'ni' >> key_0
+                  str 'ni' >> key_0:
                     rec_g value_0, key_0 >> itm_0:
                       is_l itm_0 >> is_lst_0:
                         cn:
@@ -864,18 +864,18 @@ rec >> exports_0:
                     cif is_rec_0, match_lst_0, else_0
             >> match_rec_0:
               cn:
-                str 'ni' >> key_1
+                str 'ni' >> key_1:
                   rec_g value_0, key_1 >> itm_3:
                     cn:
-                      str 'len' >> key_2
+                      str 'len' >> key_2:
                         rec_g itm_3, key_2 >> itm_4:
                           int 1 >> val_2:
                             == itm_4, val_2 >> cond_2:
                               cn:
-                                str 'na' >> key_3
+                                str 'na' >> key_3:
                                   rec_g value_0, key_3 >> itm_5:
                                     cn:
-                                      str 'len' >> key_4
+                                      str 'len' >> key_4:
                                         rec_g itm_5, key_4 >> itm_6:
                                           int 1 >> val_3:
                                             == itm_6, val_3 >> cond_3:
@@ -897,26 +897,26 @@ rec >> exports_0:
                   cif is_rec_1, match_rec_2, match_rec_0
           >> match_rec_1:
             cn:
-              str 'foo' >> key_5
+              str 'foo' >> key_5:
                 rec_g value_0, key_5 >> itm_7:
                   int 1 >> val_4:
                     == itm_7, val_4 >> cond_4:
                       cn:
-                        str 'foo' >> key_6
+                        str 'foo' >> key_6:
                           rec_g value_0, key_6 >> itm_8:
                             cn:
-                              str 'bar' >> key_7
+                              str 'bar' >> key_7:
                                 rec_g itm_8, key_7 >> itm_9:
-                                  str 'spam' >> str_0
+                                  str 'spam' >> str_0:
                                     strt str_0 >> val_5:
                                       == itm_9, val_5 >> cond_5:
                                         cn:
-                                          str 'shrub' >> key_8
+                                          str 'shrub' >> key_8:
                                             rec_g value_0, key_8 >> itm_10:
                                               cn:
-                                                str 'na' >> key_9
+                                                str 'na' >> key_9:
                                                   rec_g itm_10, key_9 >> itm_11:
-                                                    str 'nu' >> str_1
+                                                    str 'nu' >> str_1:
                                                       strt str_1 >> val_6:
                                                         == itm_11, val_6 >> cond_6:
                                                           cn:
@@ -939,20 +939,20 @@ rec >> exports_0:
                 cif is_rec_4, match_4, match_rec_1
         >> match_rec_4:
           cn:
-            str 'foo' >> key_10
+            str 'foo' >> key_10:
               rec_g value_0, key_10 >> itm_12:
                 int 4 >> val_7:
                   == itm_12, val_7 >> cond_7:
                     cn:
-                      str 'ni' >> key_11
+                      str 'ni' >> key_11:
                         rec_g value_0, key_11 >> itm_13:
                           cn:
-                            str 'na' >> key_12
+                            str 'na' >> key_12:
                               rec_g itm_13, key_12 >> itm_14:
                                 = na >> val_8:
                                   == itm_14, val_8 >> cond_8:
                                     cn:
-                                      str 'nu' >> key_13
+                                      str 'nu' >> key_13:
                                         rec_g itm_13, key_13 >> itm_15:
                                           = nu >> val_9:
                                             == itm_15, val_9 >> cond_9:
@@ -975,12 +975,12 @@ rec >> exports_0:
               cif is_rec_7, match_7, match_rec_4
       >> match_rec_7:
         cn:
-          str 'foo' >> key_14
+          str 'foo' >> key_14:
             rec_g value_0, key_14 >> itm_16:
               = foo >> val_10:
                 == itm_16, val_10 >> cond_10:
                   cn:
-                    str 'bar' >> key_15
+                    str 'bar' >> key_15:
                       rec_g value_0, key_15 >> itm_17:
                         = bar >> val_11:
                           == itm_17, val_11 >> cond_11:
@@ -1012,19 +1012,19 @@ rec >> exports_0:
           = foo >> key_0:
             rec_g value_0, key_0 >> itm_0:
               cn:
-                str 'x' >> key_1
+                str 'x' >> key_1:
                   rec_g itm_0, key_1 >> itm_1:
                     = x >> val_0:
                       == itm_1, val_0 >> cond_0:
                         cn:
                           rec_d value_0, key_0 >> spread_0:
                             cn:
-                              str 'bar' >> key_2
+                              str 'bar' >> key_2:
                                 rec_g spread_0, key_2 >> itm_2:
                                   = bar >> val_1:
                                     == itm_2, val_1 >> cond_1:
                                       cn:
-                                        str 'spam' >> key_3
+                                        str 'spam' >> key_3:
                                           rec_g spread_0, key_3 >> itm_3:
                                             = spam >> val_2:
                                               == itm_3, val_2 >> cond_2:
@@ -1068,7 +1068,7 @@ rec >> exports_0:
                       cc ret_0
                     >> else_0:
                       cn:
-                        str 'spam' >> key_0
+                        str 'spam' >> key_0:
                           rec_g value_0, key_0 >> itm_0:
                             isv itm_0 >> cond_0:
                               cn:
@@ -1081,13 +1081,13 @@ rec >> exports_0:
                           cif is_rec_0, match_0, else_0
                   >> match_rec_0:
                     cn:
-                      str 'spam' >> key_1
+                      str 'spam' >> key_1:
                         rec_g value_0, key_1 >> itm_1:
                           = spam >> val_0:
                             == itm_1, val_0 >> cond_1:
                               cn:
                                 rec_d value_0, key_1 >> spread_0:
-                                  str 'foo' >> str_0
+                                  str 'foo' >> str_0:
                                     strt str_0 >> left_0:
                                       = spread_0 >> right_0:
                                         in left_0, right_0 >> val_1:
@@ -1104,7 +1104,7 @@ rec >> exports_0:
                         cif is_rec_1, match_1, match_rec_0
                 >> match_rec_1:
                   cn:
-                    str 'spam' >> key_2
+                    str 'spam' >> key_2:
                       rec_g value_0, key_2 >> itm_2:
                         = spam >> val_2:
                           == itm_2, val_2 >> cond_3:
@@ -1128,7 +1128,7 @@ rec >> exports_0:
                       cif is_rec_2, match_3, match_rec_1
               >> match_rec_2:
                 cn:
-                  str 'spam' >> key_3
+                  str 'spam' >> key_3:
                     rec_g value_0, key_3 >> itm_3:
                       = is_foo >> callee_1:
                         lst >> cargs_2:
@@ -1146,10 +1146,10 @@ rec >> exports_0:
                     cif is_rec_3, match_5, match_rec_2
             >> match_rec_3:
               cn:
-                str 'spam' >> key_4
+                str 'spam' >> key_4:
                   rec_g value_0, key_4 >> itm_4:
                     = itm_4 >> left_1:
-                      str 'is_foo' >> key_5
+                      str 'is_foo' >> key_5:
                         rec_g left_1, key_5 >> callee_2:
                           lst >> cargs_4:
                             af callee_2, cargs_4 >> val_5:
@@ -1164,7 +1164,7 @@ rec >> exports_0:
                   cif is_rec_4, match_6, match_rec_3
           >> match_rec_4:
             cn:
-              str 'spam' >> key_6
+              str 'spam' >> key_6:
                 rec_g value_0, key_6 >> itm_5:
                   = itm_5 >> callee_3:
                     lst >> cargs_5:
@@ -1180,7 +1180,7 @@ rec >> exports_0:
                 cif is_rec_5, match_7, match_rec_4
         >> match_rec_5:
           cn:
-            str 'spam' >> key_7
+            str 'spam' >> key_7:
               rec_g value_0, key_7 >> itm_6:
                 = itm_6 >> left_2:
                   int 123 >> right_1:
@@ -1196,7 +1196,7 @@ rec >> exports_0:
               cif is_rec_6, match_8, match_rec_5
       >> match_rec_6:
         cn:
-          str 'spam' >> key_8
+          str 'spam' >> key_8:
             rec_g value_0, key_8 >> itm_7:
               = itm_7 >> right_2:
                 not right_2 >> val_8:

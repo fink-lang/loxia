@@ -17,7 +17,7 @@ rec >> exports_0:
                         + left_0, right_1 >> result_0:
                           cc ret_0, result_0
   >> fun_0:
-    str 'fun' >> key_0
+    str 'fun' >> key_0:
       rec_s exports_0, key_0, fun_0 >> exports_1:
         fn args_1, ret_1:
           lst_h args_1 >> foo_0:
@@ -34,7 +34,7 @@ rec >> exports_0:
               >> result_1:
                 cc ret_1, result_1
         >> f2_0:
-          str 'f2' >> key_1
+          str 'f2' >> key_1:
             rec_s exports_1, key_1, f2_0 >> exports_2:
               lst >> drctvs_0:
                 mod exports_2, drctvs_0 >> mod_0:"
@@ -62,7 +62,7 @@ rec >> exports_0:
                                   af callee_1, cargs_2 >> result_1:
                                     cc ret_0, result_1
   >> fun_0:
-    str 'fun' >> key_0
+    str 'fun' >> key_0:
       rec_s exports_0, key_0, fun_0 >> exports_1:
         lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
@@ -95,7 +95,7 @@ rec >> exports_0:
                                             lst_a lst_0, item_0 >> result_0:
                                               cc ret_0, result_0
   >> fun_0:
-    str 'fun' >> key_0
+    str 'fun' >> key_0:
       rec_s exports_0, key_0, fun_0 >> exports_1:
         lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
@@ -107,9 +107,9 @@ rec >> exports_0:
   fn args_0, ret_0:
     lst_h args_0 >> drec_0:
       lst_t args_0 >> tail_0:
-        str 'a' >> key_0
+        str 'a' >> key_0:
           rec_g drec_0, key_0 >> a_0:
-            str 'b' >> key_1
+            str 'b' >> key_1:
               rec_g drec_0, key_1 >> b_0:
                 lst_h tail_0 >> items_0:
                   lst_t tail_0 >> tail_2:
@@ -126,7 +126,7 @@ rec >> exports_0:
                                         lst_a lst_0, item_0 >> result_0:
                                           cc ret_0, result_0
   >> fun_0:
-    str 'fun' >> key_2
+    str 'fun' >> key_2:
       rec_s exports_0, key_2, fun_0 >> exports_1:
         lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
@@ -147,7 +147,7 @@ rec >> exports_0:
                     = b_0 >> result_0:
                       cc ret_0, result_0
   >> fun_0:
-    str 'fun' >> key_0
+    str 'fun' >> key_0:
       rec_s exports_0, key_0, fun_0 >> exports_1:
         lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
@@ -164,7 +164,7 @@ rec >> exports_0:
             = b_0 >> result_0:
               cc ret_0, result_0
   >> fun_0:
-    str 'fun' >> key_0
+    str 'fun' >> key_0:
       rec_s exports_0, key_0, fun_0 >> exports_1:
         lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
@@ -238,7 +238,7 @@ rec >> exports_0:
         >> result_0:
           cc ret_0, result_0
   >> fun5_0:
-    str 'fun5' >> key_0
+    str 'fun5' >> key_0:
       rec_s exports_0, key_0, fun5_0 >> exports_1:
         lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
@@ -284,7 +284,7 @@ rec >> exports_0:
                   ac match_1 >> result_1:
                     cc ret_0, result_1
   >> fun_0:
-    str 'fun' >> key_0
+    str 'fun' >> key_0:
       rec_s exports_0, key_0, fun_0 >> exports_1:
         lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
@@ -309,7 +309,7 @@ rec >> exports_0:
                             lst_a lst_0, item_0 >> result_0:
                               cc ret_0, result_0
   >> fun_0:
-    str 'fun' >> key_0
+    str 'fun' >> key_0:
       rec_s exports_0, key_0, fun_0 >> exports_1:
         lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
@@ -334,7 +334,7 @@ rec >> exports_0:
                             lst_a lst_0, item_0 >> result_0:
                               cc ret_0, result_0
   >> fun_0:
-    str 'fun' >> key_0
+    str 'fun' >> key_0:
       rec_s exports_0, key_0, fun_0 >> exports_1:
         lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"
@@ -371,7 +371,7 @@ rec >> exports_0:
                 ac match_0 >> result_0:
                   cc ret_0, result_0
   >> fun_0:
-    str 'fun' >> key_0
+    str 'fun' >> key_0:
       rec_s exports_0, key_0, fun_0 >> exports_1:
         lst >> drctvs_0:
           mod exports_1, drctvs_0 >> mod_0:"

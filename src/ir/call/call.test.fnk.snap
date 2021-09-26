@@ -98,7 +98,7 @@ rec >> exports_0:
             = foo >> callee_3:
               lst >> cargs_7:
                 = sprtl_1 >> left_0:
-                  str 'bar' >> key_0
+                  str 'bar' >> key_0:
                     rec_g left_0, key_0 >> sprd_1:
                       lst_c cargs_7, sprd_1 >> cargs_8:
                         af callee_3, cargs_8 >> pfn_3:
@@ -111,7 +111,7 @@ rec >> exports_0:
                   = prtl_3 >> arg_3:
                     lst_a cargs_9, arg_3 >> cargs_10:
                       = prtl_3 >> left_1:
-                        str 'bar' >> key_1
+                        str 'bar' >> key_1:
                           rec_g left_1, key_1 >> sprd_2:
                             lst_c cargs_10, sprd_2 >> cargs_11:
                               af callee_4, cargs_11 >> pfn_4:
@@ -140,7 +140,7 @@ rec >> exports_0:
                 fn args_7, ret_7:
                   lst_h args_7 >> prtlc_7:
                     = prtlc_7 >> left_2:
-                      str 'bar' >> key_2
+                      str 'bar' >> key_2:
                         rec_g left_2, key_2 >> callee_7:
                           lst >> cargs_17:
                             = spam >> arg_7:
@@ -196,7 +196,7 @@ rec >> exports_0:
                                     fn args_3, ret_3:
                                       lst_h args_3 >> prtl_4:
                                         = prtl_4 >> left_2:
-                                          str 'foo' >> key_0
+                                          str 'foo' >> key_0:
                                             rec_g left_2, key_0 >> arg_4:
                                               cc ret_3, arg_4
                                     >> pfn_3:

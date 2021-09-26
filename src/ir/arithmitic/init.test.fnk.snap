@@ -20,7 +20,7 @@ rec >> exports_0:
       + left_1, right_0 >> left_0:
         = ni >> right_1:
           * left_0, right_1 >> r_0:
-            str 'r' >> key_0
+            str 'r' >> key_0:
               rec_s exports_0, key_0, r_0 >> exports_1:
                 lst >> drctvs_0:
                   mod exports_1, drctvs_0 >> mod_0:"
@@ -32,7 +32,7 @@ rec >> exports_0:
   = foo >> left_0:
     = bar >> right_0:
       + left_0, right_0 >> r_0:
-        str 'r' >> key_0
+        str 'r' >> key_0:
           rec_s exports_0, key_0, r_0 >> exports_1:
             lst >> drctvs_0:
               mod exports_1, drctvs_0 >> mod_0:"

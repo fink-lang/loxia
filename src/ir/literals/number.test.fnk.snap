@@ -4,16 +4,16 @@ exports[`numbers transforms floats 1`] = `
 "
 rec >> exports_0:
   float 1.234578 >> x_0:
-    str 'x' >> key_0
+    str 'x' >> key_0:
       rec_s exports_0, key_0, x_0 >> exports_1:
         float 1.23e45 >> y_0:
-          str 'y' >> key_1
+          str 'y' >> key_1:
             rec_s exports_1, key_1, y_0 >> exports_2:
               float 1.23e-45 >> z_0:
-                str 'z' >> key_2
+                str 'z' >> key_2:
                   rec_s exports_2, key_2, z_0 >> exports_3:
                     float 1.23e+45 >> a_0:
-                      str 'a' >> key_3
+                      str 'a' >> key_3:
                         rec_s exports_3, key_3, a_0 >> exports_4:
                           lst >> drctvs_0:
                             mod exports_4, drctvs_0 >> mod_0:"
@@ -23,13 +23,13 @@ exports[`numbers transforms hex, octet, binary 1`] = `
 "
 rec >> exports_0:
   int 0x123456789ABCDEF0 >> h_0:
-    str 'h' >> key_0
+    str 'h' >> key_0:
       rec_s exports_0, key_0, h_0 >> exports_1:
         int 0o12345670 >> o_0:
-          str 'o' >> key_1
+          str 'o' >> key_1:
             rec_s exports_1, key_1, o_0 >> exports_2:
               int 0b01010 >> b_0:
-                str 'b' >> key_2
+                str 'b' >> key_2:
                   rec_s exports_2, key_2, b_0 >> exports_3:
                     lst >> drctvs_0:
                       mod exports_3, drctvs_0 >> mod_0:"
@@ -39,13 +39,13 @@ exports[`numbers transforms integers 1`] = `
 "
 rec >> exports_0:
   int 1234578 >> x_0:
-    str 'x' >> key_0
+    str 'x' >> key_0:
       rec_s exports_0, key_0, x_0 >> exports_1:
         int 0123 >> y_0:
-          str 'y' >> key_1
+          str 'y' >> key_1:
             rec_s exports_1, key_1, y_0 >> exports_2:
               int 123_456_789 >> z_0:
-                str 'z' >> key_2
+                str 'z' >> key_2:
                   rec_s exports_2, key_2, z_0 >> exports_3:
                     lst >> drctvs_0:
                       mod exports_3, drctvs_0 >> mod_0:"

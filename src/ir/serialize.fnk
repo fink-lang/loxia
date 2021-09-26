@@ -27,7 +27,7 @@ serialize = fn [curr=false, ...rest], out='', indent='':
       [{f, args: [val]}, ids] = curr
       serialize
         rest
-        '${out}\n${indent}${f} \'${raw val}\' >>${a2s ids}'
+        '${out}\n${indent}${f} \'${raw val}\' >>${a2s ids}:'
         '  ${indent}'
 
     [{f: ? in ['cn', 'fn', 'fnr']}]:
