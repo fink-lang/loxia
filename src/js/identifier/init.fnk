@@ -43,8 +43,8 @@ replace_refs = fn [id=false, ...ids], renames, out=[]:
     false:
       out
     else:
-      {(id.i): new_id={...id, i: escape_ident id.i}} = renames
-      replace_refs ids, renames, [...out, new_id]
+      {(id.i): new_id=escape_ident id.i} = renames
+      replace_refs ids, renames, [...out, {...id, i: new_id}]
 
 
 
@@ -53,9 +53,9 @@ rename = fn [id=false, ...ids], renames, out=[]:
     false:
       [out, renames]
     else:
-      new_id = {...id, i: escape_ident id.i}
+      new_id = escape_ident id.i
       nrs = {...renames, (id.i): new_id}
-      rename ids, nrs, [...out, new_id]
+      rename ids, nrs, [...out, {...id, i: new_id}]
 
 
 

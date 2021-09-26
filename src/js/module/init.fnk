@@ -86,7 +86,7 @@ transform_mod_exports = fn expr, ctx:
         else: key.name
 
       ident = with_loc key, identifier escape_ident name
-      variableDeclarator ident, value
+      with_loc key, variableDeclarator ident, value
     [...?]
 
   js = exportNamedDeclaration variableDeclaration 'const', decls

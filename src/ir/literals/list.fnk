@@ -1,51 +1,40 @@
 {reverse} = import '@fink/std-lib/iter.fnk'
-{transform, ir_fn} = import '../transform.fnk'
-{unique_name} = import '../context.fnk'
-
-
-lst_empty = fn {loc}:
-  ir_fn 'lst', [], {loc}
+{transform} = import '../transform.fnk'
+{unique_name, ir_fn_x} = import '../context.fnk'
 
 
 
-lst = fn name, {loc}, ctx:
-  [id, next_ctx] = unique_name name, {loc}, ctx
-  expr = ir_fn 'lst', [], {loc}
-  [[[expr, [id]]], id, next_ctx]
+lst = fn name_or_id, {loc}, ctx:
+  ir_fn_x 'lst', [], name_or_id, {loc}, ctx
 
 
-lst_a = fn lst_id, val_id, {loc}:
-  ir_fn 'lst_a', [lst_id, val_id], {loc}
+lst_a = fn lst_id, val_id, name_or_id, {loc}, ctx:
+  ir_fn_x 'lst_a', [lst_id, val_id], name_or_id, {loc}, ctx
 
 
-lst_a_x = fn lst_id, val_id, name_or_id, {loc}, ctx:
-  [id, next_ctx] = unique_name name_or_id, {loc}, ctx
-  expr = ir_fn 'lst_a', [lst_id, val_id], {loc}
-  [[[expr, [id]]], id, next_ctx]
-
-
-lst_c = fn lst1_id, lst2_id, {loc}:
-  ir_fn 'lst_c', [lst1_id, lst2_id], {loc}
+lst_c = fn lst1_id, lst2_id, name_or_id, {loc}, ctx:
+  ir_fn_x 'lst_c', [lst1_id, lst2_id], name_or_id, {loc}, ctx
 
 
 
 transform_item = fn expr, out_id, ctx:
+  # could be removed using name in lst_* funcs
   [lst_id, item_ctx] = unique_name 'lst', expr, ctx
   match expr:
     {type: 'spread'}:
-      [items, items_id, next_ctx] = transform expr.right, 'items', item_ctx
-      lst = lst_c lst_id, items_id, expr
-      [[...items, [lst, [out_id]]], lst_id , next_ctx]
+      [items, items_id, lst_ctx] = transform expr.right, 'items', item_ctx
+      [lst, , next_ctx] = lst_c lst_id, items_id, out_id, expr, lst_ctx
+      [[...items, ...lst], lst_id , next_ctx]
 
     # TODO use own transform for empty
     {type: 'empty'}:
-      lst = lst_a lst_id, {i: '_', loc: expr.loc}, expr
-      [[[lst, [out_id]]], lst_id, item_ctx]
+      [lst, , next_ctx] = lst_a lst_id, {i: '_', loc: expr.loc}, out_id, expr, item_ctx
+      [lst, lst_id, next_ctx]
 
     else:
-      [item, item_id, next_ctx] = transform expr, 'item', item_ctx
-      lst = lst_a lst_id, item_id, expr
-      [[...item, [lst, [out_id]]], lst_id, next_ctx]
+      [item, item_id, lst_ctx] = transform expr, 'item', item_ctx
+      [lst, , next_ctx] = lst_a lst_id, item_id, out_id, expr, lst_ctx
+      [[...item, ...lst], lst_id, next_ctx]
 
 
 
@@ -62,6 +51,6 @@ transform_items = fn [expr=false, ...rest], ctx, result_id, out=[]:
 transform_list = fn node, result, ctx:
   exprs = reverse node.exprs
   [out, lst_id, next_ctx] = transform_items exprs, ctx, result
-  lst = lst_empty node
-  [[[lst, [lst_id]], ...out], next_ctx]
+  [expr, , end_ctx] = lst lst_id, node, next_ctx
+  [[...expr, ...out], end_ctx]
 

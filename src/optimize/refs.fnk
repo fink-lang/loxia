@@ -18,7 +18,8 @@ replace_args_aliases = fn [arg=false, ...args], ctx, out=[]:
       out
     else:
       renamed_arg = replace_arg_alias arg, ctx
-      replace_args_aliases args, ctx, [...out, renamed_arg]
+      # TODO: carry loc over?
+      replace_args_aliases args, ctx, [...out, {...renamed_arg, loc: arg.loc}]
 
 
 
@@ -30,6 +31,8 @@ optimize_args = fn expr, ctx:
 
 
 add_alias = fn id, target, ctx:
+  # TODO: loc?
+  # update_value id, {alias: {...id, i: target.i}}, ctx
   update_value id, {alias: target}, ctx
 
 
@@ -246,6 +249,11 @@ optimize_refs = fn [expr=false, ...exprs], ctx, out=[]:
       orf = optimize_refs
       [opt, next_ctx] = optimize_body expr, ctx, orf
       optimize_refs exprs, next_ctx , [...out, ...opt]
+
+    [{f: '+'}]:
+      [foo, res] = expr
+      o_expr = optimize_args foo, ctx
+      optimize_refs exprs, ctx, [...out, [o_expr, res]]
 
     else:
       [foo, res] = expr

@@ -1,30 +1,22 @@
-{unique_name} = import '../context.fnk'
 {transform} = import '../transform.fnk'
 {transform_with_partial, af} = import './call.fnk'
-{lst_empty, lst_a} = import '../literals/list.fnk'
+{lst, lst_a} = import '../literals/list.fnk'
 {let} = import '../identifier/init.fnk'
 
 
 
 apply_step = fn callee_id, arg_id, {loc}, ctx:
-  [tmp_id, args_ctx] = unique_name 'args', {loc}, ctx
-  [args_id, res_ctx] = unique_name 'args', {loc}, args_ctx
-  [res_id, next_ctx] = unique_name 'ppr', {loc}, res_ctx
+  [emp, empty_id, args_ctx] = lst 'args', {loc}, ctx
 
-  empty_args = lst_empty {loc}
-
-  args = match arg_id:
+  [args, args_id, ppr_ctx] = match arg_id:
     false:
-      list:
-        [empty_args, [args_id]]
+      [emp, empty_id, args_ctx]
     else:
-      with_arg = lst_a tmp_id, arg_id, {loc}
-      list:
-        [empty_args, [tmp_id]]
-        [with_arg, [args_id]]
+      [with_arg, args_id, next_ctx] = lst_a empty_id, arg_id, 'args', {loc}, args_ctx
+      [[...emp, ...with_arg], args_id, next_ctx]
 
-  call = af callee_id, args_id, {loc}
-  [[...args, [call, [res_id]]], res_id, next_ctx]
+  [call, res_id, next_ctx] = af callee_id, args_id, 'ppr', {loc}, ppr_ctx
+  [[...args, ...call], res_id, next_ctx]
 
 
 
@@ -59,6 +51,8 @@ transform_pipe = fn expr, result, ctx:
       [[], false, ctx]
 
   [calls, res_id, next_ctx] = pipe_all expr.exprs, val_id, pipe_ctx
-  [[...val, ...calls, let res_id, result, expr], next_ctx]
+  # TODO can pipeall not handle it?
+  [res, , end_ctx] = let res_id, result, expr, next_ctx
+  [[...val, ...calls, ...res], end_ctx]
 
 

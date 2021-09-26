@@ -1,92 +1,62 @@
 {reverse} = import '@fink/std-lib/iter.fnk'
 
-{add, any, unique_name} = import '../context.fnk'
-{transform, ir_fn} = import '../transform.fnk'
+{add, any, unique_name, ir_fn_x} = import '../context.fnk'
+{transform} = import '../transform.fnk'
 {members_as_rec} = import '../literals/record.fnk'
 {str} = import '../literals/string.fnk'
 
 
 
-bind = fn {value: src_id, loc}, ctx:
+bind = fn {value, loc}, ctx:
   {scopes: [scope, ...scopes]=[]} = ctx
-  [id, next_ctx] = unique_name src_id, {loc}, ctx
+  [id, next_ctx] = unique_name value, {loc}, ctx
 
   end_ctx = rec:
     ...next_ctx
     scopes: list:
-      {...scope, (src_id): id}
+      {...scope, (value): id}
       ...scopes
 
   [id, end_ctx]
 
 
 
-lst_h = fn lst_id, {loc}:
-  ir_fn 'lst_h', [lst_id], {loc}
+lst_h = fn lst_id, name_or_id, {loc}, ctx:
+  ir_fn_x 'lst_h', [lst_id], name_or_id, {loc}, ctx
 
 
-
-lst_h_x = fn lst_id, name_or_id, {loc}, ctx:
-  [val_id, next_ctx] = match name_or_id:
-    {i: ?}: [name_or_id, ctx]
-    else: unique_name name_or_id, {loc}, ctx
-  val = ir_fn 'lst_h', [lst_id], {loc}
-  [[[val, [val_id]]], val_id, next_ctx]
-
-
-
-lst_r = fn lst_id, {loc}:
-  ir_fn 'lst_r', [lst_id], {loc}
-
-
-lst_r_x = fn lst_id, name, {loc}, ctx:
-  [rev_id, next_ctx] = unique_name name, {loc}, ctx
-  rev_lst = ir_fn 'lst_r', [lst_id], {loc}
-  [[[rev_lst, [rev_id]]], rev_id, next_ctx]
+lst_r = fn lst_id, name_or_id, {loc}, ctx:
+  ir_fn_x 'lst_r', [lst_id], name_or_id, {loc}, ctx
 
 
 lst_t = fn lst_id, {loc}, ctx:
-  [tail_id, next_ctx] = unique_name 'tail', {loc}, ctx
-  tail = ir_fn 'lst_t', [lst_id], {loc}
-  [[[tail, [tail_id]]], tail_id, next_ctx]
+  ir_fn_x 'lst_t', [lst_id], 'tail', {loc}, ctx
 
 
-if_v = fn val_id, true_val_id, false_val_id, {loc}:
-  ir_fn 'ifv', [val_id, true_val_id, false_val_id], {loc}
+if_v = fn val_id, true_val_id, false_val_id, name_or_id, {loc}, ctx:
+  ir_fn_x 'ifv', [val_id, true_val_id, false_val_id], name_or_id, {loc}, ctx
 
 
-rec_d = fn rec_id, keys, {loc}:
-  ir_fn 'rec_d', [rec_id, ...keys], {loc}
+rec_g = fn rec_id, key_id, name_or_id, {loc}, ctx:
+  ir_fn_x 'rec_g', [rec_id, key_id], name_or_id, {loc}, ctx
 
 
-rec_g = fn rec_id, key_id, {loc}:
-  ir_fn 'rec_g', [rec_id, key_id], {loc}
+rec_d = fn rec_id, keys, name_or_id, {loc}, ctx:
+  ir_fn_x 'rec_d', [rec_id, ...keys], name_or_id, {loc}, ctx
+
 
 
 rec_get = fn rec_id, key_id, val_id, fallback, {loc}, ctx:
   [val, next_ctx] = match fallback:
     false:
-      rg = rec_g rec_id, key_id, {loc}
-      [[[rg, [val_id]]], ctx]
+      [rg, , next_ctx] = rec_g rec_id, key_id, val_id, {loc}, ctx
+      [rg, next_ctx]
     else:
-      [tmp_id, next_ctx] = unique_name 'hdm', {loc}, ctx
-      rg = rec_g rec_id, key_id, {loc}
-      fb = if_v tmp_id, tmp_id, fallback, {loc}
-      [[[rg, [tmp_id]], [fb, [val_id]]], next_ctx]
+      [rg, tmp_id, next_ctx] = rec_g rec_id, key_id, 'hdm', {loc}, ctx
+      [fb, , end_ctx] = if_v tmp_id, tmp_id, fallback, val_id, {loc}, next_ctx
+      [[...rg, ...fb], end_ctx]
 
   [val, next_ctx]
-
-
-rec_g_x = fn rec_id, key_id, name, {loc}, ctx:
-  [val_id, next_ctx] = unique_name name, {loc}, ctx
-  expr = rec_g rec_id, key_id, {loc}
-  [[[expr, [val_id]]], val_id, next_ctx]
-
-
-rec_d_x = fn rec_id, keys, name, {loc}, ctx:
-  [val_id, next_ctx] = unique_name name, {loc}, ctx
-  expr = rec_d rec_id, keys, {loc}
-  [[[expr, [val_id]]], val_id, next_ctx]
 
 
 
@@ -128,9 +98,9 @@ transform_dr = fn [expr=false, ...exprs], rec_id, ctx, transform_dl, keys=[], pr
       [prev, rec_id, ctx]
 
     {type: 'spread'}:
-      [val_id, next_ctx] = bind expr.right, ctx
-      sprd = rec_d rec_id, keys, expr
-      out = [...prev, [sprd, [val_id]]]
+      [val_id, rec_ctx] = bind expr.right, ctx
+      [sprd, , next_ctx] = rec_d rec_id, keys, val_id, expr, rec_ctx
+      out = [...prev, ...sprd]
       transform_dr exprs, rec_id, next_ctx, transform_dl, keys, out
 
     {right: false}:
@@ -169,17 +139,16 @@ transform_dr = fn [expr=false, ...exprs], rec_id, ctx, transform_dl, keys=[], pr
 
 
 head_tail = fn lst_id, val_id, {loc}, ctx, fallback=false:
-  hd = lst_h lst_id, {loc}
-  [tail, tail_id, val_ctx] = lst_t lst_id, {loc}, ctx
+  [tail, tail_id, hd_ctx] = lst_t lst_id, {loc}, ctx
 
   [val, next_ctx] = match fallback:
     false:
-      [[[hd, [val_id]]], val_ctx]
+      [hd, , next_ctx] = lst_h lst_id, val_id, {loc}, hd_ctx
+      [hd, next_ctx]
     else:
-      [hd_id, next_ctx] = unique_name 'hdm', {loc}, val_ctx
-      fb = if_v hd_id, hd_id, fallback, {loc}
-      out = [[hd, [hd_id]], [fb, [val_id]]]
-      [out, next_ctx]
+      [hd, hd_id, next_ctx] = lst_h lst_id, 'hdm', {loc}, hd_ctx
+      [fb, , end_ctx] = if_v hd_id, hd_id, fallback, val_id, {loc}, next_ctx
+      [[...hd, ...fb], end_ctx]
 
   [[...val, ...tail], tail_id, next_ctx]
 
@@ -206,19 +175,18 @@ transform_dl = fn [expr=false, ...exprs], lst_id, ctx, prev=[], fallback:
       transform_dl exprs, tail_id, end_ctx, [...prev, ...out]
 
     {type: 'spread'}:
-      [rev_id, next_ctx] = unique_name 'rtail', expr, ctx
-      rev_tail = lst_r lst_id, expr
-      rev = [...prev, [rev_tail, [rev_id]]]
+      [rtail, rev_id, next_ctx] = lst_r lst_id, 'rtail', expr, ctx
       rev_exprs = reverse exprs
-      [out, tail_id, spread_ctx] = transform_dl rev_exprs, rev_id, next_ctx, rev
+      [out, tail_id, spread_ctx] = transform_dl rev_exprs, rev_id, next_ctx, [...prev, ...rtail]
 
       match expr.right:
         false:
           [out, tail_id, spread_ctx]
         else:
-          [id, end_ctx] = bind expr.right, spread_ctx
-          rev = lst_r tail_id, expr
-          [[...out, [rev, [id]]], id, end_ctx]
+          [id, next_ctx] = bind expr.right, spread_ctx
+          [rev, , end_ctx] = lst_r tail_id, id, expr, next_ctx
+          [[...out, ...rev], id, end_ctx]
+
 
     {type: 'list'}:
       [val_id, items_ctx] = unique_name 'items', expr, ctx

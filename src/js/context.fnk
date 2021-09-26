@@ -19,7 +19,9 @@ get_js = fn id, ctx:
   val = get_value id, ctx
   match val:
     {refs: ? > 1}: ident id
-    {js: ?}: val.js
+    # TODO loc?
+    # {js: ?}: with_loc id, val.js
+    {js: ?}: with_loc id, val.js
     else: ident id
 
 

@@ -1,23 +1,23 @@
 
 {rx, matches} = import '@fink/std-lib/regex.fnk'
-{ir_fn} = import '../transform.fnk'
+{ir_fn_x} = import '../context.fnk'
 
 
-float = fn val, loc:
-  ir_fn 'float', [val], {loc}
+float = fn val, res_id, {loc}, ctx:
+  ir_fn_x 'float', [val], res_id, {loc}, ctx
 
 
-int = fn val, loc:
-  ir_fn 'int', [val], {loc}
+int = fn val, res_id, {loc}, ctx:
+  ir_fn_x 'int', [val], res_id, {loc}, ctx
 
 
 
-transform_number = fn {value, loc}, result, ctx:
-  expr = match value:
+transform_number = fn {value, loc}, res_id, ctx:
+  [exprs, , next_ctx] = match value:
     matches ?, rx'\.':
-      float value, loc
+      float value, res_id, {loc}, ctx
     else:
-      int value, loc
+      int value, res_id, {loc}, ctx
 
-  [[[expr, [result]]], ctx]
+  [exprs, next_ctx]
 

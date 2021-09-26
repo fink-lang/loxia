@@ -1,7 +1,7 @@
 types = import '@babel/types'
 {
   binaryExpression, unaryExpression, expressionStatement
-  identifier, variableDeclaration, variableDeclarator
+  variableDeclaration, variableDeclarator
 } = types
 
 # {throw_err} = import '@fink/js-interop/errors.fnk'
@@ -18,6 +18,7 @@ ops_to_js = rec:
   '==': '==='
   '!=': '!=='
   'not': '!'
+
 
 
 transform_binary = fn expr, ctx:
@@ -54,7 +55,6 @@ transform = fn expr, ctx:
   #   else:
   #     [, , , fnk_expr] = expr
   #     throw_err transform_error 'Unknown expression.', fnk_expr, ctx
-
   transform_expr expr, ctx
 
 
@@ -78,7 +78,7 @@ transform_exprs = fn [expr=false, ...exprs], ctx, body=[]:
       transform_exprs exprs, next_ctx, [...body, js]
 
     [ , [?]]:
-      [{f: op, loc: todo}, [res_id]] = expr
+      [{f: op}, [res_id]] = expr
       next_ctx = transform expr, ctx
 
       match [op, get_refs res_id, next_ctx]:
@@ -86,19 +86,21 @@ transform_exprs = fn [expr=false, ...exprs], ctx, body=[]:
           val = get_js_literal res_id, next_ctx
           js = match val:
             {type: 'VariableDeclaration'}:
-              # TODO: use loc from res_id or from val
-              with_loc {loc: todo}, val
+              # TODO: use loc from res_id, val or expr?
+              with_loc {res_id}, val
             else:
-              # TODO: use loc from res_id?
-              id = with_loc {loc: todo}, ident res_id
-              variableDeclaration 'const', [variableDeclarator id, val]
+              # TODO: use loc from res_id, val or expr?
+              # id = with_loc {loc: todo}, ident res_id
+              id = ident res_id
+              with_loc res_id, variableDeclaration 'const', list:
+                with_loc res_id, variableDeclarator id, val
 
           transform_exprs exprs, next_ctx, [...body, js]
 
         # unused calls assumed to have side effects
         ['af', ? == 0]:
           val = get_js_literal res_id, next_ctx
-          js = expressionStatement val
+          js = with_loc res_id, expressionStatement val
           transform_exprs exprs, next_ctx, [...body, js]
 
         else:

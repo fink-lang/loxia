@@ -121,7 +121,7 @@ describe 'unpacking record', fn:
   it 'compiles spread', fn:
     expect
       fink2js '
-        {a, b, ...c} = foo
+        {a, "foo-\${bar}": b, ...c} = foo
         out = [a, b, c]
       '
       to_match_snapshot

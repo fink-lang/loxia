@@ -23,10 +23,6 @@ clean_args = fn args:
     [...?]
 
 
-res_ident = fn expr:
-  [, [id]] = expr
-  ident id
-
 
 split_args_body = fn [expr=false, ...exprs], args_id, ctx, args=[], body=[]:
   match expr:

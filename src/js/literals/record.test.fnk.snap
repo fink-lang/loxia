@@ -187,13 +187,13 @@ export const out = out_0;"
 
 exports[`unpacking record compiles spread 1`] = `
 "const key_0 = \`a\`;
-const key_1 = \`b\`;
+const key_1 = \`foo-\${bar}\`;
 const {
   a: _key_0,
-  b: _key_1,
+  [\`foo-\${bar}\`]: _key_1,
   ...c_0
 } = foo;
-const out_0 = [foo.a, foo.b, c_0];
+const out_0 = [foo.a, foo[\`foo-\${bar}\`], c_0];
 export const out = out_0;"
 `;
 

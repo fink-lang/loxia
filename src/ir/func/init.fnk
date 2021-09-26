@@ -1,19 +1,18 @@
 {add, any} = import '../context.fnk'
-{transform, ir_fn} = import '../transform.fnk'
-{unique_name} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+{unique_name, ir_fn_x} = import '../context.fnk'
 {transform_dl} = import '../assignment/init.fnk'
 
 
 
-cc = fn ret_id, res_id, {loc}:
-  ret = ir_fn 'cc', [ret_id, res_id], {loc}
-  [ret, []]
+cc = fn ret_id, res_id, name_or_id, {loc}, ctx:
+  ir_fn_x 'cc', [ret_id, res_id], name_or_id, {loc}, ctx
 
 
 
-fnc = fn args_id, ret_id, res_id, body, {loc}:
-  ret = cc ret_id, res_id, {loc}
-  ir_fn 'fn', [[args_id, ret_id], [...body, ret]], {loc}
+fnc = fn args_id, ret_id, res_id, body, name_or_id, {loc}, ctx:
+  [ret, , next_ctx] = cc ret_id, res_id, , {loc}, ctx
+  ir_fn_x 'fn', [[args_id, ret_id], [...body, ...ret]], name_or_id, {loc}, next_ctx
 
 
 
@@ -39,10 +38,11 @@ transform_func = fn expr, res_id, {scopes=[], ...ctx}:
   args_ctx = {...ctx, scopes: [{}, ...scopes]}
   [args, args_id, ret_ctx] = transform_args expr, args_ctx
   [ret_id, body_ctx] = unique_name 'ret', expr, ret_ctx
-  [body, fn_res_id, end_ctx] = transform_exprs expr.exprs, body_ctx, []
+  [exprs, fn_res_id, fn_ctx] = transform_exprs expr.exprs, body_ctx, []
 
-  fun = fnc args_id, ret_id, fn_res_id, [...args, ...body], expr
-  [[[fun, [res_id]]], {...end_ctx, scopes}]
+  body = [...args, ...exprs]
+  [fun, , end_ctx] = fnc args_id, ret_id, fn_res_id, body, res_id, expr, fn_ctx
+  [fun, {...end_ctx, scopes}]
 
 
 

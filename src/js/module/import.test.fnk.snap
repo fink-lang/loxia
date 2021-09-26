@@ -2,7 +2,8 @@
 
 exports[`import imports default export 1`] = `
 "import foo_0 from \\"./foo.js\\";
-export const ;"
+const out_0 = [foo_0];
+export const out = out_0;"
 `;
 
 exports[`import imports dynamically with static URL 1`] = `
@@ -20,7 +21,7 @@ import { π as π_0 } from \\"./ni.js\\";
 import { ˆdelete as delete_0 } from \\"./ni.js\\";
 import { fooᜭbar as fooᜭbar_0 } from \\"./ham.js\\";
 import shrub_0 from \\"./shrub.js\\";
-const out_0 = [bar_0, spam_0, π_0, delete_0, fooᜭbar_0];
+const out_0 = [bar_0, spam_0, π_0, delete_0, fooᜭbar_0, shrub_0];
 export const out = out_0;"
 `;
 
@@ -58,5 +59,7 @@ const na_0 = () => {
 
 import \\"./foo.fnk\\";
 import ni_0 from \\"../ni.fnk\\";
-export const na = na_0;"
+const out_0 = [is_str_0, bar_0, ni_0];
+export const na = na_0,
+      out = out_0;"
 `;

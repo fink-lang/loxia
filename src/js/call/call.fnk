@@ -62,13 +62,14 @@ transform_apply_cont = fn expr, ctx:
 
   js = list:
     # TODO should that happen inside the cn transform
+    # TODO loc
     variableDeclaration 'let', list:
       variableDeclarator
         ret_ident
     cont
+    # TODO loc
     variableDeclaration 'const', list:
       variableDeclarator
-        # with_loc cont, identifier res_id.i
         ident res_id
         ret_ident
 

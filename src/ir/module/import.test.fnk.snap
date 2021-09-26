@@ -5,7 +5,7 @@ exports[`import imports as side effect 1`] = `
 rec >> exports_0:
   str './spam.fnk' >> str_0
     strt str_0 >> uri_0:
-      imp uri_0
+      imp uri_0 >> sidefx_0:
         lst >> drctvs_0:
           mod exports_0, drctvs_0 >> mod_0:"
 `;

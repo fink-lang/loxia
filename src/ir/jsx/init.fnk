@@ -1,16 +1,16 @@
-{add, any, unique_name} = import '../context.fnk'
-{transform, ir_fn} = import '../transform.fnk'
-{lst_empty, lst_a} = import '../literals/list.fnk'
-{rec_empty, rec_s, rec_m} = import '../literals/record.fnk'
+{add, any, ir_fn_x} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+{lst, lst_a} = import '../literals/list.fnk'
+{rec_e, rec_s, rec_m} = import '../literals/record.fnk'
 {str} = import '../literals/string.fnk'
 
 
-jxe = fn name_id, props_id, chldrn_id, {loc}:
-  ir_fn 'jxe', [name_id, props_id, chldrn_id], {loc}
+jxe = fn name_id, props_id, chldrn_id, name_or_id, {loc}, ctx:
+  ir_fn_x 'jxe', [name_id, props_id, chldrn_id], name_or_id, {loc}, ctx
 
 
-jxf = fn children_id, {loc}:
-  ir_fn 'jxf', [children_id], {loc}
+jxf = fn children_id, name_or_id, {loc}, ctx:
+  ir_fn_x 'jxf', [children_id], name_or_id, {loc}, ctx
 
 
 
@@ -28,18 +28,17 @@ transform_prop_val = fn expr, ctx:
 
 
 transform_prop = fn expr, rec_id, ctx:
-  [next_rec_id, key_ctx] = unique_name 'props', expr, ctx
   match expr:
     {type: 'spread'}:
-      [val, val_id, next_ctx] = transform expr.right, 'sprd', key_ctx
-      rc = rec_m rec_id, val_id, expr
-      [[...val, [rc, [next_rec_id]]], next_rec_id , next_ctx]
+      [val, val_id, rec_ctx] = transform expr.right, 'sprd', ctx
+      [rec_exprs, next_rec_id, next_ctx] = rec_m rec_id, val_id, 'props', expr, rec_ctx
+      [[...val, ...rec_exprs], next_rec_id , next_ctx]
 
     else:
-      [key, key_id, val_ctx] = transform_prop_name expr.name, key_ctx
-      [val, val_id, next_ctx] = transform_prop_val expr, val_ctx
-      rc = rec_s rec_id, key_id, val_id, expr
-      [[...key, ...val, [rc, [next_rec_id]]], next_rec_id, next_ctx]
+      [key, key_id, val_ctx] = transform_prop_name expr.name, ctx
+      [val, val_id, rec_ctx] = transform_prop_val expr, val_ctx
+      [rec_exprs, next_rec_id, next_ctx] = rec_s rec_id, key_id, val_id, 'props', expr, rec_ctx
+      [[...key, ...val, ...rec_exprs], next_rec_id, next_ctx]
 
 
 
@@ -54,19 +53,17 @@ transform_all_props = fn [expr=false, ...rest], rec_id, ctx, out=[]:
 
 
 transform_props = fn {props, loc}, ctx:
-  [start_id, props_ctx] = unique_name 'props', {loc}, ctx
+  [rc, start_id, props_ctx] = rec_e 'props', {loc}, ctx
   [out, rec_id, next_ctx] = transform_all_props props, start_id, props_ctx
-  rc = rec_empty {loc}
-  [[[rc, [start_id]], ...out], rec_id, next_ctx]
+  [[...rc, ...out], rec_id, next_ctx]
 
 
 
 
 transform_child = fn expr, lst_id, ctx:
-  [next_lst_id, item_ctx] = unique_name 'chldrn', expr, ctx
-  [item, item_id, next_ctx] = transform expr, 'chld', item_ctx
-  lst = lst_a lst_id, item_id, expr
-  [[...item, [lst, [next_lst_id]]], next_lst_id, next_ctx]
+  [item, item_id, ch_ctx] = transform expr, 'chld', ctx
+  [lst, children_id, next_ctx] = lst_a lst_id, item_id, 'chldrn', expr, ch_ctx
+  [[...item, ...lst], children_id, next_ctx]
 
 
 
@@ -81,26 +78,25 @@ transform_all_children = fn [expr=false, ...rest], lst_id, ctx, out=[]:
 
 
 transform_children = fn {children, loc}, ctx:
-  [start_id, chldrn_ctx] = unique_name 'chldrn', {loc}, ctx
+  [ls, start_id, chldrn_ctx] = lst 'chldrn', {loc}, ctx
   [out, lst_id, next_ctx] = transform_all_children children, start_id, chldrn_ctx
-  lst = lst_empty {loc}
-  [[[lst, [start_id]], ...out], lst_id, next_ctx]
+  [[...ls, ...out], lst_id, next_ctx]
 
 
 
 transform_jsx_elem = fn node, res_id, ctx:
   [name, name_id, props_ctx] = transform node.name, 'jsxi', ctx
   [props, props_id, chldrn_ctx] = transform_props node, props_ctx
-  [chldrn, chldrn_id, next_ctx] = transform_children node, chldrn_ctx
-  elem = jxe name_id, props_id, chldrn_id, node
-  [[...name, ...props, ...chldrn, [elem, [res_id]]], next_ctx]
+  [chldrn, chldrn_id, jxe_ctx] = transform_children node, chldrn_ctx
+  [elem, , next_ctx] = jxe name_id, props_id, chldrn_id, res_id, node, jxe_ctx
+  [[...name, ...props, ...chldrn, ...elem], next_ctx]
 
 
 
 transform_jsx_frag = fn node, res_id, ctx:
-  [chldrn, chldrn_id, next_ctx] = transform_children node, ctx
-  elem = jxf chldrn_id, node
-  [[...chldrn, [elem, [res_id]]], next_ctx]
+  [chldrn, chldrn_id, jxf_ctx] = transform_children node, ctx
+  [elem, , next_ctx] = jxf chldrn_id, res_id, node, jxf_ctx
+  [[...chldrn, ...elem], next_ctx]
 
 
 

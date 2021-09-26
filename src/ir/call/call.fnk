@@ -1,51 +1,40 @@
 {is_empty} = import '@fink/std-lib/iter.fnk'
 
-{transform, ir_fn} = import '../transform.fnk'
-{unique_name} = import '../context.fnk'
-{lst_empty, lst_a, lst_c} = import '../literals/list.fnk'
+{transform} = import '../transform.fnk'
+{unique_name, ir_fn_x} = import '../context.fnk'
+{lst, lst_a, lst_c} = import '../literals/list.fnk'
 {lst_h} = import '../assignment/init.fnk'
 {fnc} = import '../func/init.fnk'
 
 
 
-lst_name = fn name, {loc}, ctx:
-  [id, next_ctx] = unique_name name, {loc}, ctx
-  lst = lst_empty {loc}
-  [[[lst, [id]]], id, next_ctx]
-
-
-af = fn fn_id, args_id, {loc}:
-  ir_fn 'af', [fn_id, args_id], {loc}
+af = fn fn_id, args_id, name_or_id, {loc}, ctx:
+  ir_fn_x 'af', [fn_id, args_id], name_or_id, {loc}, ctx
 
 
 
 func = fn arg_id, res, res_id, fn_id, {loc}, ctx:
   [args_id, ret_ctx] = unique_name 'args', {loc}, ctx
-  [ret_id, fn_ctx] = unique_name 'ret', {loc}, ret_ctx
+  [ret_id, arg_ctx] = unique_name 'ret', {loc}, ret_ctx
 
-  first_arg = lst_h args_id, {loc}
+  [args, , fn_ctx] = lst_h args_id, arg_id, {loc}, arg_ctx
+  body = [...args, ...res]
 
-  body = list:
-    [first_arg, [arg_id]]
-    ...res
-
-  fun = fnc args_id, ret_id, res_id, body, {loc}
-  [[[fun, [fn_id]]], fn_ctx]
+  [fun, , end_ctx] = fnc args_id, ret_id, res_id, body, fn_id, {loc}, fn_ctx
+  [fun, end_ctx]
 
 
 
 
 add_arg = fn args_id, arg, arg_id, {loc}, ctx:
-  [next_args_id, next_ctx] = unique_name 'cargs', {loc}, ctx
-  args = lst_a args_id, arg_id, {loc}
-  [[...arg, [args, [next_args_id]]], next_args_id, next_ctx]
+  [args, next_args_id, next_ctx] = lst_a args_id, arg_id, 'cargs', {loc}, ctx
+  [[...arg, ...args], next_args_id, next_ctx]
 
 
 
 spread_arg = fn args_id, arg, arg_id, {loc}, ctx:
-  [next_args_id, next_ctx] = unique_name 'cargs', {loc}, ctx
-  args = lst_c args_id, arg_id, {loc}
-  [[...arg, [args, [next_args_id]]], next_args_id, next_ctx]
+  [args, next_args_id, next_ctx] = lst_c args_id, arg_id, 'cargs', {loc}, ctx
+  [[...arg, ...args], next_args_id, next_ctx]
 
 
 
@@ -149,7 +138,7 @@ transform_args = fn expr, ctx:
     [{type: 'empty'}, ...(is_empty ?)]: []
     else: expr.args
 
-  [empty_args, empty_args_id, args_ctx] = lst_name 'cargs', expr, ctx
+  [empty_args, empty_args_id, args_ctx] = lst 'cargs', expr, ctx
   [out, args_id, next_ctx] = transform_all_args args, empty_args_id, args_ctx
   [[...empty_args, ...out], args_id, next_ctx]
 
@@ -169,16 +158,16 @@ transform_callee = fn expr, ctx:
 
 transform_call = fn node, result, ctx:
   [callee, c_id, args_ctx] = transform_callee node.callee, ctx
-  [args, args_id, {partial_foo, ...end_ctx}] = transform_args node, args_ctx
-  appl_fn = af c_id, args_id, node
+  [args, args_id, {partial_foo, ...next_ctx}] = transform_args node, args_ctx
 
   match partial_foo:
     ?:
-      [res_id, foo_ctx] = unique_name 'pfn', node, end_ctx
-      call = [...callee, ...args, [appl_fn, [res_id]]]
+      [appl_fn, res_id, foo_ctx] = af c_id, args_id, 'pfn', node, next_ctx
+      call = [...callee, ...args, ...appl_fn]
       func partial_foo, call, res_id, result, node, foo_ctx
     else:
-      call = [...callee, ...args, [appl_fn, [result]]]
+      [appl_fn, , end_ctx] = af c_id, args_id, result, node, next_ctx
+      call = [...callee, ...args, ...appl_fn]
       [call, end_ctx]
 
 

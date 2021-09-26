@@ -34,6 +34,30 @@ unique_name = fn prefix, {loc}, ctx:
 
 
 
+unique_or_id = fn prefix_or_id, {loc}, ctx:
+  match prefix_or_id:
+    {i: ?}:
+      [prefix_or_id, ctx]
+    false:
+      [prefix_or_id, ctx]
+    else:
+      unique_name prefix_or_id, {loc}, ctx
+
+
+
+ir_fn_x = fn fn_name, args, name_or_id=false, {loc}, ctx:
+  [res_id, next_ctx] = unique_or_id name_or_id, {loc}, ctx
+  expr = {f: fn_name, args, loc}
+  match name_or_id:
+    false:
+      [[[expr, []]], , next_ctx]
+    else:
+      [[[expr, [res_id]]], res_id, next_ctx]
+
+
+
+
+
 # get_value = fn id, {values}:
 #   {(id): val={}} = values
 #   val
@@ -119,11 +143,6 @@ init_ref_counts = fn [expr=false, ...rest], ctx:
           init_refs res, inc_refs args, ctx
 
       init_ref_counts rest, rest_ctx
-
-
-pass = fn f: fn rs:
-  f rs
-  rs
 
 
 

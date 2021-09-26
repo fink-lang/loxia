@@ -11,7 +11,7 @@ describe 'import', fn:
         {π, delete} = import './ni.fnk'
         {foo-bar} = import './ham.fnk'
         shrub = import './shrub.fnk'
-        out = [bar, spam, π, delete, foo-bar]
+        out = [bar, spam, π, delete, foo-bar, shrub]
       "
       to_match_snapshot
 
@@ -45,6 +45,7 @@ describe 'import', fn:
           na = fn: import './\${foo}.fnk'
           import './foo.fnk'
           ni = import '../ni.fnk'
+          out = [is_str, bar, ni]
         "
         {import: {ext: {rel: '.fnk', abs: '.js'}}}
       to_match_snapshot
@@ -64,6 +65,7 @@ describe 'import', fn:
     expect
       fink2js "
         foo = import './foo.fnk'
+        out = [foo]
       "
       to_match_snapshot
 

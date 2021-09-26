@@ -1,26 +1,21 @@
 {add, any} = import '../context.fnk'
-{transform, ir_fn} = import '../transform.fnk'
+{transform} = import '../transform.fnk'
 {str} = import '../literals/string.fnk'
-
-
-
-rec_g = fn rec_id, key_id, {loc}:
-  ir_fn 'rec_g', [rec_id, key_id], {loc}
+{rec_g} = import '../assignment/init.fnk'
 
 
 
 transform_member = fn {left, right, loc}, result, ctx:
   [left_exprs, left_id, key_ctx] = transform left, 'left', ctx
 
-  [key, key_id, next_ctx] = match right:
+  [key, key_id, rec_ctx] = match right:
     {type: 'ident'}:
       str right.value, 'key', right, key_ctx
     else:
       transform right, 'key', key_ctx
 
-  out = rec_g left_id, key_id, {loc}
-
-  [[...left_exprs, ...key, [out, [result]]], next_ctx]
+  [val, , next_ctx] = rec_g left_id, key_id, result, {loc}, rec_ctx
+  [[...left_exprs, ...key, ...val], next_ctx]
 
 
 

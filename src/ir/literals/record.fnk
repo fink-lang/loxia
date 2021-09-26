@@ -1,21 +1,21 @@
 {reverse} = import '@fink/std-lib/iter.fnk'
-{transform, ir_fn} = import '../transform.fnk'
-{unique_name} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+{unique_name, ir_fn_x} = import '../context.fnk'
 
 {str} = import './string.fnk'
 
 
 
-rec_m = fn rec1_id, rec2_id, {loc}:
-  ir_fn 'rec_m', [rec1_id, rec2_id], {loc}
+rec_m = fn rec1_id, rec2_id, name_or_id, {loc}, ctx:
+  ir_fn_x 'rec_m', [rec1_id, rec2_id], name_or_id, {loc}, ctx
 
 
-rec_s = fn rec_id, key_id, val_id, {loc}:
-  ir_fn 'rec_s', [rec_id, key_id, val_id], {loc}
+rec_s = fn rec_id, key_id, val_id, name_or_id, {loc}, ctx:
+  ir_fn_x 'rec_s', [rec_id, key_id, val_id], name_or_id, {loc}, ctx
 
 
-rec_empty = fn {loc}:
-  ir_fn 'rec', [], {loc}
+rec_e = fn name_or_id, {loc}, ctx:
+  ir_fn_x 'rec', [], name_or_id, {loc}, ctx
 
 
 
@@ -57,15 +57,15 @@ transform_kv = fn expr, out_id, ctx:
   [rec_id, key_ctx] = unique_name 'rec', expr, ctx
   match expr:
     {type: 'spread'}:
-      [val, val_id, next_ctx] = transform expr.right, 'sprd', key_ctx
-      rec_fn = rec_m rec_id, val_id, expr
-      [[...val, [rec_fn, [out_id]]], rec_id , next_ctx]
+      [val, val_id, rec_ctx] = transform expr.right, 'sprd', key_ctx
+      [rec_exprs, , next_ctx] = rec_m rec_id, val_id, out_id, expr, rec_ctx
+      [[...val, ...rec_exprs], rec_id , next_ctx]
 
     else:
       [key, key_id, val_ctx] = transform_key expr.left, key_ctx
-      [val, val_id, next_ctx] = transform_val expr, key_id, val_ctx
-      rec_fn = rec_s rec_id, key_id, val_id, expr
-      [[...key, ...val, [rec_fn, [out_id]]], rec_id, next_ctx]
+      [val, val_id, rec_ctx] = transform_val expr, key_id, val_ctx
+      [rec_exprs, , next_ctx] = rec_s rec_id, key_id, val_id, out_id, expr, rec_ctx
+      [[...key, ...val, ...rec_exprs], rec_id, next_ctx]
 
 
 
@@ -86,7 +86,7 @@ transform_entries = fn [expr=false, ...rest], ctx, result_id, out=[]:
 
 transform_record = fn node, result, ctx:
   exprs = reverse node.exprs
-  [out, rec_id, next_ctx] = transform_entries exprs, ctx, result
-  rec_fn = rec_empty node
-  [[[rec_fn, [rec_id]], ...out], next_ctx]
+  [out, rec_id, rec_ctx] = transform_entries exprs, ctx, result
+  [rec_exprs, , next_ctx] = rec_e rec_id, node, rec_ctx
+  [[...rec_exprs, ...out], next_ctx]
 

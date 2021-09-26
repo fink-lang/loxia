@@ -1,16 +1,12 @@
 {throw_err} = import '@fink/js-interop/errors.fnk'
 {transform_error} = import './errors.fnk'
 
-{get_transformer, unique_name} = import './context.fnk'
-
-
-
-ir_fn = fn name, args, {loc}:
-  {f: name, args, loc}
+{get_transformer, unique_name, ir_fn_x} = import './context.fnk'
 
 
 
 transform = fn expr, name_or_id, ctx, gen_id=true:
+  # TODO: check using name_or_id is str or existing id {i: ...}
   [id, next_ctx] = match gen_id:
     false:
       [name_or_id, ctx]
@@ -26,19 +22,20 @@ transform = fn expr, name_or_id, ctx, gen_id=true:
   [out, id, end_ctx]
 
 
+
 transform_binary = fn op, left, right, res_id, {loc}, ctx:
   [l, l_id, r_ctx] = transform left, 'left', ctx
   [r, r_id, next_ctx] = transform right, 'right', r_ctx
 
-  exp = ir_fn op, [l_id, r_id], {loc}
-  [[...l, ...r, [exp, [res_id]]], next_ctx]
+  [exp, , end_ctx] = ir_fn_x op, [l_id, r_id], res_id, {loc}, next_ctx
+  [[...l, ...r, ...exp], end_ctx]
 
 
 
 transform_unary = fn op, right, res_id, {loc}, ctx:
   [r, r_id, next_ctx] = transform right, 'right', ctx
 
-  exp = ir_fn op, [r_id], {loc}
-  [[...r, [exp, [res_id]]], next_ctx]
+  [exp, , end_ctx] = ir_fn_x op, [r_id], res_id, {loc}, next_ctx
+  [[...r, ...exp], end_ctx]
 
 

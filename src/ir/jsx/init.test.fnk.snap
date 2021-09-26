@@ -180,13 +180,13 @@ rec >> exports_0:
       lst_a chldrn_0, chld_0 >> chldrn_1:
         = p >> jsxi_0:
           rec >> props_0:
-            lst >> chldrn_3:
+            lst >> chldrn_2:
               str 'bar' >> chld_2
-                lst_a chldrn_3, chld_2 >> chldrn_4:
-                  jxe jsxi_0, props_0, chldrn_4 >> chld_1:
-                    lst_a chldrn_1, chld_1 >> chldrn_2:
+                lst_a chldrn_2, chld_2 >> chldrn_3:
+                  jxe jsxi_0, props_0, chldrn_3 >> chld_1:
+                    lst_a chldrn_1, chld_1 >> chldrn_4:
                       str '\\\\n' >> chld_3
-                        lst_a chldrn_2, chld_3 >> chldrn_5:
+                        lst_a chldrn_4, chld_3 >> chldrn_5:
                           jxf chldrn_5 >> elem_0:
                             str 'elem' >> key_0
                               rec_s exports_0, key_0, elem_0 >> exports_1:
@@ -238,18 +238,18 @@ rec >> exports_0:
                   lst_a chldrn_2, chld_2 >> chldrn_3:
                     = b >> jsxi_1:
                       rec >> props_1:
-                        lst >> chldrn_5:
-                          jxe jsxi_1, props_1, chldrn_5 >> chld_3:
-                            lst_a chldrn_3, chld_3 >> chldrn_4:
+                        lst >> chldrn_4:
+                          jxe jsxi_1, props_1, chldrn_4 >> chld_3:
+                            lst_a chldrn_3, chld_3 >> chldrn_5:
                               str ' ham\\\\n  spam\\\\n  ' >> chld_4
-                                lst_a chldrn_4, chld_4 >> chldrn_6:
+                                lst_a chldrn_5, chld_4 >> chldrn_6:
                                   = c >> jsxi_2:
                                     rec >> props_2:
-                                      lst >> chldrn_8:
-                                        jxe jsxi_2, props_2, chldrn_8 >> chld_5:
-                                          lst_a chldrn_6, chld_5 >> chldrn_7:
+                                      lst >> chldrn_7:
+                                        jxe jsxi_2, props_2, chldrn_7 >> chld_5:
+                                          lst_a chldrn_6, chld_5 >> chldrn_8:
                                             str '\\\\n  ni\\\\n' >> chld_6
-                                              lst_a chldrn_7, chld_6 >> chldrn_9:
+                                              lst_a chldrn_8, chld_6 >> chldrn_9:
                                                 jxe jsxi_0, props_0, chldrn_9 >> elem_0:
                                                   str 'elem' >> key_0
                                                     rec_s exports_0, key_0, elem_0 >> exports_1:

@@ -1,74 +1,15 @@
 {starts_with} = import '@fink/std-lib/str.fnk'
-{add, any, unique_name} = import '../context.fnk'
-{transform, ir_fn} = import '../transform.fnk'
-{bind} = import '../assignment/init.fnk'
+{add, any, ir_fn_x} = import '../context.fnk'
+{transform} = import '../transform.fnk'
 {str} = import '../literals/string.fnk'
-{rec_empty, rec_s} = import '../literals/record.fnk'
-{lst, lst_a_x} = import '../literals/list.fnk'
-{transform_import, imp} = import './import.fnk'
+{rec_e, rec_s} = import '../literals/record.fnk'
+{lst, lst_a} = import '../literals/list.fnk'
+{transform_import, transform_imp, imp} = import './import.fnk'
 
 
 
-mod = fn exp_id, dirs_id, res_id, {loc}:
-  expr = ir_fn 'mod', [exp_id, dirs_id], {loc}
-  [[expr, [res_id]]]
-
-
-
-get_key_val = fn expr, ctx:
-  [key, key_id, val_id, next_ctx] = match expr:
-    {left.type: 'ident', right: false}:
-      [val_id, key_ctx] = bind expr.left, ctx
-      [key, key_id, next_ctx] = str expr.left.value, 'key', expr.left, key_ctx
-      [key, key_id, val_id, next_ctx]
-
-    {left.type: 'ident', right.type: 'ident'}:
-      [val_id, key_ctx] = bind expr.right, ctx
-      [key, key_id, next_ctx] = str expr.left.value, 'key', expr.left, key_ctx
-      [key, key_id, val_id, next_ctx]
-
-    {right.type: 'ident'}:
-      [val_id, key_ctx] = bind expr.right, ctx
-      [key, key_id, next_ctx] = transform expr.left, 'key', key_ctx
-      [key, key_id, val_id, next_ctx]
-
-    {left.type: 'ident'}:
-      # TODO: loc?
-      [val_id, key_ctx] = unique_name 'val', expr, ctx
-      [key, key_id, next_ctx] = str expr.left.value, 'key', expr.left, key_ctx
-      [key, key_id, val_id, next_ctx]
-
-    else:
-      # TODO: loc?
-      [val_id, key_ctx] = unique_name 'val', expr, ctx
-      [key, key_id, next_ctx] = transform expr.left, 'key', key_ctx
-      [key, key_id, val_id, next_ctx]
-
-  [key, key_id, val_id, next_ctx]
-
-
-
-transform_imp_rec = fn [expr=false, ...exprs], uri_id, ctx, out=[]:
-  match expr:
-    false:
-      [out, ctx]
-
-    {type: 'rec:kv'}:
-      [key, key_id, val_id, imp_ctx] = get_key_val expr, ctx
-      [imps, , next_ctx] = imp uri_id, key_id, val_id, expr, imp_ctx
-      transform_imp_rec exprs, uri_id, next_ctx, [...out, ...key, ...imps]
-
-
-
-transform_imp = fn node, uri_id, ctx:
-  match node:
-    {type: 'rec'}:
-      transform_imp_rec node.exprs, uri_id, ctx
-
-    {type: 'ident'}:
-      [val_id, imp_ctx] = bind node, ctx
-      [imps, , next_ctx] = imp uri_id, false, val_id, node, imp_ctx
-      [imps, next_ctx]
+mod = fn exp_id, dirs_id, res_id, {loc}, ctx:
+  ir_fn_x 'mod', [exp_id, dirs_id], res_id, {loc}, ctx
 
 
 
@@ -82,11 +23,9 @@ add_export = fn exp_id, expr, ctx:
   [..., [ , [val_id]]] = val
 
   [key, key_id, exp_ctx] = ident_to_key expr.left, key_ctx
+  [rec_exprs, next_exp_id, next_ctx] = rec_s exp_id, key_id, val_id, 'exports', expr, exp_ctx
 
-  [next_exp_id, next_ctx] = unique_name 'exports', expr, exp_ctx
-  exp = rec_s exp_id, key_id, val_id, next_exp_id, expr
-
-  [[...val, ...key, [exp, [next_exp_id]]], next_exp_id, next_ctx]
+  [[...val, ...key, ...rec_exprs], next_exp_id, next_ctx]
 
 
 
@@ -102,10 +41,10 @@ transform_exprs = fn [expr=false, ...rest], exp_id, ctx, out:
 
     {op: 'import'}:
       [uri, uri_id, imp_ctx] = transform expr.right, 'uri', ctx
-      [imps, , next_ctx] = imp uri_id, false, false, expr, imp_ctx
+      [imps, , next_ctx] = imp uri_id, false, 'sidefx', expr, imp_ctx
       transform_exprs rest, exp_id, next_ctx, [...out, ...uri, ...imps]
 
-    {op: '=', left: {type: 'ident'}}:
+    {op: '=', left.type: 'ident'}:
       [exprs, next_exp_id, next_ctx] = add_export exp_id, expr, ctx
       transform_exprs rest, next_exp_id, next_ctx, [...out, ...exprs]
 
@@ -127,7 +66,7 @@ transform_directives = fn expr, ctx:
       [{value: shbang}] = comments.leading
 
       [shb, sh_id, d_ctx] = str '#${shbang}', 'shbng', expr, next_ctx
-      [next_drctvs, lst_id, end_ctx] = lst_a_x dirs_id, sh_id, 'drctvs', expr, d_ctx
+      [next_drctvs, lst_id, end_ctx] = lst_a dirs_id, sh_id, 'drctvs', expr, d_ctx
       [[...drctvs, ...shb, ...next_drctvs], lst_id, end_ctx]
     else:
       [drctvs, dirs_id, next_ctx]
@@ -135,16 +74,11 @@ transform_directives = fn expr, ctx:
 
 
 transform_module = fn expr, result, ctx:
-  [exp_id, dirs_ctx] = unique_name 'exports', expr, ctx
+  [exp_rec, exp_id, dirs_ctx] = rec_e 'exports', expr, ctx
   [directives, dirs_id, exprs_ctx] = transform_directives expr, dirs_ctx
-  [block, last_exp_id, next_ctx] = transform_exprs expr.exprs, exp_id, exprs_ctx, []
-
-  out = list:
-    [(rec_empty expr.loc, exp_id), [exp_id]]
-    ...block
-    ...directives
-    ...mod last_exp_id, dirs_id, result, expr
-
+  [block, last_exp_id, mod_ctx] = transform_exprs expr.exprs, exp_id, exprs_ctx, []
+  [mod_exprs, , next_ctx] = mod last_exp_id, dirs_id, result, expr, mod_ctx
+  out = [...exp_rec, ...block, ...directives, ...mod_exprs]
   [out, next_ctx]
 
 

@@ -1,6 +1,6 @@
 {reverse} = import '@fink/std-lib/iter.fnk'
 
-{init_ctx, update_value, get_value} = import '../ir/context.fnk'
+{init_ctx, update_value} = import '../ir/context.fnk'
 
 {replace_idents} = import './identifier/init.fnk'
 

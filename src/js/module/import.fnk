@@ -5,6 +5,7 @@ types = import '@babel/types'
 } = types
 {ends_with, starts_with, slice, is_str} = import '@fink/std-lib/str.fnk'
 
+{get_refs} = import '../../ir/context.fnk'
 {add, set_js2, get_js, get_js_literal} = import '../context.fnk'
 {escape_ident, ident} = import '../identifier/init.fnk'
 
@@ -47,13 +48,13 @@ get_runtime_imports = fn ctx:
 
 
 transform_import = fn expr, ctx:
-  [{args: [uri_id, key_id=false]}, [res_id=false]] = expr
+  [{args: [uri_id, key_id=false]}, [res_id]] = expr
 
   {quasis: [{value: {raw: value}}]} = get_js_literal uri_id, ctx
   uri = stringLiteral resolve_ext value, ctx
 
   specs = match [res_id, key_id]:
-    [false]:
+    [0 == get_refs ?, ctx]:
       []
     [, false]:
       [importDefaultSpecifier ident res_id]

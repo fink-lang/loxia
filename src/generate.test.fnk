@@ -20,6 +20,7 @@ describe 'module types', fn:
     case = ni
 
     default = shrub
+    out = [dflt, if, spam, ni, foo]
     "
 
   it 'compiles to mjs', fn:

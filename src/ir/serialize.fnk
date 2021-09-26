@@ -3,7 +3,6 @@
 
 
 
-
 a2s = fn [arg=false, ...args], out=[]:
   match arg:
     false: match out:
@@ -39,7 +38,7 @@ serialize = fn [curr=false, ...rest], out='', indent='':
           ${indent}>>${a2s ids}:'
         '  ${indent}'
 
-    [{f: ? in ['cc', 'cif']}]:
+    [{f: ? in ['cc', 'cif', 'cf']}]:
       [{f: op, args}] = curr
       serialize
         rest
@@ -51,12 +50,5 @@ serialize = fn [curr=false, ...rest], out='', indent='':
       serialize
         rest
         '${out}\n${indent}${f}${a2s args} >>${a2s ids}:'
-        '  ${indent}'
-
-    else:
-      [{f, args}] = curr
-      serialize
-        rest
-        '${out}\n${indent}${f}${a2s args}'
         '  ${indent}'
 
