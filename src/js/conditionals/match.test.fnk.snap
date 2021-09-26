@@ -8,16 +8,22 @@ ret_0: {
   if (foo === 1) {
     const x_0 = 123;
     ret_0 = [1, x_0, x_0];
+
+    /* istanbul ignore next */
     break ret_0;
   }
 
   /* istanbul ignore else */
   if (foo === 2) {
     ret_0 = [2, foo];
+
+    /* istanbul ignore next */
     break ret_0;
   }
 
   ret_0 = [3, foo];
+
+  /* istanbul ignore next */
   break ret_0;
 }
 
@@ -33,6 +39,8 @@ ret_0: {
   if (foo === 1) {
     const x_0 = 123;
     ret_0 = [1, x_0, x_0];
+
+    /* istanbul ignore next */
     break ret_0;
   }
 
@@ -40,10 +48,14 @@ ret_0: {
   if (foo === 2) {
     const y_0 = 45678;
     ret_0 = [2, foo, y_0, y_0];
+
+    /* istanbul ignore next */
     break ret_0;
   }
 
   ret_0 = [3, foo, z];
+
+  /* istanbul ignore next */
   break ret_0;
 }
 
@@ -59,6 +71,8 @@ ret_0: {
   if (foo === 1) {
     const x_0 = 123;
     ret_0 = [1, x_0, x_0];
+
+    /* istanbul ignore next */
     break ret_0;
   }
 
@@ -66,11 +80,15 @@ ret_0: {
   if (foo === 2) {
     const y_0 = 45678;
     ret_0 = [2, foo, y_0, y_0];
+
+    /* istanbul ignore next */
     break ret_0;
   }
 
   const z_0 = 1234;
   ret_0 = [3, foo, z_0, z_0];
+
+  /* istanbul ignore next */
   break ret_0;
 }
 
@@ -86,17 +104,23 @@ ret_0: {
   if (foo === 1) {
     const x_0 = 123;
     ret_0 = [1, x_0, x_0];
+
+    /* istanbul ignore next */
     break ret_0;
   }
 
   /* istanbul ignore else */
   if (foo === 2) {
     ret_0 = [2, foo, 45678];
+
+    /* istanbul ignore next */
     break ret_0;
   }
 
   const z_0 = 1234;
   ret_0 = [3, foo, z_0, z_0];
+
+  /* istanbul ignore next */
   break ret_0;
 }
 
@@ -114,6 +138,8 @@ exports[`match compiles nested match 1`] = `
       /* istanbul ignore else */
       if (spam === shrub) {
         ret_2 = ni;
+
+        /* istanbul ignore next */
         break ret_2;
       }
     }
@@ -122,6 +148,7 @@ exports[`match compiles nested match 1`] = `
     return bar;
   }
 
+  /* istanbul ignore next */
   return;
 };
 
@@ -135,6 +162,8 @@ ret_0: {
   /* istanbul ignore else */
   if (shrub === 123) {
     ret_0 = spam;
+
+    /* istanbul ignore next */
     break ret_0;
   }
 }
@@ -154,6 +183,8 @@ ret_0: {
   /* istanbul ignore else */
   if (expr_0 === false) {
     ret_0 = [out, ctx];
+
+    /* istanbul ignore next */
     break ret_0;
   }
 
@@ -162,6 +193,8 @@ ret_0: {
     /* istanbul ignore else */
     if (true === _in_(expr_0[0], [1, 2])) {
       ret_0 = foo(tail_0, expr_0);
+
+      /* istanbul ignore next */
       break ret_0;
     }
   }
@@ -175,6 +208,8 @@ ret_0: {
       /* istanbul ignore else */
       if (true === foo(itm_0[0], ctx)) {
         ret_0 = foo(expr_0, tail_0);
+
+        /* istanbul ignore next */
         break ret_0;
       }
     }
@@ -196,6 +231,8 @@ ret_0: {
       /* istanbul ignore else */
       if ([...shrub.slice(1)].reverse()[0] === 3) {
         ret_0 = foo;
+
+        /* istanbul ignore next */
         break ret_0;
       }
     }
@@ -206,6 +243,8 @@ ret_0: {
     /* istanbul ignore else */
     if ([...shrub].reverse()[0] === 4) {
       ret_0 = foo;
+
+      /* istanbul ignore next */
       break ret_0;
     }
   }
@@ -223,6 +262,8 @@ ret_0: {
           /* istanbul ignore else */
           if (shrub[2] === 7) {
             ret_0 = foo;
+
+            /* istanbul ignore next */
             break ret_0;
           }
         }
@@ -244,6 +285,8 @@ ret_0: {
     /* istanbul ignore else */
     if (true === !foo[0]) {
       ret_0 = ni;
+
+      /* istanbul ignore next */
       break ret_0;
     }
   }
@@ -253,6 +296,8 @@ ret_0: {
     /* istanbul ignore else */
     if (undefined !== foo[0]) {
       ret_0 = true;
+
+      /* istanbul ignore next */
       break ret_0;
     }
   }
@@ -262,6 +307,8 @@ ret_0: {
     /* istanbul ignore else */
     if (true === foo[0] > 123) {
       ret_0 = ni;
+
+      /* istanbul ignore next */
       break ret_0;
     }
   }
@@ -271,6 +318,8 @@ ret_0: {
     /* istanbul ignore else */
     if (true === foo[0]()) {
       ret_0 = ni;
+
+      /* istanbul ignore next */
       break ret_0;
     }
   }
@@ -280,6 +329,8 @@ ret_0: {
     /* istanbul ignore else */
     if (true === foo[0].is_foo()) {
       ret_0 = ni;
+
+      /* istanbul ignore next */
       break ret_0;
     }
   }
@@ -289,6 +340,8 @@ ret_0: {
     /* istanbul ignore else */
     if (true === is_foo(foo[0])) {
       ret_0 = ni;
+
+      /* istanbul ignore next */
       break ret_0;
     }
   }
@@ -298,6 +351,8 @@ ret_0: {
     /* istanbul ignore else */
     if (true === is_foo(foo[0], bar)) {
       ret_0 = ni;
+
+      /* istanbul ignore next */
       break ret_0;
     }
   }
@@ -309,6 +364,8 @@ ret_0: {
       /* istanbul ignore else */
       if (true === is_empty(foo.slice(1))) {
         ret_0 = ni;
+
+        /* istanbul ignore next */
         break ret_0;
       }
     }
@@ -321,6 +378,8 @@ ret_0: {
       /* istanbul ignore else */
       if (true === 1 < length(foo.slice(1))) {
         ret_0 = ni;
+
+        /* istanbul ignore next */
         break ret_0;
       }
     }
@@ -350,6 +409,8 @@ ret_0: {
           /* istanbul ignore else */
           if (itm_17[0] === ni) {
             ret_0 = ni;
+
+            /* istanbul ignore next */
             break ret_0;
           }
         }
@@ -373,6 +434,8 @@ ret_0: {
             /* istanbul ignore else */
             if (shrub[2] === 4) {
               ret_0 = bar;
+
+              /* istanbul ignore next */
               break ret_0;
             }
           }
@@ -412,6 +475,8 @@ ret_0: {
                       /* istanbul ignore else */
                       if (shrub[3] === 7) {
                         ret_0 = spam;
+
+                        /* istanbul ignore next */
                         break ret_0;
                       }
                     }
@@ -441,6 +506,8 @@ ret_0: {
       /* istanbul ignore else */
       if (shrub[2] === 2) {
         ret_0 = foo;
+
+        /* istanbul ignore next */
         break ret_0;
       }
     }
@@ -458,10 +525,14 @@ ret_0: {
   /* istanbul ignore else */
   if (shrub === 123) {
     ret_0 = spam;
+
+    /* istanbul ignore next */
     break ret_0;
   }
 
   ret_0 = shrub;
+
+  /* istanbul ignore next */
   break ret_0;
 }
 
@@ -477,30 +548,40 @@ ret_0: {
   /* istanbul ignore else */
   if (true === !value_0) {
     ret_0 = ni;
+
+    /* istanbul ignore next */
     break ret_0;
   }
 
   /* istanbul ignore else */
   if (true === value_0 > 123) {
     ret_0 = ni;
+
+    /* istanbul ignore next */
     break ret_0;
   }
 
   /* istanbul ignore else */
   if (true === value_0()) {
     ret_0 = ni;
+
+    /* istanbul ignore next */
     break ret_0;
   }
 
   /* istanbul ignore else */
   if (true === shrub(value_0)) {
     ret_0 = ni;
+
+    /* istanbul ignore next */
     break ret_0;
   }
 
   /* istanbul ignore else */
   if (undefined !== value_0) {
     ret_0 = true;
+
+    /* istanbul ignore next */
     break ret_0;
   }
 }
@@ -524,6 +605,8 @@ ret_0: {
         /* istanbul ignore else */
         if (itm_0.c === c) {
           ret_0 = ni;
+
+          /* istanbul ignore next */
           break ret_0;
         }
       }
@@ -552,6 +635,8 @@ ret_0: {
         /* istanbul ignore else */
         if (itm_12.spam === ham) {
           ret_0 = spam;
+
+          /* istanbul ignore next */
           break ret_0;
         }
       }
@@ -579,6 +664,8 @@ ret_0: {
             /* istanbul ignore else */
             if (itm_9.ni === nu) {
               ret_0 = ham;
+
+              /* istanbul ignore next */
               break ret_0;
             }
           }
@@ -610,6 +697,8 @@ ret_0: {
               /* istanbul ignore else */
               if (itm_0.spam === spam) {
                 ret_0 = ham;
+
+                /* istanbul ignore next */
                 break ret_0;
               }
             }
@@ -635,6 +724,8 @@ ret_0: {
       /* istanbul ignore else */
       if (shrub.bar === bar) {
         ret_0 = ni;
+
+        /* istanbul ignore next */
         break ret_0;
       }
     }
@@ -653,6 +744,8 @@ ret_0: {
           /* istanbul ignore else */
           if (itm_13.nu === nu) {
             ret_0 = spam + ni;
+
+            /* istanbul ignore next */
             break ret_0;
           }
         }
@@ -677,6 +770,8 @@ ret_0: {
             /* istanbul ignore else */
             if (itm_10.na === \`nu\`) {
               ret_0 = ni;
+
+              /* istanbul ignore next */
               break ret_0;
             }
           }
@@ -700,6 +795,8 @@ ret_0: {
           /* istanbul ignore else */
           if (itm_5.len === 1) {
             ret_0 = na;
+
+            /* istanbul ignore next */
             break ret_0;
           }
         }
@@ -718,6 +815,8 @@ ret_0: {
         /* istanbul ignore else */
         if (itm_0[1] === 1234) {
           ret_0 = na;
+
+          /* istanbul ignore next */
           break ret_0;
         }
       }
@@ -749,6 +848,8 @@ ret_0: {
           /* istanbul ignore else */
           if (spread_0.spam === spam) {
             ret_0 = ni;
+
+            /* istanbul ignore next */
             break ret_0;
           }
         }
@@ -771,6 +872,8 @@ ret_0: {
     /* istanbul ignore else */
     if (true === !foo.spam) {
       ret_0 = ni;
+
+      /* istanbul ignore next */
       break ret_0;
     }
   }
@@ -780,6 +883,8 @@ ret_0: {
     /* istanbul ignore else */
     if (true === foo.spam > 123) {
       ret_0 = ni;
+
+      /* istanbul ignore next */
       break ret_0;
     }
   }
@@ -789,6 +894,8 @@ ret_0: {
     /* istanbul ignore else */
     if (true === foo.spam()) {
       ret_0 = ni;
+
+      /* istanbul ignore next */
       break ret_0;
     }
   }
@@ -798,6 +905,8 @@ ret_0: {
     /* istanbul ignore else */
     if (true === foo.spam.is_foo()) {
       ret_0 = ni;
+
+      /* istanbul ignore next */
       break ret_0;
     }
   }
@@ -807,6 +916,8 @@ ret_0: {
     /* istanbul ignore else */
     if (true === is_foo(foo.spam)) {
       ret_0 = ni;
+
+      /* istanbul ignore next */
       break ret_0;
     }
   }
@@ -825,6 +936,8 @@ ret_0: {
       /* istanbul ignore else */
       if (true === is_empty(spread_1)) {
         ret_0 = ni;
+
+        /* istanbul ignore next */
         break ret_0;
       }
     }
@@ -844,6 +957,8 @@ ret_0: {
       /* istanbul ignore else */
       if (true === _in_(\`foo\`, spread_0)) {
         ret_0 = ni;
+
+        /* istanbul ignore next */
         break ret_0;
       }
     }
@@ -854,6 +969,8 @@ ret_0: {
     /* istanbul ignore else */
     if (undefined !== foo.spam) {
       ret_0 = true;
+
+      /* istanbul ignore next */
       break ret_0;
     }
   }

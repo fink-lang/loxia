@@ -241,7 +241,7 @@ match_res_exprs = fn exprs, name, ret_id, {loc}, ctx:
 
 
 
-match_conditions = fn [expr=false, ...else_exprs], [val_id, val=[]], ret_id, ctx:
+match_conditions = fn [expr=false, ...else_exprs], [val_id, val], ret_id, ctx:
   match expr:
     false:
       match_res_exprs [], 'else', ret_id, {todo: 'loc'}, ctx

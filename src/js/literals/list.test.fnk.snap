@@ -30,9 +30,9 @@ export const foo = foo_0,
 
 exports[`list compiles spread 2`] = `
 "const foo_0 = [1, 2, 3];
-const bar_0 = [1, 2, 3, 4, 5, 6];
+const bar_0 = [...foo_0, 4, 5, 6];
 const spam_0 = [7];
-const shrub_0 = [1, 2, 3, 4, 5, 6, 7];
+const shrub_0 = [...bar_0, ...spam_0];
 const ni_0 = [...nu, na];
 const ham_0 = [...nu, ...na];
 export const foo = foo_0,

@@ -84,6 +84,7 @@ exports[`compiles func of func 1`] = `
       }
     }
 
+    /* istanbul ignore next */
     return;
   };
 };

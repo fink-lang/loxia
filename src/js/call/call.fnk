@@ -78,14 +78,14 @@ transform_apply_cont = fn expr, ctx:
 
 
 transform_continue_with_cont = fn expr, ctx:
-  # TODO: use false not _
-  [{args: [ret_id, res_id='_']}] = expr
+  [{args: [ret_id, res_id=false]}] = expr
   ret = get_js_literal ret_id, ctx
 
   match res_id:
-    '_':
+    false:
       match ret:
         {type: 'ReturnStatement'}:
+          # TODO remove if this is the last expr in a func
           [[ret], ctx]
         else:
           [[], ctx]
@@ -100,7 +100,9 @@ transform_continue_with_cont = fn expr, ctx:
           exprs = list:
             with_loc res, expressionStatement
               assignmentExpression '=', ret, res
-            with_loc res, breakStatement ident ret_id
+            with_loc res, rec:
+              ...breakStatement ident ret_id
+              leadingComments: [{type: 'CommentBlock', value: ' istanbul ignore next '}]
           [exprs, ctx]
 
 

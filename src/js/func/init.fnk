@@ -67,7 +67,10 @@ transform_fn = fn expr, ctx:
   [{args: [fn_args, fn_block]}] = expr
   [args_id, ret_id] = fn_args
 
-  ret = returnStatement _
+  ret = rec:
+    ...returnStatement _
+    leadingComments: [{type: 'CommentBlock', value: ' istanbul ignore next '}]
+
   body_ctx = set_js ret_id, ret, ctx
 
   [args, block, fn_ctx] = split_args_body fn_block, args_id, body_ctx

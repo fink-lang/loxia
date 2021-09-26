@@ -6,7 +6,7 @@ types = import '@babel/types'
 
 {null} = import '@fink/js-interop/nullish.fnk'
 
-{add, get_js, set_js2, get_js_literal, with_loc} = import '../context.fnk'
+{add, get_js, set_js2, with_loc} = import '../context.fnk'
 
 
 
@@ -37,8 +37,7 @@ elems_or_spread = fn expr:
 
 transform_list_append = fn expr, ctx:
   [{args: [items_id, val_id]}] = expr
-  # TODO: inlining should be handled at optimization level in ir
-  elems = elems_or_spread get_js_literal items_id, ctx
+  elems = elems_or_spread get_js items_id, ctx
 
   elem = match val_id:
     {i: '_'}: null
@@ -51,9 +50,8 @@ transform_list_append = fn expr, ctx:
 
 transform_list_chain = fn expr, ctx:
   [{args: [items1_id, items2_id]}] = expr
-  # TODO: inlining should be handled at optimization level in ir
-  elems1 = elems_or_spread get_js_literal items1_id, ctx
-  elems2 = elems_or_spread get_js_literal items2_id, ctx
+  elems1 = elems_or_spread get_js items1_id, ctx
+  elems2 = elems_or_spread get_js items2_id, ctx
 
   js =  arrayExpression [...elems1, ...elems2]
   set_js2 expr, js, ctx
