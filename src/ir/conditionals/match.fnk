@@ -50,7 +50,7 @@ transform_exprs = fn [expr=false, ...rest], ctx, out, last_id:
 
 
 
-ht = fn [items_id, items=[]], expr, ctx:
+ht = fn [items_id, items], expr, ctx:
   [head, head_id, tail_ctx] = lst_h items_id, 'itm', expr, ctx
   [tail, tail_id, next_ctx] = lst_t items_id, expr, tail_ctx
 
@@ -67,7 +67,7 @@ transform_with_partial = fn expr, name, val_id, {partial_ident, ...ctx}:
 
 
 
-match_any = fn [val_id, val=[]], expr, gen_true, else_id, ctx:
+match_any = fn [val_id, val], expr, gen_true, else_id, ctx:
   [match_id, cond_ctx] = unique_name 'match', expr, ctx
 
   [val_cond, cond_id, true_ctx] = is_val val_id, 'cond', expr, cond_ctx
@@ -84,7 +84,7 @@ match_any = fn [val_id, val=[]], expr, gen_true, else_id, ctx:
 
 
 
-match_eq = fn [val_id, val=[]], expr, gen_true, else_id, ctx:
+match_eq = fn [val_id, val], expr, gen_true, else_id, ctx:
   [match_id, right_ctx] = unique_name 'match', expr, ctx
   [right, right_id, {has_partial, ...cond_ctx}] = transform_with_partial expr, 'val', val_id, right_ctx
 

@@ -148,11 +148,12 @@ init_ref_counts = fn [expr=false, ...rest], ctx:
 
 init_ctx = fn exprs, options={}:
   ctx = rec:
+    ...options
     transformers: {}
     runtime: {}
     unique_ids: {}
     values: empty
-    ...options
+
 
   pipe ctx:
     init_ref_counts exprs, ?

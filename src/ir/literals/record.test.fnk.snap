@@ -13,7 +13,7 @@ rec >> exports_0:
                 str 'foo' >> key_3
                   rec_s exports_0, key_3, foo_0 >> exports_1:
                     lst >> drctvs_0:
-                      mod exports_1, drctvs_0 >> result_0:"
+                      mod exports_1, drctvs_0 >> mod_0:"
 `;
 
 exports[`record compiles calculaged props 1`] = `

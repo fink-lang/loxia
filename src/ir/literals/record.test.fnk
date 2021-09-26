@@ -1,5 +1,5 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
-{fink2lir, fink2lir_o} = import '../../testing/generate.fnk'
+{fink2lir} = import '../../testing/generate.fnk'
 
 
 describe 'record', fn:
@@ -122,6 +122,8 @@ describe 'unpacking record', fn:
 describe 'rec optimizations', fn:
   it 'optimizes key-refs', fn:
     expect
-      fink2lir_o 'foo = {π, ƒ, foo-bar}'
+      fink2lir
+        'foo = {π, ƒ, foo-bar}'
+        {optimize: {refs: true, tails: true, unused: true}}
       to_match_snapshot
 

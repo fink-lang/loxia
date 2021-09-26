@@ -99,7 +99,7 @@ rec >> exports_0:
                     str 'spam' >> key_2
                       rec_s exports_2, key_2, lst_1 >> exports_3:
                         lst >> drctvs_0:
-                          mod exports_3, drctvs_0 >> result_0:"
+                          mod exports_3, drctvs_0 >> mod_0:"
 `;
 
 exports[`optimizations reuses item refs 1`] = `
@@ -126,7 +126,7 @@ rec >> exports_0:
                                       lst_a cargs_6, item_3 >> cargs_7:
                                         af log, cargs_7 >> mex_3:
                                           lst >> drctvs_0:
-                                            mod exports_1, drctvs_0 >> result_0:"
+                                            mod exports_1, drctvs_0 >> mod_0:"
 `;
 
 exports[`unpacking list destructures recs 1`] = `

@@ -38,39 +38,27 @@ rec >> exports_0:
                                                     = spam >> arg_5:
                                                       lst_a cargs_10, arg_5 >> cargs_11:
                                                         af callee_4, cargs_11 >> mex_4:
-                                                          fn args_1, ret_1:
-                                                            lst_h args_1 >> prtl_7:
-                                                              = foo >> callee_5:
-                                                                lst >> cargs_12:
-                                                                  = bar >> arg_6:
-                                                                    lst_a cargs_12, arg_6 >> cargs_13:
-                                                                      = spam >> sprd_0:
-                                                                        lst_c cargs_13, sprd_0 >> cargs_14:
-                                                                          af callee_5, cargs_14 >> pfn_0:
-                                                                            cc ret_1, pfn_0
-                                                          >> mex_5:
-                                                            fn args_2, ret_2:
-                                                              lst_h args_2 >> prtl_8:
-                                                                = foo >> callee_6:
-                                                                  lst >> cargs_15:
-                                                                    = bar >> sprd_1:
-                                                                      lst_c cargs_15, sprd_1 >> cargs_16:
-                                                                        af callee_6, cargs_16 >> pfn_1:
-                                                                          cc ret_2, pfn_1
-                                                            >> mex_6:
-                                                              fn args_3, ret_3:
-                                                                lst_h args_3 >> prtl_9:
-                                                                  = foo >> callee_7:
-                                                                    lst >> cargs_17:
-                                                                      = bar >> sprd_2:
-                                                                        lst_c cargs_17, sprd_2 >> cargs_18:
-                                                                          = spam >> arg_7:
-                                                                            lst_a cargs_18, arg_7 >> cargs_19:
-                                                                              af callee_7, cargs_19 >> pfn_2:
-                                                                                cc ret_3, pfn_2
-                                                              >> mex_7:
-                                                                lst >> drctvs_0:
-                                                                  mod exports_0, drctvs_0 >> mod_0:"
+                                                          = foo >> callee_5:
+                                                            lst >> cargs_12:
+                                                              = bar >> arg_6:
+                                                                lst_a cargs_12, arg_6 >> cargs_13:
+                                                                  = spam >> sprd_0:
+                                                                    lst_c cargs_13, sprd_0 >> cargs_14:
+                                                                      af callee_5, cargs_14 >> mex_5:
+                                                                        = foo >> callee_6:
+                                                                          lst >> cargs_15:
+                                                                            = bar >> sprd_1:
+                                                                              lst_c cargs_15, sprd_1 >> cargs_16:
+                                                                                af callee_6, cargs_16 >> mex_6:
+                                                                                  = foo >> callee_7:
+                                                                                    lst >> cargs_17:
+                                                                                      = bar >> sprd_2:
+                                                                                        lst_c cargs_17, sprd_2 >> cargs_18:
+                                                                                          = spam >> arg_7:
+                                                                                            lst_a cargs_18, arg_7 >> cargs_19:
+                                                                                              af callee_7, cargs_19 >> mex_7:
+                                                                                                lst >> drctvs_0:
+                                                                                                  mod exports_0, drctvs_0 >> mod_0:"
 `;
 
 exports[`call compiles as partial 1`] = `
@@ -97,19 +85,19 @@ rec >> exports_0:
                       cc ret_1, pfn_1
     >> mex_1:
       fn args_2, ret_2:
-        lst_h args_2 >> prtl_3:
+        lst_h args_2 >> sprtl_0:
           = foo >> callee_2:
             lst >> cargs_5:
-              = prtl_3 >> sprd_0:
+              = sprtl_0 >> sprd_0:
                 lst_c cargs_5, sprd_0 >> cargs_6:
                   af callee_2, cargs_6 >> pfn_2:
                     cc ret_2, pfn_2
       >> mex_2:
         fn args_3, ret_3:
-          lst_h args_3 >> prtl_4:
+          lst_h args_3 >> sprtl_1:
             = foo >> callee_3:
               lst >> cargs_7:
-                = prtl_4 >> left_0:
+                = sprtl_1 >> left_0:
                   str 'bar' >> key_0
                     rec_g left_0, key_0 >> sprd_1:
                       lst_c cargs_7, sprd_1 >> cargs_8:
@@ -117,12 +105,12 @@ rec >> exports_0:
                           cc ret_3, pfn_3
         >> mex_3:
           fn args_4, ret_4:
-            lst_h args_4 >> prtl_5:
+            lst_h args_4 >> prtl_3:
               = foo >> callee_4:
                 lst >> cargs_9:
-                  = prtl_5 >> arg_3:
+                  = prtl_3 >> arg_3:
                     lst_a cargs_9, arg_3 >> cargs_10:
-                      = prtl_5 >> left_1:
+                      = prtl_3 >> left_1:
                         str 'bar' >> key_1
                           rec_g left_1, key_1 >> sprd_2:
                             lst_c cargs_10, sprd_2 >> cargs_11:

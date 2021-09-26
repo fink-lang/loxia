@@ -5,6 +5,7 @@
 alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 base = length alphabet
 
+
 to_id = fn idx, out='':
   div = floor idx / base
   rem = idx % base
@@ -16,13 +17,20 @@ to_id = fn idx, out='':
 
 
 
+get_new_id = fn id, renames:
+  {id_cntr=0} = renames
+  new_id = to_id id_cntr
+  nrs = {...renames, id_cntr: id_cntr + 1, (id.i): new_id}
+  [{...id, i: new_id}, nrs]
+
+
+
 replace_refs = fn [id=false, ...ids], renames, out=[]:
   match id:
     false: out
     else:
-      {(id): new_id=id} = renames
-      replace_refs ids, renames, [...out, new_id]
-
+      {(id.i): new_id=id.i} = renames
+      replace_refs ids, renames, [...out, {...id, i: new_id}]
 
 
 
@@ -30,37 +38,37 @@ rename = fn [id=false, ...ids], renames, out=[]:
   match id:
     false: [out, renames]
     else:
-      {id_cntr=0} = renames
-      new_id = to_id id_cntr
-      nrs = {...renames, id_cntr: id_cntr + 1, (id): new_id}
-      rename ids, nrs, [...out, new_id]
+      [new_id, next_renames] = get_new_id id, renames
+      rename ids, next_renames, [...out, new_id]
 
 
 
-shorten_names = fn [expr=false, ...exprs], renames={}, out=[]:
-  match expr:
+shorten_names = fn [curr=false, ...rest], renames={}, out=[]:
+  match curr:
     false: [out, renames]
 
-    [? in ['int', 'float', 'str']]:
-      [op, args, res, ...rest] = expr
+    [{f: ? in ['int', 'float', 'str']}]:
+      [expr, res] = curr
       [nres, next_ren] = rename res, renames
-      shorten_names exprs, next_ren, [...out, [op, args, nres, ...rest]]
+      shorten_names rest, next_ren, [...out, [expr, nres]]
 
-    [? in ['fn', 'cn']]:
-      [op, [args, body], res, ...rest] = expr
+    [{f: ? in ['fn', 'cn']}]:
+      [expr, res] = curr
+      [args, body] = expr.args
       [nargs, bod_ren] = rename args, renames
       [nbody, res_ren] = shorten_names body, bod_ren
       [nres, next_ren] = rename res, res_ren
-      shorten_names exprs, next_ren, [...out, [op, [nargs, nbody], nres, ...rest]]
+      shorten_names rest, next_ren, [...out, [{...expr, args: [nargs, nbody]}, nres]]
 
     else:
-      [op, args, res, ...rest] = expr
-      nargs = replace_refs args, renames
+      [expr, res] = curr
+      nargs = replace_refs expr.args, renames
       [nres, next_ren] = rename res, renames
-      shorten_names exprs, next_ren, [...out, [op, nargs, nres, ...rest]]
+      shorten_names rest, next_ren, [...out, [{...expr, args: nargs}, nres]]
 
 
 
-optimize_ids = fn exprs:
-  [n] = shorten_names exprs
-  n
+optimize_names = fn exprs, ctx:
+  [ir] = shorten_names exprs
+  [ir, ctx]
+

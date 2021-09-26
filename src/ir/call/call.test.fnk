@@ -43,5 +43,3 @@ describe 'call', fn:
         map ? % 2 == 0
       '
       to_match_snapshot
-
-

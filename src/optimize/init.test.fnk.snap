@@ -18,7 +18,7 @@ rec >> exports_0:
                           str 'f' >> key_3
                             rec_s exports_3, key_3, f_0 >> exports_4:
                               lst >> drctvs_0:
-                                mod exports_4, drctvs_0 >> result_0:"
+                                mod exports_4, drctvs_0 >> mod_0:"
 `;
 
 exports[`optimize optimizes ac ...>> res: cc ..., res 1`] = `
@@ -45,7 +45,7 @@ rec >> exports_0:
     str 'gcd' >> key_0
       rec_s exports_0, key_0, gcd_0 >> exports_1:
         lst >> drctvs_0:
-          mod exports_1, drctvs_0 >> result_0:"
+          mod exports_1, drctvs_0 >> mod_0:"
 `;
 
 exports[`optimize optimizes conts 1`] = `
@@ -65,16 +65,16 @@ rec >> exports_0:
                         lst_a lst_1, item_1 >> lst_0:
                           int 2 >> right_1:
                             * ni_0, right_1 >> item_0:
-                              lst_a lst_0, item_0 >> result_2:
-                                cc ret_1, result_2
+                              lst_a lst_0, item_0 >> result_1:
+                                cc ret_1, result_1
                   >> else_0:
                     == foo_0, bar_0 >> cond_0:
                       cn:
                         lst >> lst_3:
                           int 1 >> item_3:
                             lst_a lst_3, item_3 >> lst_2:
-                              lst_a lst_2, ni_0 >> result_3:
-                                cc ret_1, result_3
+                              lst_a lst_2, ni_0 >> result_2:
+                                cc ret_1, result_2
                       >> match_res_0:
                         cif cond_0, match_res_0, else_0
                 >> match_0:
@@ -83,8 +83,8 @@ rec >> exports_0:
                       lst_t right_0 >> tail_2:
                         lst_h tail_2 >> ham_0:
                           + spam_1, ni_0 >> left_1:
-                            + left_1, ham_0 >> result_4:
-                              cc ret_0, result_4
+                            + left_1, ham_0 >> result_3:
+                              cc ret_0, result_3
         >> spam_0:
           str 'spam' >> key_1
             rec_s exports_1, key_1, spam_0 >> exports_2:
@@ -93,7 +93,7 @@ rec >> exports_0:
                   lst_a cargs_1, bar >> cargs_2:
                     af spam_0, cargs_2 >> mex_0:
                       lst >> drctvs_0:
-                        mod exports_2, drctvs_0 >> result_0:"
+                        mod exports_2, drctvs_0 >> mod_0:"
 `;
 
 exports[`optimize optimizes functions 1`] = `
@@ -107,8 +107,8 @@ rec >> exports_0:
             lst_t args_0 >> tail_0:
               lst_h tail_0 >> bar_0:
                 + bar_0, foo_0 >> left_0:
-                  + left_0, ni_0 >> result_2:
-                    cc ret_0, result_2
+                  + left_0, ni_0 >> result_1:
+                    cc ret_0, result_1
         >> spam_0:
           str 'spam' >> key_1
             rec_s exports_1, key_1, spam_0 >> exports_2:
@@ -117,7 +117,67 @@ rec >> exports_0:
                   lst_a cargs_1, bar >> cargs_2:
                     af spam_0, cargs_2 >> mex_0:
                       lst >> drctvs_0:
-                        mod exports_2, drctvs_0 >> result_0:"
+                        mod exports_2, drctvs_0 >> mod_0:"
+`;
+
+exports[`optimize optimizes using short names 1`] = `
+"
+rec >> a:
+  int 3 >> b:
+    str 'ham' >> c
+      rec_s a, c, b >> d:
+        + spam, b >> e:
+          str 'foobar' >> f
+            rec_s d, f, e >> g:
+              fn h, i:
+                lst_h h >> j:
+                  lst_t h >> k:
+                    lst_h k >> l:
+                      + j, l >> m:
+                        cc i, m
+              >> n:
+                str 'shrurb' >> o
+                  rec_s g, o, n >> p:
+                    fn q, r:
+                      lst_h q >> s:
+                        lst_t q >> t:
+                          lst_h t >> u:
+                            + s, u >> v:
+                              + v, b >> w:
+                                cc r, w
+                    >> x:
+                      str 'nanu' >> y
+                        rec_s p, y, x >> z:
+                          fn A, B:
+                            lst_h A >> C:
+                              lst_t A >> D:
+                                lst_h D >> E:
+                                  lst_t D >> F:
+                                    lst_h F >> G:
+                                      lst >> H:
+                                        lst_a H, C >> I:
+                                          lst_a I, E >> J:
+                                            lst_a J, G >> K:
+                                              cc B, K
+                          >> L:
+                            str 'ni' >> M
+                              rec_s z, M, L >> N:
+                                fn O, P:
+                                  lst_h O >> Q:
+                                    lst_t O >> R:
+                                      lst_h R >> S:
+                                        lst_t R >> T:
+                                          lst_h T >> U:
+                                            lst >> V:
+                                              lst_a V, Q >> W:
+                                                lst_a W, S >> X:
+                                                  lst_a X, U >> Y:
+                                                    cc P, Y
+                                >> Z:
+                                  str 'na' >> aa
+                                    rec_s N, aa, Z >> ab:
+                                      lst >> ac:
+                                        mod ab, ac >> ad:"
 `;
 
 exports[`optimize optimizes values 1`] = `
@@ -151,5 +211,5 @@ rec >> exports_0:
                                                     lst_a cargs_7, lala >> cargs_8:
                                                       af log, cargs_8 >> mex_5:
                                                         lst >> drctvs_0:
-                                                          mod exports_2, drctvs_0 >> result_0:"
+                                                          mod exports_2, drctvs_0 >> mod_0:"
 `;

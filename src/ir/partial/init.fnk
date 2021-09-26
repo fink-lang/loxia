@@ -5,7 +5,7 @@
 
 
 transform_partial = fn expr, result, ctx:
-  {partial_ident=false} = ctx
+  {partial_ident} = ctx
   [prt, , end_ctx] = let partial_ident, result, expr, {...ctx, has_partial: true}
   [prt, end_ctx]
 

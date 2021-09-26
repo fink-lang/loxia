@@ -6,30 +6,22 @@ babel_traverse = import '@babel/traverse'
 
 {transform} = import './ir/transform.fnk'
 {init_ctx} = import './ir/init.fnk'
-{serialize} = import './ir/serialize.fnk'
 {optimize} = import './optimize/init.fnk'
 {transform_ir} = import './js/init.fnk'
 {module_transforms} = import './js/module/init.fnk'
 {transform_async} = import './js/async/init.fnk'
 
-{timed, log_timings} = import './perf.fnk'
 
-try_catch_ = fn f:
-  r = f _
-  [false, r]
+transform_file = fn fink_ast, code, filename, {optimize: optim={}, ...options}:
+  opts = {...options, optimize: {refs: true, tails: true, unused: true, ...optim}}
 
-transform_file = fn fink_ast, code, filename, options:
-  ctx = init_ctx code, filename, options
+  ctx = init_ctx code, filename, opts
 
   [error, [js_ast]=[]] = try_catch fn:
-    [lir] = (timed transform) fink_ast, 'mod', ctx
-    [olir] = (timed optimize) lir, options
-    {js} = (timed transform_ir) olir, options
-    # console.log serialize lir
-    # console.log serialize olir
+    [lir] = transform fink_ast, 'mod', ctx
+    [olir] = optimize lir, opts
+    {js} = transform_ir olir, opts
     [js]
-
-  # log_timings 'transform ${filename}'
 
   extras = match options:
     {module_type: 'cjs'}: module_transforms

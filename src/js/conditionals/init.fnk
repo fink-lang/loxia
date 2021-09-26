@@ -62,7 +62,7 @@ transform_is_lst = fn expr, ctx:
 
 
 transform_if = fn expr, ctx:
-  [{args: [cond_id, true_id, else_id=false], loc}] = expr
+  [{args: [cond_id, true_id, else_id], loc}] = expr
   cond_c = get_js cond_id, ctx
   true_c = get_js true_id, ctx
 

@@ -8,15 +8,8 @@ const call4_0 = a(x_0 => {
   return x_0 * 2;
 });
 const call5_0 = a(foo, undefined, bar);
-
-const call6_0 = () => {
-  return a(foo, ...bar);
-};
-
-const call7_0 = () => {
-  return a(...foo);
-};
-
+const call6_0 = a(foo, ...bar);
+const call7_0 = a(...foo);
 export const call1 = call1_0,
       call2 = call2_0,
       call3 = call3_0,
@@ -85,20 +78,20 @@ export const pa1 = pa1_0,
 `;
 
 exports[`call compiles with partial spread arg 1`] = `
-"const p1_0 = prtl_0 => {
-  return foo(...prtl_0);
+"const p1_0 = sprtl_0 => {
+  return foo(...sprtl_0);
 };
 
-const p2_0 = prtl_1 => {
-  return foo(...prtl_1.bar);
+const p2_0 = sprtl_1 => {
+  return foo(...sprtl_1.bar);
 };
 
-const p3_0 = prtl_2 => {
-  return foo(...prtl_2.bar.spam);
+const p3_0 = sprtl_2 => {
+  return foo(...sprtl_2.bar.spam);
 };
 
-const p4_0 = prtl_3 => {
-  return foo(...bar(prtl_3));
+const p4_0 = sprtl_3 => {
+  return foo(...bar(sprtl_3));
 };
 
 const p7_0 = prtlc_4 => {

@@ -52,19 +52,15 @@ rec >> exports_0:
               lst_t tail_0 >> tail_1:
                 lst_h tail_1 >> c_0:
                   lst_t tail_1 >> tail_2:
-                    fn args_1, ret_1:
-                      lst_h args_1 >> prtl_0:
-                        = shrub >> callee_0:
-                          lst >> cargs_0:
-                            = a_0 >> sprd_0:
-                              lst_c cargs_0, sprd_0 >> cargs_1:
-                                af callee_0, cargs_1 >> pfn_0:
-                                  cc ret_1, pfn_0
-                    >> result_0:
-                      = bar >> callee_1:
-                        lst >> cargs_2:
-                          af callee_1, cargs_2 >> result_1:
-                            cc ret_0, result_1
+                    = shrub >> callee_0:
+                      lst >> cargs_0:
+                        = a_0 >> sprd_0:
+                          lst_c cargs_0, sprd_0 >> cargs_1:
+                            af callee_0, cargs_1 >> result_0:
+                              = bar >> callee_1:
+                                lst >> cargs_2:
+                                  af callee_1, cargs_2 >> result_1:
+                                    cc ret_0, result_1
   >> fun_0:
     str 'fun' >> key_0
       rec_s exports_0, key_0, fun_0 >> exports_1:

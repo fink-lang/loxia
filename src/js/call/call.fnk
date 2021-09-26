@@ -1,7 +1,7 @@
 types = import '@babel/types'
 {
   callExpression, breakStatement, assignmentExpression
-  expressionStatement, returnStatement, spreadElement
+  expressionStatement, returnStatement
   identifier, continueStatement, variableDeclaration, variableDeclarator
 } = types
 {null} = import '@fink/js-interop/nullish.fnk'
@@ -22,8 +22,8 @@ as_call_args = fn args:
           null: identifier 'undefined'
           else: arg
         [...?]
-    else:
-      [spreadElement args]
+    # else:
+    #   [spreadElement args]
 
 
 

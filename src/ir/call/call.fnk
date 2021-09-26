@@ -75,15 +75,18 @@ transform_arg = fn expr, args_id, ctx:
 
 
 
-transform_spread_arg = fn expr, args_id, {partial_foo=false, has_partial, ...ctx}:
-  [prlt, p_ctx] = match partial_foo:
-    false: unique_name 'prtl', expr, ctx
+transform_spread_arg = fn expr, args_id, {partial_foo=false, has_partial=false, partial_ident=false, ...ctx}:
+  [prtl, p_ctx] = match partial_foo:
+    false: unique_name 'sprtl', expr, ctx
     else: [partial_foo, ctx]
 
-  foo_ctx = {...p_ctx, partial_ident: prlt}
-  [arg, arg_id, {partial_ident:_, ...next_ctx}] = transform expr.right, 'sprd', foo_ctx
-  spread_arg args_id, arg, arg_id, {loc: expr.loc}, {...next_ctx, has_partial, partial_foo: prlt}
-
+  foo_ctx = {...p_ctx, partial_ident: prtl}
+  [arg, arg_id, {has_partial: hp=false, partial_ident:_, ...next_ctx}] = transform expr.right, 'sprd', foo_ctx
+  match hp:
+    false:
+      spread_arg args_id, arg, arg_id, {loc: expr.loc}, {...next_ctx, partial_ident, has_partial, partial_foo}
+    else:
+      spread_arg args_id, arg, arg_id, {loc: expr.loc}, {...next_ctx, partial_ident, has_partial: has_partial or hp, partial_foo: prtl}
 
 
 
@@ -158,17 +161,17 @@ transform_callee = fn expr, ctx:
 
 transform_call = fn node, result, ctx:
   [callee, c_id, args_ctx] = transform_callee node.callee, ctx
-  [args, args_id, {partial_foo, ...next_ctx}] = transform_args node, args_ctx
+  [args, args_id, {partial_foo=false, ...next_ctx}] = transform_args node, args_ctx
 
   match partial_foo:
-    ?:
-      [appl_fn, res_id, foo_ctx] = af c_id, args_id, 'pfn', node, next_ctx
-      call = [...callee, ...args, ...appl_fn]
-      func partial_foo, call, res_id, result, node, foo_ctx
-    else:
+    false:
       [appl_fn, , end_ctx] = af c_id, args_id, result, node, next_ctx
       call = [...callee, ...args, ...appl_fn]
       [call, end_ctx]
+    else:
+      [appl_fn, res_id, foo_ctx] = af c_id, args_id, 'pfn', node, next_ctx
+      call = [...callee, ...args, ...appl_fn]
+      func partial_foo, call, res_id, result, node, foo_ctx
 
 
 
