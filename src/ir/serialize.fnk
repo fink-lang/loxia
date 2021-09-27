@@ -17,25 +17,53 @@ raw = fn s:
   replace_all s, rx'(\n)', '\\n'
 
 
+ops = rec:
+  '==': 'eq'
+  '!=': 'neq'
+  '>': 'gt'
+  '<': 'lt'
+  '>=': 'gte'
+  '<=': 'lte'
+  '+': 'add'
+  '-': 'sub'
+  '*': 'mul'
+  '^': 'pow'
+  '/': 'div'
+  '%': 'rem'
+
 
 serialize = fn [curr=false, ...rest], out='', indent='':
   match curr:
     false:
       out
 
-    [{f: 'str'}]:
+    [{f: '='}]:
+      [{args: [val]}, ids] = curr
+      serialize
+        rest
+        '${out}\n${indent}id ${val.i}, fn${a2s ids}:'
+        '  ${indent}'
+
+    [{f: ? in ['str', 'int', 'float']}]:
       [{f, args: [val]}, ids] = curr
       serialize
         rest
-        '${out}\n${indent}${f} \'${raw val}\' >>${a2s ids}:'
+        '${out}\n${indent}${f} \'${raw val}\', fn${a2s ids}:'
+        '  ${indent}'
+
+    [{f: ? in ['lst', 'rec']}]:
+      [{f}, ids] = curr
+      serialize
+        rest
+        '${out}\n${indent}${f}_e fn${a2s ids}:'
         '  ${indent}'
 
     [{f: ? in ['cn', 'fn', 'fnr']}]:
       [{f: op, args: [args, body]}, ids] = curr
       serialize
         rest
-        '${out}\n${indent}${op}${a2s args}:${serialize body, '', '  ${indent}'}
-          ${indent}>>${a2s ids}:'
+        '${out}\n${indent}id (fn${a2s args}: #${op}${serialize body, '', '  ${indent}'}
+          ${indent}), fn${a2s ids}:'
         '  ${indent}'
 
     [{f: ? in ['cc', 'cif', 'cf']}]:
@@ -47,8 +75,9 @@ serialize = fn [curr=false, ...rest], out='', indent='':
 
     [, [?]]:
       [{f, args}, ids] = curr
+      {(f): opf=f} = ops
       serialize
         rest
-        '${out}\n${indent}${f}${a2s args} >>${a2s ids}:'
+        '${out}\n${indent}${opf}${a2s args}, fn${a2s ids}:'
         '  ${indent}'
 

@@ -2,405 +2,405 @@
 
 exports[`rec optimizations optimizes key-refs 1`] = `
 "
-rec >> exports_0:
-  rec >> rec_2:
-    str 'π' >> key_2:
-      rec_s rec_2, key_2, π >> rec_1:
-        str 'ƒ' >> key_1:
-          rec_s rec_1, key_1, ƒ >> rec_0:
-            str 'foo-bar' >> key_0:
-              rec_s rec_0, key_0, foo-bar >> foo_0:
-                str 'foo' >> key_3:
-                  rec_s exports_0, key_3, foo_0 >> exports_1:
-                    lst >> drctvs_0:
-                      mod exports_1, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  rec_e fn rec_2:
+    str 'π', fn key_2:
+      rec_s rec_2, key_2, π, fn rec_1:
+        str 'ƒ', fn key_1:
+          rec_s rec_1, key_1, ƒ, fn rec_0:
+            str 'foo-bar', fn key_0:
+              rec_s rec_0, key_0, foo-bar, fn foo_0:
+                str 'foo', fn key_3:
+                  rec_s exports_0, key_3, foo_0, fn exports_1:
+                    lst_e fn drctvs_0:
+                      mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`record compiles calculaged props 1`] = `
 "
-rec >> exports_0:
-  rec >> rec_1:
-    str 'spam' >> str_3:
-      strt str_3 >> key_1:
-        int 456 >> val_1:
-          rec_s rec_1, key_1, val_1 >> rec_0:
-            str 'spam-' >> str_0:
-              = ham >> sx_0:
-                str '' >> str_1:
-                  strt str_0, sx_0, str_1 >> key_0:
-                    str 'ni' >> str_2:
-                      strt str_2 >> val_0:
-                        rec_s rec_0, key_0, val_0 >> foo_0:
-                          str 'foo' >> key_2:
-                            rec_s exports_0, key_2, foo_0 >> exports_1:
-                              lst >> drctvs_0:
-                                mod exports_1, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  rec_e fn rec_1:
+    str 'spam', fn str_3:
+      strt str_3, fn key_1:
+        int '456', fn val_1:
+          rec_s rec_1, key_1, val_1, fn rec_0:
+            str 'spam-', fn str_0:
+              id ham, fn sx_0:
+                str '', fn str_1:
+                  strt str_0, sx_0, str_1, fn key_0:
+                    str 'ni', fn str_2:
+                      strt str_2, fn val_0:
+                        rec_s rec_0, key_0, val_0, fn foo_0:
+                          str 'foo', fn key_2:
+                            rec_s exports_0, key_2, foo_0, fn exports_1:
+                              lst_e fn drctvs_0:
+                                mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`record compiles key:val 1`] = `
 "
-rec >> exports_0:
-  rec >> rec_2:
-    str 'a' >> key_2:
-      int 1 >> val_2:
-        rec_s rec_2, key_2, val_2 >> rec_1:
-          str 'b' >> key_1:
-            int 123 >> val_1:
-              rec_s rec_1, key_1, val_1 >> rec_0:
-                str 'c-d-e' >> str_0:
-                  strt str_0 >> key_0:
-                    = cde >> val_0:
-                      rec_s rec_0, key_0, val_0 >> foo_0:
-                        str 'foo' >> key_3:
-                          rec_s exports_0, key_3, foo_0 >> exports_1:
-                            lst >> drctvs_0:
-                              mod exports_1, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  rec_e fn rec_2:
+    str 'a', fn key_2:
+      int '1', fn val_2:
+        rec_s rec_2, key_2, val_2, fn rec_1:
+          str 'b', fn key_1:
+            int '123', fn val_1:
+              rec_s rec_1, key_1, val_1, fn rec_0:
+                str 'c-d-e', fn str_0:
+                  strt str_0, fn key_0:
+                    id cde, fn val_0:
+                      rec_s rec_0, key_0, val_0, fn foo_0:
+                        str 'foo', fn key_3:
+                          rec_s exports_0, key_3, foo_0, fn exports_1:
+                            lst_e fn drctvs_0:
+                              mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`record compiles key:val 2`] = `
 "
-rec >> exports_0:
-  rec >> rec_2:
-    str 'a' >> key_2:
-      int 123 >> val_2:
-        rec_s rec_2, key_2, val_2 >> rec_1:
-          str 'b' >> key_1:
-            int 123 >> left_0:
-              int 123 >> left_1:
-                int 1345 >> right_1:
-                  and left_1, right_1 >> right_0:
-                    and left_0, right_0 >> val_1:
-                      rec_s rec_1, key_1, val_1 >> rec_0:
-                        str 'c' >> key_0:
-                          fn args_0, ret_0:
-                            lst_h args_0 >> a_0:
-                              lst_t args_0 >> tail_0:
-                                lst_h tail_0 >> b_0:
-                                  lst_t tail_0 >> tail_1:
-                                    int 134 >> result_0:
+rec_e fn exports_0:
+  rec_e fn rec_2:
+    str 'a', fn key_2:
+      int '123', fn val_2:
+        rec_s rec_2, key_2, val_2, fn rec_1:
+          str 'b', fn key_1:
+            int '123', fn left_0:
+              int '123', fn left_1:
+                int '1345', fn right_1:
+                  and left_1, right_1, fn right_0:
+                    and left_0, right_0, fn val_1:
+                      rec_s rec_1, key_1, val_1, fn rec_0:
+                        str 'c', fn key_0:
+                          id (fn args_0, ret_0: #fn
+                            lst_h args_0, fn a_0:
+                              lst_t args_0, fn tail_0:
+                                lst_h tail_0, fn b_0:
+                                  lst_t tail_0, fn tail_1:
+                                    int '134', fn result_0:
                                       cc ret_0, result_0
-                          >> val_0:
-                            rec_s rec_0, key_0, val_0 >> obj7_0:
-                              str 'obj7' >> key_3:
-                                rec_s exports_0, key_3, obj7_0 >> exports_1:
-                                  lst >> drctvs_0:
-                                    mod exports_1, drctvs_0 >> mod_0:"
+                          ), fn val_0:
+                            rec_s rec_0, key_0, val_0, fn obj7_0:
+                              str 'obj7', fn key_3:
+                                rec_s exports_0, key_3, obj7_0, fn exports_1:
+                                  lst_e fn drctvs_0:
+                                    mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`record compiles member expr as keys 1`] = `
 "
-rec >> exports_0:
-  rec >> rec_5:
-    = bar >> sprd_1:
-      rec_m rec_5, sprd_1 >> rec_2:
-        str 'spam' >> key_1:
-          rec >> rec_3:
-            str 'ham' >> key_2:
-              rec >> rec_4:
-                str 'ni' >> key_3:
-                  str 'ni' >> str_0:
-                    strt str_0 >> val_3:
-                      rec_s rec_4, key_3, val_3 >> val_2:
-                        rec_s rec_3, key_2, val_2 >> val_1:
-                          rec_s rec_2, key_1, val_1 >> rec_1:
-                            str 'na' >> key_0:
-                              int 1234 >> val_0:
-                                rec_s rec_1, key_0, val_0 >> rec_0:
-                                  = nu >> sprd_0:
-                                    rec_m rec_0, sprd_0 >> foo_0:
-                                      str 'foo' >> key_4:
-                                        rec_s exports_0, key_4, foo_0 >> exports_1:
-                                          lst >> drctvs_0:
-                                            mod exports_1, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  rec_e fn rec_5:
+    id bar, fn sprd_1:
+      rec_m rec_5, sprd_1, fn rec_2:
+        str 'spam', fn key_1:
+          rec_e fn rec_3:
+            str 'ham', fn key_2:
+              rec_e fn rec_4:
+                str 'ni', fn key_3:
+                  str 'ni', fn str_0:
+                    strt str_0, fn val_3:
+                      rec_s rec_4, key_3, val_3, fn val_2:
+                        rec_s rec_3, key_2, val_2, fn val_1:
+                          rec_s rec_2, key_1, val_1, fn rec_1:
+                            str 'na', fn key_0:
+                              int '1234', fn val_0:
+                                rec_s rec_1, key_0, val_0, fn rec_0:
+                                  id nu, fn sprd_0:
+                                    rec_m rec_0, sprd_0, fn foo_0:
+                                      str 'foo', fn key_4:
+                                        rec_s exports_0, key_4, foo_0, fn exports_1:
+                                          lst_e fn drctvs_0:
+                                            mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`record compiles member expr as keys 2`] = `
 "
-rec >> exports_0:
-  rec >> rec_5:
-    = bar >> sprd_1:
-      rec_m rec_5, sprd_1 >> rec_1:
-        str 'spam' >> key_0:
-          rec >> rec_2:
-            str 'ham' >> key_1:
-              rec >> rec_3:
-                str 'ni' >> key_2:
-                  rec >> rec_4:
-                    str 'na' >> key_3:
-                      str 'ni' >> str_0:
-                        strt str_0 >> val_3:
-                          rec_s rec_4, key_3, val_3 >> val_2:
-                            rec_s rec_3, key_2, val_2 >> val_1:
-                              rec_s rec_2, key_1, val_1 >> val_0:
-                                rec_s rec_1, key_0, val_0 >> rec_0:
-                                  = nu >> sprd_0:
-                                    rec_m rec_0, sprd_0 >> foo_0:
-                                      str 'foo' >> key_4:
-                                        rec_s exports_0, key_4, foo_0 >> exports_1:
-                                          lst >> drctvs_0:
-                                            mod exports_1, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  rec_e fn rec_5:
+    id bar, fn sprd_1:
+      rec_m rec_5, sprd_1, fn rec_1:
+        str 'spam', fn key_0:
+          rec_e fn rec_2:
+            str 'ham', fn key_1:
+              rec_e fn rec_3:
+                str 'ni', fn key_2:
+                  rec_e fn rec_4:
+                    str 'na', fn key_3:
+                      str 'ni', fn str_0:
+                        strt str_0, fn val_3:
+                          rec_s rec_4, key_3, val_3, fn val_2:
+                            rec_s rec_3, key_2, val_2, fn val_1:
+                              rec_s rec_2, key_1, val_1, fn val_0:
+                                rec_s rec_1, key_0, val_0, fn rec_0:
+                                  id nu, fn sprd_0:
+                                    rec_m rec_0, sprd_0, fn foo_0:
+                                      str 'foo', fn key_4:
+                                        rec_s exports_0, key_4, foo_0, fn exports_1:
+                                          lst_e fn drctvs_0:
+                                            mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`record compiles shorthand 1`] = `
 "
-rec >> exports_0:
-  rec >> rec_3:
-    str 'foo' >> key_3:
-      = foo_0 >> val_3:
-        rec_s rec_3, key_3, val_3 >> rec_2:
-          str 'π' >> key_2:
-            = π >> val_2:
-              rec_s rec_2, key_2, val_2 >> rec_1:
-                str 'ƒ' >> key_1:
-                  = ƒ >> val_1:
-                    rec_s rec_1, key_1, val_1 >> rec_0:
-                      str 'foo-bar' >> key_0:
-                        = foo-bar >> val_0:
-                          rec_s rec_0, key_0, val_0 >> foo_0:
-                            str 'foo' >> key_4:
-                              rec_s exports_0, key_4, foo_0 >> exports_1:
-                                lst >> drctvs_0:
-                                  mod exports_1, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  rec_e fn rec_3:
+    str 'foo', fn key_3:
+      id foo_0, fn val_3:
+        rec_s rec_3, key_3, val_3, fn rec_2:
+          str 'π', fn key_2:
+            id π, fn val_2:
+              rec_s rec_2, key_2, val_2, fn rec_1:
+                str 'ƒ', fn key_1:
+                  id ƒ, fn val_1:
+                    rec_s rec_1, key_1, val_1, fn rec_0:
+                      str 'foo-bar', fn key_0:
+                        id foo-bar, fn val_0:
+                          rec_s rec_0, key_0, val_0, fn foo_0:
+                            str 'foo', fn key_4:
+                              rec_s exports_0, key_4, foo_0, fn exports_1:
+                                lst_e fn drctvs_0:
+                                  mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`record compiles shorthand 2`] = `
 "
-rec >> exports_0:
-  rec >> rec_3:
-    str 'a' >> key_3:
-      = a >> val_3:
-        rec_s rec_3, key_3, val_3 >> rec_2:
-          str 'delete' >> key_2:
-            = delete >> val_2:
-              rec_s rec_2, key_2, val_2 >> rec_1:
-                str 'true' >> key_1:
-                  = true >> val_1:
-                    rec_s rec_1, key_1, val_1 >> rec_0:
-                      str 'false' >> key_0:
-                        = false >> val_0:
-                          rec_s rec_0, key_0, val_0 >> foo_0:
-                            str 'foo' >> key_4:
-                              rec_s exports_0, key_4, foo_0 >> exports_1:
-                                lst >> drctvs_0:
-                                  mod exports_1, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  rec_e fn rec_3:
+    str 'a', fn key_3:
+      id a, fn val_3:
+        rec_s rec_3, key_3, val_3, fn rec_2:
+          str 'delete', fn key_2:
+            id delete, fn val_2:
+              rec_s rec_2, key_2, val_2, fn rec_1:
+                str 'true', fn key_1:
+                  id true, fn val_1:
+                    rec_s rec_1, key_1, val_1, fn rec_0:
+                      str 'false', fn key_0:
+                        id false, fn val_0:
+                          rec_s rec_0, key_0, val_0, fn foo_0:
+                            str 'foo', fn key_4:
+                              rec_s exports_0, key_4, foo_0, fn exports_1:
+                                lst_e fn drctvs_0:
+                                  mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`record compiles shorthand 3`] = `
 "
-rec >> exports_0:
-  rec >> rec_0:
-    str 'foo' >> str_0:
-      strt str_0 >> key_0:
-        rec_s rec_0, key_0, key_0 >> foo_0:
-          str 'foo' >> key_1:
-            rec_s exports_0, key_1, foo_0 >> exports_1:
-              lst >> drctvs_0:
-                mod exports_1, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  rec_e fn rec_0:
+    str 'foo', fn str_0:
+      strt str_0, fn key_0:
+        rec_s rec_0, key_0, key_0, fn foo_0:
+          str 'foo', fn key_1:
+            rec_s exports_0, key_1, foo_0, fn exports_1:
+              lst_e fn drctvs_0:
+                mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`record compiles simple 1`] = `
 "
-rec >> exports_0:
-  rec >> foo_0:
-    str 'foo' >> key_0:
-      rec_s exports_0, key_0, foo_0 >> exports_1:
-        lst >> drctvs_0:
-          mod exports_1, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  rec_e fn foo_0:
+    str 'foo', fn key_0:
+      rec_s exports_0, key_0, foo_0, fn exports_1:
+        lst_e fn drctvs_0:
+          mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`record compiles spread 1`] = `
 "
-rec >> exports_0:
-  rec >> rec_2:
-    str 'a' >> key_1:
-      = a >> val_1:
-        rec_s rec_2, key_1, val_1 >> rec_1:
-          str 'b' >> key_0:
-            = b >> val_0:
-              rec_s rec_1, key_0, val_0 >> rec_0:
-                = c >> sprd_0:
-                  rec_m rec_0, sprd_0 >> foo_0:
-                    str 'foo' >> key_2:
-                      rec_s exports_0, key_2, foo_0 >> exports_1:
-                        lst >> drctvs_0:
-                          mod exports_1, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  rec_e fn rec_2:
+    str 'a', fn key_1:
+      id a, fn val_1:
+        rec_s rec_2, key_1, val_1, fn rec_1:
+          str 'b', fn key_0:
+            id b, fn val_0:
+              rec_s rec_1, key_0, val_0, fn rec_0:
+                id c, fn sprd_0:
+                  rec_m rec_0, sprd_0, fn foo_0:
+                    str 'foo', fn key_2:
+                      rec_s exports_0, key_2, foo_0, fn exports_1:
+                        lst_e fn drctvs_0:
+                          mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`unpacking record compiles defaults 1`] = `
 "
-rec >> exports_0:
-  = foo >> right_0:
-    int 1 >> flbk_0:
-      str 'x' >> key_0:
-        rec_g right_0, key_0 >> hdm_0:
-          ifv hdm_0, hdm_0, flbk_0 >> x_0:
-            int 2 >> flbk_1:
-              str 'π' >> key_1:
-                rec_g right_0, key_1 >> hdm_1:
-                  ifv hdm_1, hdm_1, flbk_1 >> pi_0:
-                    str 'ni' >> key_2:
-                      rec_g right_0, key_2 >> val_0:
-                        str 'y' >> key_3:
-                          rec_g val_0, key_3 >> y_0:
-                            str 'z' >> key_4:
-                              rec_g val_0, key_4 >> z_0:
-                                lst >> drctvs_0:
-                                  mod exports_0, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  id foo, fn right_0:
+    int '1', fn flbk_0:
+      str 'x', fn key_0:
+        rec_g right_0, key_0, fn hdm_0:
+          ifv hdm_0, hdm_0, flbk_0, fn x_0:
+            int '2', fn flbk_1:
+              str 'π', fn key_1:
+                rec_g right_0, key_1, fn hdm_1:
+                  ifv hdm_1, hdm_1, flbk_1, fn pi_0:
+                    str 'ni', fn key_2:
+                      rec_g right_0, key_2, fn val_0:
+                        str 'y', fn key_3:
+                          rec_g val_0, key_3, fn y_0:
+                            str 'z', fn key_4:
+                              rec_g val_0, key_4, fn z_0:
+                                lst_e fn drctvs_0:
+                                  mod exports_0, drctvs_0, fn mod_0:"
 `;
 
 exports[`unpacking record compiles empty 1`] = `
 "
-rec >> exports_0:
-  = shrub >> right_0:
-    str 'foo' >> key_0:
-      rec_g right_0, key_0 >> val_0:
-        str 'bar' >> key_1:
-          rec_g right_0, key_1 >> bar_0:
-            lst >> drctvs_0:
-              mod exports_0, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  id shrub, fn right_0:
+    str 'foo', fn key_0:
+      rec_g right_0, key_0, fn val_0:
+        str 'bar', fn key_1:
+          rec_g right_0, key_1, fn bar_0:
+            lst_e fn drctvs_0:
+              mod exports_0, drctvs_0, fn mod_0:"
 `;
 
 exports[`unpacking record compiles member expr as keys 1`] = `
 "
-rec >> exports_0:
-  = foo >> right_0:
-    str 'spam' >> key_0:
-      rec_g right_0, key_0 >> val_0:
-        str 'ham' >> key_1:
-          rec_g val_0, key_1 >> val_1:
-            str 'ni' >> key_2:
-              rec_g val_1, key_2 >> ni_0:
-                rec_d right_0, key_0 >> rest_0:
-                  lst >> drctvs_0:
-                    mod exports_0, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  id foo, fn right_0:
+    str 'spam', fn key_0:
+      rec_g right_0, key_0, fn val_0:
+        str 'ham', fn key_1:
+          rec_g val_0, key_1, fn val_1:
+            str 'ni', fn key_2:
+              rec_g val_1, key_2, fn ni_0:
+                rec_d right_0, key_0, fn rest_0:
+                  lst_e fn drctvs_0:
+                    mod exports_0, drctvs_0, fn mod_0:"
 `;
 
 exports[`unpacking record compiles member expr as keys 2`] = `
 "
-rec >> exports_0:
-  = foo >> right_0:
-    str 'spam' >> key_0:
-      rec_g right_0, key_0 >> val_0:
-        str 'ham' >> key_1:
-          rec_g val_0, key_1 >> val_1:
-            str 'ni' >> key_2:
-              rec_g val_1, key_2 >> val_2:
-                str 'ni' >> key_3:
-                  rec_g val_2, key_3 >> nu_0:
-                    str 'foo' >> key_4:
-                      rec_g val_2, key_4 >> val_3:
-                        str 'bar' >> key_5:
-                          rec_g val_3, key_5 >> bar_0:
-                            rec_d right_0, key_0 >> rest_0:
-                              lst >> drctvs_0:
-                                mod exports_0, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  id foo, fn right_0:
+    str 'spam', fn key_0:
+      rec_g right_0, key_0, fn val_0:
+        str 'ham', fn key_1:
+          rec_g val_0, key_1, fn val_1:
+            str 'ni', fn key_2:
+              rec_g val_1, key_2, fn val_2:
+                str 'ni', fn key_3:
+                  rec_g val_2, key_3, fn nu_0:
+                    str 'foo', fn key_4:
+                      rec_g val_2, key_4, fn val_3:
+                        str 'bar', fn key_5:
+                          rec_g val_3, key_5, fn bar_0:
+                            rec_d right_0, key_0, fn rest_0:
+                              lst_e fn drctvs_0:
+                                mod exports_0, drctvs_0, fn mod_0:"
 `;
 
 exports[`unpacking record compiles member expr as keys 3`] = `
 "
-rec >> exports_0:
-  = foo >> right_0:
-    str 'foo-bar' >> key_0:
-      rec_g right_0, key_0 >> val_0:
-        str 'spam-ham' >> key_1:
-          rec_g val_0, key_1 >> val_1:
-            str 'ni' >> key_2:
-              rec_g val_1, key_2 >> val_2:
-                str 'ni' >> key_3:
-                  rec_g val_2, key_3 >> nu_0:
-                    str 'foo' >> key_4:
-                      rec_g val_2, key_4 >> val_3:
-                        str 'bar' >> key_5:
-                          rec_g val_3, key_5 >> bar_0:
-                            rec_d right_0, key_0 >> rest_0:
-                              lst >> drctvs_0:
-                                mod exports_0, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  id foo, fn right_0:
+    str 'foo-bar', fn key_0:
+      rec_g right_0, key_0, fn val_0:
+        str 'spam-ham', fn key_1:
+          rec_g val_0, key_1, fn val_1:
+            str 'ni', fn key_2:
+              rec_g val_1, key_2, fn val_2:
+                str 'ni', fn key_3:
+                  rec_g val_2, key_3, fn nu_0:
+                    str 'foo', fn key_4:
+                      rec_g val_2, key_4, fn val_3:
+                        str 'bar', fn key_5:
+                          rec_g val_3, key_5, fn bar_0:
+                            rec_d right_0, key_0, fn rest_0:
+                              lst_e fn drctvs_0:
+                                mod exports_0, drctvs_0, fn mod_0:"
 `;
 
 exports[`unpacking record compiles nested 1`] = `
 "
-rec >> exports_0:
-  = ni >> right_0:
-    str 'a' >> key_0:
-      rec_g right_0, key_0 >> a_0:
-        str 'b' >> key_1:
-          rec_g right_0, key_1 >> val_0:
-            str 'c' >> key_2:
-              rec_g val_0, key_2 >> c_0:
-                str 'd' >> key_3:
-                  rec_g val_0, key_3 >> d_0:
-                    str 'e' >> key_4:
-                      rec_g right_0, key_4 >> e_0:
-                        lst >> drctvs_0:
-                          mod exports_0, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  id ni, fn right_0:
+    str 'a', fn key_0:
+      rec_g right_0, key_0, fn a_0:
+        str 'b', fn key_1:
+          rec_g right_0, key_1, fn val_0:
+            str 'c', fn key_2:
+              rec_g val_0, key_2, fn c_0:
+                str 'd', fn key_3:
+                  rec_g val_0, key_3, fn d_0:
+                    str 'e', fn key_4:
+                      rec_g right_0, key_4, fn e_0:
+                        lst_e fn drctvs_0:
+                          mod exports_0, drctvs_0, fn mod_0:"
 `;
 
 exports[`unpacking record compiles nested 2`] = `
 "
-rec >> exports_0:
-  = ni >> right_0:
-    str 'a' >> key_0:
-      rec_g right_0, key_0 >> a_0:
-        str 'b' >> key_1:
-          rec_g right_0, key_1 >> val_0:
-            lst_h val_0 >> c_0:
-              lst_t val_0 >> tail_0:
-                lst_h tail_0 >> d_0:
-                  lst_t tail_0 >> tail_1:
-                    str 'e' >> key_2:
-                      rec_g right_0, key_2 >> e_0:
-                        lst >> drctvs_0:
-                          mod exports_0, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  id ni, fn right_0:
+    str 'a', fn key_0:
+      rec_g right_0, key_0, fn a_0:
+        str 'b', fn key_1:
+          rec_g right_0, key_1, fn val_0:
+            lst_h val_0, fn c_0:
+              lst_t val_0, fn tail_0:
+                lst_h tail_0, fn d_0:
+                  lst_t tail_0, fn tail_1:
+                    str 'e', fn key_2:
+                      rec_g right_0, key_2, fn e_0:
+                        lst_e fn drctvs_0:
+                          mod exports_0, drctvs_0, fn mod_0:"
 `;
 
 exports[`unpacking record compiles simple 1`] = `
 "
-rec >> exports_0:
-  = ni >> right_0:
-    str 'a' >> key_0:
-      rec_g right_0, key_0 >> a_0:
-        str 'b' >> str_0:
-          strt str_0 >> key_1:
-            rec_g right_0, key_1 >> b_0:
-              = foo >> callee_0:
-                lst >> cargs_0:
-                  = bar >> arg_0:
-                    lst_a cargs_0, arg_0 >> cargs_1:
-                      af callee_0, cargs_1 >> key_2:
-                        rec_g right_0, key_2 >> val_0:
-                          str 'c' >> key_3:
-                            rec_g val_0, key_3 >> c_0:
-                              lst >> drctvs_0:
-                                mod exports_0, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  id ni, fn right_0:
+    str 'a', fn key_0:
+      rec_g right_0, key_0, fn a_0:
+        str 'b', fn str_0:
+          strt str_0, fn key_1:
+            rec_g right_0, key_1, fn b_0:
+              id foo, fn callee_0:
+                lst_e fn cargs_0:
+                  id bar, fn arg_0:
+                    lst_a cargs_0, arg_0, fn cargs_1:
+                      af callee_0, cargs_1, fn key_2:
+                        rec_g right_0, key_2, fn val_0:
+                          str 'c', fn key_3:
+                            rec_g val_0, key_3, fn c_0:
+                              lst_e fn drctvs_0:
+                                mod exports_0, drctvs_0, fn mod_0:"
 `;
 
 exports[`unpacking record compiles spread 1`] = `
 "
-rec >> exports_0:
-  = foo >> right_0:
-    str 'a' >> key_0:
-      rec_g right_0, key_0 >> a_0:
-        str 'a' >> key_1:
-          rec_g right_0, key_1 >> val_0:
-            str 'b' >> key_2:
-              rec_g val_0, key_2 >> b_0:
-                str 'c' >> key_3:
-                  rec_g val_0, key_3 >> c_0:
-                    rec_d right_0, key_0, key_1 >> f_0:
-                      lst >> drctvs_0:
-                        mod exports_0, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  id foo, fn right_0:
+    str 'a', fn key_0:
+      rec_g right_0, key_0, fn a_0:
+        str 'a', fn key_1:
+          rec_g right_0, key_1, fn val_0:
+            str 'b', fn key_2:
+              rec_g val_0, key_2, fn b_0:
+                str 'c', fn key_3:
+                  rec_g val_0, key_3, fn c_0:
+                    rec_d right_0, key_0, key_1, fn f_0:
+                      lst_e fn drctvs_0:
+                        mod exports_0, drctvs_0, fn mod_0:"
 `;
 
 exports[`unpacking record destructuress tpls 1`] = `
 "
-rec >> exports_0:
-  = shrub >> right_0:
-    str 'foo' >> key_0:
-      rec_g right_0, key_0 >> val_0:
-        lst_h val_0 >> bar_0:
-          lst_t val_0 >> tail_0:
-            lst_h tail_0 >> spam_0:
-              lst_t tail_0 >> tail_1:
-                lst >> drctvs_0:
-                  mod exports_0, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  id shrub, fn right_0:
+    str 'foo', fn key_0:
+      rec_g right_0, key_0, fn val_0:
+        lst_h val_0, fn bar_0:
+          lst_t val_0, fn tail_0:
+            lst_h tail_0, fn spam_0:
+              lst_t tail_0, fn tail_1:
+                lst_e fn drctvs_0:
+                  mod exports_0, drctvs_0, fn mod_0:"
 `;

@@ -2,74 +2,74 @@
 
 exports[`string compiles escape chars 1`] = `
 "
-rec >> exports_0:
-  str 'foo\`bar\\\\nspam\\\\\`ni' >> str_0:
-    strt str_0 >> str1_0:
-      str 'str1' >> key_0:
-        rec_s exports_0, key_0, str1_0 >> exports_1:
-          str 'foo\\\\\\\\' >> str_1:
-            strt str_1 >> str2_0:
-              str 'str2' >> key_1:
-                rec_s exports_1, key_1, str2_0 >> exports_2:
-                  lst >> drctvs_0:
-                    mod exports_2, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  str 'foo\`bar\\\\nspam\\\\\`ni', fn str_0:
+    strt str_0, fn str1_0:
+      str 'str1', fn key_0:
+        rec_s exports_0, key_0, str1_0, fn exports_1:
+          str 'foo\\\\\\\\', fn str_1:
+            strt str_1, fn str2_0:
+              str 'str2', fn key_1:
+                rec_s exports_1, key_1, str2_0, fn exports_2:
+                  lst_e fn drctvs_0:
+                    mod exports_2, drctvs_0, fn mod_0:"
 `;
 
 exports[`string compiles multiline 1`] = `
 "
-rec >> exports_0:
-  str 'line 1\\\\nline 2 with leading space\\\\nline 3' >> str_1:
-    strt str_1 >> str_0:
-      str 'str' >> key_0:
-        rec_s exports_0, key_0, str_0 >> exports_1:
-          lst >> drctvs_0:
-            mod exports_1, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  str 'line 1\\\\nline 2 with leading space\\\\nline 3', fn str_1:
+    strt str_1, fn str_0:
+      str 'str', fn key_0:
+        rec_s exports_0, key_0, str_0, fn exports_1:
+          lst_e fn drctvs_0:
+            mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`string compiles multiline with expressions 1`] = `
 "
-rec >> exports_0:
-  str 'bar\\\\nspam ' >> str_1:
-    = shrub >> left_0:
-      = ni >> right_0:
-        + left_0, right_0 >> sx_0:
-          str '' >> str_2:
-            = foo >> sx_1:
-              str '\\\\nni\\\\n' >> str_3:
-                strt str_1, sx_0, str_2, sx_1, str_3 >> str_0:
-                  str 'str' >> key_0:
-                    rec_s exports_0, key_0, str_0 >> exports_1:
-                      lst >> drctvs_0:
-                        mod exports_1, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  str 'bar\\\\nspam ', fn str_1:
+    id shrub, fn left_0:
+      id ni, fn right_0:
+        add left_0, right_0, fn sx_0:
+          str '', fn str_2:
+            id foo, fn sx_1:
+              str '\\\\nni\\\\n', fn str_3:
+                strt str_1, sx_0, str_2, sx_1, str_3, fn str_0:
+                  str 'str', fn key_0:
+                    rec_s exports_0, key_0, str_0, fn exports_1:
+                      lst_e fn drctvs_0:
+                        mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`string compiles simple 1`] = `
 "
-rec >> exports_0:
-  str 'ab' >> str_1:
-    strt str_1 >> str_0:
-      str 'str' >> key_0:
-        rec_s exports_0, key_0, str_0 >> exports_1:
-          lst >> drctvs_0:
-            mod exports_1, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  str 'ab', fn str_1:
+    strt str_1, fn str_0:
+      str 'str', fn key_0:
+        rec_s exports_0, key_0, str_0, fn exports_1:
+          lst_e fn drctvs_0:
+            mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`string compiles tagged template string 1`] = `
 "
-rec >> exports_0:
-  = foo >> tag_0:
-    str 'bar ' >> str_1:
-      = ni >> callee_0:
-        lst >> cargs_0:
-          = spam >> arg_0:
-            lst_a cargs_0, arg_0 >> cargs_1:
-              = shrub >> arg_1:
-                lst_a cargs_1, arg_1 >> cargs_2:
-                  af callee_0, cargs_2 >> sx_0:
-                    str ' na' >> str_2:
-                      strtt tag_0, str_1, sx_0, str_2 >> str_0:
-                        str 'str' >> key_0:
-                          rec_s exports_0, key_0, str_0 >> exports_1:
-                            lst >> drctvs_0:
-                              mod exports_1, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  id foo, fn tag_0:
+    str 'bar ', fn str_1:
+      id ni, fn callee_0:
+        lst_e fn cargs_0:
+          id spam, fn arg_0:
+            lst_a cargs_0, arg_0, fn cargs_1:
+              id shrub, fn arg_1:
+                lst_a cargs_1, arg_1, fn cargs_2:
+                  af callee_0, cargs_2, fn sx_0:
+                    str ' na', fn str_2:
+                      strtt tag_0, str_1, sx_0, str_2, fn str_0:
+                        str 'str', fn key_0:
+                          rec_s exports_0, key_0, str_0, fn exports_1:
+                            lst_e fn drctvs_0:
+                              mod exports_1, drctvs_0, fn mod_0:"
 `;

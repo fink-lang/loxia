@@ -2,27 +2,27 @@
 
 exports[`logical compiles 1`] = `
 "
-rec >> exports_0:
-  = a >> left_0:
-    = b >> left_1:
-      = c >> right_1:
-        or left_1, right_1 >> right_0:
-          or left_0, right_0 >> foo_0:
-            str 'foo' >> key_0:
-              rec_s exports_0, key_0, foo_0 >> exports_1:
-                = a >> left_2:
-                  = b >> left_3:
-                    = c >> right_3:
-                      and left_3, right_3 >> right_2:
-                        and left_2, right_2 >> bar_0:
-                          str 'bar' >> key_1:
-                            rec_s exports_1, key_1, bar_0 >> exports_2:
-                              = a >> right_4:
-                                not right_4 >> spam_0:
-                                  str 'spam' >> key_2:
-                                    rec_s exports_2, key_2, spam_0 >> exports_3:
-                                      lst >> drctvs_0:
-                                        mod exports_3, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  id a, fn left_0:
+    id b, fn left_1:
+      id c, fn right_1:
+        or left_1, right_1, fn right_0:
+          or left_0, right_0, fn foo_0:
+            str 'foo', fn key_0:
+              rec_s exports_0, key_0, foo_0, fn exports_1:
+                id a, fn left_2:
+                  id b, fn left_3:
+                    id c, fn right_3:
+                      and left_3, right_3, fn right_2:
+                        and left_2, right_2, fn bar_0:
+                          str 'bar', fn key_1:
+                            rec_s exports_1, key_1, bar_0, fn exports_2:
+                              id a, fn right_4:
+                                not right_4, fn spam_0:
+                                  str 'spam', fn key_2:
+                                    rec_s exports_2, key_2, spam_0, fn exports_3:
+                                      lst_e fn drctvs_0:
+                                        mod exports_3, drctvs_0, fn mod_0:"
 `;
 
 exports[`logical compiles as partial 1`] = `

@@ -2,51 +2,51 @@
 
 exports[`numbers transforms floats 1`] = `
 "
-rec >> exports_0:
-  float 1.234578 >> x_0:
-    str 'x' >> key_0:
-      rec_s exports_0, key_0, x_0 >> exports_1:
-        float 1.23e45 >> y_0:
-          str 'y' >> key_1:
-            rec_s exports_1, key_1, y_0 >> exports_2:
-              float 1.23e-45 >> z_0:
-                str 'z' >> key_2:
-                  rec_s exports_2, key_2, z_0 >> exports_3:
-                    float 1.23e+45 >> a_0:
-                      str 'a' >> key_3:
-                        rec_s exports_3, key_3, a_0 >> exports_4:
-                          lst >> drctvs_0:
-                            mod exports_4, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  float '1.234578', fn x_0:
+    str 'x', fn key_0:
+      rec_s exports_0, key_0, x_0, fn exports_1:
+        float '1.23e45', fn y_0:
+          str 'y', fn key_1:
+            rec_s exports_1, key_1, y_0, fn exports_2:
+              float '1.23e-45', fn z_0:
+                str 'z', fn key_2:
+                  rec_s exports_2, key_2, z_0, fn exports_3:
+                    float '1.23e+45', fn a_0:
+                      str 'a', fn key_3:
+                        rec_s exports_3, key_3, a_0, fn exports_4:
+                          lst_e fn drctvs_0:
+                            mod exports_4, drctvs_0, fn mod_0:"
 `;
 
 exports[`numbers transforms hex, octet, binary 1`] = `
 "
-rec >> exports_0:
-  int 0x123456789ABCDEF0 >> h_0:
-    str 'h' >> key_0:
-      rec_s exports_0, key_0, h_0 >> exports_1:
-        int 0o12345670 >> o_0:
-          str 'o' >> key_1:
-            rec_s exports_1, key_1, o_0 >> exports_2:
-              int 0b01010 >> b_0:
-                str 'b' >> key_2:
-                  rec_s exports_2, key_2, b_0 >> exports_3:
-                    lst >> drctvs_0:
-                      mod exports_3, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  int '0x123456789ABCDEF0', fn h_0:
+    str 'h', fn key_0:
+      rec_s exports_0, key_0, h_0, fn exports_1:
+        int '0o12345670', fn o_0:
+          str 'o', fn key_1:
+            rec_s exports_1, key_1, o_0, fn exports_2:
+              int '0b01010', fn b_0:
+                str 'b', fn key_2:
+                  rec_s exports_2, key_2, b_0, fn exports_3:
+                    lst_e fn drctvs_0:
+                      mod exports_3, drctvs_0, fn mod_0:"
 `;
 
 exports[`numbers transforms integers 1`] = `
 "
-rec >> exports_0:
-  int 1234578 >> x_0:
-    str 'x' >> key_0:
-      rec_s exports_0, key_0, x_0 >> exports_1:
-        int 0123 >> y_0:
-          str 'y' >> key_1:
-            rec_s exports_1, key_1, y_0 >> exports_2:
-              int 123_456_789 >> z_0:
-                str 'z' >> key_2:
-                  rec_s exports_2, key_2, z_0 >> exports_3:
-                    lst >> drctvs_0:
-                      mod exports_3, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  int '1234578', fn x_0:
+    str 'x', fn key_0:
+      rec_s exports_0, key_0, x_0, fn exports_1:
+        int '0123', fn y_0:
+          str 'y', fn key_1:
+            rec_s exports_1, key_1, y_0, fn exports_2:
+              int '123_456_789', fn z_0:
+                str 'z', fn key_2:
+                  rec_s exports_2, key_2, z_0, fn exports_3:
+                    lst_e fn drctvs_0:
+                      mod exports_3, drctvs_0, fn mod_0:"
 `;

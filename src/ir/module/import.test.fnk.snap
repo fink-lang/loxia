@@ -2,84 +2,84 @@
 
 exports[`import imports as side effect 1`] = `
 "
-rec >> exports_0:
-  str './spam.fnk' >> str_0:
-    strt str_0 >> uri_0:
-      imp uri_0 >> sidefx_0:
-        lst >> drctvs_0:
-          mod exports_0, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  str './spam.fnk', fn str_0:
+    strt str_0, fn uri_0:
+      imp uri_0, fn sidefx_0:
+        lst_e fn drctvs_0:
+          mod exports_0, drctvs_0, fn mod_0:"
 `;
 
 exports[`import imports dynamically with static URL 1`] = `
 "
-rec >> exports_0:
-  fn args_0, ret_0:
-    str './shrub.fnk' >> str_0:
-      strt str_0 >> src_0:
-        impd src_0 >> result_0:
+rec_e fn exports_0:
+  id (fn args_0, ret_0: #fn
+    str './shrub.fnk', fn str_0:
+      strt str_0, fn src_0:
+        impd src_0, fn result_0:
           cc ret_0, result_0
-  >> ni_0:
-    str 'ni' >> key_0:
-      rec_s exports_0, key_0, ni_0 >> exports_1:
-        lst >> drctvs_0:
-          mod exports_1, drctvs_0 >> mod_0:"
+  ), fn ni_0:
+    str 'ni', fn key_0:
+      rec_s exports_0, key_0, ni_0, fn exports_1:
+        lst_e fn drctvs_0:
+          mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`import imports exported values 1`] = `
 "
-rec >> exports_0:
-  str './spam.fnk' >> str_0:
-    strt str_0 >> uri_0:
-      str 'bar' >> key_0:
-        imp uri_0, key_0 >> bar_0:
-          str './shrub.fnk' >> str_1:
-            strt str_1 >> uri_1:
-              str 'foo' >> key_1:
-                imp uri_1, key_1 >> spam_0:
-                  str './ni.fnk' >> str_2:
-                    strt str_2 >> uri_2:
-                      str 'π' >> key_2:
-                        imp uri_2, key_2 >> π_0:
-                          str 'delete' >> key_3:
-                            imp uri_2, key_3 >> delete_0:
-                              str './ham.fnk' >> str_3:
-                                strt str_3 >> uri_3:
-                                  str 'foo-bar' >> key_4:
-                                    imp uri_3, key_4 >> foo-bar_0:
-                                      lst >> drctvs_0:
-                                        mod exports_0, drctvs_0 >> mod_0:"
+rec_e fn exports_0:
+  str './spam.fnk', fn str_0:
+    strt str_0, fn uri_0:
+      str 'bar', fn key_0:
+        imp uri_0, key_0, fn bar_0:
+          str './shrub.fnk', fn str_1:
+            strt str_1, fn uri_1:
+              str 'foo', fn key_1:
+                imp uri_1, key_1, fn spam_0:
+                  str './ni.fnk', fn str_2:
+                    strt str_2, fn uri_2:
+                      str 'π', fn key_2:
+                        imp uri_2, key_2, fn π_0:
+                          str 'delete', fn key_3:
+                            imp uri_2, key_3, fn delete_0:
+                              str './ham.fnk', fn str_3:
+                                strt str_3, fn uri_3:
+                                  str 'foo-bar', fn key_4:
+                                    imp uri_3, key_4, fn foo-bar_0:
+                                      lst_e fn drctvs_0:
+                                        mod exports_0, drctvs_0, fn mod_0:"
 `;
 
 exports[`import imports with dynamic URLs 1`] = `
 "
-rec >> exports_0:
-  fn args_0, ret_0:
-    = foo >> src_0:
-      impd src_0 >> result_0:
+rec_e fn exports_0:
+  id (fn args_0, ret_0: #fn
+    id foo, fn src_0:
+      impd src_0, fn result_0:
         cc ret_0, result_0
-  >> shrub_0:
-    str 'shrub' >> key_0:
-      rec_s exports_0, key_0, shrub_0 >> exports_1:
-        fn args_1, ret_1:
-          str '' >> str_0:
-            = foo >> sx_0:
-              str '' >> str_1:
-                strt str_0, sx_0, str_1 >> src_1:
-                  impd src_1 >> result_1:
+  ), fn shrub_0:
+    str 'shrub', fn key_0:
+      rec_s exports_0, key_0, shrub_0, fn exports_1:
+        id (fn args_1, ret_1: #fn
+          str '', fn str_0:
+            id foo, fn sx_0:
+              str '', fn str_1:
+                strt str_0, sx_0, str_1, fn src_1:
+                  impd src_1, fn result_1:
                     cc ret_1, result_1
-        >> ni_0:
-          str 'ni' >> key_1:
-            rec_s exports_1, key_1, ni_0 >> exports_2:
-              fn args_2, ret_2:
-                str './' >> str_2:
-                  = foo >> sx_1:
-                    str '.fnk' >> str_3:
-                      strt str_2, sx_1, str_3 >> src_2:
-                        impd src_2 >> result_2:
+        ), fn ni_0:
+          str 'ni', fn key_1:
+            rec_s exports_1, key_1, ni_0, fn exports_2:
+              id (fn args_2, ret_2: #fn
+                str './', fn str_2:
+                  id foo, fn sx_1:
+                    str '.fnk', fn str_3:
+                      strt str_2, sx_1, str_3, fn src_2:
+                        impd src_2, fn result_2:
                           cc ret_2, result_2
-              >> na_0:
-                str 'na' >> key_2:
-                  rec_s exports_2, key_2, na_0 >> exports_3:
-                    lst >> drctvs_0:
-                      mod exports_3, drctvs_0 >> mod_0:"
+              ), fn na_0:
+                str 'na', fn key_2:
+                  rec_s exports_2, key_2, na_0, fn exports_3:
+                    lst_e fn drctvs_0:
+                      mod exports_3, drctvs_0, fn mod_0:"
 `;
