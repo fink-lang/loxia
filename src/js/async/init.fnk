@@ -9,7 +9,6 @@ types = import '@babel/types'
 
 
 transform_async = fn path:
-  # TODO: should avoid mutating nodes
   match path:
     isArrowFunctionExpression ?:
       set_props path.node, {async: true}

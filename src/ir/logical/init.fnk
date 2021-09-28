@@ -19,5 +19,4 @@ add_logical = fn ctx:
     add any, 'and', transform_logical
     add any, 'or', transform_logical
     add any, 'not', transform_not
-    # TODO: should this live in iterables?
     add any, 'in', transform_in

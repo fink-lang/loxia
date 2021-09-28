@@ -703,31 +703,31 @@ rec_e fn exports_0:
       id (fn: #cn
         cc ret_0
       ), fn else_0:
-        id (fn: #cn
-          id a, fn key_0:
-            rec_g value_0, key_0, fn itm_0:
-              id (fn: #cn
-                str 'b', fn key_1:
-                  rec_g itm_0, key_1, fn itm_1:
-                    id b, fn val_0:
-                      eq itm_1, val_0, fn cond_0:
-                        id (fn: #cn
-                          str 'c', fn key_2:
-                            rec_g itm_0, key_2, fn itm_2:
-                              id c, fn val_1:
-                                eq itm_2, val_1, fn cond_1:
-                                  id (fn: #cn
-                                    id ni, fn result_0:
-                                      cc ret_0, result_0
-                                  ), fn match_res_0:
-                                    cif cond_1, match_res_0, else_0
-                        ), fn match_0:
-                          cif cond_0, match_0, else_0
-              ), fn match_1:
+        is_r value_0, fn is_rec_0:
+          id (fn: #cn
+            id a, fn key_0:
+              rec_g value_0, key_0, fn itm_0:
                 is_r itm_0, fn is_rec_1:
-                  cif is_rec_1, match_1, else_0
-        ), fn match_rec_0:
-          is_r value_0, fn is_rec_0:
+                  id (fn: #cn
+                    str 'b', fn key_1:
+                      rec_g itm_0, key_1, fn itm_1:
+                        id b, fn val_0:
+                          eq itm_1, val_0, fn cond_0:
+                            id (fn: #cn
+                              str 'c', fn key_2:
+                                rec_g itm_0, key_2, fn itm_2:
+                                  id c, fn val_1:
+                                    eq itm_2, val_1, fn cond_1:
+                                      id (fn: #cn
+                                        id ni, fn result_0:
+                                          cc ret_0, result_0
+                                      ), fn match_res_0:
+                                        cif cond_1, match_res_0, else_0
+                            ), fn match_0:
+                              cif cond_0, match_0, else_0
+                  ), fn match_1:
+                    cif is_rec_1, match_1, else_0
+          ), fn match_rec_0:
             cif is_rec_0, match_rec_0, else_0
     ), fn match_rec_1:
       ac match_rec_1, fn mex_0:
@@ -743,30 +743,30 @@ rec_e fn exports_0:
       id (fn: #cn
         cc ret_0
       ), fn else_0:
-        id (fn: #cn
-          str 'foo', fn key_0:
-            rec_g value_0, key_0, fn itm_0:
-              id (fn: #cn
-                str 'bar', fn key_1:
-                  rec_g itm_0, key_1, fn itm_1:
-                    id (fn: #cn
-                      str 'spam', fn key_2:
-                        rec_g itm_1, key_2, fn itm_2:
-                          id ham, fn val_0:
-                            eq itm_2, val_0, fn cond_0:
-                              id (fn: #cn
-                                id spam, fn result_0:
-                                  cc ret_0, result_0
-                              ), fn match_res_0:
-                                cif cond_0, match_res_0, else_0
-                    ), fn match_0:
-                      is_r itm_1, fn is_rec_2:
-                        cif is_rec_2, match_0, else_0
-              ), fn match_rec_0:
+        is_r value_0, fn is_rec_0:
+          id (fn: #cn
+            str 'foo', fn key_0:
+              rec_g value_0, key_0, fn itm_0:
                 is_r itm_0, fn is_rec_1:
-                  cif is_rec_1, match_rec_0, else_0
-        ), fn match_rec_1:
-          is_r value_0, fn is_rec_0:
+                  id (fn: #cn
+                    str 'bar', fn key_1:
+                      rec_g itm_0, key_1, fn itm_1:
+                        is_r itm_1, fn is_rec_2:
+                          id (fn: #cn
+                            str 'spam', fn key_2:
+                              rec_g itm_1, key_2, fn itm_2:
+                                id ham, fn val_0:
+                                  eq itm_2, val_0, fn cond_0:
+                                    id (fn: #cn
+                                      id spam, fn result_0:
+                                        cc ret_0, result_0
+                                    ), fn match_res_0:
+                                      cif cond_0, match_res_0, else_0
+                          ), fn match_0:
+                            cif is_rec_2, match_0, else_0
+                  ), fn match_rec_0:
+                    cif is_rec_1, match_rec_0, else_0
+          ), fn match_rec_1:
             cif is_rec_0, match_rec_1, else_0
     ), fn match_rec_2:
       ac match_rec_2, fn mex_0:
@@ -782,42 +782,42 @@ rec_e fn exports_0:
       id (fn: #cn
         cc ret_0
       ), fn else_0:
-        id (fn: #cn
-          str 'foo', fn key_0:
-            rec_g value_0, key_0, fn itm_0:
-              id (fn: #cn
-                str 'bar', fn key_1:
-                  rec_g itm_0, key_1, fn itm_1:
-                    id (fn: #cn
-                      str 'spam', fn key_2:
-                        rec_g itm_1, key_2, fn itm_2:
-                          id (fn: #cn
-                            str 'ham', fn key_3:
-                              rec_g itm_2, key_3, fn itm_3:
-                                id (fn: #cn
-                                  str 'ni', fn key_4:
-                                    rec_g itm_3, key_4, fn itm_4:
-                                      id nu, fn val_0:
-                                        eq itm_4, val_0, fn cond_0:
-                                          id (fn: #cn
-                                            id spam, fn result_0:
-                                              cc ret_0, result_0
-                                          ), fn match_res_0:
-                                            cif cond_0, match_res_0, else_0
-                                ), fn match_0:
-                                  is_r itm_3, fn is_rec_4:
-                                    cif is_rec_4, match_0, else_0
-                          ), fn match_rec_0:
-                            is_r itm_2, fn is_rec_3:
-                              cif is_rec_3, match_rec_0, else_0
-                    ), fn match_rec_1:
-                      is_r itm_1, fn is_rec_2:
-                        cif is_rec_2, match_rec_1, else_0
-              ), fn match_rec_2:
+        is_r value_0, fn is_rec_0:
+          id (fn: #cn
+            str 'foo', fn key_0:
+              rec_g value_0, key_0, fn itm_0:
                 is_r itm_0, fn is_rec_1:
-                  cif is_rec_1, match_rec_2, else_0
-        ), fn match_rec_3:
-          is_r value_0, fn is_rec_0:
+                  id (fn: #cn
+                    str 'bar', fn key_1:
+                      rec_g itm_0, key_1, fn itm_1:
+                        is_r itm_1, fn is_rec_2:
+                          id (fn: #cn
+                            str 'spam', fn key_2:
+                              rec_g itm_1, key_2, fn itm_2:
+                                is_r itm_2, fn is_rec_3:
+                                  id (fn: #cn
+                                    str 'ham', fn key_3:
+                                      rec_g itm_2, key_3, fn itm_3:
+                                        is_r itm_3, fn is_rec_4:
+                                          id (fn: #cn
+                                            str 'ni', fn key_4:
+                                              rec_g itm_3, key_4, fn itm_4:
+                                                id nu, fn val_0:
+                                                  eq itm_4, val_0, fn cond_0:
+                                                    id (fn: #cn
+                                                      id spam, fn result_0:
+                                                        cc ret_0, result_0
+                                                    ), fn match_res_0:
+                                                      cif cond_0, match_res_0, else_0
+                                          ), fn match_0:
+                                            cif is_rec_4, match_0, else_0
+                                  ), fn match_rec_0:
+                                    cif is_rec_3, match_rec_0, else_0
+                          ), fn match_rec_1:
+                            cif is_rec_2, match_rec_1, else_0
+                  ), fn match_rec_2:
+                    cif is_rec_1, match_rec_2, else_0
+          ), fn match_rec_3:
             cif is_rec_0, match_rec_3, else_0
     ), fn match_rec_4:
       ac match_rec_4, fn mex_0:
@@ -837,162 +837,162 @@ rec_e fn exports_0:
               id (fn: #cn
                 cc ret_0
               ), fn else_0:
-                id (fn: #cn
-                  str 'ni', fn key_0:
-                    rec_g value_0, key_0, fn itm_0:
-                      is_l itm_0, fn is_lst_0:
-                        id (fn: #cn
-                          lst_h itm_0, fn itm_1:
-                            id na, fn val_0:
-                              eq itm_1, val_0, fn cond_0:
-                                id (fn: #cn
-                                  lst_t itm_0, fn tail_0:
-                                    lst_h tail_0, fn itm_2:
-                                      int '123', fn val_1:
-                                        eq itm_2, val_1, fn cond_1:
-                                          id (fn: #cn
-                                            id na, fn result_0:
-                                              cc ret_0, result_0
-                                          ), fn match_res_0:
-                                            cif cond_1, match_res_0, else_0
-                                ), fn match_0:
-                                  cif cond_0, match_0, else_0
-                        ), fn match_1:
-                          cif is_lst_0, match_1, else_0
-                ), fn match_lst_0:
-                  is_r value_0, fn is_rec_0:
+                is_r value_0, fn is_rec_0:
+                  id (fn: #cn
+                    str 'ni', fn key_0:
+                      rec_g value_0, key_0, fn itm_0:
+                        is_l itm_0, fn is_lst_0:
+                          id (fn: #cn
+                            lst_h itm_0, fn itm_1:
+                              id na, fn val_0:
+                                eq itm_1, val_0, fn cond_0:
+                                  id (fn: #cn
+                                    lst_t itm_0, fn tail_0:
+                                      lst_h tail_0, fn itm_2:
+                                        int '123', fn val_1:
+                                          eq itm_2, val_1, fn cond_1:
+                                            id (fn: #cn
+                                              id na, fn result_0:
+                                                cc ret_0, result_0
+                                            ), fn match_res_0:
+                                              cif cond_1, match_res_0, else_0
+                                  ), fn match_0:
+                                    cif cond_0, match_0, else_0
+                          ), fn match_1:
+                            cif is_lst_0, match_1, else_0
+                  ), fn match_lst_0:
                     cif is_rec_0, match_lst_0, else_0
             ), fn match_rec_0:
-              id (fn: #cn
-                str 'ni', fn key_1:
-                  rec_g value_0, key_1, fn itm_3:
-                    id (fn: #cn
-                      str 'len', fn key_2:
-                        rec_g itm_3, key_2, fn itm_4:
-                          int '1', fn val_2:
-                            eq itm_4, val_2, fn cond_2:
-                              id (fn: #cn
-                                str 'na', fn key_3:
-                                  rec_g value_0, key_3, fn itm_5:
-                                    id (fn: #cn
-                                      str 'len', fn key_4:
-                                        rec_g itm_5, key_4, fn itm_6:
-                                          int '1', fn val_3:
-                                            eq itm_6, val_3, fn cond_3:
-                                              id (fn: #cn
-                                                id na, fn result_1:
-                                                  cc ret_0, result_1
-                                              ), fn match_res_1:
-                                                cif cond_3, match_res_1, match_rec_0
-                                    ), fn match_2:
-                                      is_r itm_5, fn is_rec_3:
-                                        cif is_rec_3, match_2, match_rec_0
-                              ), fn match_rec_1:
-                                cif cond_2, match_rec_1, match_rec_0
-                    ), fn match_3:
+              is_r value_0, fn is_rec_1:
+                id (fn: #cn
+                  str 'ni', fn key_1:
+                    rec_g value_0, key_1, fn itm_3:
                       is_r itm_3, fn is_rec_2:
-                        cif is_rec_2, match_3, match_rec_0
-              ), fn match_rec_2:
-                is_r value_0, fn is_rec_1:
+                        id (fn: #cn
+                          str 'len', fn key_2:
+                            rec_g itm_3, key_2, fn itm_4:
+                              int '1', fn val_2:
+                                eq itm_4, val_2, fn cond_2:
+                                  id (fn: #cn
+                                    str 'na', fn key_3:
+                                      rec_g value_0, key_3, fn itm_5:
+                                        is_r itm_5, fn is_rec_3:
+                                          id (fn: #cn
+                                            str 'len', fn key_4:
+                                              rec_g itm_5, key_4, fn itm_6:
+                                                int '1', fn val_3:
+                                                  eq itm_6, val_3, fn cond_3:
+                                                    id (fn: #cn
+                                                      id na, fn result_1:
+                                                        cc ret_0, result_1
+                                                    ), fn match_res_1:
+                                                      cif cond_3, match_res_1, match_rec_0
+                                          ), fn match_2:
+                                            cif is_rec_3, match_2, match_rec_0
+                                  ), fn match_rec_1:
+                                    cif cond_2, match_rec_1, match_rec_0
+                        ), fn match_3:
+                          cif is_rec_2, match_3, match_rec_0
+                ), fn match_rec_2:
                   cif is_rec_1, match_rec_2, match_rec_0
           ), fn match_rec_3:
-            id (fn: #cn
-              str 'foo', fn key_5:
-                rec_g value_0, key_5, fn itm_7:
-                  int '1', fn val_4:
-                    eq itm_7, val_4, fn cond_4:
-                      id (fn: #cn
-                        str 'foo', fn key_6:
-                          rec_g value_0, key_6, fn itm_8:
-                            id (fn: #cn
-                              str 'bar', fn key_7:
-                                rec_g itm_8, key_7, fn itm_9:
-                                  str 'spam', fn str_0:
-                                    strt str_0, fn val_5:
-                                      eq itm_9, val_5, fn cond_5:
-                                        id (fn: #cn
-                                          str 'shrub', fn key_8:
-                                            rec_g value_0, key_8, fn itm_10:
-                                              id (fn: #cn
-                                                str 'na', fn key_9:
-                                                  rec_g itm_10, key_9, fn itm_11:
-                                                    str 'nu', fn str_1:
-                                                      strt str_1, fn val_6:
-                                                        eq itm_11, val_6, fn cond_6:
-                                                          id (fn: #cn
-                                                            id ni, fn result_2:
-                                                              cc ret_0, result_2
-                                                          ), fn match_res_2:
-                                                            cif cond_6, match_res_2, match_rec_3
-                                              ), fn match_4:
-                                                is_r itm_10, fn is_rec_6:
-                                                  cif is_rec_6, match_4, match_rec_3
-                                        ), fn match_rec_4:
-                                          cif cond_5, match_rec_4, match_rec_3
-                            ), fn match_5:
+            is_r value_0, fn is_rec_4:
+              id (fn: #cn
+                str 'foo', fn key_5:
+                  rec_g value_0, key_5, fn itm_7:
+                    int '1', fn val_4:
+                      eq itm_7, val_4, fn cond_4:
+                        id (fn: #cn
+                          str 'foo', fn key_6:
+                            rec_g value_0, key_6, fn itm_8:
                               is_r itm_8, fn is_rec_5:
-                                cif is_rec_5, match_5, match_rec_3
-                      ), fn match_rec_5:
-                        cif cond_4, match_rec_5, match_rec_3
-            ), fn match_6:
-              is_r value_0, fn is_rec_4:
+                                id (fn: #cn
+                                  str 'bar', fn key_7:
+                                    rec_g itm_8, key_7, fn itm_9:
+                                      str 'spam', fn str_0:
+                                        strt str_0, fn val_5:
+                                          eq itm_9, val_5, fn cond_5:
+                                            id (fn: #cn
+                                              str 'shrub', fn key_8:
+                                                rec_g value_0, key_8, fn itm_10:
+                                                  is_r itm_10, fn is_rec_6:
+                                                    id (fn: #cn
+                                                      str 'na', fn key_9:
+                                                        rec_g itm_10, key_9, fn itm_11:
+                                                          str 'nu', fn str_1:
+                                                            strt str_1, fn val_6:
+                                                              eq itm_11, val_6, fn cond_6:
+                                                                id (fn: #cn
+                                                                  id ni, fn result_2:
+                                                                    cc ret_0, result_2
+                                                                ), fn match_res_2:
+                                                                  cif cond_6, match_res_2, match_rec_3
+                                                    ), fn match_4:
+                                                      cif is_rec_6, match_4, match_rec_3
+                                            ), fn match_rec_4:
+                                              cif cond_5, match_rec_4, match_rec_3
+                                ), fn match_5:
+                                  cif is_rec_5, match_5, match_rec_3
+                        ), fn match_rec_5:
+                          cif cond_4, match_rec_5, match_rec_3
+              ), fn match_6:
                 cif is_rec_4, match_6, match_rec_3
         ), fn match_rec_6:
-          id (fn: #cn
-            str 'foo', fn key_10:
-              rec_g value_0, key_10, fn itm_12:
-                int '4', fn val_7:
-                  eq itm_12, val_7, fn cond_7:
-                    id (fn: #cn
-                      str 'ni', fn key_11:
-                        rec_g value_0, key_11, fn itm_13:
-                          id (fn: #cn
-                            str 'na', fn key_12:
-                              rec_g itm_13, key_12, fn itm_14:
-                                id na, fn val_8:
-                                  eq itm_14, val_8, fn cond_8:
-                                    id (fn: #cn
-                                      str 'nu', fn key_13:
-                                        rec_g itm_13, key_13, fn itm_15:
-                                          id nu, fn val_9:
-                                            eq itm_15, val_9, fn cond_9:
-                                              id (fn: #cn
-                                                id spam, fn left_0:
-                                                  id ni, fn right_0:
-                                                    add left_0, right_0, fn result_3:
-                                                      cc ret_0, result_3
-                                              ), fn match_res_3:
-                                                cif cond_9, match_res_3, match_rec_6
-                                    ), fn match_7:
-                                      cif cond_8, match_7, match_rec_6
-                          ), fn match_8:
+          is_r value_0, fn is_rec_7:
+            id (fn: #cn
+              str 'foo', fn key_10:
+                rec_g value_0, key_10, fn itm_12:
+                  int '4', fn val_7:
+                    eq itm_12, val_7, fn cond_7:
+                      id (fn: #cn
+                        str 'ni', fn key_11:
+                          rec_g value_0, key_11, fn itm_13:
                             is_r itm_13, fn is_rec_8:
-                              cif is_rec_8, match_8, match_rec_6
-                    ), fn match_rec_7:
-                      cif cond_7, match_rec_7, match_rec_6
-          ), fn match_9:
-            is_r value_0, fn is_rec_7:
+                              id (fn: #cn
+                                str 'na', fn key_12:
+                                  rec_g itm_13, key_12, fn itm_14:
+                                    id na, fn val_8:
+                                      eq itm_14, val_8, fn cond_8:
+                                        id (fn: #cn
+                                          str 'nu', fn key_13:
+                                            rec_g itm_13, key_13, fn itm_15:
+                                              id nu, fn val_9:
+                                                eq itm_15, val_9, fn cond_9:
+                                                  id (fn: #cn
+                                                    id spam, fn left_0:
+                                                      id ni, fn right_0:
+                                                        add left_0, right_0, fn result_3:
+                                                          cc ret_0, result_3
+                                                  ), fn match_res_3:
+                                                    cif cond_9, match_res_3, match_rec_6
+                                        ), fn match_7:
+                                          cif cond_8, match_7, match_rec_6
+                              ), fn match_8:
+                                cif is_rec_8, match_8, match_rec_6
+                      ), fn match_rec_7:
+                        cif cond_7, match_rec_7, match_rec_6
+            ), fn match_9:
               cif is_rec_7, match_9, match_rec_6
       ), fn match_rec_8:
-        id (fn: #cn
-          str 'foo', fn key_14:
-            rec_g value_0, key_14, fn itm_16:
-              id foo, fn val_10:
-                eq itm_16, val_10, fn cond_10:
-                  id (fn: #cn
-                    str 'bar', fn key_15:
-                      rec_g value_0, key_15, fn itm_17:
-                        id bar, fn val_11:
-                          eq itm_17, val_11, fn cond_11:
-                            id (fn: #cn
-                              id ni, fn result_4:
-                                cc ret_0, result_4
-                            ), fn match_res_4:
-                              cif cond_11, match_res_4, match_rec_8
-                  ), fn match_10:
-                    cif cond_10, match_10, match_rec_8
-        ), fn match_11:
-          is_r value_0, fn is_rec_9:
+        is_r value_0, fn is_rec_9:
+          id (fn: #cn
+            str 'foo', fn key_14:
+              rec_g value_0, key_14, fn itm_16:
+                id foo, fn val_10:
+                  eq itm_16, val_10, fn cond_10:
+                    id (fn: #cn
+                      str 'bar', fn key_15:
+                        rec_g value_0, key_15, fn itm_17:
+                          id bar, fn val_11:
+                            eq itm_17, val_11, fn cond_11:
+                              id (fn: #cn
+                                id ni, fn result_4:
+                                  cc ret_0, result_4
+                              ), fn match_res_4:
+                                cif cond_11, match_res_4, match_rec_8
+                    ), fn match_10:
+                      cif cond_10, match_10, match_rec_8
+          ), fn match_11:
             cif is_rec_9, match_11, match_rec_8
     ), fn match_rec_9:
       ac match_rec_9, fn mex_0:
@@ -1008,43 +1008,43 @@ rec_e fn exports_0:
       id (fn: #cn
         cc ret_0
       ), fn else_0:
-        id (fn: #cn
-          id foo, fn key_0:
-            rec_g value_0, key_0, fn itm_0:
-              id (fn: #cn
-                str 'x', fn key_1:
-                  rec_g itm_0, key_1, fn itm_1:
-                    id x, fn val_0:
-                      eq itm_1, val_0, fn cond_0:
-                        id (fn: #cn
-                          rec_d value_0, key_0, fn spread_0:
-                            id (fn: #cn
-                              str 'bar', fn key_2:
-                                rec_g spread_0, key_2, fn itm_2:
-                                  id bar, fn val_1:
-                                    eq itm_2, val_1, fn cond_1:
-                                      id (fn: #cn
-                                        str 'spam', fn key_3:
-                                          rec_g spread_0, key_3, fn itm_3:
-                                            id spam, fn val_2:
-                                              eq itm_3, val_2, fn cond_2:
-                                                id (fn: #cn
-                                                  id ni, fn result_0:
-                                                    cc ret_0, result_0
-                                                ), fn match_res_0:
-                                                  cif cond_2, match_res_0, else_0
-                                      ), fn match_0:
-                                        cif cond_1, match_0, else_0
-                            ), fn match_1:
-                              is_r spread_0, fn is_rec_2:
-                                cif is_rec_2, match_1, else_0
-                        ), fn match_rec_0:
-                          cif cond_0, match_rec_0, else_0
-              ), fn match_2:
+        is_r value_0, fn is_rec_0:
+          id (fn: #cn
+            id foo, fn key_0:
+              rec_g value_0, key_0, fn itm_0:
                 is_r itm_0, fn is_rec_1:
-                  cif is_rec_1, match_2, else_0
-        ), fn match_rec_1:
-          is_r value_0, fn is_rec_0:
+                  id (fn: #cn
+                    str 'x', fn key_1:
+                      rec_g itm_0, key_1, fn itm_1:
+                        id x, fn val_0:
+                          eq itm_1, val_0, fn cond_0:
+                            id (fn: #cn
+                              rec_d value_0, key_0, fn spread_0:
+                                is_r spread_0, fn is_rec_2:
+                                  id (fn: #cn
+                                    str 'bar', fn key_2:
+                                      rec_g spread_0, key_2, fn itm_2:
+                                        id bar, fn val_1:
+                                          eq itm_2, val_1, fn cond_1:
+                                            id (fn: #cn
+                                              str 'spam', fn key_3:
+                                                rec_g spread_0, key_3, fn itm_3:
+                                                  id spam, fn val_2:
+                                                    eq itm_3, val_2, fn cond_2:
+                                                      id (fn: #cn
+                                                        id ni, fn result_0:
+                                                          cc ret_0, result_0
+                                                      ), fn match_res_0:
+                                                        cif cond_2, match_res_0, else_0
+                                            ), fn match_0:
+                                              cif cond_1, match_0, else_0
+                                  ), fn match_1:
+                                    cif is_rec_2, match_1, else_0
+                            ), fn match_rec_0:
+                              cif cond_0, match_rec_0, else_0
+                  ), fn match_2:
+                    cif is_rec_1, match_2, else_0
+          ), fn match_rec_1:
             cif is_rec_0, match_rec_1, else_0
     ), fn match_rec_2:
       ac match_rec_2, fn mex_0:
@@ -1067,147 +1067,147 @@ rec_e fn exports_0:
                     id (fn: #cn
                       cc ret_0
                     ), fn else_0:
-                      id (fn: #cn
-                        str 'spam', fn key_0:
-                          rec_g value_0, key_0, fn itm_0:
-                            isv itm_0, fn cond_0:
-                              id (fn: #cn
-                                id true, fn result_0:
-                                  cc ret_0, result_0
-                              ), fn match_res_0:
-                                cif cond_0, match_res_0, else_0
-                      ), fn match_0:
-                        is_r value_0, fn is_rec_0:
+                      is_r value_0, fn is_rec_0:
+                        id (fn: #cn
+                          str 'spam', fn key_0:
+                            rec_g value_0, key_0, fn itm_0:
+                              isv itm_0, fn cond_0:
+                                id (fn: #cn
+                                  id true, fn result_0:
+                                    cc ret_0, result_0
+                                ), fn match_res_0:
+                                  cif cond_0, match_res_0, else_0
+                        ), fn match_0:
                           cif is_rec_0, match_0, else_0
                   ), fn match_rec_0:
-                    id (fn: #cn
-                      str 'spam', fn key_1:
-                        rec_g value_0, key_1, fn itm_1:
-                          id spam, fn val_0:
-                            eq itm_1, val_0, fn cond_1:
-                              id (fn: #cn
-                                rec_d value_0, key_1, fn spread_0:
-                                  str 'foo', fn str_0:
-                                    strt str_0, fn left_0:
-                                      id spread_0, fn right_0:
-                                        in left_0, right_0, fn val_1:
-                                          eq true, val_1, fn cond_2:
-                                            id (fn: #cn
-                                              id ni, fn result_1:
-                                                cc ret_0, result_1
-                                            ), fn match_res_1:
-                                              cif cond_2, match_res_1, match_rec_0
-                              ), fn match_1:
-                                cif cond_1, match_1, match_rec_0
-                    ), fn match_2:
-                      is_r value_0, fn is_rec_1:
+                    is_r value_0, fn is_rec_1:
+                      id (fn: #cn
+                        str 'spam', fn key_1:
+                          rec_g value_0, key_1, fn itm_1:
+                            id spam, fn val_0:
+                              eq itm_1, val_0, fn cond_1:
+                                id (fn: #cn
+                                  rec_d value_0, key_1, fn spread_0:
+                                    str 'foo', fn str_0:
+                                      strt str_0, fn left_0:
+                                        id spread_0, fn right_0:
+                                          in left_0, right_0, fn val_1:
+                                            eq true, val_1, fn cond_2:
+                                              id (fn: #cn
+                                                id ni, fn result_1:
+                                                  cc ret_0, result_1
+                                              ), fn match_res_1:
+                                                cif cond_2, match_res_1, match_rec_0
+                                ), fn match_1:
+                                  cif cond_1, match_1, match_rec_0
+                      ), fn match_2:
                         cif is_rec_1, match_2, match_rec_0
                 ), fn match_rec_1:
-                  id (fn: #cn
-                    str 'spam', fn key_2:
-                      rec_g value_0, key_2, fn itm_2:
-                        id spam, fn val_2:
-                          eq itm_2, val_2, fn cond_3:
-                            id (fn: #cn
-                              rec_d value_0, key_2, fn spread_1:
-                                id is_empty, fn callee_0:
-                                  lst_e fn cargs_0:
-                                    id spread_1, fn arg_0:
-                                      lst_a cargs_0, arg_0, fn cargs_1:
-                                        af callee_0, cargs_1, fn val_3:
-                                          eq true, val_3, fn cond_4:
-                                            id (fn: #cn
-                                              id ni, fn result_2:
-                                                cc ret_0, result_2
-                                            ), fn match_res_2:
-                                              cif cond_4, match_res_2, match_rec_1
-                            ), fn match_3:
-                              cif cond_3, match_3, match_rec_1
-                  ), fn match_4:
-                    is_r value_0, fn is_rec_2:
+                  is_r value_0, fn is_rec_2:
+                    id (fn: #cn
+                      str 'spam', fn key_2:
+                        rec_g value_0, key_2, fn itm_2:
+                          id spam, fn val_2:
+                            eq itm_2, val_2, fn cond_3:
+                              id (fn: #cn
+                                rec_d value_0, key_2, fn spread_1:
+                                  id is_empty, fn callee_0:
+                                    lst_e fn cargs_0:
+                                      id spread_1, fn arg_0:
+                                        lst_a cargs_0, arg_0, fn cargs_1:
+                                          af callee_0, cargs_1, fn val_3:
+                                            eq true, val_3, fn cond_4:
+                                              id (fn: #cn
+                                                id ni, fn result_2:
+                                                  cc ret_0, result_2
+                                              ), fn match_res_2:
+                                                cif cond_4, match_res_2, match_rec_1
+                              ), fn match_3:
+                                cif cond_3, match_3, match_rec_1
+                    ), fn match_4:
                       cif is_rec_2, match_4, match_rec_1
               ), fn match_rec_2:
-                id (fn: #cn
-                  str 'spam', fn key_3:
-                    rec_g value_0, key_3, fn itm_3:
-                      id is_foo, fn callee_1:
-                        lst_e fn cargs_2:
-                          id itm_3, fn arg_1:
-                            lst_a cargs_2, arg_1, fn cargs_3:
-                              af callee_1, cargs_3, fn val_4:
-                                eq true, val_4, fn cond_5:
-                                  id (fn: #cn
-                                    id ni, fn result_3:
-                                      cc ret_0, result_3
-                                  ), fn match_res_3:
-                                    cif cond_5, match_res_3, match_rec_2
-                ), fn match_5:
-                  is_r value_0, fn is_rec_3:
+                is_r value_0, fn is_rec_3:
+                  id (fn: #cn
+                    str 'spam', fn key_3:
+                      rec_g value_0, key_3, fn itm_3:
+                        id is_foo, fn callee_1:
+                          lst_e fn cargs_2:
+                            id itm_3, fn arg_1:
+                              lst_a cargs_2, arg_1, fn cargs_3:
+                                af callee_1, cargs_3, fn val_4:
+                                  eq true, val_4, fn cond_5:
+                                    id (fn: #cn
+                                      id ni, fn result_3:
+                                        cc ret_0, result_3
+                                    ), fn match_res_3:
+                                      cif cond_5, match_res_3, match_rec_2
+                  ), fn match_5:
                     cif is_rec_3, match_5, match_rec_2
             ), fn match_rec_3:
-              id (fn: #cn
-                str 'spam', fn key_4:
-                  rec_g value_0, key_4, fn itm_4:
-                    id itm_4, fn left_1:
-                      str 'is_foo', fn key_5:
-                        rec_g left_1, key_5, fn callee_2:
-                          lst_e fn cargs_4:
-                            af callee_2, cargs_4, fn val_5:
-                              eq true, val_5, fn cond_6:
-                                id (fn: #cn
-                                  id ni, fn result_4:
-                                    cc ret_0, result_4
-                                ), fn match_res_4:
-                                  cif cond_6, match_res_4, match_rec_3
-              ), fn match_6:
-                is_r value_0, fn is_rec_4:
+              is_r value_0, fn is_rec_4:
+                id (fn: #cn
+                  str 'spam', fn key_4:
+                    rec_g value_0, key_4, fn itm_4:
+                      id itm_4, fn left_1:
+                        str 'is_foo', fn key_5:
+                          rec_g left_1, key_5, fn callee_2:
+                            lst_e fn cargs_4:
+                              af callee_2, cargs_4, fn val_5:
+                                eq true, val_5, fn cond_6:
+                                  id (fn: #cn
+                                    id ni, fn result_4:
+                                      cc ret_0, result_4
+                                  ), fn match_res_4:
+                                    cif cond_6, match_res_4, match_rec_3
+                ), fn match_6:
                   cif is_rec_4, match_6, match_rec_3
           ), fn match_rec_4:
-            id (fn: #cn
-              str 'spam', fn key_6:
-                rec_g value_0, key_6, fn itm_5:
-                  id itm_5, fn callee_3:
-                    lst_e fn cargs_5:
-                      af callee_3, cargs_5, fn val_6:
-                        eq true, val_6, fn cond_7:
-                          id (fn: #cn
-                            id ni, fn result_5:
-                              cc ret_0, result_5
-                          ), fn match_res_5:
-                            cif cond_7, match_res_5, match_rec_4
-            ), fn match_7:
-              is_r value_0, fn is_rec_5:
+            is_r value_0, fn is_rec_5:
+              id (fn: #cn
+                str 'spam', fn key_6:
+                  rec_g value_0, key_6, fn itm_5:
+                    id itm_5, fn callee_3:
+                      lst_e fn cargs_5:
+                        af callee_3, cargs_5, fn val_6:
+                          eq true, val_6, fn cond_7:
+                            id (fn: #cn
+                              id ni, fn result_5:
+                                cc ret_0, result_5
+                            ), fn match_res_5:
+                              cif cond_7, match_res_5, match_rec_4
+              ), fn match_7:
                 cif is_rec_5, match_7, match_rec_4
         ), fn match_rec_5:
-          id (fn: #cn
-            str 'spam', fn key_7:
-              rec_g value_0, key_7, fn itm_6:
-                id itm_6, fn left_2:
-                  int '123', fn right_1:
-                    gt left_2, right_1, fn val_7:
-                      eq true, val_7, fn cond_8:
-                        id (fn: #cn
-                          id ni, fn result_6:
-                            cc ret_0, result_6
-                        ), fn match_res_6:
-                          cif cond_8, match_res_6, match_rec_5
-          ), fn match_8:
-            is_r value_0, fn is_rec_6:
+          is_r value_0, fn is_rec_6:
+            id (fn: #cn
+              str 'spam', fn key_7:
+                rec_g value_0, key_7, fn itm_6:
+                  id itm_6, fn left_2:
+                    int '123', fn right_1:
+                      gt left_2, right_1, fn val_7:
+                        eq true, val_7, fn cond_8:
+                          id (fn: #cn
+                            id ni, fn result_6:
+                              cc ret_0, result_6
+                          ), fn match_res_6:
+                            cif cond_8, match_res_6, match_rec_5
+            ), fn match_8:
               cif is_rec_6, match_8, match_rec_5
       ), fn match_rec_6:
-        id (fn: #cn
-          str 'spam', fn key_8:
-            rec_g value_0, key_8, fn itm_7:
-              id itm_7, fn right_2:
-                not right_2, fn val_8:
-                  eq true, val_8, fn cond_9:
-                    id (fn: #cn
-                      id ni, fn result_7:
-                        cc ret_0, result_7
-                    ), fn match_res_7:
-                      cif cond_9, match_res_7, match_rec_6
-        ), fn match_9:
-          is_r value_0, fn is_rec_7:
+        is_r value_0, fn is_rec_7:
+          id (fn: #cn
+            str 'spam', fn key_8:
+              rec_g value_0, key_8, fn itm_7:
+                id itm_7, fn right_2:
+                  not right_2, fn val_8:
+                    eq true, val_8, fn cond_9:
+                      id (fn: #cn
+                        id ni, fn result_7:
+                          cc ret_0, result_7
+                      ), fn match_res_7:
+                        cif cond_9, match_res_7, match_rec_6
+          ), fn match_9:
             cif is_rec_7, match_9, match_rec_6
     ), fn match_rec_7:
       ac match_rec_7, fn mex_0:

@@ -199,12 +199,10 @@ match_rec = fn [val_id, val_prereq], expr, gen_true, else_id, ctx, match_expr:
 
   [if_exp, , cn_ctx] = cif is_rec_id, match_id, else_id, , expr, cif_ctx
 
-
   body = list:
     ...val_prereq
-    # TODO: move down like in list?
-    ...props_match
     ...rec_check
+    ...props_match
     ...if_exp
 
   cn [], body, 'match_rec', expr, cn_ctx

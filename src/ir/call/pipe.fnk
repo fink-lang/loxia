@@ -31,14 +31,10 @@ pipe_all =  fn [expr=false, ...exprs], prev_res_id, ctx, out=[]:
       pipe_all exprs, res_id, end_ctx, [...out, ...callee, ...call]
 
     else:
-      # [res, res_id, {partial_ident, has_partial, ...next_ctx}] = transform expr, 'res', {...ctx, partial_ident: prev_res_id}
-      # pipe_all exprs, res_id, next_ctx, [...out, ...res]
-
-      [callee, callee_id, {has_partial: _, partial_ident: _, ...next_ctx}] = transform_with_partial expr, 'pfn', ctx
+      [callee, callee_id, step_ctx] = transform_with_partial expr, 'pfn', ctx
+      {has_partial: _, partial_ident: _, ...next_ctx} = step_ctx
       [call, res_id, end_ctx] = apply_step callee_id, prev_res_id, expr, next_ctx
       pipe_all exprs, res_id, end_ctx, [...out, ...callee, ...call]
-
-
 
 
 
@@ -51,7 +47,6 @@ transform_pipe = fn expr, result, ctx:
       [[], false, ctx]
 
   [calls, res_id, next_ctx] = pipe_all expr.exprs, val_id, pipe_ctx
-  # TODO can pipeall not handle it?
   [res, , end_ctx] = let res_id, result, expr, next_ctx
   [[...val, ...calls, ...res], end_ctx]
 

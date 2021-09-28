@@ -28,8 +28,8 @@ add_runtime_requirement = fn func, {runtime, ...ctx}:
   {...ctx, runtime: {...runtime, (func): true}}
 
 
+# TODO: inlining should be handled at optimization level in ir
 get_js_literal = fn id, ctx:
-  # TODO: inlining should be handled at optimization level in ir
   {js=get_js id, ctx} = get_value id, ctx
   js
 
