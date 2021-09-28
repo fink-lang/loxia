@@ -20,17 +20,15 @@ optimize_body = fn [expr, res], ctx, optimize_tails:
 
 optimize_fn = fn [expr, res], ctx, optimize_tails:
   {args: [args, body]} = expr
-  [fn_id] = res
-
+  [ , ret_id, fn_id] = args
   prev_curr_fn = get_curr_fn ctx
-  # TODO only need to know ret_id not all args for curr_fn
-  body_ctx = set_curr_fn [fn_id, ...args], ctx
+  body_ctx = set_curr_fn [fn_id, ret_id], ctx
 
   [o_body, next_ctx] = optimize_tails body, body_ctx, []
 
   opt = match get_value fn_id, next_ctx:
     {tco: true}:
-      {...expr, f: 'fnr', args: [args, o_body]}
+      {...expr, f: 'fn', args: [args, o_body], tco: true}
     else:
       {...expr, args: [args, o_body]}
 
@@ -41,11 +39,8 @@ optimize_fn = fn [expr, res], ctx, optimize_tails:
 
 optimize_af = fn [expr, res], exprs, ctx:
   {args: [callee_id, ...args]} = expr
-
   [next_expr, ...rest_exprs] = exprs
-
-  [curr_fn_id={}, ...fn_args] = get_curr_fn ctx
-  [..., ret_id] = fn_args
+  [curr_fn_id={}, ret_id] = get_curr_fn ctx
 
   match [callee_id.i, next_expr]:
     [curr_fn_id.i, [{f: 'cc', args: [{i: ret_id.i}]}]]:
@@ -66,12 +61,12 @@ optimize_tails = fn [expr=false, ...exprs], ctx, out=[]:
     false:
       [out, ctx]
 
-    [{f: 'cn'}]:
-      [opt, next_ctx] = optimize_body expr, ctx, optimize_tails
+    [{f: 'fn', args: [[?, ?, ?]]}]:
+      [opt, next_ctx] = optimize_fn expr, ctx, optimize_tails
       optimize_tails exprs, next_ctx, [...out, ...opt]
 
-    [{f: 'fn'}]:
-      [opt, next_ctx] = optimize_fn expr, ctx, optimize_tails
+    [{f: ? in ['cn', 'fn']}]:
+      [opt, next_ctx] = optimize_body expr, ctx, optimize_tails
       optimize_tails exprs, next_ctx, [...out, ...opt]
 
     [{f: 'af'}]:

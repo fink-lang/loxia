@@ -4,21 +4,7 @@
 {transform} = import '../transform.fnk'
 {members_as_rec} = import '../literals/record.fnk'
 {str} = import '../literals/string.fnk'
-
-
-
-bind = fn {value, loc}, ctx:
-  {scopes: [scope, ...scopes]=[]} = ctx
-  [id, next_ctx] = unique_name value, {loc}, ctx
-
-  end_ctx = rec:
-    ...next_ctx
-    scopes: list:
-      {...scope, (value): id}
-      ...scopes
-
-  [id, end_ctx]
-
+{bind, bind_x} = import '../identifier/init.fnk'
 
 
 lst_h = fn lst_id, name_or_id, {loc}, ctx:
@@ -218,8 +204,9 @@ transform_assign = fn node, , ctx:
       [[...right, ...left], end_ctx]
 
     {type: 'ident'}:
-      [l_id, next_ctx] = bind node.left, ctx
-      [right, , end_ctx] = transform node.right, l_id, next_ctx, false
+      r_ctx = {...ctx, self_name: node.left.value}
+      [right, l_id, bind_ctx] = transform node.right, node.left.value, r_ctx
+      end_ctx = bind_x node.left, l_id, bind_ctx
       [right, end_ctx]
 
 

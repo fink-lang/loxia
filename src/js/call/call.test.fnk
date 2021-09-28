@@ -65,7 +65,19 @@ describe 'call', fn:
 
 
 
-describe 'tail call elimination', fn:
+describe 'recursive functions', fn:
+  it 'compiles with self reference', fn:
+    expect
+      fink2js '
+        foo = fn cntr:
+          match cntr:
+            0: [cntr]
+            1: [...foo cntr - 1]
+            else: [cntr, ...foo cntr - 1]
+      '
+      to_match_snapshot
+
+
   it 'compiles to while loop', fn:
     expect
       fink2js '

@@ -11,7 +11,7 @@ describe 'record', fn:
 
   it 'compiles shorthand', fn:
     expect
-      fink2lir 'foo = {foo, π, ƒ, foo-bar}'
+      fink2lir 'shrub = {foo, π, ƒ, foo-bar}'
       to_match_snapshot
 
     expect

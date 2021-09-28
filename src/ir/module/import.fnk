@@ -1,6 +1,6 @@
 {ir_fn_x} = import '../context.fnk'
 {transform} = import '../transform.fnk'
-{bind} = import '../assignment/init.fnk'
+{bind} = import '../identifier/init.fnk'
 {str} = import '../literals/string.fnk'
 
 

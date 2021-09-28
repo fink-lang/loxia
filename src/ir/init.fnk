@@ -1,3 +1,6 @@
+hamt = import 'hamt'
+{empty} = hamt
+
 {add_assignment} = import './assignment/init.fnk'
 {add_func} = import './func/init.fnk'
 {add_conditionals} = import './conditionals/init.fnk'
@@ -44,6 +47,7 @@ init_ctx = fn code, filename, options:
     options
     unique_ids: {}
     errors: []
+    values: empty
 
   pipe ctx:
     add_transformers

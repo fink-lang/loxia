@@ -63,15 +63,25 @@ split_args_body = fn [expr=false, ...exprs], args_id, ctx, args=[], body=[]:
 
 
 
-transform_fn = fn expr, ctx:
-  [{args: [fn_args, fn_block]}] = expr
-  [args_id, ret_id] = fn_args
+transform_normal_fn = fn expr, ctx:
+  [{args: [fn_args, fn_block]}, [res_id]] = expr
+  [args_id, ret_id, self_id=false] = fn_args
 
   ret = rec:
     ...returnStatement _
     leadingComments: [{type: 'CommentBlock', value: ' istanbul ignore next '}]
 
-  body_ctx = set_js ret_id, ret, ctx
+  self_ctx = set_js ret_id, ret, ctx
+
+  body_ctx = match self_id:
+    false: self_ctx
+    else:
+      pipe self_ctx:
+        # set recursive calls to use res_id
+        # instead of using a Z-combinator and self_id
+        set_js self_id, (ident res_id), ?
+        # make sure calls to self_id always use res_id
+        update_value self_id, {ignore_refs: true}, ?
 
   [args, block, fn_ctx] = split_args_body fn_block, args_id, body_ctx
   [body, next_ctx] = transform_exprs block, fn_ctx
@@ -81,14 +91,22 @@ transform_fn = fn expr, ctx:
   set_js2 expr, js, next_ctx
 
 
-
-transform_recursive_fn = fn expr, ctx:
+# TODO merge with transform_normal_fn
+transform_tco_fn = fn expr, ctx:
   [{args: [fn_args, block]}, [res_id]] = expr
-  [args_id, ret_id] = fn_args
+  [args_id, ret_id, self_id] = fn_args
 
-  ret = returnStatement _
-  tmp_ctx = set_js ret_id, ret, ctx
-  body_ctx = update_value res_id, {args_id}, tmp_ctx
+  ret = rec:
+    ...returnStatement _
+    leadingComments: [{type: 'CommentBlock', value: ' istanbul ignore next '}]
+
+  body_ctx = pipe ctx:
+    # set recursive calls and continue label to use res_id
+    # instead of a Z-combinator and self_id
+    set_js ret_id, ret, ?
+    set_js self_id, (ident res_id), ?
+    # make sure continue statements and calls to self_id always use res_id
+    update_value self_id, {args_id, label_id: res_id, ignore_refs: true}, ?
 
   [body, next_ctx] = transform_exprs block, body_ctx
 
@@ -102,6 +120,15 @@ transform_recursive_fn = fn expr, ctx:
           blockStatement body
 
   set_js2 expr, js, next_ctx
+
+
+
+transform_fn = fn expr, ctx:
+  match expr:
+    [{tco: true}]:
+      transform_tco_fn expr, ctx
+    else:
+      transform_normal_fn expr, ctx
 
 
 
@@ -126,6 +153,5 @@ transform_cont = fn expr, ctx:
 add_funcs = fn ctx:
   pipe ctx:
     add 'fn', transform_fn
-    add 'fnr', transform_recursive_fn
     add 'cn', transform_cont
 

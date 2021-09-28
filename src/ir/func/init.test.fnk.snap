@@ -290,6 +290,43 @@ rec_e fn exports_0:
           mod exports_1, drctvs_0, fn mod_0:"
 `;
 
+exports[`func compiles recursive calls 1`] = `
+"
+rec_e fn exports_0:
+  z (fn args_0, ret_0, fun_0_0: #fn
+    lst_h args_0, fn a_0:
+      lst_t args_0, fn tail_0:
+        lst_h tail_0, fn b_0:
+          lst_t tail_0, fn tail_1:
+            id a_0, fn value_0:
+              id (fn ret_1: #cn
+                id (fn: #cn
+                  id fun_0_0, fn callee_0:
+                    lst_e fn cargs_0:
+                      id a_0, fn left_0:
+                        int '1', fn right_0:
+                          sub left_0, right_0, fn arg_0:
+                            lst_a cargs_0, arg_0, fn cargs_1:
+                              af callee_0, cargs_1, fn result_1:
+                                cc ret_1, result_1
+                ), fn else_0:
+                  id b_0, fn val_0:
+                    eq value_0, val_0, fn cond_0:
+                      id (fn: #cn
+                        id a_0, fn result_2:
+                          cc ret_1, result_2
+                      ), fn match_res_0:
+                        cif cond_0, match_res_0, else_0
+              ), fn match_0:
+                ac match_0, fn result_0:
+                  cc ret_0, result_0
+  ), fn fun_0:
+    str 'fun', fn key_0:
+      rec_s exports_0, key_0, fun_0, fn exports_1:
+        lst_e fn drctvs_0:
+          mod exports_1, drctvs_0, fn mod_0:"
+`;
+
 exports[`func compiles spread 1`] = `
 "
 rec_e fn exports_0:
@@ -343,7 +380,7 @@ rec_e fn exports_0:
 exports[`func eliminates tail calls 1`] = `
 "
 rec_e fn exports_0:
-  id (fn args_0, ret_0: #fn
+  z (fn args_0, ret_0, fun_0_0: #fn
     lst_h args_0, fn a_0:
       lst_t args_0, fn tail_0:
         lst_h tail_0, fn b_0:
@@ -351,7 +388,7 @@ rec_e fn exports_0:
             id a_0, fn value_0:
               id (fn ret_1: #cn
                 id (fn: #cn
-                  id fun_0, fn callee_0:
+                  id fun_0_0, fn callee_0:
                     lst_e fn cargs_0:
                       id a_0, fn left_0:
                         int '1', fn right_0:

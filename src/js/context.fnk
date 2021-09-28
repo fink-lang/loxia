@@ -18,9 +18,8 @@ with_loc = fn {loc}, expr:
 get_js = fn id, ctx:
   val = get_value id, ctx
   match val:
+    {ignore_refs: true}:  with_loc id, val.js
     {refs: ? > 1}: ident id
-    # TODO loc?
-    # {js: ?}: with_loc id, val.js
     {js: ?}: with_loc id, val.js
     else: ident id
 

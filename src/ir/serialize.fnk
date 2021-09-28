@@ -8,8 +8,7 @@ a2s = fn [arg=false, ...args], out=[]:
     false: match out:
       [?]: ' ${out | join ', '}'
       else: ''
-    {i: ?}: a2s args, [...out, arg.i]
-    else: a2s args, [...out, arg]
+    else: a2s args, [...out, arg.i]
 
 
 
@@ -57,6 +56,15 @@ serialize = fn [curr=false, ...rest], out='', indent='':
         rest
         '${out}\n${indent}${f}_e fn${a2s ids}:'
         '  ${indent}'
+
+    [{f: 'fn', args: [[?, ?, ?]]}]:
+      [{f: op, args: [args, body]}, ids] = curr
+      serialize
+        rest
+        '${out}\n${indent}z (fn${a2s args}: #${op}${serialize body, '', '  ${indent}'}
+          ${indent}), fn${a2s ids}:'
+        '  ${indent}'
+
 
     [{f: ? in ['cn', 'fn', 'fnr']}]:
       [{f: op, args: [args, body]}, ids] = curr

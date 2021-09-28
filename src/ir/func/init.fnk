@@ -1,6 +1,6 @@
 {add, any} = import '../context.fnk'
 {transform} = import '../transform.fnk'
-{unique_name, ir_fn_x} = import '../context.fnk'
+{unique_name, ir_fn_x, get_refs} = import '../context.fnk'
 {transform_dl} = import '../assignment/init.fnk'
 
 
@@ -16,6 +16,12 @@ fnc = fn args_id, ret_id, res_id, body, name_or_id, {loc}, ctx:
 
 
 
+zfnc = fn args_id, ret_id, self_id, res_id, body, name_or_id, {loc}, ctx:
+  [ret, , next_ctx] = cc ret_id, res_id, , {loc}, ctx
+  ir_fn_x 'fn', [[args_id, ret_id, self_id], [...body, ...ret]], name_or_id, {loc}, next_ctx
+
+
+
 transform_exprs = fn [expr=false, ...rest], ctx, out, last_id:
   match expr:
     false:
@@ -26,7 +32,6 @@ transform_exprs = fn [expr=false, ...rest], ctx, out, last_id:
 
 
 
-
 transform_args = fn {args: exprs, loc}, ctx:
   [args_id, next_ctx] = unique_name 'args', {loc}, ctx
   [args, , end_ctx] = transform_dl exprs, args_id, next_ctx
@@ -34,14 +39,21 @@ transform_args = fn {args: exprs, loc}, ctx:
 
 
 
-transform_func = fn expr, res_id, {scopes=[], ...ctx}:
-  args_ctx = {...ctx, scopes: [{}, ...scopes]}
+transform_func = fn expr, res_id, {scopes=[], self_name, ...ctx}:
+  [self_id, x_ctx] = unique_name '${res_id.i}', expr, ctx
+  args_ctx = {...x_ctx, scopes: [{(self_name): self_id}, ...scopes]}
+
   [args, args_id, ret_ctx] = transform_args expr, args_ctx
   [ret_id, body_ctx] = unique_name 'ret', expr, ret_ctx
   [exprs, fn_res_id, fn_ctx] = transform_exprs expr.exprs, body_ctx, []
-
   body = [...args, ...exprs]
-  [fun, , end_ctx] = fnc args_id, ret_id, fn_res_id, body, res_id, expr, fn_ctx
+
+  [fun, , end_ctx] = match get_refs self_id, fn_ctx:
+    ? > 0 :
+      zfnc args_id, ret_id, self_id, fn_res_id, body, res_id, expr, fn_ctx
+    else:
+      fnc args_id, ret_id, fn_res_id, body, res_id, expr, fn_ctx
+
   [fun, {...end_ctx, scopes}]
 
 

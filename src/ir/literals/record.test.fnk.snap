@@ -146,7 +146,7 @@ exports[`record compiles shorthand 1`] = `
 rec_e fn exports_0:
   rec_e fn rec_3:
     str 'foo', fn key_3:
-      id foo_0, fn val_3:
+      id foo, fn val_3:
         rec_s rec_3, key_3, val_3, fn rec_2:
           str 'π', fn key_2:
             id π, fn val_2:
@@ -156,9 +156,9 @@ rec_e fn exports_0:
                     rec_s rec_1, key_1, val_1, fn rec_0:
                       str 'foo-bar', fn key_0:
                         id foo-bar, fn val_0:
-                          rec_s rec_0, key_0, val_0, fn foo_0:
-                            str 'foo', fn key_4:
-                              rec_s exports_0, key_4, foo_0, fn exports_1:
+                          rec_s rec_0, key_0, val_0, fn shrub_0:
+                            str 'shrub', fn key_4:
+                              rec_s exports_0, key_4, shrub_0, fn exports_1:
                                 lst_e fn drctvs_0:
                                   mod exports_1, drctvs_0, fn mod_0:"
 `;

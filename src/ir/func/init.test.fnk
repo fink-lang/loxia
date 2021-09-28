@@ -108,6 +108,17 @@ describe 'func', fn:
       to_match_snapshot
 
 
+  it 'compiles recursive calls', fn:
+    expect
+      fink2lir '
+        fun = fn a, b:
+          match a:
+            b: a
+            else: fun a - 1
+        '
+      to_match_snapshot
+
+
   skip.it 'handles mutually recursive calls', fn:
     expect
       fink2lir '

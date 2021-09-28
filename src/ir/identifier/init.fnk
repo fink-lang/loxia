@@ -1,16 +1,45 @@
-{add, any, ir_fn_x} = import '../context.fnk'
+{add, any, unique_name, ir_fn_x, inc_ref} = import '../context.fnk'
 
 
 
 
-get_ident = fn id, [scope, ...scopes]=[]:
+bind = fn {value, loc}, ctx:
+  {scopes: [scope, ...scopes]=[]} = ctx
+  [id, next_ctx] = unique_name value, {loc}, ctx
+
+  end_ctx = rec:
+    ...next_ctx
+    scopes: list:
+      {...scope, (value): id}
+      ...scopes
+
+  [id, end_ctx]
+
+
+
+bind_x = fn {value}, id, ctx:
+  {scopes: [scope, ...scopes]=[]} = ctx
+
+  end_ctx = rec:
+    ...ctx
+    scopes: list:
+      {...scope, (value): id}
+      ...scopes
+
+  end_ctx
+
+
+
+get_ident = fn name, [scope, ...scopes]=[], ctx:
   match scope:
-    {(id): ?}:
-      scope.(id)
+    {(name): ?}:
+      id = scope.(name)
+      next_ctx = inc_ref id, ctx
+      [scope.(name), next_ctx]
     ?:
-      get_ident id, scopes
+      get_ident name, scopes, ctx
     else:
-      {i: id, loc: {}}
+      [{i: name, loc: {}}, ctx]
 
 
 
@@ -20,8 +49,8 @@ let = fn id, res_id, {loc}, ctx:
 
 
 transform_ident = fn {value, loc}, res_id, ctx:
-  id = get_ident value, ctx.scopes
-  [epxr, , next_ctx] = let id, res_id, {loc}, ctx
+  [id, let_ctx] = get_ident value, ctx.scopes, ctx
+  [epxr, , next_ctx] = let id, res_id, {loc}, let_ctx
   [epxr, next_ctx]
 
 

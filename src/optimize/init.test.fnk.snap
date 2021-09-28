@@ -24,7 +24,7 @@ rec_e fn exports_0:
 exports[`optimize optimizes ac ...>> res: cc ..., res 1`] = `
 "
 rec_e fn exports_0:
-  id (fn args_0, ret_0: #fnr
+  z (fn args_0, ret_0, gcd_0_0: #fn
     lst_h args_0, fn x_0:
       lst_t args_0, fn tail_0:
         lst_h tail_0, fn y_0:
@@ -33,7 +33,7 @@ rec_e fn exports_0:
               lst_a cargs_0, y_0, fn cargs_1:
                 rem x_0, y_0, fn arg_1:
                   lst_a cargs_1, arg_1, fn cargs_2:
-                    cf gcd_0, cargs_2
+                    cf gcd_0_0, cargs_2
           ), fn else_0:
             int '0', fn val_0:
               eq y_0, val_0, fn cond_0:
