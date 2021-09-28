@@ -45,7 +45,7 @@ unique_or_id = fn prefix_or_id, {loc}, ctx:
 
 
 
-ir_fn_x = fn fn_name, args, name_or_id=false, {loc}, ctx:
+ir_fn = fn fn_name, args, name_or_id=false, {loc}, ctx:
   [res_id, next_ctx] = unique_or_id name_or_id, {loc}, ctx
   expr = {f: fn_name, args, loc}
   match name_or_id:
@@ -120,9 +120,7 @@ init_refs = fn [id=false, ...rest], ctx:
 
 
 is_unused = fn id, ctx:
-  {refs} = get_value id, ctx
-  # TODO 0 == get_refs id, ctx
-  refs == 0
+  0 == get_refs id, ctx
 
 
 

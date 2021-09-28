@@ -1,21 +1,21 @@
 {reverse} = import '@fink/std-lib/iter.fnk'
 {transform} = import '../transform.fnk'
-{unique_name, ir_fn_x} = import '../context.fnk'
+{unique_or_id, ir_fn} = import '../context.fnk'
 
 {str} = import './string.fnk'
 
 
 
 rec_m = fn rec1_id, rec2_id, name_or_id, {loc}, ctx:
-  ir_fn_x 'rec_m', [rec1_id, rec2_id], name_or_id, {loc}, ctx
+  ir_fn 'rec_m', [rec1_id, rec2_id], name_or_id, {loc}, ctx
 
 
 rec_s = fn rec_id, key_id, val_id, name_or_id, {loc}, ctx:
-  ir_fn_x 'rec_s', [rec_id, key_id, val_id], name_or_id, {loc}, ctx
+  ir_fn 'rec_s', [rec_id, key_id, val_id], name_or_id, {loc}, ctx
 
 
 rec_e = fn name_or_id, {loc}, ctx:
-  ir_fn_x 'rec', [], name_or_id, {loc}, ctx
+  ir_fn 'rec', [], name_or_id, {loc}, ctx
 
 
 
@@ -54,7 +54,7 @@ transform_val = fn expr, key_id, ctx:
 
 
 transform_kv = fn expr, out_id, ctx:
-  [rec_id, key_ctx] = unique_name 'rec', expr, ctx
+  [rec_id, key_ctx] = unique_or_id 'rec', expr, ctx
   match expr:
     {type: 'spread'}:
       [val, val_id, rec_ctx] = transform expr.right, 'sprd', key_ctx

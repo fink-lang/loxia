@@ -39,7 +39,7 @@ transform_apply_fn = fn expr, ctx:
 transform_continue_with_fn = fn expr, ctx:
   [{args: [callee_id, new_args_id]}] = expr
 
-  # TODO: set by func/init.fnk
+  #set by func/init.fnk
   {args_id, label_id} = get_value callee_id, ctx
   new_args = get_js new_args_id, ctx
 

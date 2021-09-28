@@ -1,4 +1,4 @@
-{add, any, ir_fn_x} = import '../context.fnk'
+{add, any, ir_fn} = import '../context.fnk'
 {transform} = import '../transform.fnk'
 {lst, lst_a} = import '../literals/list.fnk'
 {rec_e, rec_s, rec_m} = import '../literals/record.fnk'
@@ -6,11 +6,11 @@
 
 
 jxe = fn name_id, props_id, chldrn_id, name_or_id, {loc}, ctx:
-  ir_fn_x 'jxe', [name_id, props_id, chldrn_id], name_or_id, {loc}, ctx
+  ir_fn 'jxe', [name_id, props_id, chldrn_id], name_or_id, {loc}, ctx
 
 
 jxf = fn children_id, name_or_id, {loc}, ctx:
-  ir_fn_x 'jxf', [children_id], name_or_id, {loc}, ctx
+  ir_fn 'jxf', [children_id], name_or_id, {loc}, ctx
 
 
 
@@ -107,7 +107,7 @@ transform_jsx_text = fn node, res_id, ctx:
 
 
 transform_jsx_expr_container = fn node, res_id, ctx:
-  [val, , next_ctx] = transform node.expr, res_id, ctx, false
+  [val, , next_ctx] = transform node.expr, res_id, ctx
   [val, next_ctx]
 
 

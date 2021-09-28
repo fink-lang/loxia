@@ -1,10 +1,10 @@
-{add, any, ir_fn_x} = import '../context.fnk'
+{add, any, ir_fn} = import '../context.fnk'
 {transform} = import '../transform.fnk'
 
 
 
 wt = fn future_id, res_id, {loc}, ctx:
-  ir_fn_x 'wt', [future_id], res_id, {loc}, ctx
+  ir_fn 'wt', [future_id], res_id, {loc}, ctx
 
 
 

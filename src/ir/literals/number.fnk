@@ -1,14 +1,14 @@
 
 {rx, matches} = import '@fink/std-lib/regex.fnk'
-{ir_fn_x} = import '../context.fnk'
+{ir_fn} = import '../context.fnk'
 
 
 float = fn val, res_id, {loc}, ctx:
-  ir_fn_x 'float', [val], res_id, {loc}, ctx
+  ir_fn 'float', [val], res_id, {loc}, ctx
 
 
 int = fn val, res_id, {loc}, ctx:
-  ir_fn_x 'int', [val], res_id, {loc}, ctx
+  ir_fn 'int', [val], res_id, {loc}, ctx
 
 
 

@@ -10,7 +10,7 @@ transform_exprs = fn [expr, ...exprs], res_id, ctx, out=[]:
       [val, , next_ctx] = transform expr, 'blkv', ctx
       transform_exprs exprs, res_id, next_ctx, [...out, ...val]
     else:
-      [val, , next_ctx] = transform expr, res_id, ctx, false
+      [val, , next_ctx] = transform expr, res_id, ctx
       [[...out, ...val], next_ctx]
 
 

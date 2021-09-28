@@ -1,7 +1,7 @@
 {is_empty} = import '@fink/std-lib/iter.fnk'
 
 {transform} = import '../transform.fnk'
-{unique_name, ir_fn_x} = import '../context.fnk'
+{unique_or_id, ir_fn} = import '../context.fnk'
 {lst, lst_a, lst_c} = import '../literals/list.fnk'
 {lst_h} = import '../assignment/init.fnk'
 {fnc} = import '../func/init.fnk'
@@ -9,13 +9,13 @@
 
 
 af = fn fn_id, args_id, name_or_id, {loc}, ctx:
-  ir_fn_x 'af', [fn_id, args_id], name_or_id, {loc}, ctx
+  ir_fn 'af', [fn_id, args_id], name_or_id, {loc}, ctx
 
 
 
 func = fn arg_id, res, res_id, fn_id, {loc}, ctx:
-  [args_id, ret_ctx] = unique_name 'args', {loc}, ctx
-  [ret_id, arg_ctx] = unique_name 'ret', {loc}, ret_ctx
+  [args_id, ret_ctx] = unique_or_id 'args', {loc}, ctx
+  [ret_id, arg_ctx] = unique_or_id 'ret', {loc}, ret_ctx
 
   [args, , fn_ctx] = lst_h args_id, arg_id, {loc}, arg_ctx
   body = [...args, ...res]
@@ -39,7 +39,7 @@ spread_arg = fn args_id, arg, arg_id, {loc}, ctx:
 
 
 set_partial_ident = fn name, {loc}, ctx:
-  [partial_ident, next_ctx] = unique_name name, {loc}, ctx
+  [partial_ident, next_ctx] = unique_or_id name, {loc}, ctx
   [partial_ident, {...next_ctx, partial_ident}]
 
 
@@ -60,7 +60,7 @@ transform_with_partial = fn expr, name, ctx:
 
   match true:
     foo and has_partial:
-      [fn_id, fn_ctx] = unique_name 'pfn', expr, next_ctx
+      [fn_id, fn_ctx] = unique_or_id 'pfn', expr, next_ctx
       [fun, end_ctx] = func prtl, arg, arg_id, fn_id, {loc: expr.loc}, fn_ctx
       [fun, fn_id, end_ctx]
     else:
@@ -77,7 +77,7 @@ transform_arg = fn expr, args_id, ctx:
 
 transform_spread_arg = fn expr, args_id, {partial_foo=false, has_partial=false, partial_ident=false, ...ctx}:
   [prtl, p_ctx] = match partial_foo:
-    false: unique_name 'sprtl', expr, ctx
+    false: unique_or_id 'sprtl', expr, ctx
     else: [partial_foo, ctx]
 
   foo_ctx = {...p_ctx, partial_ident: prtl}
@@ -92,7 +92,7 @@ transform_spread_arg = fn expr, args_id, {partial_foo=false, has_partial=false, 
 
 transform_partial_arg = fn expr, args_id, {partial_foo=false, has_partial, partial_ident=false, ...ctx}:
   [prlt, p_ctx] = match partial_foo:
-    false: unique_name 'prtl', expr, ctx
+    false: unique_or_id 'prtl', expr, ctx
     else: [partial_foo, ctx]
 
   match partial_ident:

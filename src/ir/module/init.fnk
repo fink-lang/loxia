@@ -1,5 +1,5 @@
 {starts_with} = import '@fink/std-lib/str.fnk'
-{add, any, ir_fn_x} = import '../context.fnk'
+{add, any, ir_fn} = import '../context.fnk'
 {transform} = import '../transform.fnk'
 {str} = import '../literals/string.fnk'
 {rec_e, rec_s} = import '../literals/record.fnk'
@@ -9,7 +9,7 @@
 
 
 mod = fn exp_id, dirs_id, res_id, {loc}, ctx:
-  ir_fn_x 'mod', [exp_id, dirs_id], res_id, {loc}, ctx
+  ir_fn 'mod', [exp_id, dirs_id], res_id, {loc}, ctx
 
 
 

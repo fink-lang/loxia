@@ -1,11 +1,11 @@
-{add, any, unique_name, ir_fn_x, inc_ref} = import '../context.fnk'
+{add, any, unique_or_id, ir_fn, inc_ref} = import '../context.fnk'
 
 
 
 
 bind = fn {value, loc}, ctx:
   {scopes: [scope, ...scopes]=[]} = ctx
-  [id, next_ctx] = unique_name value, {loc}, ctx
+  [id, next_ctx] = unique_or_id value, {loc}, ctx
 
   end_ctx = rec:
     ...next_ctx
@@ -44,7 +44,7 @@ get_ident = fn name, [scope, ...scopes]=[], ctx:
 
 
 let = fn id, res_id, {loc}, ctx:
-  ir_fn_x '=', [id], res_id, {loc}, ctx
+  ir_fn '=', [id], res_id, {loc}, ctx
 
 
 

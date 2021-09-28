@@ -1,6 +1,6 @@
 {reverse} = import '@fink/std-lib/iter.fnk'
 
-{add, any, unique_name, ir_fn_x} = import '../context.fnk'
+{add, any, unique_or_id, ir_fn} = import '../context.fnk'
 {transform} = import '../transform.fnk'
 {members_as_rec} = import '../literals/record.fnk'
 {str} = import '../literals/string.fnk'
@@ -8,27 +8,27 @@
 
 
 lst_h = fn lst_id, name_or_id, {loc}, ctx:
-  ir_fn_x 'lst_h', [lst_id], name_or_id, {loc}, ctx
+  ir_fn 'lst_h', [lst_id], name_or_id, {loc}, ctx
 
 
 lst_r = fn lst_id, name_or_id, {loc}, ctx:
-  ir_fn_x 'lst_r', [lst_id], name_or_id, {loc}, ctx
+  ir_fn 'lst_r', [lst_id], name_or_id, {loc}, ctx
 
 
 lst_t = fn lst_id, {loc}, ctx:
-  ir_fn_x 'lst_t', [lst_id], 'tail', {loc}, ctx
+  ir_fn 'lst_t', [lst_id], 'tail', {loc}, ctx
 
 
 if_v = fn val_id, true_val_id, false_val_id, name_or_id, {loc}, ctx:
-  ir_fn_x 'ifv', [val_id, true_val_id, false_val_id], name_or_id, {loc}, ctx
+  ir_fn 'ifv', [val_id, true_val_id, false_val_id], name_or_id, {loc}, ctx
 
 
 rec_g = fn rec_id, key_id, name_or_id, {loc}, ctx:
-  ir_fn_x 'rec_g', [rec_id, key_id], name_or_id, {loc}, ctx
+  ir_fn 'rec_g', [rec_id, key_id], name_or_id, {loc}, ctx
 
 
 rec_d = fn rec_id, keys, name_or_id, {loc}, ctx:
-  ir_fn_x 'rec_d', [rec_id, ...keys], name_or_id, {loc}, ctx
+  ir_fn 'rec_d', [rec_id, ...keys], name_or_id, {loc}, ctx
 
 
 
@@ -64,12 +64,12 @@ get_key_val = fn rec_id, expr, fallback, ctx:
       [key, key_id, val_id, next_ctx]
 
     {left.type: 'ident'}:
-      [val_id, key_ctx] = unique_name 'val', expr, ctx
+      [val_id, key_ctx] = unique_or_id 'val', expr, ctx
       [key, key_id, next_ctx] = str expr.left.value, 'key', expr.left, key_ctx
       [key, key_id, val_id, next_ctx]
 
     else:
-      [val_id, key_ctx] = unique_name 'val', expr, ctx
+      [val_id, key_ctx] = unique_or_id 'val', expr, ctx
       [key, key_id, next_ctx] = transform expr.left, 'key', key_ctx
       [key, key_id, val_id, next_ctx]
 
@@ -156,7 +156,7 @@ transform_dl = fn [expr=false, ...exprs], lst_id, ctx, prev=[], fallback:
       transform_dl [left, ...exprs], lst_id, dl_ctx, [...prev, ...out], flbk_id
 
     {type: 'empty'}:
-      [val_id, next_ctx] = unique_name 'unused', expr, ctx
+      [val_id, next_ctx] = unique_or_id 'unused', expr, ctx
       [out, tail_id, end_ctx] = head_tail lst_id, val_id, expr, next_ctx
       transform_dl exprs, tail_id, end_ctx, [...prev, ...out]
 
@@ -175,14 +175,14 @@ transform_dl = fn [expr=false, ...exprs], lst_id, ctx, prev=[], fallback:
 
 
     {type: 'list'}:
-      [val_id, items_ctx] = unique_name 'items', expr, ctx
+      [val_id, items_ctx] = unique_or_id 'items', expr, ctx
       # TODO: reverse next two lines?
       [out, , rest_ctx] = transform_dl expr.exprs, val_id, items_ctx, []
       [items, tail_id, end_ctx] = head_tail lst_id, val_id, expr, rest_ctx, fallback
       transform_dl exprs, tail_id, end_ctx, [...prev, ...items, ...out]
 
     {type: 'rec'}:
-      [val_id, items_ctx] = unique_name 'drec', expr, ctx
+      [val_id, items_ctx] = unique_or_id 'drec', expr, ctx
       # TODO: reverse next two lines?
       [out, , rest_ctx] = transform_dr expr.exprs, val_id, items_ctx, transform_dl, []
       [items, tail_id, end_ctx] = head_tail lst_id, val_id, expr, rest_ctx, fallback

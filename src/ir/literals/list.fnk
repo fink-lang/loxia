@@ -1,25 +1,25 @@
 {reverse} = import '@fink/std-lib/iter.fnk'
 {transform} = import '../transform.fnk'
-{unique_name, ir_fn_x} = import '../context.fnk'
+{unique_or_id, ir_fn} = import '../context.fnk'
 
 
 
 lst = fn name_or_id, {loc}, ctx:
-  ir_fn_x 'lst', [], name_or_id, {loc}, ctx
+  ir_fn 'lst', [], name_or_id, {loc}, ctx
 
 
 lst_a = fn lst_id, val_id, name_or_id, {loc}, ctx:
-  ir_fn_x 'lst_a', [lst_id, val_id], name_or_id, {loc}, ctx
+  ir_fn 'lst_a', [lst_id, val_id], name_or_id, {loc}, ctx
 
 
 lst_c = fn lst1_id, lst2_id, name_or_id, {loc}, ctx:
-  ir_fn_x 'lst_c', [lst1_id, lst2_id], name_or_id, {loc}, ctx
+  ir_fn 'lst_c', [lst1_id, lst2_id], name_or_id, {loc}, ctx
 
 
 
 transform_item = fn expr, out_id, ctx:
   # could be removed using name in lst_* funcs
-  [lst_id, item_ctx] = unique_name 'lst', expr, ctx
+  [lst_id, item_ctx] = unique_or_id 'lst', expr, ctx
   match expr:
     {type: 'spread'}:
       [items, items_id, lst_ctx] = transform expr.right, 'items', item_ctx
