@@ -19,10 +19,10 @@ rec_e fn exports_0:
   ), fn fun_0:
     str 'fun', fn key_0:
       rec_s exports_0, key_0, fun_0, fn exports_1:
-        id (fn args_1, ret_1: #fn
+        id (fn args_1, ret_2: #fn
           lst_h args_1, fn foo_0:
             lst_t args_1, fn tail_3:
-              id (fn args_2, ret_2: #fn
+              id (fn args_2, ret_1: #fn
                 lst_h args_2, fn bar_0:
                   lst_t args_2, fn tail_4:
                     id foo_0, fn callee_0:
@@ -30,9 +30,9 @@ rec_e fn exports_0:
                         id bar_0, fn arg_0:
                           lst_a cargs_0, arg_0, fn cargs_1:
                             af callee_0, cargs_1, fn result_2:
-                              cc ret_2, result_2
+                              cc ret_1, result_2
               ), fn result_1:
-                cc ret_1, result_1
+                cc ret_2, result_1
         ), fn f2_0:
           str 'f2', fn key_1:
             rec_s exports_1, key_1, f2_0, fn exports_2:
@@ -72,19 +72,19 @@ exports[`func compiles destructuring args 1`] = `
 "
 rec_e fn exports_0:
   id (fn args_0, ret_0: #fn
-    lst_h args_0, fn items_0:
-      lst_t args_0, fn tail_3:
-        lst_h items_0, fn a_0:
-          lst_t items_0, fn tail_0:
-            lst_h tail_0, fn items_1:
-              lst_t tail_0, fn tail_2:
-                lst_h items_1, fn b_0:
-                  lst_t items_1, fn tail_1:
-                    lst_h tail_3, fn items_2:
-                      lst_t tail_3, fn tail_5:
-                        lst_h items_2, fn c_0:
-                          lst_t items_2, fn tail_4:
-                            lst_r tail_4, fn rtail_0:
+    lst_h args_0, fn dlst_0:
+      lst_t args_0, fn tail_0:
+        lst_h dlst_0, fn a_0:
+          lst_t dlst_0, fn tail_1:
+            lst_h tail_1, fn dlst_1:
+              lst_t tail_1, fn tail_2:
+                lst_h dlst_1, fn b_0:
+                  lst_t dlst_1, fn tail_3:
+                    lst_h tail_0, fn dlst_2:
+                      lst_t tail_0, fn tail_4:
+                        lst_h dlst_2, fn c_0:
+                          lst_t dlst_2, fn tail_5:
+                            lst_r tail_5, fn rtail_0:
                               lst_r rtail_0, fn d_0:
                                 lst_e fn lst_1:
                                   id a_0, fn left_0:
@@ -111,11 +111,11 @@ rec_e fn exports_0:
           rec_g drec_0, key_0, fn a_0:
             str 'b', fn key_1:
               rec_g drec_0, key_1, fn b_0:
-                lst_h tail_0, fn items_0:
-                  lst_t tail_0, fn tail_2:
-                    lst_h items_0, fn c_0:
-                      lst_t items_0, fn tail_1:
-                        lst_r tail_1, fn rtail_0:
+                lst_h tail_0, fn dlst_0:
+                  lst_t tail_0, fn tail_1:
+                    lst_h dlst_0, fn c_0:
+                      lst_t dlst_0, fn tail_2:
+                        lst_r tail_2, fn rtail_0:
                           lst_r rtail_0, fn d_0:
                             lst_e fn lst_1:
                               id a_0, fn left_0:
@@ -173,7 +173,7 @@ rec_e fn exports_0:
 exports[`func compiles func of func 1`] = `
 "
 rec_e fn exports_0:
-  id (fn args_0, ret_0: #fn
+  id (fn args_0, ret_2: #fn
     lst_h args_0, fn c_0:
       lst_t args_0, fn tail_0:
         id (fn args_1, ret_1: #fn
@@ -186,10 +186,10 @@ rec_e fn exports_0:
                       lst_a lst_1, item_1, fn lst_0:
                         id e_0, fn item_0:
                           lst_a lst_0, item_0, fn value_0:
-                            id (fn ret_2: #cn
+                            id (fn ret_0: #cn
                               id (fn: #cn
                                 id (fn: #cn
-                                  cc ret_2
+                                  cc ret_0
                                 ), fn else_0:
                                   is_l value_0, fn is_lst_0:
                                     id (fn: #cn
@@ -205,13 +205,13 @@ rec_e fn exports_0:
                                                         int '1', fn left_0:
                                                           id c_0, fn right_0:
                                                             div left_0, right_0, fn result_2:
-                                                              cc ret_2, result_2
+                                                              cc ret_0, result_2
                                                       ), fn match_res_0:
                                                         cif cond_1, match_res_0, else_0
-                                            ), fn match_1:
-                                              cif cond_0, match_1, else_0
-                                    ), fn match_0:
-                                      cif is_lst_0, match_0, else_0
+                                            ), fn match_0:
+                                              cif cond_0, match_0, else_0
+                                    ), fn match_1:
+                                      cif is_lst_0, match_1, else_0
                               ), fn match_lst_0:
                                 is_l value_0, fn is_lst_1:
                                   id (fn: #cn
@@ -225,18 +225,18 @@ rec_e fn exports_0:
                                                   eq itm_3, val_3, fn cond_3:
                                                     id (fn: #cn
                                                       id c_0, fn result_3:
-                                                        cc ret_2, result_3
+                                                        cc ret_0, result_3
                                                     ), fn match_res_1:
                                                       cif cond_3, match_res_1, match_lst_0
-                                          ), fn match_3:
-                                            cif cond_2, match_3, match_lst_0
-                                  ), fn match_2:
-                                    cif is_lst_1, match_2, match_lst_0
+                                          ), fn match_2:
+                                            cif cond_2, match_2, match_lst_0
+                                  ), fn match_3:
+                                    cif is_lst_1, match_3, match_lst_0
                             ), fn match_lst_1:
                               ac match_lst_1, fn result_1:
                                 cc ret_1, result_1
         ), fn result_0:
-          cc ret_0, result_0
+          cc ret_2, result_0
   ), fn fun5_0:
     str 'fun5', fn key_0:
       rec_s exports_0, key_0, fun5_0, fn exports_1:
@@ -247,17 +247,17 @@ rec_e fn exports_0:
 exports[`func compiles other 1`] = `
 "
 rec_e fn exports_0:
-  id (fn args_0, ret_0: #fn
+  id (fn args_0, ret_1: #fn
     lst_h args_0, fn c_0:
       lst_t args_0, fn tail_0:
         lst_h tail_0, fn d_0:
           lst_t tail_0, fn tail_1:
             int '123', fn x_0:
               id ni, fn value_0:
-                id (fn ret_1: #cn
+                id (fn ret_0: #cn
                   id (fn: #cn
                     id (fn: #cn
-                      cc ret_1
+                      cc ret_0
                     ), fn else_0:
                       id c_0, fn left_0:
                         int '1', fn right_0:
@@ -267,7 +267,7 @@ rec_e fn exports_0:
                                 id d_0, fn left_1:
                                   int '1', fn right_1:
                                     add left_1, right_1, fn result_2:
-                                      cc ret_1, result_2
+                                      cc ret_0, result_2
                               ), fn match_res_0:
                                 cif cond_0, match_res_0, else_0
                   ), fn match_0:
@@ -277,12 +277,12 @@ rec_e fn exports_0:
                           eq value_0, val_1, fn cond_1:
                             id (fn: #cn
                               id d_0, fn result_3:
-                                cc ret_1, result_3
+                                cc ret_0, result_3
                             ), fn match_res_1:
                               cif cond_1, match_res_1, match_0
                 ), fn match_1:
                   ac match_1, fn result_1:
-                    cc ret_0, result_1
+                    cc ret_1, result_1
   ), fn fun_0:
     str 'fun', fn key_0:
       rec_s exports_0, key_0, fun_0, fn exports_1:
@@ -293,13 +293,13 @@ rec_e fn exports_0:
 exports[`func compiles recursive calls 1`] = `
 "
 rec_e fn exports_0:
-  z (fn args_0, ret_0, fun_0_0: #fn
+  z (fn args_0, ret_1, fun_0_0: #fn
     lst_h args_0, fn a_0:
       lst_t args_0, fn tail_0:
         lst_h tail_0, fn b_0:
           lst_t tail_0, fn tail_1:
             id a_0, fn value_0:
-              id (fn ret_1: #cn
+              id (fn ret_0: #cn
                 id (fn: #cn
                   id fun_0_0, fn callee_0:
                     lst_e fn cargs_0:
@@ -308,18 +308,18 @@ rec_e fn exports_0:
                           sub left_0, right_0, fn arg_0:
                             lst_a cargs_0, arg_0, fn cargs_1:
                               af callee_0, cargs_1, fn result_1:
-                                cc ret_1, result_1
+                                cc ret_0, result_1
                 ), fn else_0:
                   id b_0, fn val_0:
                     eq value_0, val_0, fn cond_0:
                       id (fn: #cn
                         id a_0, fn result_2:
-                          cc ret_1, result_2
+                          cc ret_0, result_2
                       ), fn match_res_0:
                         cif cond_0, match_res_0, else_0
               ), fn match_0:
                 ac match_0, fn result_0:
-                  cc ret_0, result_0
+                  cc ret_1, result_0
   ), fn fun_0:
     str 'fun', fn key_0:
       rec_s exports_0, key_0, fun_0, fn exports_1:
@@ -380,13 +380,13 @@ rec_e fn exports_0:
 exports[`func eliminates tail calls 1`] = `
 "
 rec_e fn exports_0:
-  z (fn args_0, ret_0, fun_0_0: #fn
+  z (fn args_0, ret_1, fun_0_0: #fn
     lst_h args_0, fn a_0:
       lst_t args_0, fn tail_0:
         lst_h tail_0, fn b_0:
           lst_t tail_0, fn tail_1:
             id a_0, fn value_0:
-              id (fn ret_1: #cn
+              id (fn ret_0: #cn
                 id (fn: #cn
                   id fun_0_0, fn callee_0:
                     lst_e fn cargs_0:
@@ -395,18 +395,18 @@ rec_e fn exports_0:
                           sub left_0, right_0, fn arg_0:
                             lst_a cargs_0, arg_0, fn cargs_1:
                               af callee_0, cargs_1, fn result_1:
-                                cc ret_1, result_1
+                                cc ret_0, result_1
                 ), fn else_0:
                   id b_0, fn val_0:
                     eq value_0, val_0, fn cond_0:
                       id (fn: #cn
                         id a_0, fn result_2:
-                          cc ret_1, result_2
+                          cc ret_0, result_2
                       ), fn match_res_0:
                         cif cond_0, match_res_0, else_0
               ), fn match_0:
                 ac match_0, fn result_0:
-                  cc ret_0, result_0
+                  cc ret_1, result_0
   ), fn fun_0:
     str 'fun', fn key_0:
       rec_s exports_0, key_0, fun_0, fn exports_1:

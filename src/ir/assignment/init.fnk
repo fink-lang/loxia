@@ -33,16 +33,13 @@ rec_d = fn rec_id, keys, name_or_id, {loc}, ctx:
 
 
 rec_get = fn rec_id, key_id, val_id, fallback, {loc}, ctx:
-  [val, next_ctx] = match fallback:
+  match fallback:
     false:
-      [rg, , next_ctx] = rec_g rec_id, key_id, val_id, {loc}, ctx
-      [rg, next_ctx]
+      rec_g rec_id, key_id, val_id, {loc}, ctx
     else:
       [rg, tmp_id, next_ctx] = rec_g rec_id, key_id, 'hdm', {loc}, ctx
-      [fb, , end_ctx] = if_v tmp_id, tmp_id, fallback, val_id, {loc}, next_ctx
-      [[...rg, ...fb], end_ctx]
-
-  [val, next_ctx]
+      [fb, out_val_id, end_ctx] = if_v tmp_id, tmp_id, fallback, val_id, {loc}, next_ctx
+      [[...rg, ...fb], out_val_id, end_ctx]
 
 
 
@@ -64,17 +61,15 @@ get_key_val = fn rec_id, expr, fallback, ctx:
       [key, key_id, val_id, next_ctx]
 
     {left.type: 'ident'}:
-      [val_id, key_ctx] = unique_or_id 'val', expr, ctx
-      [key, key_id, next_ctx] = str expr.left.value, 'key', expr.left, key_ctx
-      [key, key_id, val_id, next_ctx]
+      [key, key_id, next_ctx] = str expr.left.value, 'key', expr.left, ctx
+      [key, key_id, 'val', next_ctx]
 
     else:
-      [val_id, key_ctx] = unique_or_id 'val', expr, ctx
-      [key, key_id, next_ctx] = transform expr.left, 'key', key_ctx
-      [key, key_id, val_id, next_ctx]
+      [key, key_id, next_ctx] = transform expr.left, 'key', ctx
+      [key, key_id, 'val', next_ctx]
 
-  [val, end_ctx] = rec_get rec_id, key_id, val_id, fallback, expr, next_ctx
-  [[...key, ...val], key_id, val_id, end_ctx]
+  [val, out_val_id , end_ctx] = rec_get rec_id, key_id, val_id, fallback, expr, next_ctx
+  [[...key, ...val], key_id, out_val_id, end_ctx]
 
 
 
@@ -146,9 +141,9 @@ transform_dl = fn [expr=false, ...exprs], lst_id, ctx, prev=[], fallback:
       [prev, lst_id, ctx]
 
     {type: 'ident'}:
-      [val_id, next_ctx] = bind expr, ctx
-      [out, tail_id, end_ctx] = head_tail lst_id, val_id, expr, next_ctx, fallback
-      transform_dl exprs, tail_id, end_ctx, [...prev, ...out]
+      [val_id, ht_ctx] = bind expr, ctx
+      [out, tail_id, next_ctx] = head_tail lst_id, val_id, expr, ht_ctx, fallback
+      transform_dl exprs, tail_id, next_ctx, [...prev, ...out]
 
     {type: 'assign'}:
       {left, right} = expr
@@ -156,9 +151,9 @@ transform_dl = fn [expr=false, ...exprs], lst_id, ctx, prev=[], fallback:
       transform_dl [left, ...exprs], lst_id, dl_ctx, [...prev, ...out], flbk_id
 
     {type: 'empty'}:
-      [val_id, next_ctx] = unique_or_id 'unused', expr, ctx
-      [out, tail_id, end_ctx] = head_tail lst_id, val_id, expr, next_ctx
-      transform_dl exprs, tail_id, end_ctx, [...prev, ...out]
+      [val_id, ht_ctx] = unique_or_id 'unused', expr, ctx
+      [out, tail_id, next_ctx] = head_tail lst_id, val_id, expr, ht_ctx
+      transform_dl exprs, tail_id, next_ctx, [...prev, ...out]
 
     {type: 'spread'}:
       [rtail, rev_id, next_ctx] = lst_r lst_id, 'rtail', expr, ctx
@@ -169,24 +164,21 @@ transform_dl = fn [expr=false, ...exprs], lst_id, ctx, prev=[], fallback:
         false:
           [out, tail_id, spread_ctx]
         else:
-          [id, next_ctx] = bind expr.right, spread_ctx
-          [rev, , end_ctx] = lst_r tail_id, id, expr, next_ctx
-          [[...out, ...rev], id, end_ctx]
-
+          [id, rev_ctx] = bind expr.right, spread_ctx
+          [rev, , next_ctx] = lst_r tail_id, id, expr, rev_ctx
+          [[...out, ...rev], id, next_ctx]
 
     {type: 'list'}:
-      [val_id, items_ctx] = unique_or_id 'items', expr, ctx
-      # TODO: reverse next two lines?
-      [out, , rest_ctx] = transform_dl expr.exprs, val_id, items_ctx, []
-      [items, tail_id, end_ctx] = head_tail lst_id, val_id, expr, rest_ctx, fallback
-      transform_dl exprs, tail_id, end_ctx, [...prev, ...items, ...out]
+      [val_id, ht_ctx] = unique_or_id 'dlst', expr, ctx
+      [items, tail_id, lst_ctx] = head_tail lst_id, val_id, expr, ht_ctx, fallback
+      [out, , next_ctx] = transform_dl expr.exprs, val_id, lst_ctx, []
+      transform_dl exprs, tail_id, next_ctx, [...prev, ...items, ...out]
 
     {type: 'rec'}:
-      [val_id, items_ctx] = unique_or_id 'drec', expr, ctx
-      # TODO: reverse next two lines?
-      [out, , rest_ctx] = transform_dr expr.exprs, val_id, items_ctx, transform_dl, []
-      [items, tail_id, end_ctx] = head_tail lst_id, val_id, expr, rest_ctx, fallback
-      transform_dl exprs, tail_id, end_ctx, [...prev, ...items, ...out]
+      [val_id, ht_ctx] = unique_or_id 'drec', expr, ctx
+      [items, tail_id, rec_ctx] = head_tail lst_id, val_id, expr, ht_ctx, fallback
+      [out, , next_ctx] = transform_dr expr.exprs, val_id, rec_ctx, transform_dl, []
+      transform_dl exprs, tail_id, next_ctx, [...prev, ...items, ...out]
 
 
 
@@ -194,12 +186,12 @@ transform_assign = fn node, , ctx:
   # TODO assing right to result?
   match node.left:
     {type: 'list'}:
-      [right, r_id, next_ctx] = transform node.right, 'right', ctx
+      [right, r_id, next_ctx] = transform node.right, 'dlst', ctx
       [left, , end_ctx] = transform_dl node.left.exprs, r_id, next_ctx
       [[...right, ...left], end_ctx]
 
     {type: 'rec'}:
-      [right, r_id, next_ctx] = transform node.right, 'right', ctx
+      [right, r_id, next_ctx] = transform node.right, 'drec', ctx
       [left, , end_ctx] = transform_dr node.left.exprs, r_id, next_ctx, transform_dl
       [[...right, ...left], end_ctx]
 

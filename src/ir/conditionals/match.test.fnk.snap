@@ -21,15 +21,15 @@ rec_e fn exports_0:
                         id (fn: #cn
                           id ni, fn result_1:
                             cc ret_1, result_1
-                        ), fn match_res_1:
-                          cif cond_1, match_res_1, else_1
-                ), fn match_1:
-                  ac match_1, fn result_0:
+                        ), fn match_res_0:
+                          cif cond_1, match_res_0, else_1
+                ), fn match_0:
+                  ac match_0, fn result_0:
                     cc ret_0, result_0
-            ), fn match_res_0:
-              cif cond_0, match_res_0, else_0
-    ), fn match_0:
-      ac match_0, fn mex_0:
+            ), fn match_res_1:
+              cif cond_0, match_res_1, else_0
+    ), fn match_1:
+      ac match_1, fn mex_0:
         lst_e fn drctvs_0:
           mod exports_0, drctvs_0, fn mod_0:"
 `;
@@ -114,27 +114,27 @@ rec_e fn exports_0:
                                                                                                         cc ret_0, result_0
                                                                                                     ), fn match_res_0:
                                                                                                       cif cond_6, match_res_0, else_0
-                                                                                          ), fn match_6:
-                                                                                            cif cond_5, match_6, else_0
-                                                                                ), fn match_5:
-                                                                                  cif cond_4, match_5, else_0
-                                                                        ), fn match_4:
-                                                                          cif is_lst_3, match_4, else_0
-                                                                ), fn match_lst_3:
-                                                                  cif cond_3, match_lst_3, else_0
+                                                                                          ), fn match_0:
+                                                                                            cif cond_5, match_0, else_0
+                                                                                ), fn match_1:
+                                                                                  cif cond_4, match_1, else_0
+                                                                        ), fn match_2:
+                                                                          cif is_lst_3, match_2, else_0
+                                                                ), fn match_lst_0:
+                                                                  cif cond_3, match_lst_0, else_0
                                                       ), fn match_3:
                                                         cif cond_2, match_3, else_0
-                                              ), fn match_2:
-                                                cif is_lst_2, match_2, else_0
-                                      ), fn match_lst_2:
-                                        cif cond_1, match_lst_2, else_0
-                              ), fn match_1:
-                                cif is_lst_1, match_1, else_0
-                      ), fn match_lst_1:
-                        cif cond_0, match_lst_1, else_0
-              ), fn match_0:
-                cif is_lst_0, match_0, else_0
-        ), fn match_lst_0:
+                                              ), fn match_4:
+                                                cif is_lst_2, match_4, else_0
+                                      ), fn match_lst_1:
+                                        cif cond_1, match_lst_1, else_0
+                              ), fn match_5:
+                                cif is_lst_1, match_5, else_0
+                      ), fn match_lst_2:
+                        cif cond_0, match_lst_2, else_0
+              ), fn match_6:
+                cif is_lst_0, match_6, else_0
+        ), fn match_lst_3:
           is_l value_0, fn is_lst_4:
             id (fn: #cn
               lst_h value_0, fn itm_10:
@@ -162,18 +162,18 @@ rec_e fn exports_0:
                                                           id bar, fn result_1:
                                                             cc ret_0, result_1
                                                         ), fn match_res_1:
-                                                          cif cond_10, match_res_1, match_lst_0
-                                              ), fn match_10:
-                                                cif cond_9, match_10, match_lst_0
-                                    ), fn match_9:
-                                      cif cond_8, match_9, match_lst_0
-                            ), fn match_8:
-                              cif is_lst_5, match_8, match_lst_0
-                    ), fn match_lst_5:
-                      cif cond_7, match_lst_5, match_lst_0
-            ), fn match_7:
-              cif is_lst_4, match_7, match_lst_0
-      ), fn match_lst_4:
+                                                          cif cond_10, match_res_1, match_lst_3
+                                              ), fn match_7:
+                                                cif cond_9, match_7, match_lst_3
+                                    ), fn match_8:
+                                      cif cond_8, match_8, match_lst_3
+                            ), fn match_9:
+                              cif is_lst_5, match_9, match_lst_3
+                    ), fn match_lst_4:
+                      cif cond_7, match_lst_4, match_lst_3
+            ), fn match_10:
+              cif is_lst_4, match_10, match_lst_3
+      ), fn match_lst_5:
         is_l value_0, fn is_lst_6:
           id (fn: #cn
             lst_h value_0, fn itm_15:
@@ -196,17 +196,17 @@ rec_e fn exports_0:
                                               id ni, fn result_2:
                                                 cc ret_0, result_2
                                             ), fn match_res_2:
-                                              cif cond_13, match_res_2, match_lst_4
-                                    ), fn match_13:
-                                      cif is_lst_7, match_13, match_lst_4
-                            ), fn match_lst_7:
-                              cif cond_12, match_lst_7, match_lst_4
+                                              cif cond_13, match_res_2, match_lst_5
+                                    ), fn match_11:
+                                      cif is_lst_7, match_11, match_lst_5
+                            ), fn match_lst_6:
+                              cif cond_12, match_lst_6, match_lst_5
                   ), fn match_12:
-                    cif cond_11, match_12, match_lst_4
-          ), fn match_11:
-            cif is_lst_6, match_11, match_lst_4
-    ), fn match_lst_6:
-      ac match_lst_6, fn mex_0:
+                    cif cond_11, match_12, match_lst_5
+          ), fn match_13:
+            cif is_lst_6, match_13, match_lst_5
+    ), fn match_lst_7:
+      ac match_lst_7, fn mex_0:
         lst_e fn drctvs_0:
           mod exports_0, drctvs_0, fn mod_0:"
 `;
@@ -236,10 +236,10 @@ rec_e fn exports_0:
                                   cc ret_0, result_1
                               ), fn match_res_0:
                                 cif cond_1, match_res_0, else_0
-                  ), fn match_1:
-                    cif cond_0, match_1, else_0
-          ), fn match_0:
-            cif is_lst_0, match_0, else_0
+                  ), fn match_0:
+                    cif cond_0, match_0, else_0
+          ), fn match_1:
+            cif is_lst_0, match_1, else_0
     ), fn match_lst_0:
       ac match_lst_0, fn mex_0:
         lst_e fn drctvs_0:
@@ -282,15 +282,15 @@ rec_e fn exports_0:
                                                           cc ret_0, result_0
                                               ), fn match_res_0:
                                                 cif cond_2, match_res_0, else_0
-                                    ), fn match_2:
-                                      cif cond_1, match_2, else_0
+                                    ), fn match_0:
+                                      cif cond_1, match_0, else_0
                             ), fn match_1:
                               cif is_lst_1, match_1, else_0
-                    ), fn match_lst_1:
-                      cif cond_0, match_lst_1, else_0
-            ), fn match_0:
-              cif is_lst_0, match_0, else_0
-      ), fn match_lst_0:
+                    ), fn match_lst_0:
+                      cif cond_0, match_lst_0, else_0
+            ), fn match_2:
+              cif is_lst_0, match_2, else_0
+      ), fn match_lst_1:
         is_l value_0, fn is_lst_2:
           id (fn: #cn
             lst_h value_0, fn itm_4:
@@ -313,17 +313,17 @@ rec_e fn exports_0:
                                               id ni, fn result_1:
                                                 cc ret_0, result_1
                                             ), fn match_res_1:
-                                              cif cond_5, match_res_1, match_lst_0
-                                    ), fn match_5:
-                                      cif is_lst_3, match_5, match_lst_0
-                            ), fn match_lst_3:
-                              cif cond_4, match_lst_3, match_lst_0
+                                              cif cond_5, match_res_1, match_lst_1
+                                    ), fn match_3:
+                                      cif is_lst_3, match_3, match_lst_1
+                            ), fn match_lst_2:
+                              cif cond_4, match_lst_2, match_lst_1
                   ), fn match_4:
-                    cif cond_3, match_4, match_lst_0
-          ), fn match_3:
-            cif is_lst_2, match_3, match_lst_0
-    ), fn match_lst_2:
-      ac match_lst_2, fn mex_0:
+                    cif cond_3, match_4, match_lst_1
+          ), fn match_5:
+            cif is_lst_2, match_5, match_lst_1
+    ), fn match_lst_3:
+      ac match_lst_3, fn mex_0:
         lst_e fn drctvs_0:
           mod exports_0, drctvs_0, fn mod_0:"
 `;
@@ -367,10 +367,10 @@ rec_e fn exports_0:
                                   cc ret_0, result_1
                               ), fn match_res_1:
                                 cif cond_2, match_res_1, match_lst_0
-                  ), fn match_2:
-                    cif cond_1, match_2, match_lst_0
-          ), fn match_1:
-            cif is_lst_1, match_1, match_lst_0
+                  ), fn match_1:
+                    cif cond_1, match_1, match_lst_0
+          ), fn match_2:
+            cif is_lst_1, match_2, match_lst_0
     ), fn match_lst_1:
       ac match_lst_1, fn mex_0:
         lst_e fn drctvs_0:
@@ -412,10 +412,10 @@ rec_e fn exports_0:
                                                         cc ret_0, result_0
                                                     ), fn match_res_0:
                                                       cif cond_1, match_res_0, else_0
-                                ), fn match_1:
-                                  cif cond_0, match_1, else_0
-                        ), fn match_0:
-                          cif is_lst_0, match_0, else_0
+                                ), fn match_0:
+                                  cif cond_0, match_0, else_0
+                        ), fn match_1:
+                          cif is_lst_0, match_1, else_0
                   ), fn match_lst_0:
                     is_l value_0, fn is_lst_1:
                       id (fn: #cn
@@ -435,10 +435,10 @@ rec_e fn exports_0:
                                                   cc ret_0, result_1
                                               ), fn match_res_1:
                                                 cif cond_3, match_res_1, match_lst_0
-                              ), fn match_3:
-                                cif cond_2, match_3, match_lst_0
-                      ), fn match_2:
-                        cif is_lst_1, match_2, match_lst_0
+                              ), fn match_2:
+                                cif cond_2, match_2, match_lst_0
+                      ), fn match_3:
+                        cif is_lst_1, match_3, match_lst_0
                 ), fn match_lst_1:
                   is_l value_0, fn is_lst_2:
                     id (fn: #cn
@@ -567,12 +567,12 @@ rec_e fn exports_0:
                                             cc ret_0, result_1
                                         ), fn match_res_0:
                                           cif cond_2, match_res_0, else_0
-                              ), fn match_2:
-                                cif cond_1, match_2, else_0
+                              ), fn match_0:
+                                cif cond_1, match_0, else_0
                     ), fn match_1:
                       cif cond_0, match_1, else_0
-            ), fn match_0:
-              cif is_lst_0, match_0, else_0
+            ), fn match_2:
+              cif is_lst_0, match_2, else_0
       ), fn match_lst_0:
         is_l value_0, fn is_lst_1:
           id (fn: #cn
@@ -589,10 +589,10 @@ rec_e fn exports_0:
                                 cc ret_0, result_2
                             ), fn match_res_1:
                               cif cond_4, match_res_1, match_lst_0
-                  ), fn match_4:
-                    cif cond_3, match_4, match_lst_0
-          ), fn match_3:
-            cif is_lst_1, match_3, match_lst_0
+                  ), fn match_3:
+                    cif cond_3, match_3, match_lst_0
+          ), fn match_4:
+            cif is_lst_1, match_4, match_lst_0
     ), fn match_lst_1:
       ac match_lst_1, fn mex_0:
         lst_e fn drctvs_0:
@@ -721,16 +721,16 @@ rec_e fn exports_0:
                                       cc ret_0, result_0
                                   ), fn match_res_0:
                                     cif cond_1, match_res_0, else_0
-                        ), fn match_1:
-                          cif cond_0, match_1, else_0
-              ), fn match_0:
+                        ), fn match_0:
+                          cif cond_0, match_0, else_0
+              ), fn match_1:
                 is_r itm_0, fn is_rec_1:
-                  cif is_rec_1, match_0, else_0
-        ), fn match_rec_1:
+                  cif is_rec_1, match_1, else_0
+        ), fn match_rec_0:
           is_r value_0, fn is_rec_0:
-            cif is_rec_0, match_rec_1, else_0
-    ), fn match_rec_0:
-      ac match_rec_0, fn mex_0:
+            cif is_rec_0, match_rec_0, else_0
+    ), fn match_rec_1:
+      ac match_rec_1, fn mex_0:
         lst_e fn drctvs_0:
           mod exports_0, drctvs_0, fn mod_0:"
 `;
@@ -762,14 +762,14 @@ rec_e fn exports_0:
                     ), fn match_0:
                       is_r itm_1, fn is_rec_2:
                         cif is_rec_2, match_0, else_0
-              ), fn match_rec_2:
+              ), fn match_rec_0:
                 is_r itm_0, fn is_rec_1:
-                  cif is_rec_1, match_rec_2, else_0
+                  cif is_rec_1, match_rec_0, else_0
         ), fn match_rec_1:
           is_r value_0, fn is_rec_0:
             cif is_rec_0, match_rec_1, else_0
-    ), fn match_rec_0:
-      ac match_rec_0, fn mex_0:
+    ), fn match_rec_2:
+      ac match_rec_2, fn mex_0:
         lst_e fn drctvs_0:
           mod exports_0, drctvs_0, fn mod_0:"
 `;
@@ -807,20 +807,20 @@ rec_e fn exports_0:
                                 ), fn match_0:
                                   is_r itm_3, fn is_rec_4:
                                     cif is_rec_4, match_0, else_0
-                          ), fn match_rec_4:
+                          ), fn match_rec_0:
                             is_r itm_2, fn is_rec_3:
-                              cif is_rec_3, match_rec_4, else_0
-                    ), fn match_rec_3:
+                              cif is_rec_3, match_rec_0, else_0
+                    ), fn match_rec_1:
                       is_r itm_1, fn is_rec_2:
-                        cif is_rec_2, match_rec_3, else_0
+                        cif is_rec_2, match_rec_1, else_0
               ), fn match_rec_2:
                 is_r itm_0, fn is_rec_1:
                   cif is_rec_1, match_rec_2, else_0
-        ), fn match_rec_1:
+        ), fn match_rec_3:
           is_r value_0, fn is_rec_0:
-            cif is_rec_0, match_rec_1, else_0
-    ), fn match_rec_0:
-      ac match_rec_0, fn mex_0:
+            cif is_rec_0, match_rec_3, else_0
+    ), fn match_rec_4:
+      ac match_rec_4, fn mex_0:
         lst_e fn drctvs_0:
           mod exports_0, drctvs_0, fn mod_0:"
 `;
@@ -855,10 +855,10 @@ rec_e fn exports_0:
                                               cc ret_0, result_0
                                           ), fn match_res_0:
                                             cif cond_1, match_res_0, else_0
-                                ), fn match_1:
-                                  cif cond_0, match_1, else_0
-                        ), fn match_0:
-                          cif is_lst_0, match_0, else_0
+                                ), fn match_0:
+                                  cif cond_0, match_0, else_0
+                        ), fn match_1:
+                          cif is_lst_0, match_1, else_0
                 ), fn match_lst_0:
                   is_r value_0, fn is_rec_0:
                     cif is_rec_0, match_lst_0, else_0
@@ -884,18 +884,18 @@ rec_e fn exports_0:
                                                   cc ret_0, result_1
                                               ), fn match_res_1:
                                                 cif cond_3, match_res_1, match_rec_0
-                                    ), fn match_3:
+                                    ), fn match_2:
                                       is_r itm_5, fn is_rec_3:
-                                        cif is_rec_3, match_3, match_rec_0
-                              ), fn match_rec_3:
-                                cif cond_2, match_rec_3, match_rec_0
-                    ), fn match_2:
+                                        cif is_rec_3, match_2, match_rec_0
+                              ), fn match_rec_1:
+                                cif cond_2, match_rec_1, match_rec_0
+                    ), fn match_3:
                       is_r itm_3, fn is_rec_2:
-                        cif is_rec_2, match_2, match_rec_0
+                        cif is_rec_2, match_3, match_rec_0
               ), fn match_rec_2:
                 is_r value_0, fn is_rec_1:
                   cif is_rec_1, match_rec_2, match_rec_0
-          ), fn match_rec_1:
+          ), fn match_rec_3:
             id (fn: #cn
               str 'foo', fn key_5:
                 rec_g value_0, key_5, fn itm_7:
@@ -923,21 +923,21 @@ rec_e fn exports_0:
                                                             id ni, fn result_2:
                                                               cc ret_0, result_2
                                                           ), fn match_res_2:
-                                                            cif cond_6, match_res_2, match_rec_1
-                                              ), fn match_6:
+                                                            cif cond_6, match_res_2, match_rec_3
+                                              ), fn match_4:
                                                 is_r itm_10, fn is_rec_6:
-                                                  cif is_rec_6, match_6, match_rec_1
-                                        ), fn match_rec_6:
-                                          cif cond_5, match_rec_6, match_rec_1
+                                                  cif is_rec_6, match_4, match_rec_3
+                                        ), fn match_rec_4:
+                                          cif cond_5, match_rec_4, match_rec_3
                             ), fn match_5:
                               is_r itm_8, fn is_rec_5:
-                                cif is_rec_5, match_5, match_rec_1
+                                cif is_rec_5, match_5, match_rec_3
                       ), fn match_rec_5:
-                        cif cond_4, match_rec_5, match_rec_1
-            ), fn match_4:
+                        cif cond_4, match_rec_5, match_rec_3
+            ), fn match_6:
               is_r value_0, fn is_rec_4:
-                cif is_rec_4, match_4, match_rec_1
-        ), fn match_rec_4:
+                cif is_rec_4, match_6, match_rec_3
+        ), fn match_rec_6:
           id (fn: #cn
             str 'foo', fn key_10:
               rec_g value_0, key_10, fn itm_12:
@@ -962,18 +962,18 @@ rec_e fn exports_0:
                                                     add left_0, right_0, fn result_3:
                                                       cc ret_0, result_3
                                               ), fn match_res_3:
-                                                cif cond_9, match_res_3, match_rec_4
-                                    ), fn match_9:
-                                      cif cond_8, match_9, match_rec_4
+                                                cif cond_9, match_res_3, match_rec_6
+                                    ), fn match_7:
+                                      cif cond_8, match_7, match_rec_6
                           ), fn match_8:
                             is_r itm_13, fn is_rec_8:
-                              cif is_rec_8, match_8, match_rec_4
-                    ), fn match_rec_8:
-                      cif cond_7, match_rec_8, match_rec_4
-          ), fn match_7:
+                              cif is_rec_8, match_8, match_rec_6
+                    ), fn match_rec_7:
+                      cif cond_7, match_rec_7, match_rec_6
+          ), fn match_9:
             is_r value_0, fn is_rec_7:
-              cif is_rec_7, match_7, match_rec_4
-      ), fn match_rec_7:
+              cif is_rec_7, match_9, match_rec_6
+      ), fn match_rec_8:
         id (fn: #cn
           str 'foo', fn key_14:
             rec_g value_0, key_14, fn itm_16:
@@ -988,12 +988,12 @@ rec_e fn exports_0:
                               id ni, fn result_4:
                                 cc ret_0, result_4
                             ), fn match_res_4:
-                              cif cond_11, match_res_4, match_rec_7
-                  ), fn match_11:
-                    cif cond_10, match_11, match_rec_7
-        ), fn match_10:
+                              cif cond_11, match_res_4, match_rec_8
+                  ), fn match_10:
+                    cif cond_10, match_10, match_rec_8
+        ), fn match_11:
           is_r value_0, fn is_rec_9:
-            cif is_rec_9, match_10, match_rec_7
+            cif is_rec_9, match_11, match_rec_8
     ), fn match_rec_9:
       ac match_rec_9, fn mex_0:
         lst_e fn drctvs_0:
@@ -1033,21 +1033,21 @@ rec_e fn exports_0:
                                                     cc ret_0, result_0
                                                 ), fn match_res_0:
                                                   cif cond_2, match_res_0, else_0
-                                      ), fn match_2:
-                                        cif cond_1, match_2, else_0
+                                      ), fn match_0:
+                                        cif cond_1, match_0, else_0
                             ), fn match_1:
                               is_r spread_0, fn is_rec_2:
                                 cif is_rec_2, match_1, else_0
-                        ), fn match_rec_2:
-                          cif cond_0, match_rec_2, else_0
-              ), fn match_0:
+                        ), fn match_rec_0:
+                          cif cond_0, match_rec_0, else_0
+              ), fn match_2:
                 is_r itm_0, fn is_rec_1:
-                  cif is_rec_1, match_0, else_0
+                  cif is_rec_1, match_2, else_0
         ), fn match_rec_1:
           is_r value_0, fn is_rec_0:
             cif is_rec_0, match_rec_1, else_0
-    ), fn match_rec_0:
-      ac match_rec_0, fn mex_0:
+    ), fn match_rec_2:
+      ac match_rec_2, fn mex_0:
         lst_e fn drctvs_0:
           mod exports_0, drctvs_0, fn mod_0:"
 `;
@@ -1097,11 +1097,11 @@ rec_e fn exports_0:
                                                 cc ret_0, result_1
                                             ), fn match_res_1:
                                               cif cond_2, match_res_1, match_rec_0
-                              ), fn match_2:
-                                cif cond_1, match_2, match_rec_0
-                    ), fn match_1:
+                              ), fn match_1:
+                                cif cond_1, match_1, match_rec_0
+                    ), fn match_2:
                       is_r value_0, fn is_rec_1:
-                        cif is_rec_1, match_1, match_rec_0
+                        cif is_rec_1, match_2, match_rec_0
                 ), fn match_rec_1:
                   id (fn: #cn
                     str 'spam', fn key_2:
@@ -1121,11 +1121,11 @@ rec_e fn exports_0:
                                                 cc ret_0, result_2
                                             ), fn match_res_2:
                                               cif cond_4, match_res_2, match_rec_1
-                            ), fn match_4:
-                              cif cond_3, match_4, match_rec_1
-                  ), fn match_3:
+                            ), fn match_3:
+                              cif cond_3, match_3, match_rec_1
+                  ), fn match_4:
                     is_r value_0, fn is_rec_2:
-                      cif is_rec_2, match_3, match_rec_1
+                      cif is_rec_2, match_4, match_rec_1
               ), fn match_rec_2:
                 id (fn: #cn
                   str 'spam', fn key_3:

@@ -132,19 +132,19 @@ exports[`match compiles nested match 1`] = `
 "const test_0 = () => {
   /* istanbul ignore else */
   if (foo === bar) {
-    let ret_2;
+    let ret_1;
 
-    ret_2: {
+    ret_1: {
       /* istanbul ignore else */
       if (spam === shrub) {
-        ret_2 = ni;
+        ret_1 = ni;
 
         /* istanbul ignore next */
-        break ret_2;
+        break ret_1;
       }
     }
 
-    const result_1 = ret_2;
+    const result_1 = ret_1;
     return bar;
   }
 

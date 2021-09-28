@@ -40,18 +40,18 @@ rec_e fn exports_0:
                   rec_s exports_2, key_2, task3_0, fn exports_3:
                     id unfold, fn callee_1:
                       lst_e fn cargs_1:
-                        id (fn args_3, ret_3: #fn
+                        id (fn args_3, ret_4: #fn
                           int '0', fn flbk_0:
                             lst_h args_3, fn hdm_0:
                               ifv hdm_0, hdm_0, flbk_0, fn curr_0:
                                 lst_t args_3, fn tail_3:
                                   id shrub, fn value_0:
-                                    id (fn ret_4: #cn
+                                    id (fn ret_3: #cn
                                       id (fn: #cn
                                         id curr_0, fn left_2:
                                           int '1', fn right_3:
                                             add left_2, right_3, fn result_5:
-                                              cc ret_4, result_5
+                                              cc ret_3, result_5
                                       ), fn else_0:
                                         id spam, fn val_0:
                                           eq value_0, val_0, fn cond_0:
@@ -62,12 +62,12 @@ rec_e fn exports_0:
                                                     lst_a cargs_2, arg_1, fn cargs_3:
                                                       af callee_2, cargs_3, fn futr_3:
                                                         wt futr_3, fn result_6:
-                                                          cc ret_4, result_6
+                                                          cc ret_3, result_6
                                             ), fn match_res_0:
                                               cif cond_0, match_res_0, else_0
                                     ), fn match_0:
                                       ac match_0, fn result_4:
-                                        cc ret_3, result_4
+                                        cc ret_4, result_4
                         ), fn arg_0:
                           lst_a cargs_1, arg_0, fn cargs_4:
                             af callee_1, cargs_4, fn a_gen_0:

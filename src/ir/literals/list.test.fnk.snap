@@ -114,8 +114,8 @@ rec_e fn exports_0:
               str 'foo', fn key_0:
                 rec_s exports_0, key_0, foo_0, fn exports_1:
                   int '1', fn left_1:
-                    int '2', fn right_3:
-                      add left_1, right_3, fn item_7:
+                    int '2', fn right_1:
+                      add left_1, right_1, fn item_7:
                         lst_e fn cargs_0:
                           lst_a cargs_0, item_3, fn cargs_1:
                             lst_a cargs_1, item_2, fn cargs_2:
@@ -132,9 +132,9 @@ rec_e fn exports_0:
 exports[`unpacking list destructures recs 1`] = `
 "
 rec_e fn exports_0:
-  id ni, fn right_0:
-    lst_h right_0, fn drec_0:
-      lst_t right_0, fn tail_0:
+  id ni, fn dlst_0:
+    lst_h dlst_0, fn drec_0:
+      lst_t dlst_0, fn tail_0:
         str 'a', fn key_0:
           rec_g drec_0, key_0, fn a_0:
             str 'b', fn key_1:
@@ -156,15 +156,15 @@ rec_e fn exports_0:
             lst_a lst_2, item_2, fn lst_1:
               int '3', fn item_1:
                 lst_a lst_1, item_1, fn item_0:
-                  lst_a lst_0, item_0, fn right_0:
-                    lst_h right_0, fn a_0:
-                      lst_t right_0, fn tail_0:
-                        lst_h tail_0, fn items_0:
-                          lst_t tail_0, fn tail_3:
-                            lst_h items_0, fn b_0:
-                              lst_t items_0, fn tail_1:
-                                lst_h tail_1, fn c_0:
-                                  lst_t tail_1, fn tail_2:
+                  lst_a lst_0, item_0, fn dlst_0:
+                    lst_h dlst_0, fn a_0:
+                      lst_t dlst_0, fn tail_0:
+                        lst_h tail_0, fn dlst_1:
+                          lst_t tail_0, fn tail_1:
+                            lst_h dlst_1, fn b_0:
+                              lst_t dlst_1, fn tail_2:
+                                lst_h tail_2, fn c_0:
+                                  lst_t tail_2, fn tail_3:
                                     lst_e fn lst_5:
                                       id b_0, fn item_5:
                                         lst_a lst_5, item_5, fn lst_4:
@@ -174,18 +174,18 @@ rec_e fn exports_0:
                                                 rec_s exports_0, key_0, foo_0, fn exports_1:
                                                   lst_e fn lst_7:
                                                     int '1', fn left_1:
-                                                      int '2', fn right_3:
-                                                        add left_1, right_3, fn item_7:
+                                                      int '2', fn right_1:
+                                                        add left_1, right_1, fn item_7:
                                                           lst_a lst_7, item_7, fn lst_6:
                                                             int '3', fn left_0:
-                                                              int '4', fn right_2:
-                                                                mul left_0, right_2, fn item_6:
-                                                                  lst_a lst_6, item_6, fn right_1:
-                                                                    lst_h right_1, fn z_0:
-                                                                      lst_t right_1, fn tail_4:
-                                                                        id foo_0, fn right_4:
-                                                                          lst_h right_4, fn x_0:
-                                                                            lst_t right_4, fn tail_5:
+                                                              int '4', fn right_0:
+                                                                mul left_0, right_0, fn item_6:
+                                                                  lst_a lst_6, item_6, fn dlst_2:
+                                                                    lst_h dlst_2, fn z_0:
+                                                                      lst_t dlst_2, fn tail_4:
+                                                                        id foo_0, fn dlst_3:
+                                                                          lst_h dlst_3, fn x_0:
+                                                                            lst_t dlst_3, fn tail_5:
                                                                               lst_h tail_5, fn y_0:
                                                                                 lst_t tail_5, fn tail_6:
                                                                                   lst_e fn drctvs_0:
@@ -195,35 +195,35 @@ rec_e fn exports_0:
 exports[`unpacking list destructures spread 1`] = `
 "
 rec_e fn exports_0:
-  id ni, fn right_0:
-    lst_h right_0, fn a_0:
-      lst_t right_0, fn tail_0:
+  id ni, fn dlst_0:
+    lst_h dlst_0, fn a_0:
+      lst_t dlst_0, fn tail_0:
         lst_h tail_0, fn b_0:
           lst_t tail_0, fn tail_1:
             lst_h tail_1, fn c_0:
               lst_t tail_1, fn tail_2:
-                id ni, fn right_1:
-                  lst_h right_1, fn unused_0:
-                    lst_t right_1, fn tail_3:
+                id ni, fn dlst_1:
+                  lst_h dlst_1, fn unused_0:
+                    lst_t dlst_1, fn tail_3:
                       lst_h tail_3, fn unused_1:
                         lst_t tail_3, fn tail_4:
                           lst_h tail_4, fn d_0:
                             lst_t tail_4, fn tail_5:
-                              id ni, fn right_2:
-                                lst_h right_2, fn head_0:
-                                  lst_t right_2, fn tail_6:
+                              id ni, fn dlst_2:
+                                lst_h dlst_2, fn head_0:
+                                  lst_t dlst_2, fn tail_6:
                                     lst_r tail_6, fn rtail_0:
                                       lst_r rtail_0, fn tail_7:
                                         str '1234', fn str_0:
-                                          strt str_0, fn right_3:
-                                            lst_r right_3, fn rtail_1:
+                                          strt str_0, fn dlst_3:
+                                            lst_r dlst_3, fn rtail_1:
                                               lst_h rtail_1, fn last_0:
                                                 lst_t rtail_1, fn tail_8:
                                                   lst_r tail_8, fn items_0:
                                                     str '123', fn str_1:
-                                                      strt str_1, fn right_4:
-                                                        lst_h right_4, fn first_0:
-                                                          lst_t right_4, fn tail_9:
+                                                      strt str_1, fn dlst_4:
+                                                        lst_h dlst_4, fn first_0:
+                                                          lst_t dlst_4, fn tail_9:
                                                             lst_h tail_9, fn second_0:
                                                               lst_t tail_9, fn tail_10:
                                                                 lst_r tail_10, fn rtail_2:
@@ -233,15 +233,15 @@ rec_e fn exports_0:
                                                                         lst_t tail_11, fn tail_12:
                                                                           lst_r tail_12, fn middle_0:
                                                                             str '123', fn str_2:
-                                                                              strt str_2, fn right_5:
-                                                                                lst_h right_5, fn ni_0:
-                                                                                  lst_t right_5, fn tail_13:
+                                                                              strt str_2, fn dlst_5:
+                                                                                lst_h dlst_5, fn ni_0:
+                                                                                  lst_t dlst_5, fn tail_13:
                                                                                     lst_r tail_13, fn rtail_3:
                                                                                       lst_h rtail_3, fn nu_0:
                                                                                         lst_t rtail_3, fn tail_14:
                                                                                           str '123', fn str_3:
-                                                                                            strt str_3, fn right_6:
-                                                                                              lst_r right_6, fn rtail_4:
+                                                                                            strt str_3, fn dlst_6:
+                                                                                              lst_r dlst_6, fn rtail_4:
                                                                                                 lst_h rtail_4, fn nuna_0:
                                                                                                   lst_t rtail_4, fn tail_15:
                                                                                                     lst_e fn drctvs_0:
@@ -251,11 +251,11 @@ rec_e fn exports_0:
 exports[`unpacking list destructures with defaults 1`] = `
 "
 rec_e fn exports_0:
-  id foo, fn right_0:
+  id foo, fn dlst_0:
     int '12', fn flbk_0:
-      lst_h right_0, fn hdm_0:
+      lst_h dlst_0, fn hdm_0:
         ifv hdm_0, hdm_0, flbk_0, fn a_0:
-          lst_t right_0, fn tail_0:
+          lst_t dlst_0, fn tail_0:
             int '34', fn flbk_1:
               lst_h tail_0, fn hdm_1:
                 ifv hdm_1, hdm_1, flbk_1, fn b_0:
@@ -274,25 +274,25 @@ rec_e fn exports_0:
 exports[`unpacking list destructures with defaults 2`] = `
 "
 rec_e fn exports_0:
-  id foo, fn right_0:
+  id foo, fn dlst_0:
     lst_e fn lst_1:
       int '1', fn item_1:
         lst_a lst_1, item_1, fn lst_0:
           int '2', fn item_0:
             lst_a lst_0, item_0, fn flbk_0:
-              lst_h right_0, fn hdm_1:
-                ifv hdm_1, hdm_1, flbk_0, fn items_0:
-                  lst_t right_0, fn tail_2:
-                    lst_h items_0, fn a_0:
-                      lst_t items_0, fn tail_0:
+              lst_h dlst_0, fn hdm_0:
+                ifv hdm_0, hdm_0, flbk_0, fn dlst_1:
+                  lst_t dlst_0, fn tail_0:
+                    lst_h dlst_1, fn a_0:
+                      lst_t dlst_1, fn tail_1:
                         int '0', fn flbk_1:
-                          lst_h tail_0, fn hdm_0:
-                            ifv hdm_0, hdm_0, flbk_1, fn b_0:
-                              lst_t tail_0, fn tail_1:
+                          lst_h tail_1, fn hdm_1:
+                            ifv hdm_1, hdm_1, flbk_1, fn b_0:
+                              lst_t tail_1, fn tail_2:
                                 int '34', fn flbk_2:
-                                  lst_h tail_2, fn hdm_2:
+                                  lst_h tail_0, fn hdm_2:
                                     ifv hdm_2, hdm_2, flbk_2, fn c_0:
-                                      lst_t tail_2, fn tail_3:
+                                      lst_t tail_0, fn tail_3:
                                         lst_e fn lst_4:
                                           id a_0, fn item_4:
                                             lst_a lst_4, item_4, fn lst_3:

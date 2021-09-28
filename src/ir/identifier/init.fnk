@@ -16,7 +16,7 @@ bind = fn {value, loc}, ctx:
   [id, end_ctx]
 
 
-
+# TODO rename
 bind_x = fn {value}, id, ctx:
   {scopes: [scope, ...scopes]=[]} = ctx
 

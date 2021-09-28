@@ -10,14 +10,16 @@ cc = fn ret_id, res_id, name_or_id, {loc}, ctx:
 
 
 
-fnc = fn args_id, ret_id, res_id, body, name_or_id, {loc}, ctx:
-  [ret, , next_ctx] = cc ret_id, res_id, , {loc}, ctx
+fnc = fn args_id, res_id, body, name_or_id, {loc}, ctx:
+  [ret_id, cc_ctx] = unique_or_id 'ret', {loc}, ctx
+  [ret, , next_ctx] = cc ret_id, res_id, , {loc}, cc_ctx
   ir_fn 'fn', [[args_id, ret_id], [...body, ...ret]], name_or_id, {loc}, next_ctx
 
 
 
-zfnc = fn args_id, ret_id, self_id, res_id, body, name_or_id, {loc}, ctx:
-  [ret, , next_ctx] = cc ret_id, res_id, , {loc}, ctx
+zfnc = fn args_id, self_id, res_id, body, name_or_id, {loc}, ctx:
+  [ret_id, cc_ctx] = unique_or_id 'ret', {loc}, ctx
+  [ret, , next_ctx] = cc ret_id, res_id, , {loc}, cc_ctx
   ir_fn 'fn', [[args_id, ret_id, self_id], [...body, ...ret]], name_or_id, {loc}, next_ctx
 
 
@@ -43,16 +45,15 @@ transform_func = fn expr, res_id, {scopes=[], self_name, ...ctx}:
   [self_id, x_ctx] = unique_or_id '${res_id.i}', expr, ctx
   args_ctx = {...x_ctx, scopes: [{(self_name): self_id}, ...scopes]}
 
-  [args, args_id, ret_ctx] = transform_args expr, args_ctx
-  [ret_id, body_ctx] = unique_or_id 'ret', expr, ret_ctx
+  [args, args_id, body_ctx] = transform_args expr, args_ctx
   [exprs, fn_res_id, fn_ctx] = transform_exprs expr.exprs, body_ctx, []
   body = [...args, ...exprs]
 
   [fun, , end_ctx] = match get_refs self_id, fn_ctx:
     ? > 0 :
-      zfnc args_id, ret_id, self_id, fn_res_id, body, res_id, expr, fn_ctx
+      zfnc args_id, self_id, fn_res_id, body, res_id, expr, fn_ctx
     else:
-      fnc args_id, ret_id, fn_res_id, body, res_id, expr, fn_ctx
+      fnc args_id, fn_res_id, body, res_id, expr, fn_ctx
 
   [fun, {...end_ctx, scopes}]
 

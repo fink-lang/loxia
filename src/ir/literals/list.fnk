@@ -50,7 +50,7 @@ transform_items = fn [expr=false, ...rest], ctx, result_id, out=[]:
 
 transform_list = fn node, result, ctx:
   exprs = reverse node.exprs
-  [out, lst_id, next_ctx] = transform_items exprs, ctx, result
-  [expr, , end_ctx] = lst lst_id, node, next_ctx
+  [out, start_lst_id, next_ctx] = transform_items exprs, ctx, result
+  [expr, , end_ctx] = lst start_lst_id, node, next_ctx
   [[...expr, ...out], end_ctx]
 

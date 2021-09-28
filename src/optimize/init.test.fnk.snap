@@ -24,7 +24,7 @@ rec_e fn exports_0:
 exports[`optimize optimizes ac ...>> res: cc ..., res 1`] = `
 "
 rec_e fn exports_0:
-  z (fn args_0, ret_0, gcd_0_0: #fn
+  z (fn args_0, ret_1, gcd_0_0: #fn
     lst_h args_0, fn x_0:
       lst_t args_0, fn tail_0:
         lst_h tail_0, fn y_0:
@@ -38,7 +38,7 @@ rec_e fn exports_0:
             int '0', fn val_0:
               eq y_0, val_0, fn cond_0:
                 id (fn: #cn
-                  cc ret_0, x_0
+                  cc ret_1, x_0
                 ), fn match_res_0:
                   cif cond_0, match_res_0, else_0
   ), fn gcd_0:
@@ -54,19 +54,19 @@ rec_e fn exports_0:
   int '123', fn ni_0:
     str 'ni', fn key_0:
       rec_s exports_0, key_0, ni_0, fn exports_1:
-        id (fn args_0, ret_0: #fn
+        id (fn args_0, ret_1: #fn
           lst_h args_0, fn foo_0:
             lst_t args_0, fn tail_0:
               lst_h tail_0, fn bar_0:
-                id (fn ret_1: #cn
+                id (fn ret_0: #cn
                   id (fn: #cn
                     lst_e fn lst_1:
                       int '2', fn item_1:
                         lst_a lst_1, item_1, fn lst_0:
-                          int '2', fn right_1:
-                            mul ni_0, right_1, fn item_0:
+                          int '2', fn right_0:
+                            mul ni_0, right_0, fn item_0:
                               lst_a lst_0, item_0, fn result_1:
-                                cc ret_1, result_1
+                                cc ret_0, result_1
                   ), fn else_0:
                     eq foo_0, bar_0, fn cond_0:
                       id (fn: #cn
@@ -74,17 +74,17 @@ rec_e fn exports_0:
                           int '1', fn item_3:
                             lst_a lst_3, item_3, fn lst_2:
                               lst_a lst_2, ni_0, fn result_2:
-                                cc ret_1, result_2
+                                cc ret_0, result_2
                       ), fn match_res_0:
                         cif cond_0, match_res_0, else_0
                 ), fn match_0:
-                  ac match_0, fn right_0:
-                    lst_h right_0, fn spam_1:
-                      lst_t right_0, fn tail_2:
+                  ac match_0, fn dlst_0:
+                    lst_h dlst_0, fn spam_1:
+                      lst_t dlst_0, fn tail_2:
                         lst_h tail_2, fn ham_0:
                           add spam_1, ni_0, fn left_1:
                             add left_1, ham_0, fn result_3:
-                              cc ret_0, result_3
+                              cc ret_1, result_3
         ), fn spam_0:
           str 'spam', fn key_1:
             rec_s exports_1, key_1, spam_0, fn exports_2:

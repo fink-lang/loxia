@@ -229,17 +229,17 @@ rec_e fn exports_0:
 exports[`unpacking record compiles defaults 1`] = `
 "
 rec_e fn exports_0:
-  id foo, fn right_0:
+  id foo, fn drec_0:
     int '1', fn flbk_0:
       str 'x', fn key_0:
-        rec_g right_0, key_0, fn hdm_0:
+        rec_g drec_0, key_0, fn hdm_0:
           ifv hdm_0, hdm_0, flbk_0, fn x_0:
             int '2', fn flbk_1:
               str 'π', fn key_1:
-                rec_g right_0, key_1, fn hdm_1:
+                rec_g drec_0, key_1, fn hdm_1:
                   ifv hdm_1, hdm_1, flbk_1, fn pi_0:
                     str 'ni', fn key_2:
-                      rec_g right_0, key_2, fn val_0:
+                      rec_g drec_0, key_2, fn val_0:
                         str 'y', fn key_3:
                           rec_g val_0, key_3, fn y_0:
                             str 'z', fn key_4:
@@ -251,11 +251,11 @@ rec_e fn exports_0:
 exports[`unpacking record compiles empty 1`] = `
 "
 rec_e fn exports_0:
-  id shrub, fn right_0:
+  id shrub, fn drec_0:
     str 'foo', fn key_0:
-      rec_g right_0, key_0, fn val_0:
+      rec_g drec_0, key_0, fn val_0:
         str 'bar', fn key_1:
-          rec_g right_0, key_1, fn bar_0:
+          rec_g drec_0, key_1, fn bar_0:
             lst_e fn drctvs_0:
               mod exports_0, drctvs_0, fn mod_0:"
 `;
@@ -263,14 +263,14 @@ rec_e fn exports_0:
 exports[`unpacking record compiles member expr as keys 1`] = `
 "
 rec_e fn exports_0:
-  id foo, fn right_0:
+  id foo, fn drec_0:
     str 'spam', fn key_0:
-      rec_g right_0, key_0, fn val_0:
+      rec_g drec_0, key_0, fn val_0:
         str 'ham', fn key_1:
           rec_g val_0, key_1, fn val_1:
             str 'ni', fn key_2:
               rec_g val_1, key_2, fn ni_0:
-                rec_d right_0, key_0, fn rest_0:
+                rec_d drec_0, key_0, fn rest_0:
                   lst_e fn drctvs_0:
                     mod exports_0, drctvs_0, fn mod_0:"
 `;
@@ -278,9 +278,9 @@ rec_e fn exports_0:
 exports[`unpacking record compiles member expr as keys 2`] = `
 "
 rec_e fn exports_0:
-  id foo, fn right_0:
+  id foo, fn drec_0:
     str 'spam', fn key_0:
-      rec_g right_0, key_0, fn val_0:
+      rec_g drec_0, key_0, fn val_0:
         str 'ham', fn key_1:
           rec_g val_0, key_1, fn val_1:
             str 'ni', fn key_2:
@@ -291,7 +291,7 @@ rec_e fn exports_0:
                       rec_g val_2, key_4, fn val_3:
                         str 'bar', fn key_5:
                           rec_g val_3, key_5, fn bar_0:
-                            rec_d right_0, key_0, fn rest_0:
+                            rec_d drec_0, key_0, fn rest_0:
                               lst_e fn drctvs_0:
                                 mod exports_0, drctvs_0, fn mod_0:"
 `;
@@ -299,9 +299,9 @@ rec_e fn exports_0:
 exports[`unpacking record compiles member expr as keys 3`] = `
 "
 rec_e fn exports_0:
-  id foo, fn right_0:
+  id foo, fn drec_0:
     str 'foo-bar', fn key_0:
-      rec_g right_0, key_0, fn val_0:
+      rec_g drec_0, key_0, fn val_0:
         str 'spam-ham', fn key_1:
           rec_g val_0, key_1, fn val_1:
             str 'ni', fn key_2:
@@ -312,7 +312,7 @@ rec_e fn exports_0:
                       rec_g val_2, key_4, fn val_3:
                         str 'bar', fn key_5:
                           rec_g val_3, key_5, fn bar_0:
-                            rec_d right_0, key_0, fn rest_0:
+                            rec_d drec_0, key_0, fn rest_0:
                               lst_e fn drctvs_0:
                                 mod exports_0, drctvs_0, fn mod_0:"
 `;
@@ -320,17 +320,17 @@ rec_e fn exports_0:
 exports[`unpacking record compiles nested 1`] = `
 "
 rec_e fn exports_0:
-  id ni, fn right_0:
+  id ni, fn drec_0:
     str 'a', fn key_0:
-      rec_g right_0, key_0, fn a_0:
+      rec_g drec_0, key_0, fn a_0:
         str 'b', fn key_1:
-          rec_g right_0, key_1, fn val_0:
+          rec_g drec_0, key_1, fn val_0:
             str 'c', fn key_2:
               rec_g val_0, key_2, fn c_0:
                 str 'd', fn key_3:
                   rec_g val_0, key_3, fn d_0:
                     str 'e', fn key_4:
-                      rec_g right_0, key_4, fn e_0:
+                      rec_g drec_0, key_4, fn e_0:
                         lst_e fn drctvs_0:
                           mod exports_0, drctvs_0, fn mod_0:"
 `;
@@ -338,17 +338,17 @@ rec_e fn exports_0:
 exports[`unpacking record compiles nested 2`] = `
 "
 rec_e fn exports_0:
-  id ni, fn right_0:
+  id ni, fn drec_0:
     str 'a', fn key_0:
-      rec_g right_0, key_0, fn a_0:
+      rec_g drec_0, key_0, fn a_0:
         str 'b', fn key_1:
-          rec_g right_0, key_1, fn val_0:
+          rec_g drec_0, key_1, fn val_0:
             lst_h val_0, fn c_0:
               lst_t val_0, fn tail_0:
                 lst_h tail_0, fn d_0:
                   lst_t tail_0, fn tail_1:
                     str 'e', fn key_2:
-                      rec_g right_0, key_2, fn e_0:
+                      rec_g drec_0, key_2, fn e_0:
                         lst_e fn drctvs_0:
                           mod exports_0, drctvs_0, fn mod_0:"
 `;
@@ -356,18 +356,18 @@ rec_e fn exports_0:
 exports[`unpacking record compiles simple 1`] = `
 "
 rec_e fn exports_0:
-  id ni, fn right_0:
+  id ni, fn drec_0:
     str 'a', fn key_0:
-      rec_g right_0, key_0, fn a_0:
+      rec_g drec_0, key_0, fn a_0:
         str 'b', fn str_0:
           strt str_0, fn key_1:
-            rec_g right_0, key_1, fn b_0:
+            rec_g drec_0, key_1, fn b_0:
               id foo, fn callee_0:
                 lst_e fn cargs_0:
                   id bar, fn arg_0:
                     lst_a cargs_0, arg_0, fn cargs_1:
                       af callee_0, cargs_1, fn key_2:
-                        rec_g right_0, key_2, fn val_0:
+                        rec_g drec_0, key_2, fn val_0:
                           str 'c', fn key_3:
                             rec_g val_0, key_3, fn c_0:
                               lst_e fn drctvs_0:
@@ -377,16 +377,16 @@ rec_e fn exports_0:
 exports[`unpacking record compiles spread 1`] = `
 "
 rec_e fn exports_0:
-  id foo, fn right_0:
+  id foo, fn drec_0:
     str 'a', fn key_0:
-      rec_g right_0, key_0, fn a_0:
+      rec_g drec_0, key_0, fn a_0:
         str 'a', fn key_1:
-          rec_g right_0, key_1, fn val_0:
+          rec_g drec_0, key_1, fn val_0:
             str 'b', fn key_2:
               rec_g val_0, key_2, fn b_0:
                 str 'c', fn key_3:
                   rec_g val_0, key_3, fn c_0:
-                    rec_d right_0, key_0, key_1, fn f_0:
+                    rec_d drec_0, key_0, key_1, fn f_0:
                       lst_e fn drctvs_0:
                         mod exports_0, drctvs_0, fn mod_0:"
 `;
@@ -394,9 +394,9 @@ rec_e fn exports_0:
 exports[`unpacking record destructuress tpls 1`] = `
 "
 rec_e fn exports_0:
-  id shrub, fn right_0:
+  id shrub, fn drec_0:
     str 'foo', fn key_0:
-      rec_g right_0, key_0, fn val_0:
+      rec_g drec_0, key_0, fn val_0:
         lst_h val_0, fn bar_0:
           lst_t val_0, fn tail_0:
             lst_h tail_0, fn spam_0:

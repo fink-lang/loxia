@@ -13,16 +13,11 @@ af = fn fn_id, args_id, name_or_id, {loc}, ctx:
 
 
 
-func = fn arg_id, res, res_id, fn_id, {loc}, ctx:
-  [args_id, ret_ctx] = unique_or_id 'args', {loc}, ctx
-  [ret_id, arg_ctx] = unique_or_id 'ret', {loc}, ret_ctx
-
-  [args, , fn_ctx] = lst_h args_id, arg_id, {loc}, arg_ctx
+prtl_func = fn prtl_arg_id, res, res_id, fn_id_or_name, {loc}, ctx:
+  [args_id, arg_ctx] = unique_or_id 'args', {loc}, ctx
+  [args, , fn_ctx] = lst_h args_id, prtl_arg_id, {loc}, arg_ctx
   body = [...args, ...res]
-
-  [fun, , end_ctx] = fnc args_id, ret_id, res_id, body, fn_id, {loc}, fn_ctx
-  [fun, end_ctx]
-
+  fnc args_id, res_id, body, fn_id_or_name, {loc}, fn_ctx
 
 
 
@@ -60,9 +55,7 @@ transform_with_partial = fn expr, name, ctx:
 
   match true:
     foo and has_partial:
-      [fn_id, fn_ctx] = unique_or_id 'pfn', expr, next_ctx
-      [fun, end_ctx] = func prtl, arg, arg_id, fn_id, {loc: expr.loc}, fn_ctx
-      [fun, fn_id, end_ctx]
+      prtl_func prtl, arg, arg_id, 'pfn', {loc: expr.loc}, next_ctx
     else:
       [arg, arg_id, next_ctx]
 
@@ -171,8 +164,8 @@ transform_call = fn node, result, ctx:
     else:
       [appl_fn, res_id, foo_ctx] = af c_id, args_id, 'pfn', node, next_ctx
       call = [...callee, ...args, ...appl_fn]
-      func partial_foo, call, res_id, result, node, foo_ctx
-
+      [fun, , end_ctx] = prtl_func partial_foo, call, res_id, result, node, foo_ctx
+      [fun, end_ctx]
 
 
 

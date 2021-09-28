@@ -10,16 +10,16 @@ export const fun = fun_0;"
 `;
 
 exports[`compiles destructuring args 1`] = `
-"const fun_0 = (items_0, items_2) => {
-  return [items_0[0] + items_0[1][0], items_2[0], items_2.slice(1)];
+"const fun_0 = (dlst_0, dlst_2) => {
+  return [dlst_0[0] + dlst_0[1][0], dlst_2[0], dlst_2.slice(1)];
 };
 
 export const fun = fun_0;"
 `;
 
 exports[`compiles destructuring args 2`] = `
-"const fun_0 = (drec_0, items_0) => {
-  return [drec_0.a + drec_0.b, items_0[0]];
+"const fun_0 = (drec_0, dlst_0) => {
+  return [drec_0.a + drec_0.b, dlst_0[0]];
 };
 
 export const fun = fun_0;"

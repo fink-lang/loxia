@@ -93,10 +93,10 @@ export const out = out_0;"
 `;
 
 exports[`unpacking list destructures with defaults 2`] = `
-"const hdm_1 = foo[0];
-const items_0 = undefined === hdm_1 ? [1, 2] : hdm_1;
-const hdm_0 = items_0[1];
+"const hdm_0 = foo[0];
+const dlst_1 = undefined === hdm_0 ? [1, 2] : hdm_0;
+const hdm_1 = dlst_1[1];
 const hdm_2 = foo[1];
-const out_0 = [items_0[0], undefined === hdm_0 ? 0 : hdm_0, undefined === hdm_2 ? 34 : hdm_2];
+const out_0 = [dlst_1[0], undefined === hdm_1 ? 0 : hdm_1, undefined === hdm_2 ? 34 : hdm_2];
 export const out = out_0;"
 `;
