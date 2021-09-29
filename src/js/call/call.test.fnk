@@ -3,6 +3,7 @@
 
 
 describe 'call', fn:
+
   it 'compiles', fn:
     expect
       fink2js '

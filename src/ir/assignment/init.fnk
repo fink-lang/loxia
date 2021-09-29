@@ -197,7 +197,7 @@ transform_assign = fn node, , ctx:
 
     {type: 'ident'}:
       r_ctx = {...ctx, self_name: node.left.value}
-      [right, l_id, bind_ctx] = transform node.right, node.left.value, r_ctx
+      [right, l_id, {self_name: _, ...bind_ctx}] = transform node.right, node.left.value, r_ctx
       end_ctx = bind_x node.left, l_id, bind_ctx
       [right, end_ctx]
 

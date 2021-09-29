@@ -97,17 +97,8 @@ describe 'func', fn:
       to_match_snapshot
 
 
-  it 'eliminates tail calls', fn:
-    expect
-      fink2lir '
-        fun = fn a, b:
-          match a:
-            b: a
-            else: fun a - 1
-        '
-      to_match_snapshot
 
-
+describe 'recursive funcs', fn:
   it 'compiles recursive calls', fn:
     expect
       fink2lir '

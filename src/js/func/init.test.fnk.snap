@@ -124,3 +124,40 @@ exports[`func compiles no args 1`] = `
 
 export const fun = fun_0;"
 `;
+
+exports[`recursive functions compiles to while loop 1`] = `
+"const gcd_0 = (...args_0) => {
+  gcd_0: do {
+    const x_0 = args_0[0];
+    const y_0 = args_0[1];
+
+    /* istanbul ignore else */
+    if (y_0 === 0) {
+      return x_0;
+    }
+
+    args_0 = [y_0, x_0 % y_0];
+    continue gcd_0;
+  } while (true);
+};
+
+export const gcd = gcd_0;"
+`;
+
+exports[`recursive functions compiles with self reference 1`] = `
+"const foo_0 = cntr_0 => {
+  /* istanbul ignore else */
+  if (cntr_0 === 0) {
+    return [cntr_0];
+  }
+
+  /* istanbul ignore else */
+  if (cntr_0 === 1) {
+    return [...foo_0(cntr_0 - 1)];
+  }
+
+  return [cntr_0, ...foo_0(cntr_0 - 1)];
+};
+
+export const foo = foo_0;"
+`;
