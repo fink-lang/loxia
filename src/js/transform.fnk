@@ -72,10 +72,8 @@ transform_exprs = fn [expr=false, ...exprs], ctx, body=[]:
       transform_exprs exprs, next_ctx, body
 
     [{f: 'mod'}]:
-      [, [res_id]] = expr
-      next_ctx = transform expr, ctx
-      js = get_js_literal res_id, next_ctx
-      transform_exprs exprs, next_ctx, [...body, js]
+      [body_exprs, next_ctx] = transform expr, ctx
+      transform_exprs exprs, next_ctx, [...body, ...body_exprs]
 
     [ , [?]]:
       [{f: op}, [res_id]] = expr
