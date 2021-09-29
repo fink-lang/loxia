@@ -20,8 +20,20 @@ describe 'module', fn:
         π = fn: true
         foo_bar = 1234
         foo-bar = 1234
+        default = 456
       "
       to_match_snapshot
+
+    expect
+      fink2js "
+        delete = fn: true
+        π = fn: true
+        foo_bar = 1234
+        foo-bar = 1234
+        default = 456
+      ", {module_type: 'cjs'}
+      to_match_snapshot
+
 
 
   it 'handles side effects', fn:

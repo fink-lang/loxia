@@ -1,6 +1,6 @@
 types = import '@babel/types'
 {
-  file, program, exportNamedDeclaration, identifier
+  file, program, exportNamedDeclaration, exportDefaultDeclaration, identifier
   assignmentExpression, expressionStatement
   memberExpression, callExpression, objectProperty, objectPattern
   variableDeclaration, variableDeclarator
@@ -57,41 +57,78 @@ module_transforms = rec:
     path.replaceWith transform_specifiers path.node
     no_result
 
-  ExportNamedDeclaration: fn path:
-    {declaration: {declarations}} = path.node
-    exports = identifier 'exports'
 
-    pipe declarations:
-      fold fn {id, init}:
-        path.insertAfter
-          expressionStatement
-            assignmentExpression
-              '='
-              memberExpression exports, id
-              init
 
-    path.remove _
-    no_result
+get_exports = fn [prop=false, ...props], decls=[], dflt_decl=[]:
+  match prop:
+    false:
+      named_decls = match  decls:
+        [?]: [exportNamedDeclaration variableDeclaration 'const', decls]
+        else: []
+      [...named_decls, ...dflt_decl]
+
+    else:
+      {key, value} = prop
+      match key:
+        {type: 'StringLiteral', value: 'default'}:
+          dd = exportDefaultDeclaration value
+          ident = with_loc key, identifier escape_ident key.value
+          decl = with_loc key, variableDeclarator ident, value
+          get_exports props, [...decls, decl], [...dflt_decl, dd]
+
+        {type: 'StringLiteral'}:
+          ident = with_loc key, identifier escape_ident key.value
+          decl = with_loc key, variableDeclarator ident, value
+          get_exports props, [...decls, decl], dflt_decl
+
+        else:
+          ident = with_loc key, identifier escape_ident key.name
+          decl = with_loc key, variableDeclarator ident, value
+          get_exports props, [...decls, decl], dflt_decl
+
+
+
+get_cjs_exports = fn [prop=false, ...props], decls=[]:
+  match prop:
+    false:
+      decls
+    else:
+      {key, value} = prop
+      [left, right] = match key:
+        {type: 'StringLiteral', value: 'default'}:
+          list:
+            identifier 'module'
+            identifier 'exports'
+
+        {type: 'StringLiteral'}:
+          list:
+            identifier 'exports'
+            with_loc key, identifier escape_ident key.value
+
+        else:
+          list:
+            identifier 'exports'
+            with_loc key, identifier escape_ident key.name
+
+      decl = expressionStatement
+        assignmentExpression
+          '='
+          memberExpression left, right
+          value
+
+      get_cjs_exports props, [...decls, decl]
 
 
 
 transform_mod_exports = fn expr, ctx:
   [{args: [exports_id]}] = expr
+  {properties: exports} = get_js exports_id, ctx
 
-  decls = pipe get_js exports_id, ctx:
-    ?.properties
-    map fn {key, value}:
-      name = match key:
-        {type: 'StringLiteral'}: key.value
-        else: key.name
+  export_statements = match ctx:
+    {module_type: 'cjs'}: get_cjs_exports exports
+    else: get_exports exports
 
-      ident = with_loc key, identifier escape_ident name
-      with_loc key, variableDeclarator ident, value
-    [...?]
-
-  js = exportNamedDeclaration variableDeclaration 'const', decls
-
-  set_js2 expr, js, ctx
+  [export_statements, ctx]
 
 
 
