@@ -27,8 +27,7 @@ export const out = out_0;"
 
 exports[`import imports module 1`] = `
 "import \\"shrub\\";
-import \\"@fink/foo/bar.js\\";
-export const ;"
+import \\"@fink/foo/bar.js\\";"
 `;
 
 exports[`import imports with dynamic URLs 1`] = `

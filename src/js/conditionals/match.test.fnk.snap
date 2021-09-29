@@ -168,8 +168,7 @@ ret_0: {
   }
 }
 
-const mex_0 = ret_0;
-export const ;"
+const mex_0 = ret_0;"
 `;
 
 exports[`match iterables handles non iterables 1`] = `
@@ -216,8 +215,7 @@ ret_0: {
   }
 }
 
-const mex_1 = ret_0;
-export const ;"
+const mex_1 = ret_0;"
 `;
 
 exports[`match iterables matches spread 1`] = `
@@ -272,8 +270,7 @@ ret_0: {
   }
 }
 
-const mex_0 = ret_0;
-export const ;"
+const mex_0 = ret_0;"
 `;
 
 exports[`match iterables matches value assertions 1`] = `
@@ -386,8 +383,7 @@ ret_0: {
   }
 }
 
-const mex_0 = ret_0;
-export const ;"
+const mex_0 = ret_0;"
 `;
 
 exports[`match iterables matches values 1`] = `
@@ -491,8 +487,7 @@ ret_0: {
   }
 }
 
-const mex_0 = ret_0;
-export const ;"
+const mex_0 = ret_0;"
 `;
 
 exports[`match iterables matches with ignored items 1`] = `
@@ -514,8 +509,7 @@ ret_0: {
   }
 }
 
-const mex_0 = ret_0;
-export const ;"
+const mex_0 = ret_0;"
 `;
 
 exports[`match matches simple values 1`] = `
@@ -536,8 +530,7 @@ ret_0: {
   break ret_0;
 }
 
-const mex_0 = ret_0;
-export const ;"
+const mex_0 = ret_0;"
 `;
 
 exports[`match matches value assertions 1`] = `
@@ -586,8 +579,7 @@ ret_0: {
   }
 }
 
-const mex_0 = ret_0;
-export const ;"
+const mex_0 = ret_0;"
 `;
 
 exports[`match records matches calculated props 1`] = `
@@ -614,8 +606,7 @@ ret_0: {
   }
 }
 
-const mex_0 = ret_0;
-export const ;"
+const mex_0 = ret_0;"
 `;
 
 exports[`match records matches member expr keys 1`] = `
@@ -709,8 +700,7 @@ ret_0: {
   }
 }
 
-const mex_0 = ret_0;
-export const ;"
+const mex_0 = ret_0;"
 `;
 
 exports[`match records matches props 1`] = `
@@ -824,8 +814,7 @@ ret_0: {
   }
 }
 
-const mex_0 = ret_0;
-export const ;"
+const mex_0 = ret_0;"
 `;
 
 exports[`match records matches spread 1`] = `
@@ -858,8 +847,7 @@ ret_0: {
   }
 }
 
-const mex_0 = ret_0;
-export const ;"
+const mex_0 = ret_0;"
 `;
 
 exports[`match records matches value assertions 1`] = `
@@ -976,6 +964,5 @@ ret_0: {
   }
 }
 
-const mex_0 = ret_0;
-export const ;"
+const mex_0 = ret_0;"
 `;

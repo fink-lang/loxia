@@ -38,11 +38,12 @@ const π_0 = () => {
 const foo_bar_0 = 1234;
 const fooᜭbar_0 = 1234;
 const default_0 = 456;
+module.exports = default_0;
 exports.ˆdelete = delete_0;
 exports.π = π_0;
 exports.foo_bar = foo_bar_0;
 exports.fooᜭbar = fooᜭbar_0;
-module.exports = default_0;"
+exports.ˆdefault = default_0;"
 `;
 
 exports[`module handles side effects 1`] = `

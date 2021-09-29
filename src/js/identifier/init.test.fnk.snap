@@ -99,5 +99,6 @@ export const ˆdo = do_0,
       ˆimplements = implements_0,
       ˆinstanceof = instanceof_0,
       ˆundefined = undefined_0,
-      ˆnull = null_0;"
+      ˆnull = null_0;
+export default default_0;"
 `;

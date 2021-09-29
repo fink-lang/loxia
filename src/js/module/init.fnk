@@ -88,35 +88,40 @@ get_exports = fn [prop=false, ...props], decls=[], dflt_decl=[]:
 
 
 
-get_cjs_exports = fn [prop=false, ...props], decls=[]:
+assign_st = fn left, right, value:
+  expressionStatement
+    assignmentExpression
+      '='
+      memberExpression
+        identifier left
+        right
+      value
+
+
+
+get_cjs_exports = fn [prop=false, ...props], exports=[]:
   match prop:
     false:
-      decls
+      exports
     else:
       {key, value} = prop
-      [left, right] = match key:
+      match key:
         {type: 'StringLiteral', value: 'default'}:
-          list:
-            identifier 'module'
-            identifier 'exports'
+          ident = with_loc key, identifier escape_ident key.value
+          exp = with_loc key, assign_st 'exports', ident, value
+          dflt = with_loc key, assign_st 'module', (identifier 'exports'), value
+          get_cjs_exports props, [dflt, ...exports, exp]
 
         {type: 'StringLiteral'}:
-          list:
-            identifier 'exports'
-            with_loc key, identifier escape_ident key.value
+          ident = with_loc key, identifier escape_ident key.value
+          exp = with_loc key, assign_st 'exports', ident, value
+          get_cjs_exports props, [...exports, exp]
 
         else:
-          list:
-            identifier 'exports'
-            with_loc key, identifier escape_ident key.name
+          ident = with_loc key, identifier escape_ident key.name
+          exp = with_loc key, assign_st 'exports', ident, value
+          get_cjs_exports props, [...exports, exp]
 
-      decl = expressionStatement
-        assignmentExpression
-          '='
-          memberExpression left, right
-          value
-
-      get_cjs_exports props, [...decls, decl]
 
 
 
