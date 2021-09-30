@@ -69,8 +69,7 @@ safe_names = fn [curr=false, ...exprs], renames={}, out=[]:
       [nres, next_ren] = rename res, renames
       safe_names exprs, next_ren, [...out, [expr, nres]]
 
-
-    [{f: ? in ['fn', 'fnr', 'cn']}]:
+    [{f: ? in ['fn', 'cn']}]:
       [expr, res] = curr
       {args: [args, body]} = expr
       [nargs, bod_ren] = rename args, renames

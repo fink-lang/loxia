@@ -4,7 +4,7 @@
 
 
 bind = fn {value, loc}, ctx:
-  {scopes: [scope, ...scopes]=[]} = ctx
+  {scopes: [scope, ...scopes]} = ctx
   [id, next_ctx] = unique_or_id value, {loc}, ctx
 
   end_ctx = rec:
@@ -18,7 +18,7 @@ bind = fn {value, loc}, ctx:
 
 # TODO rename
 bind_x = fn {value}, id, ctx:
-  {scopes: [scope, ...scopes]=[]} = ctx
+  {scopes: [scope, ...scopes]} = ctx
 
   end_ctx = rec:
     ...ctx
@@ -30,7 +30,7 @@ bind_x = fn {value}, id, ctx:
 
 
 
-get_ident = fn name, [scope, ...scopes]=[], ctx:
+get_ident = fn name, [scope, ...scopes], ctx:
   match scope:
     {(name): ?}:
       id = scope.(name)

@@ -65,8 +65,7 @@ serialize = fn [curr=false, ...rest], out='', indent='':
           ${indent}), fn${a2s ids}:'
         '  ${indent}'
 
-
-    [{f: ? in ['cn', 'fn', 'fnr']}]:
+    [{f: ? in ['cn', 'fn']}]:
       [{f: op, args: [args, body]}, ids] = curr
       serialize
         rest

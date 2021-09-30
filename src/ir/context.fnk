@@ -56,19 +56,6 @@ ir_fn = fn fn_name, args, name_or_id=false, {loc}, ctx:
 
 
 
-
-
-# get_value = fn id, {values}:
-#   {(id): val={}} = values
-#   val
-
-
-
-# update_value = fn id, updates, ctx:
-#   {(id): curr={}} = ctx.values
-#   {...ctx, values: {...ctx.values, (id): {...curr, ...updates}}}
-
-
 get_value = fn {i: id}, {values}:
   tryGet {}, id, values
 
@@ -130,7 +117,7 @@ init_ref_counts = fn [expr=false, ...rest], ctx:
     else:
       [{f: op, args}, res] = expr
       rest_ctx = match op:
-        ? in ['fn', 'cn', 'fnr']:
+        ? in ['fn', 'cn']:
           [fn_args, body] = args
           init_ref_counts body, init_refs [...fn_args, ...res], ctx
 

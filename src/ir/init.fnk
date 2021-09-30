@@ -48,6 +48,7 @@ init_ctx = fn code, filename, options:
     unique_ids: {}
     errors: []
     values: empty
+    scopes: [{}]
 
   pipe ctx:
     add_transformers

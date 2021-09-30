@@ -59,6 +59,45 @@ transform = fn expr, ctx:
 
 
 
+transform_body_expr = fn expr, ctx:
+  [{f: op}, [res_id]] = expr
+  next_ctx = transform expr, ctx
+  res_val = get_value res_id, next_ctx
+
+  match [op, res_val]:
+    [, {inline: false, refs: ? > 0}]:
+      id = ident res_id
+      js = with_loc res_id, variableDeclaration 'const', list:
+        with_loc res_id, variableDeclarator id, res_val.js
+
+      [[js], next_ctx]
+
+    [, {refs: ? > 1}]:
+      val = get_js_literal res_id, next_ctx
+      js = match val:
+        {type: 'VariableDeclaration'}:
+          # TODO: use loc from res_id, val or expr?
+          with_loc {res_id}, val
+        else:
+          # TODO: use loc from res_id, val or expr?
+          # id = with_loc {loc: todo}, ident res_id
+          id = ident res_id
+          with_loc res_id, variableDeclaration 'const', list:
+            with_loc res_id, variableDeclarator id, val
+
+      [[js], next_ctx]
+
+    # unused calls assumed to have side effects
+    ['af', {refs: ? == 0}]:
+      val = get_js_literal res_id, next_ctx
+      js = with_loc res_id, expressionStatement val
+      [[js], next_ctx]
+
+    else:
+      [[], next_ctx]
+
+
+
 transform_exprs = fn [expr=false, ...exprs], ctx, body=[]:
   match expr:
     false: [body, ctx]
@@ -76,41 +115,8 @@ transform_exprs = fn [expr=false, ...exprs], ctx, body=[]:
       transform_exprs exprs, next_ctx, [...body, ...body_exprs]
 
     [ , [?]]:
-      [{f: op}, [res_id]] = expr
-      next_ctx = transform expr, ctx
-      res_val = get_value res_id, next_ctx
-
-      match [op, res_val]:
-        [, {inline: false}]:
-          id = ident res_id
-          js =with_loc res_id, variableDeclaration 'const', list:
-            with_loc res_id, variableDeclarator id, res_val.js
-
-          transform_exprs exprs, next_ctx, [...body, js]
-
-        [, {refs: ? > 1}]:
-          val = get_js_literal res_id, next_ctx
-          js = match val:
-            {type: 'VariableDeclaration'}:
-              # TODO: use loc from res_id, val or expr?
-              with_loc {res_id}, val
-            else:
-              # TODO: use loc from res_id, val or expr?
-              # id = with_loc {loc: todo}, ident res_id
-              id = ident res_id
-              with_loc res_id, variableDeclaration 'const', list:
-                with_loc res_id, variableDeclarator id, val
-
-          transform_exprs exprs, next_ctx, [...body, js]
-
-        # unused calls assumed to have side effects
-        ['af', ? == 0]:
-          val = get_js_literal res_id, next_ctx
-          js = with_loc res_id, expressionStatement val
-          transform_exprs exprs, next_ctx, [...body, js]
-
-        else:
-          transform_exprs exprs, next_ctx, body
+      [body_exprs, next_ctx] = transform_body_expr expr, ctx
+      transform_exprs exprs, next_ctx, [...body, ...body_exprs]
 
 
 

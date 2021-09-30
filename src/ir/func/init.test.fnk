@@ -103,6 +103,15 @@ describe 'func', fn:
       to_match_snapshot
 
 
+  it 'handles self-ref scoping', fn:
+    expect
+      fink2lir "
+        undefined = foo
+        bar = fn: fn: undefined
+      "
+      to_match_snapshot
+
+
 
 describe 'recursive funcs', fn:
   it 'compiles recursive calls', fn:

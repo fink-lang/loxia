@@ -1,6 +1,6 @@
 {reverse} = import '@fink/std-lib/iter.fnk'
 
-{init_ctx, update_value} = import '../ir/context.fnk'
+{init_ctx, update_value, get_value} = import '../ir/context.fnk'
 
 {replace_idents} = import './identifier/init.fnk'
 
@@ -111,9 +111,18 @@ prepare_non_inlinable = fn [expr=false, ...exprs], ctx:
       next_ctx = update_value res_id, {inline: false}, ctx
       prepare_non_inlinable exprs, next_ctx
 
+    [{f: 'str'}]:
+      [, [res_id]] = expr
+      next_ctx = update_value res_id, {tp: 'str'}, ctx
+      prepare_non_inlinable exprs, next_ctx
+
     [{f: 'jxe'}]:
       [{args: [elem_id]}] = expr
-      next_ctx = update_value elem_id, {inline: false}, ctx
+
+      next_ctx = match get_value elem_id, ctx:
+        {tp: 'str'}: ctx
+        else: update_value elem_id, {inline: false}, ctx
+
       prepare_non_inlinable exprs, next_ctx
 
     [{f: ? in ['fn', 'cn']}]:
@@ -134,7 +143,7 @@ transform_ir = fn input_exprs, options:
     prepare_rets rev_expr, ?
     prepare_imports rev_expr, ?
     prepare_exports rev_expr, ?
-    prepare_non_inlinable rev_expr, ?
+    prepare_non_inlinable exprs, ?
     add_transformers ?
 
   transfrom_module exprs, ctx

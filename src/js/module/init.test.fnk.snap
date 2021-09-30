@@ -47,7 +47,7 @@ exports.ˆdefault = default_0;"
 `;
 
 exports[`module handles side effects 1`] = `
-"const mex_0 = foo(bar);
-const mex_1 = shrub.ni(foo);
+"foo(bar);
+shrub.ni(foo);
 export const spam = ni;"
 `;

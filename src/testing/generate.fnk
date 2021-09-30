@@ -3,9 +3,9 @@
 {parse} = import '@fink/larix/parser.fnk'
 
 {generate} = import '../generate.fnk'
+{init_ctx} = import '../ir/init.fnk'
 {serialize} = import '../ir/serialize.fnk'
 {transform} = import '../ir/transform.fnk'
-{init_ctx} = import '../ir/init.fnk'
 {optimize} = import '../optimize/init.fnk'
 
 

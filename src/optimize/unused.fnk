@@ -26,7 +26,7 @@ remove_unused = fn [expr=false, ...exprs], ctx, out:
       next_ctx = dec_refs args, ctx
       remove_unused exprs, next_ctx, out
 
-    [{f: ? in ['fn', 'fnr', 'cn']}]:
+    [{f: ? in ['fn', 'cn']}]:
       [{f: op, args: [args, body], ...rest}, res] = expr
       rbody = reverse body
       [obody, next_ctx] = remove_unused rbody, ctx, []

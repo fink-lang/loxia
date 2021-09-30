@@ -355,6 +355,25 @@ rec_e fn exports_0:
           mod exports_1, drctvs_0, fn mod_0:"
 `;
 
+exports[`func handles self-ref scoping 1`] = `
+"
+rec_e fn exports_0:
+  id foo, fn undefined_0:
+    str 'undefined', fn key_0:
+      rec_s exports_0, key_0, undefined_0, fn exports_1:
+        id (fn args_0, ret_1: #fn
+          id (fn args_1, ret_0: #fn
+            id undefined_0, fn result_1:
+              cc ret_0, result_1
+          ), fn result_0:
+            cc ret_1, result_0
+        ), fn bar_0:
+          str 'bar', fn key_1:
+            rec_s exports_1, key_1, bar_0, fn exports_2:
+              lst_e fn drctvs_0:
+                mod exports_2, drctvs_0, fn mod_0:"
+`;
+
 exports[`recursive funcs compiles recursive calls 1`] = `
 "
 rec_e fn exports_0:
