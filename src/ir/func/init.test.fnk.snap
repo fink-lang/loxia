@@ -340,6 +340,21 @@ rec_e fn exports_0:
           mod exports_1, drctvs_0, fn mod_0:"
 `;
 
+exports[`func compiles spread 3`] = `
+"
+rec_e fn exports_0:
+  id (fn args_0, ret_0: #fn
+    lst_r args_0, fn rtail_0:
+      lst_r rtail_0, fn a_0:
+        id a_0, fn result_0:
+          cc ret_0, result_0
+  ), fn fun_0:
+    str 'fun', fn key_0:
+      rec_s exports_0, key_0, fun_0, fn exports_1:
+        lst_e fn drctvs_0:
+          mod exports_1, drctvs_0, fn mod_0:"
+`;
+
 exports[`recursive funcs compiles recursive calls 1`] = `
 "
 rec_e fn exports_0:

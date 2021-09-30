@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`compiles defaults 1`] = `
+exports[`func compiles defaults 1`] = `
 "const fun_0 = (a_0, hdm_0) => {
   const b_0 = undefined === hdm_0 ? 12 : hdm_0;
   const ni_0 = shrub(a_0, b_0);
@@ -11,7 +11,7 @@ exports[`compiles defaults 1`] = `
 export const fun = fun_0;"
 `;
 
-exports[`compiles destructuring args 1`] = `
+exports[`func compiles destructuring args 1`] = `
 "const fun_0 = (dlst_0, dlst_2) => {
   return [dlst_0[0] + dlst_0[1][0], dlst_2[0], dlst_2.slice(1)];
 };
@@ -19,7 +19,7 @@ exports[`compiles destructuring args 1`] = `
 export const fun = fun_0;"
 `;
 
-exports[`compiles destructuring args 2`] = `
+exports[`func compiles destructuring args 2`] = `
 "const fun_0 = (drec_0, dlst_0) => {
   return [drec_0.a + drec_0.b, dlst_0[0]];
 };
@@ -27,7 +27,7 @@ exports[`compiles destructuring args 2`] = `
 export const fun = fun_0;"
 `;
 
-exports[`compiles destructuring args in body 1`] = `
+exports[`func compiles destructuring args in body 1`] = `
 "const fun_0 = (a_0, b_0, ...tail_1) => {
   return [a_0 + b_0, tail_1, tail_1[0], tail_1[1]];
 };
@@ -35,7 +35,7 @@ exports[`compiles destructuring args in body 1`] = `
 export const fun = fun_0;"
 `;
 
-exports[`compiles empty arg 1`] = `
+exports[`func compiles empty arg 1`] = `
 "const fun_0 = (a_0, tail_0, tail_1, b_0) => {
   return a_0 + b_0;
 };
@@ -43,7 +43,7 @@ exports[`compiles empty arg 1`] = `
 export const fun = fun_0;"
 `;
 
-exports[`compiles empty arg 2`] = `
+exports[`func compiles empty arg 2`] = `
 "const fun_0 = (tail_0, tail_1, b_0) => {
   return b_0;
 };
@@ -51,7 +51,7 @@ exports[`compiles empty arg 2`] = `
 export const fun = fun_0;"
 `;
 
-exports[`compiles empty arg 3`] = `
+exports[`func compiles empty arg 3`] = `
 "const fun_0 = (tail_0, a_0) => {
   return a_0;
 };
@@ -59,7 +59,7 @@ exports[`compiles empty arg 3`] = `
 export const fun = fun_0;"
 `;
 
-exports[`compiles func of func 1`] = `
+exports[`func compiles func of func 1`] = `
 "const fun5_0 = c_0 => {
   return (d_0, e_0) => {
     const value_0 = [d_0, e_0];
@@ -94,7 +94,7 @@ exports[`compiles func of func 1`] = `
 export const fun5 = fun5_0;"
 `;
 
-exports[`compiles middle spread 1`] = `
+exports[`func compiles middle spread 1`] = `
 "const fun_0 = (a_0, b_0, ...tail_1) => {
   const rtail_0 = [...tail_1].reverse();
   return [a_0 + b_0, [...rtail_0.slice(1)].reverse(), rtail_0[0]];
@@ -103,7 +103,15 @@ exports[`compiles middle spread 1`] = `
 export const fun = fun_0;"
 `;
 
-exports[`compiles simple 1`] = `
+exports[`func compiles no args 1`] = `
+"const fun_0 = () => {
+  return \`shrub\`;
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`func compiles simple 1`] = `
 "const fun_0 = (a_0, b_0, c_0) => {
   return a_0 + b_0 + c_0;
 };
@@ -111,7 +119,7 @@ exports[`compiles simple 1`] = `
 export const fun = fun_0;"
 `;
 
-exports[`compiles spread 1`] = `
+exports[`func compiles spread 1`] = `
 "const fun_0 = (a_0, b_0, ...tail_1) => {
   return [a_0 + b_0, tail_1];
 };
@@ -119,9 +127,49 @@ exports[`compiles spread 1`] = `
 export const fun = fun_0;"
 `;
 
-exports[`func compiles no args 1`] = `
-"const fun_0 = () => {
-  return \`shrub\`;
+exports[`func compiles spread 2`] = `
+"const fun_0 = (a_0, ...tail_0) => {
+  return [a_0, tail_0];
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`func compiles spread 3`] = `
+"const fun_0 = (...args_0) => {
+  return [args_0];
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`func compiles spread 4`] = `
+"const fun_0 = (a_0, b_0, c_0, d_0) => {
+  /* istanbul ignore else */
+  if (a_0 === b_0) {
+    return [a_0, c_0, d_0];
+  }
+
+  return b_0;
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`recursive functions compiles spread 1`] = `
+"const fun_0 = (...args_0) => {
+  fun_0: do {
+    const tail_0 = args_0.slice(1);
+    const b_0 = args_0[1];
+
+    /* istanbul ignore else */
+    if (args_0[0] === b_0) {
+      args_0 = [...tail_0.slice(1)];
+      continue fun_0;
+    }
+
+    return b_0;
+  } while (true);
 };
 
 export const fun = fun_0;"

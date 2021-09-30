@@ -8,27 +8,32 @@ types = import '@babel/types'
 
 {get_refs, update_value} = import '../../ir/context.fnk'
 {transform_exprs} = import '../transform.fnk'
-{add, set_js, set_js2} = import '../context.fnk'
+{add, set_js, set_js2, with_loc} = import '../context.fnk'
 {ident} = import '../identifier/init.fnk'
 
 
 
-clean_args = fn args:
-  [..., last] = args
-  pipe args:
-    map fn arg: match arg:
-      last: arg
-      {type: 'RestElement'}: arg.argument
-      else: arg
-    [...?]
+clean_args = fn args_id, args, body, ctx:
+  fn_args = match [args, get_refs args_id, ctx]:
+    # TODO use is_empty
+    [{length: 0}, ? > 0]:
+      [with_loc args_id, restElement ident args_id, ctx]
+    else:
+      [..., last] = args
+      pipe args:
+        map fn arg: match arg:
+          last: arg
+          {type: 'RestElement'}: arg.argument
+          else: arg
+        [...?]
 
+  [fn_args, body, ctx]
 
 
 split_args_body = fn [expr=false, ...exprs], args_id, ctx, args=[], body=[]:
   match expr:
     false:
-      fn_args = clean_args args
-      [fn_args, body, ctx]
+      [args_id, args, body, ctx]
 
     [{f: 'lst_h', args: [{i: args_id.i}]}]:
       [...prev, ] = match args:
@@ -46,9 +51,7 @@ split_args_body = fn [expr=false, ...exprs], args_id, ctx, args=[], body=[]:
     [{f: 'lst_t', args: [{i: args_id.i}]}]:
       [, [tail_id]] = expr
       arg = ident tail_id
-      rest = rec:
-        ...restElement arg
-        loc: arg.loc
+      rest = with_loc arg, restElement arg
 
       match get_refs tail_id, ctx:
         # the rest is used for more than just getting next arg and tail
@@ -57,6 +60,13 @@ split_args_body = fn [expr=false, ...exprs], args_id, ctx, args=[], body=[]:
         # this is an ignored arg or last spread
         else:
           split_args_body exprs, tail_id, ctx, [...args, rest], body
+
+    [{f: ? in ['fn', 'cn']}]:
+      [foo, bar] = expr
+      {args: [fargs, fbody]} = foo
+      [next_args_id, next_args, next_body, next_ctx] = split_args_body fbody, args_id, ctx, args
+      nexpr = [{...foo, args: [fargs, next_body]}, bar]
+      split_args_body exprs, next_args_id, next_ctx, next_args, [...body, nexpr]
 
     else:
       split_args_body exprs, args_id, ctx, args, [...body, expr]
@@ -83,12 +93,16 @@ transform_normal_fn = fn expr, ctx:
         # make sure calls to self_id always use res_id
         update_value self_id, {ignore_refs: true}, ?
 
-  [args, block, fn_ctx] = split_args_body fn_block, args_id, body_ctx
+  [args, block, fn_ctx] = pipe body_ctx:
+    split_args_body fn_block, args_id, ?
+    clean_args ...?
+
   [body, next_ctx] = transform_exprs block, fn_ctx
 
   js = arrowFunctionExpression args, blockStatement body
 
   set_js2 expr, js, next_ctx
+
 
 
 # TODO merge with transform_normal_fn

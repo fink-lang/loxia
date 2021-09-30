@@ -1,9 +1,9 @@
-{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 {fink2js} = import '../../testing/generate.fnk'
 
 
 describe 'func', fn:
-   it 'compiles no args', fn:
+  it 'compiles no args', fn:
     expect
       fink2js "
         fun = fn: 'shrub'
@@ -51,6 +51,39 @@ describe 'func', fn:
         '
       to_match_snapshot
 
+    expect
+      fink2js '
+        fun = fn a, ...b:
+          [a, b]
+        '
+      to_match_snapshot
+
+    expect
+      fink2js '
+        fun = fn ...a:
+          [a]
+        '
+      to_match_snapshot
+
+    expect
+      fink2js '
+        fun = fn a, b, ...args:
+          match a:
+            b:
+              [c, d] = args
+              [a, c, d]
+            else: b
+        '
+      to_match_snapshot
+
+  it 'compiles middle spread', fn:
+    expect
+      fink2js '
+        fun = fn a, b, ...c, d:
+          [a + b, c, d]
+        '
+      to_match_snapshot
+
 
   it 'compiles destructuring args', fn:
     expect
@@ -64,15 +97,6 @@ describe 'func', fn:
       fink2js '
         fun = fn {a, b}, [c, ...d]:
           [a + b, c]
-        '
-      to_match_snapshot
-
-
-  it 'compiles middle spread', fn:
-    expect
-      fink2js '
-        fun = fn a, b, ...c, d:
-          [a + b, c, d]
         '
       to_match_snapshot
 
@@ -133,7 +157,7 @@ describe 'recursive functions', fn:
       to_match_snapshot
 
 
-  skip.it 'compiles spread', fn:
+  it 'compiles spread', fn:
     expect
       fink2js '
         fun = fn a, b, ...args:

@@ -78,6 +78,12 @@ describe 'func', fn:
         '
       to_match_snapshot
 
+    expect
+      fink2lir '
+        fun = fn ...a:
+          a
+        '
+      to_match_snapshot
 
   it 'compiles destructuring args', fn:
     expect
