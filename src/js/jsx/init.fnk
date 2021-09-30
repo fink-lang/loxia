@@ -7,8 +7,7 @@ babel_types = import '@babel/types'
 
 {length} = import '@fink/std-lib/iter.fnk'
 
-{add, set_js2, get_js_literal, with_loc} = import '../context.fnk'
-
+{add, set_js2, get_js, get_js_literal, with_loc} = import '../context.fnk'
 
 
 transform_prop_id = fn key:
@@ -72,7 +71,7 @@ transform_children = fn [chld=false, ...children], out=[]:
 transform_jxe = fn expr, ctx:
   [{args: [name_id, props_id, chldrn_id]}] = expr
 
-  id = jsxIdentifier name_id.i
+  id = jsxIdentifier (get_js name_id, ctx).name
 
   props = pipe props_id:
     get_js_literal ?, ctx

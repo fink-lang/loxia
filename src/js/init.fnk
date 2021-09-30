@@ -101,7 +101,7 @@ prepare_imports = fn [expr=false, ...exprs], ctx:
 
 
 
-prepare_calls = fn [expr=false, ...exprs], ctx:
+prepare_non_inlinable = fn [expr=false, ...exprs], ctx:
   match expr:
     false:
       ctx
@@ -109,10 +109,19 @@ prepare_calls = fn [expr=false, ...exprs], ctx:
     [{f: 'af'}]:
       [, [res_id]] = expr
       next_ctx = update_value res_id, {inline: false}, ctx
-      prepare_calls exprs, next_ctx
+      prepare_non_inlinable exprs, next_ctx
+
+    [{f: 'jxe'}]:
+      [{args: [elem_id]}] = expr
+      next_ctx = update_value elem_id, {inline: false}, ctx
+      prepare_non_inlinable exprs, next_ctx
+
+    [{f: ? in ['fn', 'cn']}]:
+      [{args: [, body]}] = expr
+      prepare_non_inlinable [...body, ...exprs], ctx
 
     else:
-      prepare_calls exprs, ctx
+      prepare_non_inlinable exprs, ctx
 
 
 
@@ -125,7 +134,7 @@ transform_ir = fn input_exprs, options:
     prepare_rets rev_expr, ?
     prepare_imports rev_expr, ?
     prepare_exports rev_expr, ?
-    prepare_calls rev_expr, ?
+    prepare_non_inlinable rev_expr, ?
     add_transformers ?
 
   transfrom_module exprs, ctx

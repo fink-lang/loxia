@@ -74,7 +74,7 @@ transform_rec_get = fn expr, ctx:
       [false, with_loc key, identifier value]
 
     else:
-      [true, key]
+      [true, get_js key_id, ctx]
 
   js = memberExpression rec_js, final_key, computed
 

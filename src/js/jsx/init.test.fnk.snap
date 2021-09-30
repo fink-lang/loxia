@@ -38,6 +38,12 @@ exports[`JSX extensions compiles template str attr 1`] = `
 export const elem = elem_0;"
 `;
 
+exports[`jsx compiles elem from rec 1`] = `
+"const Foobar_0 = spam.Foobar;
+const elem_0 = <Foobar_0 />;
+export const elem = elem_0;"
+`;
+
 exports[`jsx compiles empty elem 1`] = `
 "const elem_0 = <b />;
 export const elem = elem_0;"
@@ -90,4 +96,48 @@ export const elem = elem_0;"
 exports[`jsx compiles with str params 1`] = `
 "const elem_0 = <a foo={foo} bar=\\"ni\\" />;
 export const elem = elem_0;"
+`;
+
+exports[`jsx foooooo 1`] = `
+"import { createContext as createContext_0 } from \\"react\\";
+import { CognitoUserPool as CognitoUserPool_0 } from \\"amazon-cognito-identity-js\\";
+import { ˆnew as new_0 } from \\"@fink/js-interop/reflect.js\\";
+import { use_state as use_state_0 } from \\"../hooks.js\\";
+import { use_memo as use_memo_0 } from \\"../hooks.js\\";
+const auth_ctx_0 = createContext_0();
+
+const use_pool_0 = (userpool_id_0, client_id_0) => {
+  return use_memo_0(() => {
+    return new_0(CognitoUserPool_0, {
+      UserPoolId: userpool_id_0,
+      ClientId: client_id_0
+    });
+  }, [userpool_id_0, client_id_0]);
+};
+
+const AuthCtx_0 = drec_0 => {
+  const dlst_0 = use_state_0(() => {
+    return {
+      state: \`init\`,
+      user: false,
+      session: false
+    };
+  });
+  const state_0 = dlst_0[0];
+  return <Provider_0 value={{
+    pool: use_pool_0(drec_0.userpool_id, drec_0.client_id),
+    ...state_0,
+    update: new_state_0 => {
+      return dlst_0[1]({ ...state_0,
+        ...new_state_0
+      });
+    }
+  }}>
+    {drec_0.children}
+  </Provider_0>;
+};
+
+export const auth_ctx = auth_ctx_0,
+      use_pool = use_pool_0,
+      AuthCtx = AuthCtx_0;"
 `;

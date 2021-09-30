@@ -66,6 +66,15 @@ describe 'jsx', fn:
       to_match_snapshot
 
 
+  it 'compiles elem from rec', fn:
+    expect
+      fink2js '
+        Shrub = fn {...props}:
+           {Foobar} = spam
+           <Foobar ...props />
+      '
+      to_match_snapshot
+
 
 describe 'JSX extensions',  fn:
   it 'compiles shothand props', fn:
@@ -115,6 +124,4 @@ describe 'JSX extensions',  fn:
         </Foobar>
       '
       to_match_snapshot
-
-
 
