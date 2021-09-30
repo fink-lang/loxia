@@ -151,7 +151,7 @@ rec_e fn exports_0:
 exports[`jsx compiles empty elem 1`] = `
 "
 rec_e fn exports_0:
-  id b, fn jsxi_0:
+  str 'b', fn jsxi_0:
     rec_e fn props_0:
       lst_e fn chldrn_0:
         jxe jsxi_0, props_0, chldrn_0, fn elem_0:
@@ -178,7 +178,7 @@ rec_e fn exports_0:
   lst_e fn chldrn_0:
     str '\\\\n  foo\\\\n  ', fn chld_0:
       lst_a chldrn_0, chld_0, fn chldrn_1:
-        id p, fn jsxi_0:
+        str 'p', fn jsxi_0:
           rec_e fn props_0:
             lst_e fn chldrn_2:
               str 'bar', fn chld_2:
@@ -197,7 +197,7 @@ rec_e fn exports_0:
 exports[`jsx compiles hypenate props 1`] = `
 "
 rec_e fn exports_0:
-  id a, fn jsxi_0:
+  str 'a', fn jsxi_0:
     rec_e fn props_0:
       str 'foo-bar', fn prpn_0:
         str '1234', fn str_0:
@@ -214,7 +214,7 @@ rec_e fn exports_0:
 exports[`jsx compiles shorthand 1`] = `
 "
 rec_e fn exports_0:
-  id a, fn jsxi_0:
+  str 'a', fn jsxi_0:
     rec_e fn props_0:
       lst_e fn chldrn_0:
         jxe jsxi_0, props_0, chldrn_0, fn elem_0:
@@ -227,7 +227,7 @@ rec_e fn exports_0:
 exports[`jsx compiles with children and expr 1`] = `
 "
 rec_e fn exports_0:
-  id a, fn jsxi_0:
+  str 'a', fn jsxi_0:
     rec_e fn props_0:
       lst_e fn chldrn_0:
         str '\\\\n  foo ', fn chld_0:
@@ -236,14 +236,14 @@ rec_e fn exports_0:
               lst_a chldrn_1, chld_1, fn chldrn_2:
                 str '\\\\n  ', fn chld_2:
                   lst_a chldrn_2, chld_2, fn chldrn_3:
-                    id b, fn jsxi_1:
+                    str 'b', fn jsxi_1:
                       rec_e fn props_1:
                         lst_e fn chldrn_4:
                           jxe jsxi_1, props_1, chldrn_4, fn chld_3:
                             lst_a chldrn_3, chld_3, fn chldrn_5:
                               str ' ham\\\\n  spam\\\\n  ', fn chld_4:
                                 lst_a chldrn_5, chld_4, fn chldrn_6:
-                                  id c, fn jsxi_2:
+                                  str 'c', fn jsxi_2:
                                     rec_e fn props_2:
                                       lst_e fn chldrn_7:
                                         jxe jsxi_2, props_2, chldrn_7, fn chld_5:
@@ -260,7 +260,7 @@ rec_e fn exports_0:
 exports[`jsx compiles with expr params 1`] = `
 "
 rec_e fn exports_0:
-  id a, fn jsxi_0:
+  str 'a', fn jsxi_0:
     rec_e fn props_0:
       str 'foo', fn prpn_0:
         id foo, fn prpv_0:
@@ -279,7 +279,7 @@ rec_e fn exports_0:
 exports[`jsx compiles with expr params 2`] = `
 "
 rec_e fn exports_0:
-  id a, fn jsxi_0:
+  str 'a', fn jsxi_0:
     rec_e fn props_0:
       str 'foo', fn prpn_0:
         id foo, fn prpv_0:
@@ -299,7 +299,7 @@ rec_e fn exports_0:
 exports[`jsx compiles with str params 1`] = `
 "
 rec_e fn exports_0:
-  id a, fn jsxi_0:
+  str 'a', fn jsxi_0:
     rec_e fn props_0:
       str 'foo', fn prpn_0:
         id foo, fn prpv_0:

@@ -5,7 +5,7 @@
 describe 'jsx', fn:
   it 'compiles shorthand', fn:
     expect
-      fink2js 'elem = <a/>'
+      fink2js 'elem = <a />'
       to_match_snapshot
 
 
@@ -72,6 +72,14 @@ describe 'jsx', fn:
         Shrub = fn {...props}:
            {Foobar} = spam
            <Foobar ...props />
+      '
+      to_match_snapshot
+
+  it 'handles ident clashes for lowercaae elems', fn:
+    expect
+      fink2js '
+        Foo = fn {label}:
+          <label>{label}</label>
       '
       to_match_snapshot
 

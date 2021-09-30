@@ -71,7 +71,14 @@ transform_children = fn [chld=false, ...children], out=[]:
 transform_jxe = fn expr, ctx:
   [{args: [name_id, props_id, chldrn_id]}] = expr
 
-  id = jsxIdentifier (get_js name_id, ctx).name
+  id_v = get_js_literal name_id, ctx
+
+  id = match id_v:
+    {type: 'TemplateLiteral'}:
+      {quasis: [{value: {raw: name}}]} = id_v
+      with_loc name_id, jsxIdentifier name
+    else:
+      jsxIdentifier (get_js name_id, ctx).name
 
   props = pipe props_id:
     get_js_literal ?, ctx

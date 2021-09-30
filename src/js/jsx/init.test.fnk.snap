@@ -104,3 +104,11 @@ exports[`jsx compiles with str params 1`] = `
 "const elem_0 = <a foo={foo} bar=\\"ni\\" />;
 export const elem = elem_0;"
 `;
+
+exports[`jsx handles ident clashes for lowercaae elems 1`] = `
+"const Foo_0 = drec_0 => {
+  return <label>{drec_0.label}</label>;
+};
+
+export const Foo = Foo_0;"
+`;
