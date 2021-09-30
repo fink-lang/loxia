@@ -33,16 +33,16 @@ export const p1 = p1_0,
 `;
 
 exports[`call compiles with partial callee 1`] = `
-"const p1_0 = prtlc_0 => {
-  return prtlc_0(123);
+"const p1_0 = prtl_0 => {
+  return prtl_0(123);
 };
 
-const p2_0 = prtlc_1 => {
-  return prtlc_1(bar, spam);
+const p2_0 = prtl_1 => {
+  return prtl_1(bar, spam);
 };
 
-const p3_0 = prtlc_2 => {
-  return prtlc_2.bar(spam);
+const p3_0 = prtl_2 => {
+  return prtl_2.bar(spam);
 };
 
 export const p1 = p1_0,
@@ -57,17 +57,17 @@ exports[`call compiles with partial exprs as args 1`] = `
 const pa2_0 = filter(prtl_1 => {
   return prtl_1 || foo(prtl_1);
 });
-const pa3_0 = filter(prtl_3 => {
-  return !prtl_3;
+const pa3_0 = filter(prtl_2 => {
+  return !prtl_2;
 });
-const pa4_0 = map(prtl_4 => {
-  return prtl_4.foo;
+const pa4_0 = map(prtl_3 => {
+  return prtl_3.foo;
 });
-const pa5_0 = map(prtl_5 => {
-  return prtl_5 % 2 === 0;
+const pa5_0 = map(prtl_4 => {
+  return prtl_4 % 2 === 0;
 });
-const pa6_0 = foo(bar, prtl_7 => {
-  return spam === prtl_7;
+const pa6_0 = foo(bar, prtl_5 => {
+  return spam === prtl_5;
 });
 export const pa1 = pa1_0,
       pa2 = pa2_0,
@@ -78,32 +78,32 @@ export const pa1 = pa1_0,
 `;
 
 exports[`call compiles with partial spread arg 1`] = `
-"const p1_0 = sprtl_0 => {
-  return foo(...sprtl_0);
+"const p1_0 = prtl_0 => {
+  return foo(...prtl_0);
 };
 
-const p2_0 = sprtl_1 => {
-  return foo(...sprtl_1.bar);
+const p2_0 = prtl_1 => {
+  return foo(...prtl_1.bar);
 };
 
-const p3_0 = sprtl_2 => {
-  return foo(...sprtl_2.bar.spam);
+const p3_0 = prtl_2 => {
+  return foo(...prtl_2.bar.spam);
 };
 
-const p4_0 = sprtl_3 => {
-  return foo(...bar(sprtl_3));
+const p4_0 = prtl_3 => {
+  return foo(...bar(prtl_3));
 };
 
-const p7_0 = prtlc_4 => {
-  return prtlc_4(123);
+const p7_0 = prtl_4 => {
+  return prtl_4(123);
 };
 
-const p8_0 = prtlc_5 => {
-  return prtlc_5(bar, spam);
+const p8_0 = prtl_5 => {
+  return prtl_5(bar, spam);
 };
 
-const p9_0 = prtlc_6 => {
-  return prtlc_6.bar(spam);
+const p9_0 = prtl_6 => {
+  return prtl_6.bar(spam);
 };
 
 export const p1 = p1_0,

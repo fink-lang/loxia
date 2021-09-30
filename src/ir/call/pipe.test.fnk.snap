@@ -64,10 +64,10 @@ rec_e fn exports_0:
     lst_h args_0, fn prtl_0:
       id bar, fn callee_0:
         lst_e fn cargs_0:
-          id prtl_0, fn arg_0:
-            lst_a cargs_0, arg_0, fn cargs_1:
-              int '123', fn arg_1:
-                lst_a cargs_1, arg_1, fn cargs_2:
+          id prtl_0, fn parg_0:
+            lst_a cargs_0, parg_0, fn cargs_1:
+              int '123', fn arg_0:
+                lst_a cargs_1, arg_0, fn cargs_2:
                   af callee_0, cargs_2, fn pfn_1:
                     cc ret_0, pfn_1
   ), fn pfn_0:
@@ -75,20 +75,20 @@ rec_e fn exports_0:
       af pfn_0, args_1, fn ppr_0:
         id spam, fn callee_1:
           lst_e fn cargs_3:
-            id ni, fn arg_2:
-              lst_a cargs_3, arg_2, fn cargs_4:
+            id ni, fn arg_1:
+              lst_a cargs_3, arg_1, fn cargs_4:
                 af callee_1, cargs_4, fn pfn_2:
                   lst_e fn args_2:
                     lst_a args_2, ppr_0, fn args_3:
                       af pfn_2, args_3, fn ppr_1:
                         id (fn args_4, ret_1: #fn
-                          lst_h args_4, fn prtl_3:
+                          lst_h args_4, fn prtl_1:
                             lst_e fn lst_2:
                               int '4', fn item_1:
                                 lst_a lst_2, item_1, fn lst_1:
                                   int '5', fn item_0:
                                     lst_a lst_1, item_0, fn lst_0:
-                                      id prtl_3, fn items_0:
+                                      id prtl_1, fn items_0:
                                         lst_c lst_0, items_0, fn pfn_3:
                                           cc ret_1, pfn_3
                         ), fn pfn_4:
@@ -98,11 +98,11 @@ rec_e fn exports_0:
                                 id shrub, fn callee_2:
                                   lst_e fn cargs_5:
                                     id (fn args_7, ret_2: #fn
-                                      lst_h args_7, fn prtl_4:
-                                        id prtl_4, fn left_0:
+                                      lst_h args_7, fn prtl_2:
+                                        id prtl_2, fn left_0:
                                           int '1', fn right_0:
-                                            gt left_0, right_0, fn arg_3:
-                                              cc ret_2, arg_3
+                                            gt left_0, right_0, fn arg_2:
+                                              cc ret_2, arg_2
                                     ), fn pfn_6:
                                       lst_a cargs_5, pfn_6, fn cargs_6:
                                         af callee_2, cargs_6, fn pfn_5:

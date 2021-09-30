@@ -402,8 +402,8 @@ rec_e fn exports_0:
                                     int '1', fn left_0:
                                       id length, fn callee_0:
                                         lst_e fn cargs_0:
-                                          id tail_0, fn arg_0:
-                                            lst_a cargs_0, arg_0, fn cargs_1:
+                                          id tail_0, fn parg_0:
+                                            lst_a cargs_0, parg_0, fn cargs_1:
                                               af callee_0, cargs_1, fn right_0:
                                                 lt left_0, right_0, fn val_1:
                                                   eq true, val_1, fn cond_1:
@@ -426,8 +426,8 @@ rec_e fn exports_0:
                                 lst_t value_0, fn tail_1:
                                   id is_empty, fn callee_1:
                                     lst_e fn cargs_2:
-                                      id tail_1, fn arg_1:
-                                        lst_a cargs_2, arg_1, fn cargs_3:
+                                      id tail_1, fn parg_1:
+                                        lst_a cargs_2, parg_1, fn cargs_3:
                                           af callee_1, cargs_3, fn val_3:
                                             eq true, val_3, fn cond_3:
                                               id (fn: #cn
@@ -445,10 +445,10 @@ rec_e fn exports_0:
                       lst_h value_0, fn itm_2:
                         id is_foo, fn callee_2:
                           lst_e fn cargs_4:
-                            id itm_2, fn arg_2:
-                              lst_a cargs_4, arg_2, fn cargs_5:
-                                id bar, fn arg_3:
-                                  lst_a cargs_5, arg_3, fn cargs_6:
+                            id itm_2, fn parg_2:
+                              lst_a cargs_4, parg_2, fn cargs_5:
+                                id bar, fn arg_0:
+                                  lst_a cargs_5, arg_0, fn cargs_6:
                                     af callee_2, cargs_6, fn val_4:
                                       eq true, val_4, fn cond_4:
                                         id (fn: #cn
@@ -651,8 +651,8 @@ rec_e fn exports_0:
             ), fn match_0:
               id shrub, fn callee_0:
                 lst_e fn cargs_0:
-                  id value_0, fn arg_0:
-                    lst_a cargs_0, arg_0, fn cargs_1:
+                  id value_0, fn parg_0:
+                    lst_a cargs_0, parg_0, fn cargs_1:
                       af callee_0, cargs_1, fn val_0:
                         eq true, val_0, fn cond_1:
                           id (fn: #cn
@@ -1113,8 +1113,8 @@ rec_e fn exports_0:
                                 rec_d value_0, key_2, fn spread_1:
                                   id is_empty, fn callee_0:
                                     lst_e fn cargs_0:
-                                      id spread_1, fn arg_0:
-                                        lst_a cargs_0, arg_0, fn cargs_1:
+                                      id spread_1, fn parg_0:
+                                        lst_a cargs_0, parg_0, fn cargs_1:
                                           af callee_0, cargs_1, fn val_3:
                                             eq true, val_3, fn cond_4:
                                               id (fn: #cn
@@ -1133,8 +1133,8 @@ rec_e fn exports_0:
                       rec_g value_0, key_3, fn itm_3:
                         id is_foo, fn callee_1:
                           lst_e fn cargs_2:
-                            id itm_3, fn arg_1:
-                              lst_a cargs_2, arg_1, fn cargs_3:
+                            id itm_3, fn parg_1:
+                              lst_a cargs_2, parg_1, fn cargs_3:
                                 af callee_1, cargs_3, fn val_4:
                                   eq true, val_4, fn cond_5:
                                     id (fn: #cn

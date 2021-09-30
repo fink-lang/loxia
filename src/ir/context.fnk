@@ -81,7 +81,7 @@ update_value = fn id, updates, ctx:
 
 
 get_refs = fn id, ctx:
-  {refs} = get_value id, ctx
+  {refs=0} = get_value id, ctx
   refs
 
 

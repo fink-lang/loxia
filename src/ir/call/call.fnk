@@ -1,7 +1,7 @@
 {is_empty} = import '@fink/std-lib/iter.fnk'
 
-{transform} = import '../transform.fnk'
 {unique_or_id, ir_fn} = import '../context.fnk'
+{transform} = import '../transform.fnk'
 {lst, lst_a, lst_c} = import '../literals/list.fnk'
 {lst_h} = import '../assignment/init.fnk'
 {fnc} = import '../func/init.fnk'
@@ -33,70 +33,40 @@ spread_arg = fn args_id, arg, arg_id, {loc}, ctx:
 
 
 
-set_partial_ident = fn name, {loc}, ctx:
-  [partial_ident, next_ctx] = unique_or_id name, {loc}, ctx
-  [partial_ident, {...next_ctx, partial_ident}]
-
-
-
-maybe_set_partial_ident = fn name, {loc}, {has_partial: _, partial_ident=false, ...ctx}:
-  match partial_ident:
-    false:
-      [true, ...set_partial_ident name, {loc}, ctx]
-    else:
-      [false, partial_ident, {...ctx, partial_ident}]
-
-
-
 transform_with_partial = fn expr, name, ctx:
-  [foo, prtl, foo_ctx] = maybe_set_partial_ident 'prtl', expr, ctx
+  {partial_ident: outer_prtl=false} = ctx
 
-  [arg, arg_id, {has_partial, ...next_ctx}] = transform expr, name, foo_ctx
-
-  match true:
-    foo and has_partial:
-      prtl_func prtl, arg, arg_id, 'pfn', {loc: expr.loc}, next_ctx
+  [arg, arg_id, next_ctx] = match outer_prtl:
+    false:
+      transform expr, name, ctx
     else:
-      [arg, arg_id, next_ctx]
+      transform expr, name, {...ctx, partial_ident: false}
+
+  {partial_ident: arg_prtl=false} = next_ctx
+
+  match [outer_prtl, arg_prtl]:
+    [false, ? != false]:
+      prtl_func arg_prtl, arg, arg_id, 'pfn', expr, {...next_ctx, partial_ident: false}
+    else:
+      [arg, arg_id, {...next_ctx, partial_ident: outer_prtl}]
 
 
 
 transform_arg = fn expr, args_id, ctx:
-  [arg, arg_id, {has_partial: _, ...next_ctx}] = transform_with_partial expr, 'arg', ctx
-  add_arg args_id, arg, arg_id, {loc: expr.loc}, next_ctx
+  [arg, arg_id, next_ctx] = transform_with_partial expr, 'arg', ctx
+  add_arg args_id, arg, arg_id, expr, next_ctx
 
 
 
-
-transform_spread_arg = fn expr, args_id, {partial_foo=false, has_partial=false, partial_ident=false, ...ctx}:
-  [prtl, p_ctx] = match partial_foo:
-    false: unique_or_id 'sprtl', expr, ctx
-    else: [partial_foo, ctx]
-
-  foo_ctx = {...p_ctx, partial_ident: prtl}
-  [arg, arg_id, {has_partial: hp=false, partial_ident:_, ...next_ctx}] = transform expr.right, 'sprd', foo_ctx
-  match hp:
-    false:
-      spread_arg args_id, arg, arg_id, {loc: expr.loc}, {...next_ctx, partial_ident, has_partial, partial_foo}
-    else:
-      spread_arg args_id, arg, arg_id, {loc: expr.loc}, {...next_ctx, partial_ident, has_partial: has_partial or hp, partial_foo: prtl}
+transform_spread_arg = fn expr, args_id, ctx:
+  [arg, arg_id, next_ctx] = transform expr.right, 'sprd', ctx
+  spread_arg args_id, arg, arg_id, expr, next_ctx
 
 
 
-transform_partial_arg = fn expr, args_id, {partial_foo=false, has_partial, partial_ident=false, ...ctx}:
-  [prlt, p_ctx] = match partial_foo:
-    false: unique_or_id 'prtl', expr, ctx
-    else: [partial_foo, ctx]
-
-  match partial_ident:
-    false:
-      foo_ctx = {...p_ctx, partial_ident: prlt}
-      [arg, arg_id, {partial_ident: _, ...next_ctx}] = transform expr, 'arg', foo_ctx
-      add_arg args_id, arg, arg_id, {loc: expr.loc}, {...next_ctx, has_partial, partial_ident, partial_foo: prlt}
-
-    else:
-      [a, b, c] = transform_arg expr, args_id, {...p_ctx, partial_ident, has_partial}
-      [a, b, {...c, has_partial: true}]
+transform_partial_arg = fn expr, args_id, ctx:
+  [arg, arg_id, next_ctx] = transform expr, 'parg', ctx
+  add_arg args_id, arg, arg_id, expr, next_ctx
 
 
 
@@ -109,21 +79,17 @@ transform_all_args = fn [expr=false, ...exprs], args_id, ctx, out=[]:
       [arg, next_args_id, next_ctx] = transform_spread_arg expr, args_id, ctx
       transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
 
+    {type: 'partial'}:
+      [arg, next_args_id, next_ctx] = transform_partial_arg expr, args_id, ctx
+      transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
+
     {type: 'empty'}:
       # TODO: have a transform for empty
       [arg, next_args_id, next_ctx] = add_arg args_id, [], {i: '_', loc: expr.loc}, expr, ctx
       transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
 
-    {type: 'partial'}:
-      [arg, next_args_id, next_ctx] = transform_partial_arg expr, args_id, ctx
-      transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
-
     else:
-      [arg, next_args_id, arg_ctx] = transform_arg expr, args_id, ctx
-      next_ctx = rec:
-        ...arg_ctx
-        partial_ident: ctx.partial_ident
-        has_partial: ctx.has_partial or arg_ctx.has_partial
+      [arg, next_args_id, next_ctx] = transform_arg expr, args_id, ctx
       transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
 
 
@@ -140,32 +106,23 @@ transform_args = fn expr, ctx:
 
 
 
-transform_callee = fn expr, ctx:
-  [foo, prtl, foo_ctx] = maybe_set_partial_ident 'prtlc', expr, ctx
-  [callee, callee_id, {has_partial: hp, ...next_ctx}] = transform expr, 'callee', foo_ctx
-
-  match true:
-    foo and hp:
-      [callee, callee_id, {...next_ctx, partial_foo: prtl, has_partial: true, partial_ident: ctx.partial_ident}]
-    else:
-      [callee, callee_id, {...next_ctx, has_partial: ctx.has_partial or hp, partial_ident: ctx.partial_ident}]
-
-
-
 transform_call = fn node, result, ctx:
-  [callee, c_id, args_ctx] = transform_callee node.callee, ctx
-  [args, args_id, {partial_foo=false, ...next_ctx}] = transform_args node, args_ctx
+  {partial_ident: outer_prtl=false} = ctx
 
-  match partial_foo:
-    false:
+  [callee, c_id, args_ctx] = transform node.callee, 'callee', ctx
+  [args, args_id, next_ctx] = transform_args node, args_ctx
+
+  {partial_ident: call_prtl=false} = next_ctx
+
+  match [outer_prtl, call_prtl]:
+    [false, ? != false]:
+      [appl_fn, res_id, fn_ctx] = af c_id, args_id, 'pfn', node, next_ctx
+      call = [...callee, ...args, ...appl_fn]
+      [fun, , end_ctx] = prtl_func call_prtl, call, res_id, result, node, fn_ctx
+      [fun, {...end_ctx, partial_ident: outer_prtl}]
+    else:
       [appl_fn, , end_ctx] = af c_id, args_id, result, node, next_ctx
       call = [...callee, ...args, ...appl_fn]
-      [call, end_ctx]
-    else:
-      [appl_fn, res_id, foo_ctx] = af c_id, args_id, 'pfn', node, next_ctx
-      call = [...callee, ...args, ...appl_fn]
-      [fun, , end_ctx] = prtl_func partial_foo, call, res_id, result, node, foo_ctx
-      [fun, end_ctx]
-
+      [call, {...end_ctx, partial_ident: outer_prtl}]
 
 

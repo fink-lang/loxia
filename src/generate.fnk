@@ -12,6 +12,8 @@ babel_traverse = import '@babel/traverse'
 {transform_async} = import './js/async/init.fnk'
 
 
+# try_catch_ = fn f: [false, f _]
+
 
 transform_file = fn fink_ast, code, filename, {optimize: optim, ...options}:
   opts = {...options, optimize: {refs: true, tails: true, unused: true, ...optim}}

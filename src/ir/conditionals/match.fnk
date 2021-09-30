@@ -2,7 +2,7 @@
 {reverse} = import '@fink/std-lib/iter.fnk'
 
 {transform} = import '../transform.fnk'
-{unique_or_id, ir_fn} = import '../context.fnk'
+{unique_or_id, ir_fn, get_refs} = import '../context.fnk'
 {transform_key, members_as_rec} = import '../literals/record.fnk'
 {cc} = import '../func/init.fnk'
 
@@ -83,10 +83,10 @@ match_any = fn [val_id, val], expr, gen_true, else_id, ctx:
 
 
 match_eq = fn [val_id, val], expr, gen_true, else_id, ctx:
-  [right, right_id, {has_partial, ...cond_ctx}] = transform_with_partial expr, 'val', val_id, ctx
+  [right, right_id, cond_ctx] = transform_with_partial expr, 'val', val_id, ctx
 
-  left_id = match has_partial:
-    true: {i: 'true'}
+  left_id = match get_refs val_id, cond_ctx:
+    ? > 0: {i: 'true'}
     else: val_id
 
   [eq_cond, cond_id, true_ctx] = is_eq left_id, right_id, 'cond', expr, cond_ctx

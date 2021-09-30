@@ -1,18 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TODO compiles 1`] = `
+"const foo_0 = bar(() => {
+  return (prtl_0 => {
+    return prtl_0.shrub(123);
+  })(spam());
+});
+export const foo = foo_0;"
+`;
+
 exports[`pipe compiles 1`] = `
-"const ppr_5 = (prtl_4 => {
-  return [4, 5, ...prtl_4];
-})((prtl_3 => {
-  return prtl_3.nini;
-})((prtlc_1 => {
-  return prtlc_1.spam(456);
+"const ppr_5 = (prtl_3 => {
+  return [4, 5, ...prtl_3];
+})((prtl_2 => {
+  return prtl_2.nini;
+})((prtl_1 => {
+  return prtl_1.spam(456);
 })(spam((prtl_0 => {
   return bar(prtl_0, 123);
 })(foo())))));
 
-const ppr_7 = (prtl_6 => {
-  return [...prtl_6];
+const ppr_7 = (prtl_4 => {
+  return [...prtl_4];
 })(map(item_5 => {
   return item_5 * 2;
 })([1, 2, 3]));

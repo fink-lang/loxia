@@ -7,11 +7,11 @@ types = import '@babel/types'
   isImportDefaultSpecifier, isImportSpecifier, interpreterDirective
 } = types
 
-{map, fold} = import '@fink/std-lib/iter.fnk'
+{map} = import '@fink/std-lib/iter.fnk'
 {slice} = import '@fink/std-lib/str.fnk'
 
 
-{add, get_js, set_js2, get_js_literal, with_loc} = import '../context.fnk'
+{add, get_js, get_js_literal, with_loc} = import '../context.fnk'
 {transform_exprs} = import '../transform.fnk'
 {escape_ident} = import '../identifier/init.fnk'
 {get_runtime_imports} = import './import.fnk'
@@ -134,7 +134,6 @@ transform_mod_exports = fn expr, ctx:
     else: get_exports exports
 
   [export_statements, ctx]
-
 
 
 

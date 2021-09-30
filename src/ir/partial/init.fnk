@@ -1,12 +1,19 @@
-{add} = import '../context.fnk'
+{add, inc_ref, unique_or_id} = import '../context.fnk'
 
 {let} = import '../identifier/init.fnk'
 
 
 
 transform_partial = fn expr, result, ctx:
-  {partial_ident} = ctx
-  [prt, , end_ctx] = let partial_ident, result, expr, {...ctx, has_partial: true}
+  {partial_ident=false} = ctx
+
+  [prtl, prtl_ctx] = match partial_ident:
+    false: unique_or_id 'prtl', expr, ctx
+    else: [partial_ident, ctx]
+
+  next_ctx = inc_ref prtl, prtl_ctx
+
+  [prt, , end_ctx] = let prtl, result, expr, {...next_ctx, partial_ident: prtl}
   [prt, end_ctx]
 
 

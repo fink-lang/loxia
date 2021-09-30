@@ -33,7 +33,8 @@ describe 'call', fn:
         p1 = foo ...?
         p2 = foo ...?.bar
         p3 = foo ...?.bar.spam
-        p4= foo ...bar ?
+        # TODO p4 = foo ...bar ?
+        p4 = fn prtl: foo ...bar prtl
         p7 = ? 123
         p8 = ? bar, spam
         p9 = ?.bar spam

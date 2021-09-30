@@ -101,6 +101,21 @@ prepare_imports = fn [expr=false, ...exprs], ctx:
 
 
 
+prepare_calls = fn [expr=false, ...exprs], ctx:
+  match expr:
+    false:
+      ctx
+
+    [{f: 'af'}]:
+      [, [res_id]] = expr
+      next_ctx = update_value res_id, {inline: false}, ctx
+      prepare_calls exprs, next_ctx
+
+    else:
+      prepare_calls exprs, ctx
+
+
+
 transform_ir = fn input_exprs, options:
   exprs = replace_idents input_exprs
   rev_expr = reverse exprs
@@ -110,6 +125,7 @@ transform_ir = fn input_exprs, options:
     prepare_rets rev_expr, ?
     prepare_imports rev_expr, ?
     prepare_exports rev_expr, ?
+    prepare_calls rev_expr, ?
     add_transformers ?
 
   transfrom_module exprs, ctx

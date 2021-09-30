@@ -19,6 +19,7 @@ get_js = fn id, ctx:
   val = get_value id, ctx
   match val:
     {ignore_refs: true}:  with_loc id, val.js
+    # {inline: false}: ident id
     {refs: ? > 1}: ident id
     {js: ?}: with_loc id, val.js
     else: ident id
@@ -32,7 +33,6 @@ add_runtime_requirement = fn func, {runtime, ...ctx}:
 get_js_literal = fn id, ctx:
   {js=get_js id, ctx} = get_value id, ctx
   js
-
 
 
 

@@ -122,9 +122,9 @@ create_lst = fn [id=false, ...ids], lst_id, idx=0, out=[]:
         0: lst_id
         else: {i: '${lst_id.i}_${idx}', loc: lst_id.loc}
 
-      foo_id = {i: '${lst_id.i}_${idx + 1}'}
-      foo = [{f: 'lst_a', args: [foo_id, id], loc: id.loc}, [res_id]]
-      create_lst ids, lst_id, idx + 1, [foo, ...out]
+      next_lst_id = {i: '${lst_id.i}_${idx + 1}'}
+      lst = [{f: 'lst_a', args: [next_lst_id, id], loc: id.loc}, [res_id]]
+      create_lst ids, lst_id, idx + 1, [lst, ...out]
 
 
 
