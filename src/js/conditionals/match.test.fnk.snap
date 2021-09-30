@@ -191,7 +191,8 @@ ret_0: {
   if (null != expr_0) {
     /* istanbul ignore else */
     if (true === _in_(expr_0[0], [1, 2])) {
-      ret_0 = foo(tail_0, expr_0);
+      const result_1 = foo(tail_0, expr_0);
+      ret_0 = result_1;
 
       /* istanbul ignore next */
       break ret_0;
@@ -204,9 +205,12 @@ ret_0: {
 
     /* istanbul ignore else */
     if (null != itm_0) {
+      const val_0 = foo(itm_0[0], ctx);
+
       /* istanbul ignore else */
-      if (true === foo(itm_0[0], ctx)) {
-        ret_0 = foo(expr_0, tail_0);
+      if (true === val_0) {
+        const result_0 = foo(expr_0, tail_0);
+        ret_0 = result_0;
 
         /* istanbul ignore next */
         break ret_0;
@@ -312,8 +316,10 @@ ret_0: {
 
   /* istanbul ignore else */
   if (null != foo) {
+    const val_7 = foo[0]();
+
     /* istanbul ignore else */
-    if (true === foo[0]()) {
+    if (true === val_7) {
       ret_0 = ni;
 
       /* istanbul ignore next */
@@ -323,8 +329,10 @@ ret_0: {
 
   /* istanbul ignore else */
   if (null != foo) {
+    const val_6 = foo[0].is_foo();
+
     /* istanbul ignore else */
-    if (true === foo[0].is_foo()) {
+    if (true === val_6) {
       ret_0 = ni;
 
       /* istanbul ignore next */
@@ -334,8 +342,10 @@ ret_0: {
 
   /* istanbul ignore else */
   if (null != foo) {
+    const val_5 = is_foo(foo[0]);
+
     /* istanbul ignore else */
-    if (true === is_foo(foo[0])) {
+    if (true === val_5) {
       ret_0 = ni;
 
       /* istanbul ignore next */
@@ -345,8 +355,10 @@ ret_0: {
 
   /* istanbul ignore else */
   if (null != foo) {
+    const val_4 = is_foo(foo[0], bar);
+
     /* istanbul ignore else */
-    if (true === is_foo(foo[0], bar)) {
+    if (true === val_4) {
       ret_0 = ni;
 
       /* istanbul ignore next */
@@ -358,8 +370,10 @@ ret_0: {
   if (null != foo) {
     /* istanbul ignore else */
     if (foo[0] === 1) {
+      const val_3 = is_empty(foo.slice(1));
+
       /* istanbul ignore else */
-      if (true === is_empty(foo.slice(1))) {
+      if (true === val_3) {
         ret_0 = ni;
 
         /* istanbul ignore next */
@@ -372,8 +386,10 @@ ret_0: {
   if (null != foo) {
     /* istanbul ignore else */
     if (foo[0] === 1) {
+      const right_0 = length(foo.slice(1));
+
       /* istanbul ignore else */
-      if (true === 1 < length(foo.slice(1))) {
+      if (true === 1 < right_0) {
         ret_0 = ni;
 
         /* istanbul ignore next */
@@ -554,16 +570,20 @@ ret_0: {
     break ret_0;
   }
 
+  const val_1 = value_0();
+
   /* istanbul ignore else */
-  if (true === value_0()) {
+  if (true === val_1) {
     ret_0 = ni;
 
     /* istanbul ignore next */
     break ret_0;
   }
 
+  const val_0 = shrub(value_0);
+
   /* istanbul ignore else */
-  if (true === shrub(value_0)) {
+  if (true === val_0) {
     ret_0 = ni;
 
     /* istanbul ignore next */
@@ -879,8 +899,10 @@ ret_0: {
 
   /* istanbul ignore else */
   if (null != foo) {
+    const val_6 = foo.spam();
+
     /* istanbul ignore else */
-    if (true === foo.spam()) {
+    if (true === val_6) {
       ret_0 = ni;
 
       /* istanbul ignore next */
@@ -890,8 +912,10 @@ ret_0: {
 
   /* istanbul ignore else */
   if (null != foo) {
+    const val_5 = foo.spam.is_foo();
+
     /* istanbul ignore else */
-    if (true === foo.spam.is_foo()) {
+    if (true === val_5) {
       ret_0 = ni;
 
       /* istanbul ignore next */
@@ -901,8 +925,10 @@ ret_0: {
 
   /* istanbul ignore else */
   if (null != foo) {
+    const val_4 = is_foo(foo.spam);
+
     /* istanbul ignore else */
-    if (true === is_foo(foo.spam)) {
+    if (true === val_4) {
       ret_0 = ni;
 
       /* istanbul ignore next */
@@ -920,9 +946,10 @@ ret_0: {
         spam: _key_2,
         ...spread_1
       } = foo;
+      const val_3 = is_empty(spread_1);
 
       /* istanbul ignore else */
-      if (true === is_empty(spread_1)) {
+      if (true === val_3) {
         ret_0 = ni;
 
         /* istanbul ignore next */

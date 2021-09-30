@@ -28,6 +28,7 @@ export const str = str_1;"
 `;
 
 exports[`string compiles tagged template string 1`] = `
-"const str_0 = foo\`bar \${ni(spam, shrub)} na\`;
+"const sx_0 = ni(spam, shrub);
+const str_0 = foo\`bar \${sx_0} na\`;
 export const str = str_0;"
 `;

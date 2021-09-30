@@ -21,11 +21,13 @@ export const call1 = call1_0,
 
 exports[`call compiles with partial arg 1`] = `
 "const p1_0 = prtl_0 => {
-  return foo(prtl_0);
+  const pfn_0 = foo(prtl_0);
+  return pfn_0;
 };
 
 const p2_0 = prtl_1 => {
-  return foo(prtl_1, 123, prtl_1);
+  const pfn_1 = foo(prtl_1, 123, prtl_1);
+  return pfn_1;
 };
 
 export const p1 = p1_0,
@@ -34,15 +36,18 @@ export const p1 = p1_0,
 
 exports[`call compiles with partial callee 1`] = `
 "const p1_0 = prtl_0 => {
-  return prtl_0(123);
+  const pfn_0 = prtl_0(123);
+  return pfn_0;
 };
 
 const p2_0 = prtl_1 => {
-  return prtl_1(bar, spam);
+  const pfn_1 = prtl_1(bar, spam);
+  return pfn_1;
 };
 
 const p3_0 = prtl_2 => {
-  return prtl_2.bar(spam);
+  const pfn_2 = prtl_2.bar(spam);
+  return pfn_2;
 };
 
 export const p1 = p1_0,
@@ -55,7 +60,8 @@ exports[`call compiles with partial exprs as args 1`] = `
   return prtl_0 === 1;
 });
 const pa2_0 = filter(prtl_1 => {
-  return prtl_1 || foo(prtl_1);
+  const right_1 = foo(prtl_1);
+  return prtl_1 || right_1;
 });
 const pa3_0 = filter(prtl_2 => {
   return !prtl_2;
@@ -79,31 +85,39 @@ export const pa1 = pa1_0,
 
 exports[`call compiles with partial spread arg 1`] = `
 "const p1_0 = prtl_0 => {
-  return foo(...prtl_0);
+  const pfn_0 = foo(...prtl_0);
+  return pfn_0;
 };
 
 const p2_0 = prtl_1 => {
-  return foo(...prtl_1.bar);
+  const pfn_1 = foo(...prtl_1.bar);
+  return pfn_1;
 };
 
 const p3_0 = prtl_2 => {
-  return foo(...prtl_2.bar.spam);
+  const pfn_2 = foo(...prtl_2.bar.spam);
+  return pfn_2;
 };
 
 const p4_0 = prtl_3 => {
-  return foo(...bar(prtl_3));
+  const sprd_3 = bar(prtl_3);
+  const result_0 = foo(...sprd_3);
+  return result_0;
 };
 
 const p7_0 = prtl_4 => {
-  return prtl_4(123);
+  const pfn_3 = prtl_4(123);
+  return pfn_3;
 };
 
 const p8_0 = prtl_5 => {
-  return prtl_5(bar, spam);
+  const pfn_4 = prtl_5(bar, spam);
+  return pfn_4;
 };
 
 const p9_0 = prtl_6 => {
-  return prtl_6.bar(spam);
+  const pfn_5 = prtl_6.bar(spam);
+  return pfn_5;
 };
 
 export const p1 = p1_0,
@@ -143,10 +157,12 @@ exports[`recursive functions compiles with self reference 1`] = `
 
   /* istanbul ignore else */
   if (cntr_0 === 1) {
-    return [...foo_0(cntr_0 - 1)];
+    const items_1 = foo_0(cntr_0 - 1);
+    return [...items_1];
   }
 
-  return [cntr_0, ...foo_0(cntr_0 - 1)];
+  const items_0 = foo_0(cntr_0 - 1);
+  return [cntr_0, ...items_0];
 };
 
 export const foo = foo_0;"

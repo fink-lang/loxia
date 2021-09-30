@@ -3,7 +3,8 @@
 exports[`member compiles 1`] = `
 "const foo_0 = spam.shrub;
 const computed_member_0 = item[\`bar spam\`];
-const computed_member2_0 = item[get_key(foo_0)];
+const key_4 = get_key(foo_0);
+const computed_member2_0 = item[key_4];
 const reserved_prop_0 = item[\`arguments\`];
 const js_safe_unicode_0 = [item.π, item.ƒ];
 const js_unsafe_0 = item[\`foo-bar\`];

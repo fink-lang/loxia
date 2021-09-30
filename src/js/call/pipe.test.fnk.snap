@@ -2,29 +2,49 @@
 
 exports[`TODO compiles 1`] = `
 "const foo_0 = bar(() => {
-  return (prtl_0 => {
-    return prtl_0.shrub(123);
-  })(spam());
+  const ppr_0 = spam();
+
+  const ppr_1 = (prtl_0 => {
+    const pfn_2 = prtl_0.shrub(123);
+    return pfn_2;
+  })(ppr_0);
+
+  return ppr_1;
 });
 export const foo = foo_0;"
 `;
 
 exports[`pipe compiles 1`] = `
-"const ppr_5 = (prtl_3 => {
-  return [4, 5, ...prtl_3];
-})((prtl_2 => {
+"const ppr_0 = foo();
+
+const ppr_1 = (prtl_0 => {
+  const pfn_2 = bar(prtl_0, 123);
+  return pfn_2;
+})(ppr_0);
+
+const ppr_2 = spam(ppr_1);
+
+const ppr_3 = (prtl_1 => {
+  const pfn_5 = prtl_1.spam(456);
+  return pfn_5;
+})(ppr_2);
+
+const ppr_4 = (prtl_2 => {
   return prtl_2.nini;
-})((prtl_1 => {
-  return prtl_1.spam(456);
-})(spam((prtl_0 => {
-  return bar(prtl_0, 123);
-})(foo())))));
+})(ppr_3);
+
+const ppr_5 = (prtl_3 => {
+  return [4, 5, ...prtl_3];
+})(ppr_4);
+
+const pfn_10 = map(item_5 => {
+  return item_5 * 2;
+});
+const ppr_6 = pfn_10([1, 2, 3]);
 
 const ppr_7 = (prtl_4 => {
   return [...prtl_4];
-})(map(item_5 => {
-  return item_5 * 2;
-})([1, 2, 3]));
+})(ppr_6);
 
 export const p1 = ppr_5,
       p2 = ppr_7;"

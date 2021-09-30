@@ -166,7 +166,7 @@ export const out = out_0;"
 
 exports[`unpacking record compiles member expr as keys 3`] = `
 "const key_0 = \`foo-bar\`;
-const val_2 = foo[\`foo-bar\`][\`spam-ham\`].ni;
+const val_2 = foo[key_0][\`spam-ham\`].ni;
 const {
   \\"foo-bar\\": _key_0,
   ...rest_0

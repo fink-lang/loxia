@@ -3,7 +3,9 @@
 exports[`compiles defaults 1`] = `
 "const fun_0 = (a_0, hdm_0) => {
   const b_0 = undefined === hdm_0 ? 12 : hdm_0;
-  return bar(b_0, shrub(a_0, b_0));
+  const ni_0 = shrub(a_0, b_0);
+  const result_1 = bar(b_0, ni_0);
+  return result_1;
 };
 
 export const fun = fun_0;"
@@ -153,10 +155,12 @@ exports[`recursive functions compiles with self reference 1`] = `
 
   /* istanbul ignore else */
   if (cntr_0 === 1) {
-    return [...foo_0(cntr_0 - 1)];
+    const items_1 = foo_0(cntr_0 - 1);
+    return [...items_1];
   }
 
-  return [cntr_0, ...foo_0(cntr_0 - 1)];
+  const items_0 = foo_0(cntr_0 - 1);
+  return [cntr_0, ...items_0];
 };
 
 export const foo = foo_0;"

@@ -10,7 +10,8 @@ const task2_0 = async foo_1 => {
 };
 
 const task3_0 = async foo_2 => {
-  return bar + 123 + (await foo_2());
+  const futr_2 = foo_2();
+  return bar + 123 + (await futr_2);
 };
 
 const a_gen_0 = unfold(async hdm_0 => {
@@ -18,7 +19,8 @@ const a_gen_0 = unfold(async hdm_0 => {
 
   /* istanbul ignore else */
   if (shrub === spam) {
-    return await ni(curr_0);
+    const futr_3 = ni(curr_0);
+    return await futr_3;
   }
 
   return curr_0 + 1;
