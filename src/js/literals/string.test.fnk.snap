@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`string compiles escape chars 1`] = `
-"const str_0 = \`foo\\\\\`bar\\\\nspam\\\\\`ni\`;
-const str_1 = \`foo\\\\\\\\\`;
-export const str1 = str_0,
-      str2 = str_1;"
+"const str1_0 = \`foo\\\\\`bar\\\\nspam\\\\\`ni\`;
+const str2_0 = \`foo\\\\\\\\\`;
+export const str1 = str1_0,
+      str2 = str2_0;"
 `;
 
 exports[`string compiles multiline 1`] = `
-"const str_1 = \`line 1
+"const str_0 = \`line 1
 line 2 with leading space
 line 3\`;
-export const str = str_1;"
+export const str = str_0;"
 `;
 
 exports[`string compiles multiline with expressions 1`] = `
@@ -23,8 +23,8 @@ export const str = str_0;"
 `;
 
 exports[`string compiles simple 1`] = `
-"const str_1 = \`ab\`;
-export const str = str_1;"
+"const str_0 = \`ab\`;
+export const str = str_0;"
 `;
 
 exports[`string compiles tagged template string 1`] = `

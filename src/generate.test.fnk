@@ -50,10 +50,13 @@ describe 'source maps', fn:
     func = fn x, y:
       x + y + b
     y = func bar, a, b
+    spam ham
+    r1 = {foo, bar, spam: 123}
   "
-  js = fink2js_sm code
+
 
   it 'compiles to mjs', fn:
+    js = fink2js_sm code
     expect
       js
       to_match_snapshot

@@ -154,20 +154,6 @@ optimize_lst_r = fn [expr, res], ctx:
 
 
 
-optimize_st = fn [expr, res], ctx:
-  [res_id] = res
-  args = replace_args_aliases expr.args, ctx
-  match args:
-    [?, ?]:
-      [[[{...expr, args}, res]], ctx]
-    [?]:
-      [sr_id] = args
-      next_ctx = add_alias res_id, sr_id, ctx
-      [[], next_ctx]
-
-
-
-
 optimize_body = fn [expr, res], ctx, optimize_refs:
   {args: [args, body]} = expr
   [o_body, next_ctx] = optimize_refs body, ctx, []
@@ -194,8 +180,6 @@ optimize_cn = fn [expr, res], exprs, ctx, optimize_refs, out:
     else:
       [of_cn, next_ctx] = optimize_body [expr, res], ctx, optimize_refs
       optimize_refs exprs, next_ctx, [...out, ...of_cn]
-
-
 
 
 
@@ -236,10 +220,6 @@ optimize_refs = fn [expr=false, ...exprs], ctx, out=[]:
 
     [{f: ? in ['int', 'float', 'str']}]:
       optimize_refs exprs, ctx, [...out, expr]
-
-    [{f: 'strt'}]:
-      [sts, next_ctx] = optimize_st expr, ctx
-      optimize_refs exprs, next_ctx, [...out, ...sts]
 
     [{f: 'cn'}]:
       orf = optimize_refs

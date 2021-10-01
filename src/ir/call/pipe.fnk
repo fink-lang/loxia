@@ -25,11 +25,6 @@ pipe_all =  fn [expr=false, ...exprs], prev_res_id, ctx, out=[]:
     false:
       [out, prev_res_id, ctx]
 
-    # {type: ? in ['ident', 'call']}:
-    #   [callee, callee_id, next_ctx] = transform expr, 'pfn', ctx
-    #   [call, res_id, end_ctx] = apply_step callee_id, prev_res_id, expr, next_ctx
-    #   pipe_all exprs, res_id, end_ctx, [...out, ...callee, ...call]
-
     else:
       [callee, callee_id, step_ctx] = transform_with_partial expr, 'pfn', ctx
       {partial_ident: _, ...next_ctx} = step_ctx

@@ -86,9 +86,9 @@ export const foo = foo_0;"
 `;
 
 exports[`record compiles shorthand 3`] = `
-"const str_0 = \`foo\`;
+"const key_0 = \`foo\`;
 const foo_0 = {
-  [str_0]: str_0
+  [key_0]: key_0
 };
 export const foo = foo_0;"
 `;

@@ -28,8 +28,6 @@
 
 {add_async} = import './async/init.fnk'
 
-{inc_ref} = import '../ir/context.fnk'
-
 
 add_transformers = fn ctx:
   pipe ctx:
@@ -77,8 +75,7 @@ prepare_exports = fn [expr=false, ...exprs], ctx, rec_id:
 
     [{f:'rec_s'}, [{i: rec_id.i}]]:
       [{args: [next_rec_id, , val_id]}] = expr
-      ref_ctx = update_value next_rec_id, {export: true}, ctx
-      next_ctx = inc_ref val_id, ref_ctx
+      next_ctx = update_value val_id, {inline: false}, ctx
       prepare_exports exprs, next_ctx, next_rec_id
 
     else:

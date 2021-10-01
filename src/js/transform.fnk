@@ -77,7 +77,7 @@ transform_body_expr = fn expr, ctx:
       js = match val:
         {type: 'VariableDeclaration'}:
           # TODO: use loc from res_id, val or expr?
-          with_loc {res_id}, val
+          with_loc res_id, val
         else:
           # TODO: use loc from res_id, val or expr?
           # id = with_loc {loc: todo}, ident res_id

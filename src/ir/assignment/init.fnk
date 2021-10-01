@@ -196,8 +196,10 @@ transform_assign = fn node, , ctx:
       [[...right, ...left], end_ctx]
 
     {type: 'ident'}:
-      r_ctx = {...ctx, self_name: node.left.value}
-      [right, l_id, {self_name: _, ...bind_ctx}] = transform node.right, node.left.value, r_ctx
+      name = node.left.value
+      # we have to create the id from the ident so we get correct source-maps
+      [l_id, r_ctx] = unique_or_id name, node.left, {...ctx, self_name: name}
+      [right, , {self_name: _, ...bind_ctx}] = transform node.right, l_id, r_ctx
       end_ctx = bind_x node.left, l_id, bind_ctx
       [right, end_ctx]
 
