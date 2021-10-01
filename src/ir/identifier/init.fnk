@@ -2,7 +2,6 @@
 
 
 
-
 bind = fn {value, loc}, ctx:
   {scopes: [scope, ...scopes]} = ctx
   [id, next_ctx] = unique_or_id value, {loc}, ctx

@@ -2,16 +2,19 @@
 
 exports[`await compiles 1`] = `
 "const task1_0 = async foo_0 => {
-  return -(await foo_0);
+  const right_0 = await foo_0;
+  return -right_0;
 };
 
 const task2_0 = async foo_1 => {
-  return await (foo_1 + 4);
+  const result_1 = await (foo_1 + 4);
+  return result_1;
 };
 
 const task3_0 = async foo_2 => {
   const futr_2 = foo_2();
-  return bar + 123 + (await futr_2);
+  const spam_0 = await futr_2;
+  return bar + 123 + spam_0;
 };
 
 const a_gen_0 = unfold(async hdm_0 => {
@@ -20,7 +23,8 @@ const a_gen_0 = unfold(async hdm_0 => {
   /* istanbul ignore else */
   if (shrub === spam) {
     const futr_3 = ni(curr_0);
-    return await futr_3;
+    const result_6 = await futr_3;
+    return result_6;
   }
 
   return curr_0 + 1;
