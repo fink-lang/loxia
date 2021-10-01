@@ -21,9 +21,6 @@ describe 'pipe', fn:
       '
       to_match_snapshot
 
-# TODO: move or copy  to ir/
-describe 'TODO', fn:
-  it 'compiles', fn:
     expect
       fink2js '
         foo = bar fn:
@@ -32,6 +29,7 @@ describe 'TODO', fn:
             ?.shrub 123
       '
       to_match_snapshot
+
 
 
 describe 'small pipe |', fn:

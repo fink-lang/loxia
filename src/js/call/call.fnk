@@ -86,7 +86,6 @@ transform_continue_with_cont = fn expr, ctx:
     false:
       match ret:
         {type: 'ReturnStatement'}:
-          # TODO remove if this is the last expr in a func
           [[ret], ctx]
         else:
           [[], ctx]

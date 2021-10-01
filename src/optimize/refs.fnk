@@ -1,6 +1,6 @@
 {reverse} = import '@fink/std-lib/iter.fnk'
 
-{update_value, get_value} = import '../ir/context.fnk'
+{update_value, get_value, unique_name} = import '../ir/context.fnk'
 
 
 
@@ -110,21 +110,15 @@ optimize_lst_c = fn [expr, res], ctx:
 
 
 
-create_lst = fn [id=false, ...ids], lst_id, idx=0, out=[]:
+create_lst = fn [id=false, ...ids], lst_id, tmp_id, ctx, out=[]:
   match id:
-    # TODO gen unique ids
     false:
-      nid = {i: '${lst_id.i}_${idx + 1}', loc: lst_id.loc}
-      [[{f: 'lst', args: [], loc: lst_id.loc}, [nid]], ...out]
+      [[[{f: 'lst', args: [], loc: lst_id.loc}, [tmp_id]], ...out], ctx]
 
     else:
-      res_id = match idx:
-        0: lst_id
-        else: {i: '${lst_id.i}_${idx}', loc: lst_id.loc}
-
-      next_lst_id = {i: '${lst_id.i}_${idx + 1}'}
-      lst = [{f: 'lst_a', args: [next_lst_id, id], loc: id.loc}, [res_id]]
-      create_lst ids, lst_id, idx + 1, [lst, ...out]
+      [next_tmp_id, end_ctx] = unique_name lst_id.i, lst_id, ctx
+      lst = [{f: 'lst_a', args: [next_tmp_id, id], loc: id.loc}, [tmp_id]]
+      create_lst ids, lst_id, next_tmp_id, end_ctx, [lst, ...out]
 
 
 
@@ -144,9 +138,8 @@ optimize_lst_r = fn [expr, res], ctx:
       {item_aliases: rev_aliases} = info
       # find existing tpl instead of creating
       item_aliases = reverse rev_aliases
-      next_ctx = update_value res_id, {item_aliases, tpr: lst_id}, ctx
-      next_lst = create_lst rev_aliases, res_id
-      [next_lst, next_ctx]
+      lst_ctx = update_value res_id, {item_aliases, tpr: lst_id}, ctx
+      create_lst rev_aliases, res_id, res_id, lst_ctx
 
     else:
       next_ctx = update_value res_id, {tpr: lst_id}, ctx

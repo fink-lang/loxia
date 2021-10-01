@@ -55,8 +55,7 @@ transform_exprs = fn [expr=false, ...rest], exp_id, ctx, out:
 
 
 transform_directives = fn expr, ctx:
-  # TODO: directives should be handled as separate AST node
-
+  # TODO: directives should be handled as separate AST node in larix
   [drctvs, dirs_id, next_ctx] = lst 'drctvs', expr, ctx
 
   {exprs: [{comments}]} = expr

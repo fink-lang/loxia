@@ -44,8 +44,6 @@ optimize_af = fn [expr, res], exprs, ctx:
 
   match [callee_id.i, next_expr]:
     [curr_fn_id.i, [{f: 'cc', args: [{i: ret_id.i}]}]]:
-      # TODO: if cc would have an id, we could just store opt info for it and
-      # convert it separately instead of using exprs
       opt_expr = {...expr, f: 'cf', args: [callee_id, ...args]}
       next_ctx = update_value curr_fn_id, {tco: true}, ctx
       [[[opt_expr, []]], rest_exprs, next_ctx]

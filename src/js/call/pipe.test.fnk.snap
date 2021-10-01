@@ -1,19 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TODO compiles 1`] = `
-"const foo_0 = bar(() => {
-  const ppr_0 = spam();
-
-  const ppr_1 = (prtl_0 => {
-    const pfn_2 = prtl_0.shrub(123);
-    return pfn_2;
-  })(ppr_0);
-
-  return ppr_1;
-});
-export const foo = foo_0;"
-`;
-
 exports[`pipe compiles 1`] = `
 "const ppr_0 = foo();
 
@@ -48,6 +34,20 @@ const ppr_7 = (prtl_4 => {
 
 export const p1 = ppr_5,
       p2 = ppr_7;"
+`;
+
+exports[`pipe compiles 2`] = `
+"const foo_0 = bar(() => {
+  const ppr_0 = spam();
+
+  const ppr_1 = (prtl_0 => {
+    const pfn_2 = prtl_0.shrub(123);
+    return pfn_2;
+  })(ppr_0);
+
+  return ppr_1;
+});
+export const foo = foo_0;"
 `;
 
 exports[`small pipe | handles precedence 1`] = `

@@ -198,18 +198,19 @@ rec_e fn exports_0:
                           int '1', fn item_9:
                             int '2', fn item_8:
                               int '3', fn item_7:
-                                lst_a sp_0_2, item_9, fn sp_0_1:
-                                  lst_a sp_0_1, item_8, fn sp_0:
-                                    lst_e fn cargs_0:
-                                      lst_a cargs_0, item_6, fn cargs_1:
-                                        lst_a cargs_1, x_0, fn cargs_2:
-                                          lst_a cargs_2, item_4, fn cargs_3:
-                                            lst_a cargs_3, y_0, fn cargs_4:
-                                              lst_a cargs_4, item_7, fn cargs_5:
-                                                lst_a cargs_5, sp_0, fn cargs_6:
-                                                  lst_a cargs_6, item_9, fn cargs_7:
-                                                    lst_a cargs_7, lala, fn cargs_8:
-                                                      af log, cargs_8, fn mex_5:
-                                                        lst_e fn drctvs_0:
-                                                          mod exports_2, drctvs_0, fn mod_0:"
+                                lst_e fn sp_0_1:
+                                  lst_a sp_0_1, item_9, fn sp_0_0:
+                                    lst_a sp_0_0, item_8, fn sp_0:
+                                      lst_e fn cargs_0:
+                                        lst_a cargs_0, item_6, fn cargs_1:
+                                          lst_a cargs_1, x_0, fn cargs_2:
+                                            lst_a cargs_2, item_4, fn cargs_3:
+                                              lst_a cargs_3, y_0, fn cargs_4:
+                                                lst_a cargs_4, item_7, fn cargs_5:
+                                                  lst_a cargs_5, sp_0, fn cargs_6:
+                                                    lst_a cargs_6, item_9, fn cargs_7:
+                                                      lst_a cargs_7, lala, fn cargs_8:
+                                                        af log, cargs_8, fn mex_5:
+                                                          lst_e fn drctvs_0:
+                                                            mod exports_2, drctvs_0, fn mod_0:"
 `;

@@ -35,3 +35,11 @@ describe 'pipe', fn:
       '
       to_match_snapshot
 
+    expect
+      fink2lir '
+        foo = bar fn:
+          pipe:
+            spam
+            ?.shrub 123
+      '
+      to_match_snapshot

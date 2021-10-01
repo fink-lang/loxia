@@ -4,7 +4,7 @@ types = import '@babel/types'
   labeledStatement, doWhileStatement, booleanLiteral
 } = types
 
-{map} = import '@fink/std-lib/iter.fnk'
+{map, is_empty} = import '@fink/std-lib/iter.fnk'
 
 {get_refs, update_value} = import '../../ir/context.fnk'
 {transform_exprs} = import '../transform.fnk'
@@ -15,8 +15,7 @@ types = import '@babel/types'
 
 clean_args = fn args_id, args, body, ctx:
   fn_args = match [args, get_refs args_id, ctx]:
-    # TODO use is_empty
-    [{length: 0}, ? > 0]:
+    [(is_empty ?), ? > 0]:
       [with_loc args_id, restElement ident args_id, ctx]
     else:
       [..., last] = args
@@ -28,6 +27,8 @@ clean_args = fn args_id, args, body, ctx:
         [...?]
 
   [fn_args, body, ctx]
+
+
 
 # These are mostly ir transformations, should this be done as a prep step
 split_args_body = fn [expr=false, ...exprs], args_id, ctx, args=[], body=[]:

@@ -2,6 +2,7 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
+
 describe 'optimize', fn:
   it 'foo', fn:
     expect
@@ -13,6 +14,7 @@ describe 'optimize', fn:
         f = d + e
       ', {optimize: {refs: true, tails: true, unused: true}}
       to_match_snapshot
+
 
   it 'optimizes values', fn:
     expect
