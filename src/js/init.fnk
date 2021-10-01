@@ -111,6 +111,11 @@ prepare_non_inlinable = fn [expr=false, ...exprs], ctx:
       next_ctx = update_value res_id, {inline: false}, ctx
       prepare_non_inlinable exprs, next_ctx
 
+    [{f: 'wt'}]:
+      [, [res_id]] = expr
+      next_ctx = update_value res_id, {inline: false}, ctx
+      prepare_non_inlinable exprs, next_ctx
+
     [{f: 'str'}]:
       [, [res_id]] = expr
       next_ctx = update_value res_id, {tp: 'str'}, ctx

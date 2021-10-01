@@ -30,3 +30,15 @@ export const task1 = task1_0,
       task3 = task3_0,
       a_gen = a_gen_0;"
 `;
+
+exports[`await does not inline into func body 1`] = `
+"const task1_0 = async foo_0 => {
+  const bar_0 = await foo_0;
+  const result_1 = shrub(ni_0 => {
+    return ni_0 + bar_0;
+  });
+  return result_1;
+};
+
+export const task1 = task1_0;"
+`;

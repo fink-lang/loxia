@@ -29,7 +29,7 @@ clean_args = fn args_id, args, body, ctx:
 
   [fn_args, body, ctx]
 
-
+# These are mostly ir transformations, should this be done as a prep step
 split_args_body = fn [expr=false, ...exprs], args_id, ctx, args=[], body=[]:
   match expr:
     false:
