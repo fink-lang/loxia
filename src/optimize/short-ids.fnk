@@ -52,6 +52,13 @@ shorten_names = fn [curr=false, ...rest], renames={}, out=[]:
       [nres, next_ren] = rename res, renames
       shorten_names rest, next_ren, [...out, [expr, nres]]
 
+    [{f: ? in ['tpl_i', 'tpl_s']}]:
+      [expr, res] = curr
+      {args: [tpl_id, ...args]} = expr
+      [ntpl_id] = replace_refs [tpl_id], renames
+      [nres, next_ren] = rename res, renames
+      shorten_names rest, next_ren, [...out, [{...expr, args: [ntpl_id, ...args]}, nres]]
+
     [{f: ? in ['fn', 'cn']}]:
       [expr, res] = curr
       [args, body] = expr.args

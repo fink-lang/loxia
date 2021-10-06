@@ -8,7 +8,10 @@ a2s = fn [arg=false, ...args], out=[]:
     false: match out:
       [?]: ' ${out | join ', '}'
       else: ''
-    else: a2s args, [...out, arg.i]
+    {i: ?}:
+      a2s args, [...out, arg.i]
+    else:
+      a2s args, [...out, arg]
 
 
 

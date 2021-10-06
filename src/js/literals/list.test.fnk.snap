@@ -30,20 +30,35 @@ export const foo = foo_0,
 
 exports[`list compiles spread 2`] = `
 "const foo_0 = [1, 2, 3];
-const bar_0 = [...foo_0, 4, 5, 6];
+const bar_0 = [1, 2, 3, 4, 5, 6];
 const spam_0 = [7];
-const shrub_0 = [...bar_0, ...spam_0];
+const shrub_0 = [1, 2, 3, 4, 5, 6, 7];
 const ni_0 = [...nu, na];
+const nie_0 = [...nu,, na];
 const ham_0 = [...nu, ...na];
 export const foo = foo_0,
       bar = bar_0,
       spam = spam_0,
       shrub = shrub_0,
       ni = ni_0,
+      nie = nie_0,
       ham = ham_0;"
 `;
 
-exports[`unpacking list destructures empty 1`] = `
+exports[`unpacking list TODO 1`] = `
+"const dlst_0 = [...shrub];
+const ni_0 = dlst_0[0] + dlst_0[1] + dlst_0[2];
+export const ni = ni_0;"
+`;
+
+exports[`unpacking list destructures known tuples 1`] = `
+"const foo_0 = [2, 1];
+const out_0 = [1, 2, 3, foo_0, 1 + 2, 2, 1, []];
+export const foo = foo_0,
+      out = out_0;"
+`;
+
+exports[`unpacking list destructures missing item 1`] = `
 "const out_0 = [foo[0], foo[2]];
 export const out = out_0;"
 `;
@@ -54,34 +69,38 @@ const out_0 = [drec_0.a, drec_0.b, ni[1]];
 export const out = out_0;"
 `;
 
-exports[`unpacking list destructures simple 1`] = `
-"const item_3 = 1;
-const item_2 = 2;
-const foo_0 = [item_2, item_3];
-const out_0 = [item_3, item_2, 3, foo_0, 1 + 2, item_2, item_3];
-export const foo = foo_0,
-      out = out_0;"
-`;
-
 exports[`unpacking list destructures spread 1`] = `
-"const out_0 = [foo[0], [...foo.slice(1)].reverse()[0]];
-export const out = out_0;"
+"const a_0 = foo.at(-1);
+export const out = a_0;"
 `;
 
 exports[`unpacking list destructures spread 2`] = `
-"const rtail_0 = [...foo.slice(1)].reverse();
-const out_0 = [foo[0], rtail_0[1], rtail_0[0]];
+"const out_0 = [foo[0], foo.at(-1)];
 export const out = out_0;"
 `;
 
 exports[`unpacking list destructures spread 3`] = `
-"const out_0 = [foo[0], ...foo.slice(1)];
+"const out_0 = [foo[0], foo.at(-2), foo.at(-1)];
 export const out = out_0;"
 `;
 
 exports[`unpacking list destructures spread 4`] = `
-"const rtail_0 = [...foo.slice(1)].reverse();
-const out_0 = [foo[0], [...rtail_0.slice(1)].reverse(), rtail_0[0]];
+"const out_0 = [foo[0], ...foo.slice(1)];
+export const out = out_0;"
+`;
+
+exports[`unpacking list destructures spread 5`] = `
+"const out_0 = [foo[0], foo.slice(1, -1), foo.at(-1)];
+export const out = out_0;"
+`;
+
+exports[`unpacking list destructures spread 6`] = `
+"const out_0 = [foo[0], foo[1], foo.slice(2, -1), foo.at(-1)];
+export const out = out_0;"
+`;
+
+exports[`unpacking list destructures spread 7`] = `
+"const out_0 = [foo[0], foo[1], foo.slice(2, -2), foo.at(-2), foo.at(-1)];
 export const out = out_0;"
 `;
 

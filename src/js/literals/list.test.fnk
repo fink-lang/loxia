@@ -1,5 +1,6 @@
-{fink2js} = import '../../testing/generate.fnk'
 {skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+{fink2js} = import '../../testing/generate.fnk'
 
 
 describe 'list', fn:
@@ -35,6 +36,7 @@ describe 'list', fn:
         spam = [7]
         shrub = [...bar, ...spam]
         ni = [...nu, na]
+        nie = [...nu, , na]
         ham = [...nu, ...na]
       '
       to_match_snapshot
@@ -50,18 +52,19 @@ describe 'list', fn:
 
 
 describe 'unpacking list', fn:
-  it 'destructures simple', fn:
+  it 'destructures known tuples', fn:
     expect
       fink2js '
         [a, [b, c]] = [1, [2, 3]]
         foo = [b, a]
         [z] = [1 + 2, 3 * 4]
         [x, y] = foo
-        out = [a, b, c, foo, z, x, y]
+        [, ...w] = []
+        out = [a, b, c, foo, z, x, y, w]
       '
       to_match_snapshot
 
-  it 'destructures empty', fn:
+  it 'destructures missing item', fn:
     expect
       fink2js '
         [a,  , b] = foo
@@ -70,6 +73,13 @@ describe 'unpacking list', fn:
       to_match_snapshot
 
   it 'destructures spread', fn:
+    expect
+      fink2js '
+        [..., a] = foo
+        out = a
+      '
+      to_match_snapshot
+
     expect
       fink2js '
         [a, ..., b] = foo
@@ -98,6 +108,20 @@ describe 'unpacking list', fn:
       '
       to_match_snapshot
 
+    expect
+      fink2js '
+        [a, b, ...c, d] = foo
+        out = [a, b, c, d]
+      '
+      to_match_snapshot
+
+    expect
+      fink2js '
+        [a, b, ...c, d, e] = foo
+        out = [a, b, c, d, e]
+      '
+      to_match_snapshot
+
 
   it 'destructures recs', fn:
     expect
@@ -122,3 +146,13 @@ describe 'unpacking list', fn:
         out = [a, b, c]
       '
       to_match_snapshot
+
+
+  it 'TODO', fn:
+    expect
+      fink2js "
+        [bar, spam, ham] = [...shrub]
+        ni = bar + spam + ham
+      "
+      to_match_snapshot
+

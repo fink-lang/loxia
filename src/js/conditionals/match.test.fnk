@@ -121,6 +121,20 @@ describe 'match', fn:
       to_match_snapshot
 
 
+  it 'handles scoping', fn:
+    expect
+      fink2js '
+        foo = nanu
+
+        test = fn foo, bar:
+          match foo:
+            bar:
+              foo
+            spam:
+              foo = bar * 2
+              [foo, bar, foo]
+      '
+      to_match_snapshot
 
 describe 'match iterables', fn:
   it 'matches values', fn:

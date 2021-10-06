@@ -48,6 +48,7 @@ transform_is_rec = fn expr, ctx:
   set_js2 expr, js, ctx
 
 
+
 transform_is_lst = fn expr, ctx:
   [{args: [val_id]}] = expr
   val = get_js val_id, ctx

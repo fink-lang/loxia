@@ -6,8 +6,7 @@ exports[`match compiles match with ref 1`] = `
 ret_0: {
   /* istanbul ignore else */
   if (foo === 1) {
-    const x_0 = 123;
-    ret_0 = [1, x_0, x_0];
+    ret_0 = [1, 123, 123];
 
     /* istanbul ignore next */
     break ret_0;
@@ -37,8 +36,7 @@ exports[`match compiles match with ref 2`] = `
 ret_0: {
   /* istanbul ignore else */
   if (foo === 1) {
-    const x_0 = 123;
-    ret_0 = [1, x_0, x_0];
+    ret_0 = [1, 123, 123];
 
     /* istanbul ignore next */
     break ret_0;
@@ -46,8 +44,7 @@ ret_0: {
 
   /* istanbul ignore else */
   if (foo === 2) {
-    const y_0 = 45678;
-    ret_0 = [2, foo, y_0, y_0];
+    ret_0 = [2, foo, 45678, 45678];
 
     /* istanbul ignore next */
     break ret_0;
@@ -69,8 +66,7 @@ exports[`match compiles match with ref 3`] = `
 ret_0: {
   /* istanbul ignore else */
   if (foo === 1) {
-    const x_0 = 123;
-    ret_0 = [1, x_0, x_0];
+    ret_0 = [1, 123, 123];
 
     /* istanbul ignore next */
     break ret_0;
@@ -78,15 +74,13 @@ ret_0: {
 
   /* istanbul ignore else */
   if (foo === 2) {
-    const y_0 = 45678;
-    ret_0 = [2, foo, y_0, y_0];
+    ret_0 = [2, foo, 45678, 45678];
 
     /* istanbul ignore next */
     break ret_0;
   }
 
-  const z_0 = 1234;
-  ret_0 = [3, foo, z_0, z_0];
+  ret_0 = [3, foo, 1234, 1234];
 
   /* istanbul ignore next */
   break ret_0;
@@ -102,8 +96,7 @@ exports[`match compiles match with ref 4`] = `
 ret_0: {
   /* istanbul ignore else */
   if (foo === 1) {
-    const x_0 = 123;
-    ret_0 = [1, x_0, x_0];
+    ret_0 = [1, 123, 123];
 
     /* istanbul ignore next */
     break ret_0;
@@ -117,8 +110,7 @@ ret_0: {
     break ret_0;
   }
 
-  const z_0 = 1234;
-  ret_0 = [3, foo, z_0, z_0];
+  ret_0 = [3, foo, 1234, 1234];
 
   /* istanbul ignore next */
   break ret_0;
@@ -169,6 +161,27 @@ ret_0: {
 }
 
 const mex_0 = ret_0;"
+`;
+
+exports[`match handles scoping 1`] = `
+"const test_0 = (foo_1, bar_0) => {
+  /* istanbul ignore else */
+  if (foo_1 === bar_0) {
+    return foo_1;
+  }
+
+  /* istanbul ignore else */
+  if (foo_1 === spam) {
+    const foo_2 = bar_0 * 2;
+    return [foo_2, bar_0, foo_2];
+  }
+
+  /* istanbul ignore next */
+  return;
+};
+
+export const foo = nanu,
+      test = test_0;"
 `;
 
 exports[`match iterables handles non iterables 1`] = `
@@ -231,7 +244,7 @@ ret_0: {
     /* istanbul ignore else */
     if (shrub[0] === 1) {
       /* istanbul ignore else */
-      if ([...shrub.slice(1)].reverse()[0] === 3) {
+      if (shrub.at(-1) === 3) {
         ret_0 = foo;
 
         /* istanbul ignore next */
@@ -243,7 +256,7 @@ ret_0: {
   /* istanbul ignore else */
   if (null != shrub) {
     /* istanbul ignore else */
-    if ([...shrub].reverse()[0] === 4) {
+    if (shrub.at(-1) === 4) {
       ret_0 = foo;
 
       /* istanbul ignore next */
@@ -255,10 +268,8 @@ ret_0: {
   if (null != shrub) {
     /* istanbul ignore else */
     if (shrub[0] === 5) {
-      const tail_0 = shrub.slice(1);
-
       /* istanbul ignore else */
-      if (null != tail_0) {
+      if (null != shrub.slice(1)) {
         /* istanbul ignore else */
         if (shrub[1] === 6) {
           /* istanbul ignore else */
@@ -410,8 +421,6 @@ ret_0: {
   if (null != shrub) {
     /* istanbul ignore else */
     if (shrub[0] === 1) {
-      const tail_15 = shrub.slice(1);
-
       /* istanbul ignore else */
       if (shrub[1] === 2) {
         const itm_17 = shrub[2];
@@ -434,7 +443,6 @@ ret_0: {
   if (null != shrub) {
     /* istanbul ignore else */
     if (shrub[0] === 1) {
-      const tail_10 = shrub.slice(1);
       const itm_11 = shrub[1];
 
       /* istanbul ignore else */
@@ -460,7 +468,6 @@ ret_0: {
   if (null != shrub) {
     /* istanbul ignore else */
     if (shrub[0] === 1) {
-      const tail_0 = shrub.slice(1);
       const itm_1 = shrub[1];
 
       /* istanbul ignore else */
@@ -475,7 +482,6 @@ ret_0: {
             if (itm_3[0] === 3) {
               /* istanbul ignore else */
               if (itm_3[1] === 4) {
-                const tail_1 = tail_0.slice(1);
                 const itm_6 = shrub[2];
 
                 /* istanbul ignore else */
@@ -550,12 +556,11 @@ const mex_0 = ret_0;"
 `;
 
 exports[`match matches value assertions 1`] = `
-"const value_0 = 123;
-let ret_0;
+"let ret_0;
 
 ret_0: {
   /* istanbul ignore else */
-  if (true === !value_0) {
+  if (true === !123) {
     ret_0 = ni;
 
     /* istanbul ignore next */
@@ -563,14 +568,14 @@ ret_0: {
   }
 
   /* istanbul ignore else */
-  if (true === value_0 > 123) {
+  if (true === 123 > 123) {
     ret_0 = ni;
 
     /* istanbul ignore next */
     break ret_0;
   }
 
-  const val_1 = value_0();
+  const val_1 = 123();
 
   /* istanbul ignore else */
   if (true === val_1) {
@@ -580,7 +585,7 @@ ret_0: {
     break ret_0;
   }
 
-  const val_0 = shrub(value_0);
+  const val_0 = shrub(123);
 
   /* istanbul ignore else */
   if (true === val_0) {
@@ -591,7 +596,7 @@ ret_0: {
   }
 
   /* istanbul ignore else */
-  if (undefined !== value_0) {
+  if (undefined !== 123) {
     ret_0 = true;
 
     /* istanbul ignore next */

@@ -16,7 +16,11 @@ transform_exprs = fn [expr, ...exprs], res_id, ctx, out=[]:
 
 
 transform_block = fn expr, res_id, ctx:
-  transform_exprs expr.exprs, res_id, ctx
+  {scopes} = ctx
+  block_ctx = {...ctx, scopes: [{}, ...scopes]}
+  [out, next_ctx] = transform_exprs expr.exprs, res_id, block_ctx
+  [out, {...next_ctx, scopes}]
+
 
 
 add_block = fn ctx:

@@ -72,7 +72,7 @@ transform_body_expr = fn expr, ctx:
 
       [[js], next_ctx]
 
-    [, {refs: ? > 1}]:
+    [, {inline: ? != true, refs: ? > 1}]:
       val = get_js_literal res_id, next_ctx
       js = match val:
         {type: 'VariableDeclaration'}:

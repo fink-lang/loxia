@@ -18,7 +18,9 @@ with_loc = fn {loc}, expr:
 get_js = fn id, ctx:
   val = get_value id, ctx
   match val:
+    # TODO: use inline: true?
     {ignore_refs: true}:  with_loc id, val.js
+    {inline: true}:  with_loc id, val.js
     {inline: false}: ident id
     {refs: ? > 1}: ident id
     {js: ?}: with_loc id, val.js

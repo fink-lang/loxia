@@ -87,26 +87,40 @@ rec_e fn exports_0:
 exports[`optimizations ignores empty concats 1`] = `
 "
 rec_e fn exports_0:
-  lst_e fn lst_0:
+  tpl, fn lst_0:
     lst_c lst_0, b, fn foo_0:
       str 'foo', fn key_0:
         rec_s exports_0, key_0, foo_0, fn exports_1:
-          lst_e fn ham_0:
+          tpl, fn ham_0:
             str 'ham', fn key_1:
               rec_s exports_1, key_1, ham_0, fn exports_2:
-                lst_e fn lst_2:
-                  lst_a lst_2, foo_0, fn lst_1:
-                    str 'spam', fn key_2:
-                      rec_s exports_2, key_2, lst_1, fn exports_3:
-                        lst_e fn drctvs_0:
-                          mod exports_3, drctvs_0, fn mod_0:"
+                tpl foo_0, fn spam_0:
+                  str 'spam', fn key_2:
+                    rec_s exports_2, key_2, spam_0, fn exports_3:
+                      tpl, fn drctvs_0:
+                        mod exports_3, drctvs_0, fn mod_0:"
 `;
 
 exports[`optimizations optimizes spreads 1`] = `
 "const y_0 = [1, 2];
-const item_4 = 1;
-log(item_4, y_0, lala, lala, [item_4, 2], 3);
+log(1, y_0, lala, lala, [1, 2], 3);
 export const y = y_0;"
+`;
+
+exports[`optimizations removes tails 1`] = `
+"
+rec_e fn exports_0:
+  tpl, fn lst_0:
+    lst_c lst_0, shrub, fn dlst_0:
+      tpl_i dlst_0, 0, fn bar_0:
+        tpl_i dlst_0, 1, fn spam_0:
+          tpl_i dlst_0, 2, fn ham_0:
+            add bar_0, spam_0, fn left_0:
+              add left_0, ham_0, fn ni_0:
+                str 'ni', fn key_0:
+                  rec_s exports_0, key_0, ni_0, fn exports_1:
+                    tpl, fn drctvs_0:
+                      mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`optimizations reuses item refs 1`] = `
@@ -115,25 +129,16 @@ rec_e fn exports_0:
   int '1', fn item_3:
     int '2', fn item_2:
       int '3', fn item_1:
-        lst_e fn lst_5:
-          lst_a lst_5, item_2, fn lst_4:
-            lst_a lst_4, item_3, fn foo_0:
-              str 'foo', fn key_0:
-                rec_s exports_0, key_0, foo_0, fn exports_1:
-                  int '1', fn left_1:
-                    int '2', fn right_1:
-                      add left_1, right_1, fn item_7:
-                        lst_e fn cargs_0:
-                          lst_a cargs_0, item_3, fn cargs_1:
-                            lst_a cargs_1, item_2, fn cargs_2:
-                              lst_a cargs_2, item_1, fn cargs_3:
-                                lst_a cargs_3, foo_0, fn cargs_4:
-                                  lst_a cargs_4, item_7, fn cargs_5:
-                                    lst_a cargs_5, item_2, fn cargs_6:
-                                      lst_a cargs_6, item_3, fn cargs_7:
-                                        af log, cargs_7, fn mex_3:
-                                          lst_e fn drctvs_0:
-                                            mod exports_1, drctvs_0, fn mod_0:"
+        tpl item_2, item_3, fn foo_0:
+          str 'foo', fn key_0:
+            rec_s exports_0, key_0, foo_0, fn exports_1:
+              int '1', fn left_1:
+                int '2', fn right_1:
+                  add left_1, right_1, fn item_7:
+                    tpl item_3, item_2, item_1, foo_0, item_7, item_2, item_3, fn cargs_7:
+                      af log, cargs_7, fn mex_3:
+                        tpl, fn drctvs_0:
+                          mod exports_1, drctvs_0, fn mod_0:"
 `;
 
 exports[`unpacking list destructures recs 1`] = `

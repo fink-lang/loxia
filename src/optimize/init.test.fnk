@@ -86,11 +86,14 @@ describe 'optimize', fn:
         nanu = fn foo, bar:
           foo + bar + ham
 
-        ni = fn spam, ham, ni:
-          [spam, ham, ni]
+        ni = fn foo, bar, spam, ham, ni:
+          [foo, bar, spam, ham, ni]
 
-        na = fn spam, ham, ni:
-          [spam, ham, ni]
+        na = fn foo, bar, spam, ham, ni:
+          [foo, bar, spam, ham, ni]
+
+        nu = fn foo, bar, spam, ham, ni:
+          [foo, bar, spam, ham, ni]
 
       ', {optimize: {refs: true, tails: true, unused: true, names: true}}
       to_match_snapshot

@@ -28,15 +28,15 @@ export const fun = fun_0;"
 `;
 
 exports[`func compiles destructuring args in body 1`] = `
-"const fun_0 = (a_0, b_0, ...tail_1) => {
-  return [a_0 + b_0, tail_1, tail_1[0], tail_1[1]];
+"const fun_0 = (a_0, b_0, ...args_0) => {
+  return [a_0 + b_0, args_0, args_0[0], args_0[1]];
 };
 
 export const fun = fun_0;"
 `;
 
 exports[`func compiles empty arg 1`] = `
-"const fun_0 = (a_0, tail_0, tail_1, b_0) => {
+"const fun_0 = (a_0, _1, _2, b_0) => {
   return a_0 + b_0;
 };
 
@@ -44,7 +44,7 @@ export const fun = fun_0;"
 `;
 
 exports[`func compiles empty arg 2`] = `
-"const fun_0 = (tail_0, tail_1, b_0) => {
+"const fun_0 = (_0, _1, _2, b_0) => {
   return b_0;
 };
 
@@ -52,7 +52,7 @@ export const fun = fun_0;"
 `;
 
 exports[`func compiles empty arg 3`] = `
-"const fun_0 = (tail_0, a_0) => {
+"const fun_0 = (_0, a_0) => {
   return a_0;
 };
 
@@ -95,9 +95,8 @@ export const fun5 = fun5_0;"
 `;
 
 exports[`func compiles middle spread 1`] = `
-"const fun_0 = (a_0, b_0, ...tail_1) => {
-  const rtail_0 = [...tail_1].reverse();
-  return [a_0 + b_0, [...rtail_0.slice(1)].reverse(), rtail_0[0]];
+"const fun_0 = (a_0, b_0, ...args_0) => {
+  return [a_0 + b_0, args_0.slice(0, -1), args_0.at(-1)];
 };
 
 export const fun = fun_0;"
@@ -120,16 +119,16 @@ export const fun = fun_0;"
 `;
 
 exports[`func compiles spread 1`] = `
-"const fun_0 = (a_0, b_0, ...tail_1) => {
-  return [a_0 + b_0, tail_1];
+"const fun_0 = (a_0, b_0, ...args_0) => {
+  return [a_0 + b_0, args_0];
 };
 
 export const fun = fun_0;"
 `;
 
 exports[`func compiles spread 2`] = `
-"const fun_0 = (a_0, ...tail_0) => {
-  return [a_0, tail_0];
+"const fun_0 = (a_0, ...args_0) => {
+  return [a_0, args_0];
 };
 
 export const fun = fun_0;"
@@ -159,12 +158,11 @@ export const fun = fun_0;"
 exports[`recursive functions compiles spread 1`] = `
 "const fun_0 = (...args_0) => {
   fun_0: do {
-    const tail_0 = args_0.slice(1);
     const b_0 = args_0[1];
 
     /* istanbul ignore else */
     if (args_0[0] === b_0) {
-      args_0 = [...tail_0.slice(1)];
+      args_0 = [...args_0.slice(2)];
       continue fun_0;
     }
 

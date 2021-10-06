@@ -4,70 +4,69 @@ types = import '@babel/types'
   labeledStatement, doWhileStatement, booleanLiteral
 } = types
 
-{map, is_empty} = import '@fink/std-lib/iter.fnk'
-
-{get_refs, update_value} = import '../../ir/context.fnk'
+{get_refs, dec_ref, update_value} = import '../../ir/context.fnk'
 {transform_exprs} = import '../transform.fnk'
-{add, set_js, set_js2, with_loc} = import '../context.fnk'
+{add, set_js, set_js2} = import '../context.fnk'
 {ident} = import '../identifier/init.fnk'
 
 
+clean_args = fn args, body, ctx, out=[]:
+  match args:
+    {c: ? < 0}:
+      [out, body, ctx]
 
-clean_args = fn args_id, args, body, ctx:
-  fn_args = match [args, get_refs args_id, ctx]:
-    [(is_empty ?), ? > 0]:
-      [with_loc args_id, restElement ident args_id, ctx]
+    {(args.c): ?}:
+      clean_args {...args, c: args.c - 1}, body, ctx, [args.(args.c), ...out]
+
     else:
-      [..., last] = args
-      pipe args:
-        map fn arg: match arg:
-          last: arg
-          {type: 'RestElement'}: arg.argument
-          else: arg
-        [...?]
-
-  [fn_args, body, ctx]
+      # TODO: unique id
+      unused = ident {i: '_${args.c}'}
+      clean_args {...args, c: args.c - 1}, body, ctx, [unused, ...out]
 
 
 
 # These are mostly ir transformations, should this be done as a prep step
-split_args_body = fn [expr=false, ...exprs], args_id, ctx, args=[], body=[]:
+split_args_body = fn [expr=false, ...exprs], args_id, ctx, args={c: -1}, body=[]:
   match expr:
     false:
-      [args_id, args, body, ctx]
+      [args, body, ctx]
 
-    [{f: 'lst_h', args: [{i: args_id.i}]}]:
-      [...prev, ] = match args:
-        [?, ?]: args
-        else: [...args, ]
+    [{f: 'tpl_i', args: [{i: args_id.i}]}]:
+      [{args: [tpl_id, idx]}, [arg_id]] = expr
 
-      [, [head_id]] = expr
-      arg = ident head_id
-      next_ctx = set_js2 expr, arg, ctx
-      split_args_body exprs, args_id, next_ctx, [...prev, arg], body
+      match idx:
+        ? < 0:
+          split_args_body exprs, args_id, ctx, args, [...body, expr]
+        else: match args:
+          {foo: true}:
+            [foo] = expr
+            nexpr = [{...foo, args: [tpl_id, idx - args.c - 1]}, [arg_id]]
+            split_args_body exprs, args_id, ctx, args, [...body, nexpr]
+          else:
+            arg = ident arg_id
+            nargs = {...args, c: idx, (idx): arg}
+            next_ctx = pipe ctx:
+              set_js2 expr, arg, ?
+              dec_ref args_id, ?
+            split_args_body exprs, args_id, next_ctx, nargs, body
 
-    [{f: 'lst_r', args: [{i: args_id.i}]}]:
-      split_args_body [], args_id, ctx, args, [...body, expr, ...exprs]
-
-    [{f: 'lst_t', args: [{i: args_id.i}]}]:
-      [, [tail_id]] = expr
-      arg = ident tail_id
-      rest = with_loc arg, restElement arg
-
-      match get_refs tail_id, ctx:
-        # the rest is used for more than just getting next arg and tail
-        ? > 2:
-          split_args_body [], tail_id, ctx, [...args, rest], [...body, ...exprs]
-        # this is an ignored arg or last spread
+    [{f: 'tpl_s', args: [{i: args_id.i}]}]:
+      [{args: [args_id, start, end], ...rex}, res] = expr
+      [foo, next_ctx] = match [start, end]:
+        [args.c + 1, 0]:
+          slc = ident args_id
+          next_ctx = set_js2 expr, slc, ctx
+          [[], next_ctx]
         else:
-          split_args_body exprs, tail_id, ctx, [...args, rest], body
+          [[[{...rex, args: [args_id, start - args.c - 1, end]}, res]], ctx]
+      split_args_body exprs, args_id, next_ctx, {...args, foo: true}, [...body, ...foo]
 
     [{f: ? in ['fn', 'cn']}]:
       [foo, bar] = expr
       {args: [fargs, fbody]} = foo
-      [next_args_id, next_args, next_body, next_ctx] = split_args_body fbody, args_id, ctx, args
+      [next_args, next_body, next_ctx] = split_args_body fbody, args_id, ctx, args
       nexpr = [{...foo, args: [fargs, next_body]}, bar]
-      split_args_body exprs, next_args_id, next_ctx, next_args, [...body, nexpr]
+      split_args_body exprs, args_id, next_ctx, next_args, [...body, nexpr]
 
     else:
       split_args_body exprs, args_id, ctx, args, [...body, expr]
@@ -98,9 +97,13 @@ transform_normal_fn = fn expr, ctx:
     split_args_body fn_block, args_id, ?
     clean_args ...?
 
+  all_args = match get_refs args_id, fn_ctx:
+    ? > 0: [...args, restElement ident args_id]
+    else: args
+
   [body, next_ctx] = transform_exprs block, fn_ctx
 
-  js = arrowFunctionExpression args, blockStatement body
+  js = arrowFunctionExpression all_args, blockStatement body
 
   set_js2 expr, js, next_ctx
 

@@ -1,6 +1,6 @@
 {reverse} = import '@fink/std-lib/iter.fnk'
 
-{update_value, get_value, unique_name} = import '../ir/context.fnk'
+{update_value, get_value} = import '../ir/context.fnk'
 
 
 
@@ -39,23 +39,29 @@ add_alias = fn id, target, ctx:
 
 optimize_lst = fn [expr, res], ctx:
   [res_id] = res
-  opt_expr = optimize_args expr, ctx
-  next_ctx = update_value res_id, {empty_tpl: true, item_aliases: []}, ctx
+  opt_expr = {...expr, f: 'tpl', args: []}
+  next_ctx = update_value res_id, {type: 'tpl', items: []}, ctx
   [[opt_expr, res], next_ctx]
-
-
-
-add_lst_aliases = fn {args: [lst_id, val_id]}, res_id, ctx:
-  {item_aliases=[]} = get_value lst_id, ctx
-  update_value res_id, {item_aliases: [...item_aliases, val_id]}, ctx
 
 
 
 optimize_lst_a = fn [expr, res], ctx:
   [res_id] = res
   opt_expr = optimize_args expr, ctx
-  next_ctx = add_lst_aliases opt_expr, res_id, ctx
-  [[[opt_expr, res]], next_ctx]
+  {args: [lst_id, val_id]} = opt_expr
+  info = get_value lst_id, ctx
+
+  match info:
+    {type: 'tpl', items: ?}:
+      {items} = get_value lst_id, ctx
+
+      next_ctx = update_value res_id, {type: 'tpl', items: [...items, val_id]}, ctx
+      expr = {...opt_expr, f: 'tpl', args: [...items, val_id]}
+      [[[expr, res]], next_ctx]
+
+    else:
+      next_ctx = update_value res_id, {type: 'lst'}, ctx
+      [[[opt_expr, res]], next_ctx]
 
 
 
@@ -65,12 +71,23 @@ optimize_lst_h = fn [expr, res], ctx:
   {args: [lst_id]} = opt_expr
   info = get_value lst_id, ctx
   match info:
-    {item_aliases: [?]}:
-      {item_aliases: [val_id]} = info
+    {type: 'tpl', items: [?]}:
+      {items: [val_id]} = info
       next_ctx = add_alias res_id, val_id, ctx
       [[], next_ctx]
+
+    {type: 'tpl', slice_of: ?}:
+      [lst_id, start, end, inc] = info.slice_of
+      idx = match inc:
+        1: start
+        else: end - 1
+      [[[{...opt_expr, f: 'tpl_i', args: [lst_id, idx]}, res]], ctx]
+
+    {type: 'tpl'}:
+      [[[{...opt_expr, f: 'tpl_i', args: [lst_id, 0]}, res]], ctx]
+
     else:
-      [[[opt_expr, res]], ctx]
+      [[[{...opt_expr, f: 'tpl_i', args: [lst_id, 0]}, res]], ctx]
 
 
 
@@ -78,21 +95,38 @@ optimize_lst_t = fn [expr, res], ctx:
   [res_id] = res
   opt_expr = optimize_args expr, ctx
   {args: [lst_id]} = opt_expr
+
   info = get_value lst_id, ctx
   match info:
-    {item_aliases: [?]}:
-      {item_aliases: [, ...item_aliases]} = info
-      next_ctx = update_value res_id, {item_aliases}, ctx
-      [[[opt_expr, res]], next_ctx]
+    {type: 'tpl', items: [?]}:
+      {items: [, ...items]} = info
+      foo = {...opt_expr, f: 'tpl', args: items}
+      next_ctx = update_value res_id, {type: 'tpl', items}, ctx
+      [[[foo, res]], next_ctx]
+
+    {type: 'tpl', items: ?}:
+      next_ctx = add_alias res_id, lst_id, ctx
+      [[], next_ctx]
+
+    {type: 'tpl', slice_of: ?}:
+      [lst_id, start, end, inc] = info.slice_of
+      args = match inc:
+        1: [lst_id, start + 1, end]
+        else: [lst_id, start, end - 1]
+
+      next_ctx = update_value res_id, {type: 'tpl', slice_of: [...args, inc]}, ctx
+      foo = {...opt_expr, f: 'tpl_s', args}
+      [[[foo, res]], next_ctx]
+
+    {type: 'tpl'}:
+      next_ctx = update_value res_id, {type: 'tpl', slice_of: [lst_id, 1, 0, 1]}, ctx
+      foo = {...opt_expr, f: 'tpl_s', args: [lst_id, 1, 0]}
+      [[[foo, res]], next_ctx]
+
     else:
-      [[[opt_expr, res]], ctx]
-
-
-
-is_empty_lst = fn id, ctx:
-  match get_value id, ctx:
-    {empty_tpl: true}: true
-    else: false
+      next_ctx = update_value res_id, {type: 'tpl', slice_of: [lst_id, 1, 0, 1]}, ctx
+      foo = {...opt_expr, f: 'tpl_s', args: [lst_id, 1, 0]}
+      [[[foo, res]], next_ctx]
 
 
 
@@ -100,25 +134,21 @@ optimize_lst_c = fn [expr, res], ctx:
   [res_id] = res
   opt_expr = optimize_args expr, ctx
   {args: [lst1_id, lst2_id]} = opt_expr
+  info1 = get_value lst1_id, ctx
+  info2 = get_value lst2_id, ctx
 
-  match ctx:
-    is_empty_lst lst2_id, ?:
-      next_ctx = add_alias res_id, lst1_id, ctx
-      [[], next_ctx]
-    else:
-      [[[opt_expr, res]], ctx]
-
-
-
-create_lst = fn [id=false, ...ids], lst_id, tmp_id, ctx, out=[]:
-  match id:
-    false:
-      [[[{f: 'lst', args: [], loc: lst_id.loc}, [tmp_id]], ...out], ctx]
+  match [info1, info2]:
+    [{type: 'tpl', items: ?}, {type: 'tpl', items: ?}]:
+      {items: [...items1]} = info1
+      {items: [...items2]} = info2
+      items = [...items1, ...items2]
+      next_ctx = update_value res_id, {type: 'tpl', items}, ctx
+      foo = {...opt_expr, f: 'tpl', args: items}
+      [[[foo, res]], next_ctx]
 
     else:
-      [next_tmp_id, end_ctx] = unique_name lst_id.i, lst_id, ctx
-      lst = [{f: 'lst_a', args: [next_tmp_id, id], loc: id.loc}, [tmp_id]]
-      create_lst ids, lst_id, next_tmp_id, end_ctx, [lst, ...out]
+      next_ctx = update_value res_id, {type: 'tpl'}, ctx
+      [[[opt_expr, res]], next_ctx]
 
 
 
@@ -134,22 +164,47 @@ optimize_lst_r = fn [expr, res], ctx:
       next_ctx = add_alias res_id, tpr, ctx
       [[], next_ctx]
 
-    {item_aliases: ?}:
-      {item_aliases: rev_aliases} = info
+    {type: 'tpl', items: ?}:
       # find existing tpl instead of creating
-      item_aliases = reverse rev_aliases
-      lst_ctx = update_value res_id, {item_aliases, tpr: lst_id}, ctx
-      create_lst rev_aliases, res_id, res_id, lst_ctx
+      items = reverse info.items
+      next_ctx = update_value res_id, {type: 'tpl', items, tpr: lst_id}, ctx
+      foo = {...opt_expr, f: 'tpl', args: items}
+      [[[foo, res]], next_ctx]
+
+    {type: 'tpl', slice_of: ?}:
+      [tpl_id, start_idx, end_idx, inc] = info.slice_of
+
+      slice_of = match inc:
+        1: [tpl_id, start_idx, end_idx, -inc]
+        else: [tpl_id, start_idx, end_idx, -inc]
+
+      next_ctx = update_value res_id, {type: 'tpl', slice_of, tpr: lst_id}, ctx
+
+      match inc:
+        1:
+          [[[opt_expr, res]], next_ctx]
+        else:
+          foo = {...opt_expr, f: 'tpl_s', args: [tpl_id, start_idx, end_idx]}
+          [[[foo, res]], next_ctx]
 
     else:
-      next_ctx = update_value res_id, {tpr: lst_id}, ctx
+      slice_of = [lst_id, 0, 0, -1]
+      next_ctx = update_value res_id, {type: 'tpl', slice_of, tpr: lst_id}, ctx
       [[[opt_expr, res]], next_ctx]
 
 
 
 optimize_body = fn [expr, res], ctx, optimize_refs:
   {args: [args, body]} = expr
-  [o_body, next_ctx] = optimize_refs body, ctx, []
+
+  body_ctx = match expr:
+    {f: 'fn'}:
+      [args_id] = args
+      update_value args_id, {type: 'tpl'}, ctx
+    else:
+      ctx
+
+  [o_body, next_ctx] = optimize_refs body, body_ctx, []
   [[[{...expr, args: [args, o_body]}, res]], next_ctx]
 
 

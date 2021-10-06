@@ -12,7 +12,7 @@ rec_e fn exports_0:
               rec_s rec_0, key_0, foo-bar, fn foo_0:
                 str 'foo', fn key_3:
                   rec_s exports_0, key_3, foo_0, fn exports_1:
-                    lst_e fn drctvs_0:
+                    tpl, fn drctvs_0:
                       mod exports_1, drctvs_0, fn mod_0:"
 `;
 

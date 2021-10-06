@@ -2,8 +2,7 @@
 
 exports[`module handles directives 1`] = `
 "#!/usr/bin/env node
-const foo_0 = 1234;
-export const foo = foo_0;"
+export const foo = 1234;"
 `;
 
 exports[`module handles exports 1`] = `
@@ -15,15 +14,12 @@ const π_0 = () => {
   return true;
 };
 
-const foo_bar_0 = 1234;
-const fooᜭbar_0 = 1234;
-const default_0 = 456;
 export const ˆdelete = delete_0,
       π = π_0,
-      foo_bar = foo_bar_0,
-      fooᜭbar = fooᜭbar_0,
-      ˆdefault = default_0;
-export default default_0;"
+      foo_bar = 1234,
+      fooᜭbar = 1234,
+      ˆdefault = 456;
+export default 456;"
 `;
 
 exports[`module handles exports 2`] = `
@@ -35,15 +31,12 @@ const π_0 = () => {
   return true;
 };
 
-const foo_bar_0 = 1234;
-const fooᜭbar_0 = 1234;
-const default_0 = 456;
-module.exports = default_0;
+module.exports = 456;
 exports.ˆdelete = delete_0;
 exports.π = π_0;
-exports.foo_bar = foo_bar_0;
-exports.fooᜭbar = fooᜭbar_0;
-exports.ˆdefault = default_0;"
+exports.foo_bar = 1234;
+exports.fooᜭbar = 1234;
+exports.ˆdefault = 456;"
 `;
 
 exports[`module handles side effects 1`] = `

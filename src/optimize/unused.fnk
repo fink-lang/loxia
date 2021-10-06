@@ -8,6 +8,9 @@
 get_ref_args = fn [{f: op, args}]:
   match op:
     ? in ['int', 'float', 'str']: []
+    ? in ['tpl_i', 'tpl_s']:
+      [tpl_id] = args
+      [tpl_id]
     else: args
 
 

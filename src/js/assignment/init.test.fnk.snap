@@ -1,12 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`assignment compiles 1`] = `
-"const assign_0 = 1;
-const no_clash_with_await_0 = 13;
-const multi_line_assign_0 = 123 + 234 + (-567 - 1111);
-export const assign = assign_0,
-      assign2 = assign_0,
-      no_clash_with_await = no_clash_with_await_0,
+"const multi_line_assign_0 = 123 + 234 + (-567 - 1111);
+export const assign = 1,
+      assign2 = 1,
+      no_clash_with_await = 13,
       assign_lang_const1 = true,
       assign_lang_const2 = false,
       multi_line_assign = multi_line_assign_0,

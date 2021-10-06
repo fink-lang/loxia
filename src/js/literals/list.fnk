@@ -10,18 +10,60 @@ types = import '@babel/types'
 
 
 
-set_tail_of = fn items_id, tail_of, {tails={}, ...ctx}:
-  {...ctx, tails: {...tails, (items_id.i): tail_of}}
+ids_to_js = fn [id=false, ...rest], ctx, out=[]:
+  match id:
+    false:
+      out
+    {i: '_'}:
+      ids_to_js rest, ctx, [...out, null]
+    else:
+      item = get_js id, ctx
+      # console.log id, arg
+      ids_to_js rest, ctx, [...out, item]
 
 
-get_tail_of = fn items_id, {tails={}}:
-  {(items_id.i): tail_of=[items_id, 0]} = tails
-  tail_of
+
+transform_tpl = fn expr, ctx:
+  [{args: items_ids}] = expr
+  js = arrayExpression
+    ids_to_js items_ids, ctx
+  set_js2 expr, js, ctx
 
 
 
-transform_empty_list = fn expr, ctx:
-  js = arrayExpression []
+transform_tpl_i = fn expr, ctx:
+  [{args: [tpl_id, idx]}] = expr
+  js = match idx:
+    ? < 0:
+      callExpression
+        memberExpression
+          get_js tpl_id, ctx
+          identifier 'at'
+        [numericLiteral idx]
+    else:
+      memberExpression
+        get_js tpl_id, ctx
+        numericLiteral idx
+        true
+
+  set_js2 expr, js, ctx
+
+
+
+transform_tpl_s = fn expr, ctx:
+  [{args: [items_id, start_idx, end_idx]}] = expr
+  items = get_js items_id, ctx
+
+  start = numericLiteral start_idx
+
+  args = match end_idx:
+    ? >= 0: [start]
+    else: [start, numericLiteral end_idx]
+
+  js = callExpression
+    memberExpression items, identifier 'slice'
+    args
+
   set_js2 expr, js, ctx
 
 
@@ -38,7 +80,6 @@ elems_or_spread = fn expr:
 transform_list_append = fn expr, ctx:
   [{args: [items_id, val_id]}] = expr
   elems = elems_or_spread get_js items_id, ctx
-
   elem = match val_id:
     {i: '_'}: null
     else: get_js val_id, ctx
@@ -52,58 +93,21 @@ transform_list_chain = fn expr, ctx:
   [{args: [items1_id, items2_id]}] = expr
   elems1 = elems_or_spread get_js items1_id, ctx
   elems2 = elems_or_spread get_js items2_id, ctx
-
-  js =  arrayExpression [...elems1, ...elems2]
+  js = arrayExpression [...elems1, ...elems2]
   set_js2 expr, js, ctx
-
-
-
-transform_list_head = fn expr, ctx:
-  [{args: [items_id]}] = expr
-  [tail_src, idx] = get_tail_of items_id, ctx
-  arr = get_js tail_src, ctx
-  js_idx = numericLiteral idx
-  js = memberExpression arr, js_idx, true
-  set_js2 expr, js, ctx
-
-
-
-transform_list_reverse = fn expr, ctx:
-  [{args: [items_id]}] = expr
-  arr = get_js items_id, ctx
-
-  js = callExpression
-    memberExpression
-      arrayExpression [spreadElement arr]
-      identifier 'reverse'
-    []
-  set_js2 expr, js, ctx
-
-
-
-transform_list_tail = fn expr, ctx:
-  [{args: [items_id]}, [result_id]] = expr
-
-  items = get_js items_id, ctx
-  [tail_src, idx] = get_tail_of items_id, ctx
-
-  js = callExpression
-    memberExpression items, identifier 'slice'
-    [numericLiteral 1]
-
-  pipe ctx:
-    set_tail_of result_id, [tail_src, idx + 1], ?
-    set_js2 expr, js, ?
-
 
 
 
 add_list = fn ctx:
   pipe ctx:
-    add 'lst', transform_empty_list
+    add 'tpl', transform_tpl
+    add 'tpl_i', transform_tpl_i
+    add 'tpl_s', transform_tpl_s
+
+    # add 'lst', transform_empty_list
     add 'lst_a', transform_list_append
     add 'lst_c', transform_list_chain
-    add 'lst_h', transform_list_head
-    add 'lst_t', transform_list_tail
-    add 'lst_r', transform_list_reverse
+    # add 'lst_h', transform_list_head
+    # add 'lst_t', transform_list_tail
+    # add 'lst_r', transform_list_reverse
 

@@ -227,9 +227,12 @@ match_expr = fn val, expr, gen_true, else_id, ctx:
 
 
 match_res_exprs = fn exprs, name, ret_id, {loc}, ctx:
-  [block, res_id, ret_ctx] = transform_exprs exprs, ctx, []
+  {scopes} = ctx
+  cond_ctx = {...ctx, scopes: [{}, ...scopes]}
+  [block, res_id, ret_ctx] = transform_exprs exprs, cond_ctx, []
   [ret, , next_ctx] = cc ret_id, res_id, , {loc}, ret_ctx
-  cn [], [...block, ...ret], name, {loc}, next_ctx
+  [a, b, todo] = cn [], [...block, ...ret], name, {loc}, next_ctx
+  [a, b, {...todo, scopes}]
 
 
 
