@@ -1,0 +1,211 @@
+{reverse} = import '@fink/std-lib/iter.fnk'
+
+{add, any, unique_or_id, ir_fn} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+{members_as_rec} = import '../literals/record.fnk'
+{str} = import '../literals/string.fnk'
+{bind, bind_x} = import '../identifier/init.fnk'
+
+
+lst_h = fn lst_id, name_or_id, {loc}, ctx:
+  ir_fn 'lst_h', [lst_id], name_or_id, {loc}, ctx
+
+
+lst_r = fn lst_id, name_or_id, {loc}, ctx:
+  ir_fn 'lst_r', [lst_id], name_or_id, {loc}, ctx
+
+
+lst_t = fn lst_id, {loc}, ctx:
+  ir_fn 'lst_t', [lst_id], 'tail', {loc}, ctx
+
+
+if_v = fn val_id, true_val_id, false_val_id, name_or_id, {loc}, ctx:
+  ir_fn 'ifv', [val_id, true_val_id, false_val_id], name_or_id, {loc}, ctx
+
+
+rec_g = fn rec_id, key_id, name_or_id, {loc}, ctx:
+  ir_fn 'rec_g', [rec_id, key_id], name_or_id, {loc}, ctx
+
+
+rec_d = fn rec_id, keys, name_or_id, {loc}, ctx:
+  ir_fn 'rec_d', [rec_id, ...keys], name_or_id, {loc}, ctx
+
+
+
+rec_get = fn rec_id, key_id, val_id, fallback, {loc}, ctx:
+  match fallback:
+    false:
+      rec_g rec_id, key_id, val_id, {loc}, ctx
+    else:
+      [rg, tmp_id, next_ctx] = rec_g rec_id, key_id, 'hdm', {loc}, ctx
+      [fb, out_val_id, end_ctx] = if_v tmp_id, tmp_id, fallback, val_id, {loc}, next_ctx
+      [[...rg, ...fb], out_val_id, end_ctx]
+
+
+
+get_key_val = fn rec_id, expr, fallback, ctx:
+  [key, key_id, val_id, next_ctx] = match expr:
+    {left.type: 'ident', right: false}:
+      [val_id, key_ctx] = bind expr.left, ctx
+      [key, key_id, next_ctx] = str expr.left.value, 'key', expr.left, key_ctx
+      [key, key_id, val_id, next_ctx]
+
+    {left.type: 'ident', right.type: 'ident'}:
+      [val_id, key_ctx] = bind expr.right, ctx
+      [key, key_id, next_ctx] = str expr.left.value, 'key', expr.left, key_ctx
+      [key, key_id, val_id, next_ctx]
+
+    {right.type: 'ident'}:
+      [val_id, key_ctx] = bind expr.right, ctx
+      [key, key_id, next_ctx] = transform expr.left, 'key', key_ctx
+      [key, key_id, val_id, next_ctx]
+
+    {left.type: 'ident'}:
+      [key, key_id, next_ctx] = str expr.left.value, 'key', expr.left, ctx
+      [key, key_id, 'val', next_ctx]
+
+    else:
+      [key, key_id, next_ctx] = transform expr.left, 'key', ctx
+      [key, key_id, 'val', next_ctx]
+
+  [val, out_val_id , end_ctx] = rec_get rec_id, key_id, val_id, fallback, expr, next_ctx
+  [[...key, ...val], key_id, out_val_id, end_ctx]
+
+
+
+transform_dr = fn [expr=false, ...exprs], rec_id, ctx, transform_dl, keys=[], prev=[], fallback=false:
+  match expr:
+    false:
+      [prev, rec_id, ctx]
+
+    {type: 'spread'}:
+      [val_id, rec_ctx] = bind expr.right, ctx
+      [sprd, , next_ctx] = rec_d rec_id, keys, val_id, expr, rec_ctx
+      out = [...prev, ...sprd]
+      transform_dr exprs, rec_id, next_ctx, transform_dl, keys, out
+
+    {right: false}:
+      [key_val, key_id, , next_ctx] = get_key_val rec_id, expr, fallback, ctx
+      out = [...prev, ...key_val]
+      transform_dr exprs, rec_id, next_ctx, transform_dl, [...keys, key_id], out
+
+    {right.type: 'assign'}:
+      {left, right} = expr.right
+      [flbk, flbk_id, dl_ctx] = transform right, 'flbk', ctx
+      out = [...prev, ...flbk]
+      next_exprs = [{...expr, right: left}, ...exprs]
+      transform_dr next_exprs, rec_id, dl_ctx, transform_dl, keys, out, flbk_id
+
+    {left.type: 'member'}:
+      {exprs: rx} = members_as_rec expr.left, expr.right
+      transform_dr [...rx, ...exprs], rec_id, ctx, transform_dl, keys, prev, fallback
+
+    {right.type: ? in ['ident', 'empty']}:
+      [key_val, key_id, , next_ctx] = get_key_val rec_id, expr, fallback, ctx
+      out = [...prev, ...key_val]
+      transform_dr exprs, rec_id, next_ctx, transform_dl, [...keys, key_id], out
+
+    {right.type: 'rec'}:
+      [key_val, key_id, val_id, next_ctx] = get_key_val rec_id, expr, fallback, ctx
+      [rec_out, , end_ctx] = transform_dr expr.right.exprs, val_id, next_ctx, transform_dl
+      out = [...prev, ...key_val, ...rec_out]
+      transform_dr exprs, rec_id, end_ctx, transform_dl, [...keys, key_id], out
+
+    {right.type: 'list'}:
+      [key_val, key_id, val_id, next_ctx] = get_key_val rec_id, expr, fallback, ctx
+      [lst_out, , end_ctx] = transform_dl expr.right.exprs, val_id, next_ctx, []
+      out = [...prev, ...key_val, ...lst_out]
+      transform_dr exprs, rec_id, end_ctx, transform_dl, [...keys, key_id], out
+
+
+
+head_tail = fn lst_id, val_id, {loc}, ctx, fallback=false:
+  [tail, tail_id, hd_ctx] = lst_t lst_id, {loc}, ctx
+
+  [val, next_ctx] = match fallback:
+    false:
+      [hd, , next_ctx] = lst_h lst_id, val_id, {loc}, hd_ctx
+      [hd, next_ctx]
+    else:
+      [hd, hd_id, next_ctx] = lst_h lst_id, 'hdm', {loc}, hd_ctx
+      [fb, , end_ctx] = if_v hd_id, hd_id, fallback, val_id, {loc}, next_ctx
+      [[...hd, ...fb], end_ctx]
+
+  [[...val, ...tail], tail_id, next_ctx]
+
+
+
+transform_dl = fn [expr=false, ...exprs], lst_id, ctx, prev=[], fallback:
+  match expr:
+    false:
+      [prev, lst_id, ctx]
+
+    {type: 'ident'}:
+      [val_id, ht_ctx] = bind expr, ctx
+      [out, tail_id, next_ctx] = head_tail lst_id, val_id, expr, ht_ctx, fallback
+      transform_dl exprs, tail_id, next_ctx, [...prev, ...out]
+
+    {type: 'assign'}:
+      {left, right} = expr
+      [out, flbk_id, dl_ctx] = transform right, 'flbk', ctx
+      transform_dl [left, ...exprs], lst_id, dl_ctx, [...prev, ...out], flbk_id
+
+    {type: 'empty'}:
+      [val_id, ht_ctx] = unique_or_id 'unused', expr, ctx
+      [out, tail_id, next_ctx] = head_tail lst_id, val_id, expr, ht_ctx
+      transform_dl exprs, tail_id, next_ctx, [...prev, ...out]
+
+    {type: 'spread'}:
+      [rtail, rev_id, next_ctx] = lst_r lst_id, 'rtail', expr, ctx
+      rev_exprs = reverse exprs
+      [out, tail_id, spread_ctx] = transform_dl rev_exprs, rev_id, next_ctx, [...prev, ...rtail]
+
+      match expr.right:
+        false:
+          [out, tail_id, spread_ctx]
+        else:
+          [id, rev_ctx] = bind expr.right, spread_ctx
+          [rev, , next_ctx] = lst_r tail_id, id, expr, rev_ctx
+          [[...out, ...rev], id, next_ctx]
+
+    {type: 'list'}:
+      [val_id, ht_ctx] = unique_or_id 'dlst', expr, ctx
+      [items, tail_id, lst_ctx] = head_tail lst_id, val_id, expr, ht_ctx, fallback
+      [out, , next_ctx] = transform_dl expr.exprs, val_id, lst_ctx, []
+      transform_dl exprs, tail_id, next_ctx, [...prev, ...items, ...out]
+
+    {type: 'rec'}:
+      [val_id, ht_ctx] = unique_or_id 'drec', expr, ctx
+      [items, tail_id, rec_ctx] = head_tail lst_id, val_id, expr, ht_ctx, fallback
+      [out, , next_ctx] = transform_dr expr.exprs, val_id, rec_ctx, transform_dl, []
+      transform_dl exprs, tail_id, next_ctx, [...prev, ...items, ...out]
+
+
+
+transform_assign = fn node, , ctx:
+  # TODO assing right to result?
+  match node.left:
+    {type: 'list'}:
+      [right, r_id, next_ctx] = transform node.right, 'dlst', ctx
+      [left, , end_ctx] = transform_dl node.left.exprs, r_id, next_ctx
+      [[...right, ...left], end_ctx]
+
+    {type: 'rec'}:
+      [right, r_id, next_ctx] = transform node.right, 'drec', ctx
+      [left, , end_ctx] = transform_dr node.left.exprs, r_id, next_ctx, transform_dl
+      [[...right, ...left], end_ctx]
+
+    {type: 'ident'}:
+      name = node.left.value
+      # we have to create the id from the ident so we get correct source-maps
+      [l_id, r_ctx] = unique_or_id name, node.left, {...ctx, self_name: name}
+      [right, , {self_name: _, ...bind_ctx}] = transform node.right, l_id, r_ctx
+      end_ctx = bind_x node.left, l_id, bind_ctx
+      [right, end_ctx]
+
+
+
+add_assignment = fn ctx:
+  pipe ctx:
+    add any, '=', transform_assign
+

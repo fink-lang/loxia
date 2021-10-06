@@ -1,0 +1,56 @@
+{reverse} = import '@fink/std-lib/iter.fnk'
+{transform} = import '../transform.fnk'
+{unique_or_id, ir_fn} = import '../context.fnk'
+
+
+
+lst = fn name_or_id, {loc}, ctx:
+  ir_fn 'lst', [], name_or_id, {loc}, ctx
+
+
+lst_a = fn lst_id, val_id, name_or_id, {loc}, ctx:
+  ir_fn 'lst_a', [lst_id, val_id], name_or_id, {loc}, ctx
+
+
+lst_c = fn lst1_id, lst2_id, name_or_id, {loc}, ctx:
+  ir_fn 'lst_c', [lst1_id, lst2_id], name_or_id, {loc}, ctx
+
+
+
+transform_item = fn expr, out_id, ctx:
+  # could be removed using name in lst_* funcs
+  [lst_id, item_ctx] = unique_or_id 'lst', expr, ctx
+  match expr:
+    {type: 'spread'}:
+      [items, items_id, lst_ctx] = transform expr.right, 'items', item_ctx
+      [lst, , next_ctx] = lst_c lst_id, items_id, out_id, expr, lst_ctx
+      [[...items, ...lst], lst_id , next_ctx]
+
+    # TODO use own transform for empty
+    {type: 'empty'}:
+      [lst, , next_ctx] = lst_a lst_id, {i: '_', loc: expr.loc}, out_id, expr, item_ctx
+      [lst, lst_id, next_ctx]
+
+    else:
+      [item, item_id, lst_ctx] = transform expr, 'item', item_ctx
+      [lst, , next_ctx] = lst_a lst_id, item_id, out_id, expr, lst_ctx
+      [[...item, ...lst], lst_id, next_ctx]
+
+
+
+transform_items = fn [expr=false, ...rest], ctx, result_id, out=[]:
+  match expr:
+    false:
+      [out, result_id, ctx]
+    else:
+      [item, list_id, next_ctx] = transform_item expr, result_id, ctx
+      transform_items rest, next_ctx, list_id, [...item, ...out]
+
+
+
+transform_list = fn node, result, ctx:
+  exprs = reverse node.exprs
+  [out, start_lst_id, next_ctx] = transform_items exprs, ctx, result
+  [expr, , end_ctx] = lst start_lst_id, node, next_ctx
+  [[...expr, ...out], end_ctx]
+

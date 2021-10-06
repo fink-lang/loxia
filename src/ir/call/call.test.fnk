@@ -1,0 +1,45 @@
+{fink2lir} = import '../../testing/generate.fnk'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+describe 'call', fn:
+  it 'compiles', fn:
+    expect
+      fink2lir '
+        foo bar
+        foo bar, spam
+        foo fn bar: bar * 2
+        foo _
+        foo bar, , spam
+        foo bar, ...spam
+        foo ...bar
+        foo ...bar, spam
+      '
+      to_match_snapshot
+
+
+  it 'compiles as partial', fn:
+    expect
+      fink2lir '
+        foo ?
+        foo ?, 123
+        foo ...?
+        foo ...?.bar
+        foo ?, ...?.bar
+        ? 123
+        ? bar, spam
+        ?.bar spam
+      '
+      to_match_snapshot
+
+
+  it 'compiles with partial args', fn:
+    expect
+      fink2lir '
+        filter ? == 1
+        filter ? or foo ?
+        filter not ?
+        map ?.foo
+        map ? % 2 == 0
+      '
+      to_match_snapshot

@@ -1,0 +1,139 @@
+{lower_case} = import '@fink/std-lib/str.fnk'
+
+{add, any, ir_fn} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+{lst, lst_a} = import '../literals/list.fnk'
+{rec_e, rec_s, rec_m} = import '../literals/record.fnk'
+{str} = import '../literals/string.fnk'
+
+
+jxe = fn name_id, props_id, chldrn_id, name_or_id, {loc}, ctx:
+  ir_fn 'jxe', [name_id, props_id, chldrn_id], name_or_id, {loc}, ctx
+
+
+jxf = fn children_id, name_or_id, {loc}, ctx:
+  ir_fn 'jxf', [children_id], name_or_id, {loc}, ctx
+
+
+
+transform_prop_name = fn expr, ctx:
+  str expr.value, 'prpn', expr, ctx
+
+
+transform_prop_val = fn expr, ctx:
+  match expr:
+    {name: {type: 'ident'}, value: false}:
+      transform expr.name, 'prpv', ctx
+    else:
+      transform expr.value, 'prpv', ctx
+
+
+
+transform_prop = fn expr, rec_id, ctx:
+  match expr:
+    {type: 'spread'}:
+      [val, val_id, rec_ctx] = transform expr.right, 'sprd', ctx
+      [rec_exprs, next_rec_id, next_ctx] = rec_m rec_id, val_id, 'props', expr, rec_ctx
+      [[...val, ...rec_exprs], next_rec_id , next_ctx]
+
+    else:
+      [key, key_id, val_ctx] = transform_prop_name expr.name, ctx
+      [val, val_id, rec_ctx] = transform_prop_val expr, val_ctx
+      [rec_exprs, next_rec_id, next_ctx] = rec_s rec_id, key_id, val_id, 'props', expr, rec_ctx
+      [[...key, ...val, ...rec_exprs], next_rec_id, next_ctx]
+
+
+
+transform_all_props = fn [expr=false, ...rest], rec_id, ctx, out=[]:
+  match expr:
+    false:
+      [out, rec_id, ctx]
+    else:
+      [kv, next_rec_id, next_ctx] = transform_prop expr, rec_id, ctx
+      transform_all_props rest, next_rec_id, next_ctx, [...out, ...kv]
+
+
+
+transform_props = fn {props, loc}, ctx:
+  [rc, start_id, props_ctx] = rec_e 'props', {loc}, ctx
+  [out, rec_id, next_ctx] = transform_all_props props, start_id, props_ctx
+  [[...rc, ...out], rec_id, next_ctx]
+
+
+
+
+transform_child = fn expr, lst_id, ctx:
+  [item, item_id, ch_ctx] = transform expr, 'chld', ctx
+  [lst, children_id, next_ctx] = lst_a lst_id, item_id, 'chldrn', expr, ch_ctx
+  [[...item, ...lst], children_id, next_ctx]
+
+
+
+transform_all_children = fn [expr=false, ...rest], lst_id, ctx, out=[]:
+  match expr:
+    false:
+      [out, lst_id, ctx]
+    else:
+      [child, out_lst_id, next_ctx] = transform_child expr, lst_id, ctx
+      transform_all_children rest, out_lst_id, next_ctx, [...out, ...child]
+
+
+
+transform_children = fn {children, loc}, ctx:
+  [ls, start_id, chldrn_ctx] = lst 'chldrn', {loc}, ctx
+  [out, lst_id, next_ctx] = transform_all_children children, start_id, chldrn_ctx
+  [[...ls, ...out], lst_id, next_ctx]
+
+
+
+first_is_lower = fn [s]:
+  match lower_case s:
+    s: true
+    else: false
+
+
+
+transform_elem_ident = fn expr, ctx:
+  match expr:
+    {value: first_is_lower ?}:
+      str expr.value, 'jsxi', expr, ctx
+    else:
+      transform expr, 'jsxi', ctx
+
+
+
+transform_jsx_elem = fn node, res_id, ctx:
+  [name, name_id, props_ctx] = transform_elem_ident node.name, ctx
+  [props, props_id, chldrn_ctx] = transform_props node, props_ctx
+  [chldrn, chldrn_id, jxe_ctx] = transform_children node, chldrn_ctx
+  [elem, , next_ctx] = jxe name_id, props_id, chldrn_id, res_id, node, jxe_ctx
+  [[...name, ...props, ...chldrn, ...elem], next_ctx]
+
+
+
+transform_jsx_frag = fn node, res_id, ctx:
+  [chldrn, chldrn_id, jxf_ctx] = transform_children node, ctx
+  [elem, , next_ctx] = jxf chldrn_id, res_id, node, jxf_ctx
+  [[...chldrn, ...elem], next_ctx]
+
+
+
+transform_jsx_text = fn node, res_id, ctx:
+  [txt, , next_ctx] = str node.value, res_id, node, ctx
+  [txt, next_ctx]
+
+
+
+transform_jsx_expr_container = fn node, res_id, ctx:
+  [val, , next_ctx] = transform node.expr, res_id, ctx
+  [val, next_ctx]
+
+
+
+add_jsx = fn ctx:
+  pipe ctx:
+    add 'jsx:frag', any, transform_jsx_frag
+    add 'jsx:elem', any, transform_jsx_elem
+    add 'jsx:text', any, transform_jsx_text
+    add 'jsx:expr', any, transform_jsx_expr_container
+

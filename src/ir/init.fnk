@@ -1,0 +1,56 @@
+hamt = import 'hamt'
+{empty} = hamt
+
+{add_assignment} = import './assignment/init.fnk'
+{add_func} = import './func/init.fnk'
+{add_conditionals} = import './conditionals/init.fnk'
+{add_call} = import './call/init.fnk'
+{add_literals} = import './literals/init.fnk'
+{add_async} = import './async/init.fnk'
+{add_logical} = import './logical/init.fnk'
+{add_group} = import './group/init.fnk'
+{add_module} = import './module/init.fnk'
+{add_block} = import './block/init.fnk'
+{add_member} = import './prop-access/init.fnk'
+{add_ident} = import './identifier/init.fnk'
+{add_comparison} = import './comparison/init.fnk'
+{add_jsx} = import './jsx/init.fnk'
+{add_arithmitic} = import './arithmitic/init.fnk'
+{add_partial} = import './partial/init.fnk'
+
+
+
+add_transformers = fn ctx:
+  pipe ctx:
+    add_module
+    add_block
+    add_group
+    add_func
+    add_ident
+    add_assignment
+    add_literals
+    add_member
+    add_arithmitic
+    add_comparison
+    add_logical
+    add_conditionals
+    add_call
+    add_jsx
+    add_partial
+    add_async
+
+
+
+init_ctx = fn code, filename, options:
+  ctx = rec:
+    filename, code
+    options
+    unique_ids: {}
+    errors: []
+    values: empty
+    scopes: [{}]
+
+  pipe ctx:
+    add_transformers
+
+

@@ -1,0 +1,11 @@
+{fink2lir} = import '../../testing/generate.fnk'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+describe 'group', fn:
+  it 'compiles', fn:
+    expect
+      fink2lir "
+        foo = (a = bar, spam a)
+      "
+      to_match_snapshot

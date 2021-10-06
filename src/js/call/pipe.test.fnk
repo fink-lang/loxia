@@ -1,21 +1,32 @@
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 {fink2js} = import '../../testing/generate.fnk'
-{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
 
 describe 'pipe', fn:
   it 'compiles', fn:
+    expect
+      fink2js '
+        p1 = pipe:
+          foo
+          bar ?, 123
+          spam
+          ?.spam 456
+          ?.nini
+          [4, 5, ...?]
+
+        p2 = pipe [1, 2, 3]:
+          map fn item: item * 2
+          [...?]
+      '
+      to_match_snapshot
 
     expect
       fink2js '
-        pipe:
-          foo
-          bar ?, {foo}
-          spam
-          [...?]
-
-        pipe [1, 2, 3]:
-          map fn item: item * 2
+        foo = bar fn:
+          pipe:
+            spam
+            ?.shrub 123
       '
       to_match_snapshot
 
@@ -29,7 +40,7 @@ describe 'small pipe |', fn:
       '
       to_match_snapshot
 
-  it 'handles precedence', fn:
+  skip.it 'handles precedence', fn:
     expect
       fink2js '
         foo = "foo" | matches rx"[a-z]", ?

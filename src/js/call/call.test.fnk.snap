@@ -1,33 +1,169 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`call compiles 1`] = `
-"export const call1 = a(ni, x = 123, ...x);
-export const call2 = a(ni);
-export const call3 = a();
-export const call4 = a(x => x * 2);
-export const call5 = a(foo, undefined, bar);"
+"const call1_0 = a(ni, x);
+const call2_0 = a(ni);
+const call3_0 = a();
+const call4_0 = a(x_0 => {
+  return x_0 * 2;
+});
+const call5_0 = a(foo, undefined, bar);
+const call6_0 = a(foo, ...bar);
+const call7_0 = a(...foo);
+export const call1 = call1_0,
+      call2 = call2_0,
+      call3 = call3_0,
+      call4 = call4_0,
+      call5 = call5_0,
+      call6 = call6_0,
+      call7 = call7_0;"
 `;
 
-exports[`call compiles as partial 1`] = `
-"ˆpartial => foo(ˆpartial);
+exports[`call compiles with partial arg 1`] = `
+"const p1_0 = prtl_0 => {
+  const pfn_0 = foo(prtl_0);
+  return pfn_0;
+};
 
-ˆpartial => foo(ˆpartial, 123);
+const p2_0 = prtl_1 => {
+  const pfn_1 = foo(prtl_1, 123, prtl_1);
+  return pfn_1;
+};
 
-ˆpartial => foo(...ˆpartial);
-
-ˆpartial => foo(...ˆpartial.bar);
-
-ˆpartial => ˆpartial(123);
-
-ˆpartial => ˆpartial(bar, spam);
-
-ˆpartial => ˆpartial.bar(spam);"
+export const p1 = p1_0,
+      p2 = p2_0;"
 `;
 
-exports[`call compiles with partial args 1`] = `
-"filter(ˆpartial => ˆpartial === 1);
-filter(ˆpartial => ˆpartial || foo(ˆpartial));
-filter(ˆpartial => !ˆpartial);
-map(ˆpartial => ˆpartial.foo);
-map(ˆpartial => ˆpartial % 2 === 0);"
+exports[`call compiles with partial callee 1`] = `
+"const p1_0 = prtl_0 => {
+  const pfn_0 = prtl_0(123);
+  return pfn_0;
+};
+
+const p2_0 = prtl_1 => {
+  const pfn_1 = prtl_1(bar, spam);
+  return pfn_1;
+};
+
+const p3_0 = prtl_2 => {
+  const pfn_2 = prtl_2.bar(spam);
+  return pfn_2;
+};
+
+export const p1 = p1_0,
+      p2 = p2_0,
+      p3 = p3_0;"
+`;
+
+exports[`call compiles with partial exprs as args 1`] = `
+"const pa1_0 = filter(prtl_0 => {
+  return prtl_0 === 1;
+});
+const pa2_0 = filter(prtl_1 => {
+  const right_1 = foo(prtl_1);
+  return prtl_1 || right_1;
+});
+const pa3_0 = filter(prtl_2 => {
+  return !prtl_2;
+});
+const pa4_0 = map(prtl_3 => {
+  return prtl_3.foo;
+});
+const pa5_0 = map(prtl_4 => {
+  return prtl_4 % 2 === 0;
+});
+const pa6_0 = foo(bar, prtl_5 => {
+  return spam === prtl_5;
+});
+export const pa1 = pa1_0,
+      pa2 = pa2_0,
+      pa3 = pa3_0,
+      pa4 = pa4_0,
+      pa5 = pa5_0,
+      pa6 = pa6_0;"
+`;
+
+exports[`call compiles with partial spread arg 1`] = `
+"const p1_0 = prtl_0 => {
+  const pfn_0 = foo(...prtl_0);
+  return pfn_0;
+};
+
+const p2_0 = prtl_1 => {
+  const pfn_1 = foo(...prtl_1.bar);
+  return pfn_1;
+};
+
+const p3_0 = prtl_2 => {
+  const pfn_2 = foo(...prtl_2.bar.spam);
+  return pfn_2;
+};
+
+const p4_0 = prtl_3 => {
+  const sprd_3 = bar(prtl_3);
+  const result_0 = foo(...sprd_3);
+  return result_0;
+};
+
+const p7_0 = prtl_4 => {
+  const pfn_3 = prtl_4(123);
+  return pfn_3;
+};
+
+const p8_0 = prtl_5 => {
+  const pfn_4 = prtl_5(bar, spam);
+  return pfn_4;
+};
+
+const p9_0 = prtl_6 => {
+  const pfn_5 = prtl_6.bar(spam);
+  return pfn_5;
+};
+
+export const p1 = p1_0,
+      p2 = p2_0,
+      p3 = p3_0,
+      p4 = p4_0,
+      p7 = p7_0,
+      p8 = p8_0,
+      p9 = p9_0;"
+`;
+
+exports[`recursive functions compiles to while loop 1`] = `
+"const gcd_0 = (...args_0) => {
+  gcd_0: do {
+    const x_0 = args_0[0];
+    const y_0 = args_0[1];
+
+    /* istanbul ignore else */
+    if (y_0 === 0) {
+      return x_0;
+    }
+
+    args_0 = [y_0, x_0 % y_0];
+    continue gcd_0;
+  } while (true);
+};
+
+export const gcd = gcd_0;"
+`;
+
+exports[`recursive functions compiles with self reference 1`] = `
+"const foo_0 = cntr_0 => {
+  /* istanbul ignore else */
+  if (cntr_0 === 0) {
+    return [cntr_0];
+  }
+
+  /* istanbul ignore else */
+  if (cntr_0 === 1) {
+    const items_1 = foo_0(cntr_0 - 1);
+    return [...items_1];
+  }
+
+  const items_0 = foo_0(cntr_0 - 1);
+  return [cntr_0, ...items_0];
+};
+
+export const foo = foo_0;"
 `;

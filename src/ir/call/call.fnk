@@ -1,0 +1,128 @@
+{is_empty} = import '@fink/std-lib/iter.fnk'
+
+{unique_or_id, ir_fn} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+{lst, lst_a, lst_c} = import '../literals/list.fnk'
+{lst_h} = import '../assignment/init.fnk'
+{fnc} = import '../func/init.fnk'
+
+
+
+af = fn fn_id, args_id, name_or_id, {loc}, ctx:
+  ir_fn 'af', [fn_id, args_id], name_or_id, {loc}, ctx
+
+
+
+prtl_func = fn prtl_arg_id, res, res_id, fn_id_or_name, {loc}, ctx:
+  [args_id, arg_ctx] = unique_or_id 'args', {loc}, ctx
+  [args, , fn_ctx] = lst_h args_id, prtl_arg_id, {loc}, arg_ctx
+  body = [...args, ...res]
+  fnc args_id, res_id, body, fn_id_or_name, {loc}, fn_ctx
+
+
+
+add_arg = fn args_id, arg, arg_id, {loc}, ctx:
+  [args, next_args_id, next_ctx] = lst_a args_id, arg_id, 'cargs', {loc}, ctx
+  [[...arg, ...args], next_args_id, next_ctx]
+
+
+
+spread_arg = fn args_id, arg, arg_id, {loc}, ctx:
+  [args, next_args_id, next_ctx] = lst_c args_id, arg_id, 'cargs', {loc}, ctx
+  [[...arg, ...args], next_args_id, next_ctx]
+
+
+
+transform_with_partial = fn expr, name, ctx:
+  {partial_ident: outer_prtl=false} = ctx
+
+  [arg, arg_id, next_ctx] = match outer_prtl:
+    false:
+      transform expr, name, ctx
+    else:
+      transform expr, name, {...ctx, partial_ident: false}
+
+  {partial_ident: arg_prtl=false} = next_ctx
+
+  match [outer_prtl, arg_prtl]:
+    [false, ? != false]:
+      prtl_func arg_prtl, arg, arg_id, 'pfn', expr, {...next_ctx, partial_ident: false}
+    else:
+      [arg, arg_id, {...next_ctx, partial_ident: outer_prtl}]
+
+
+
+transform_arg = fn expr, args_id, ctx:
+  [arg, arg_id, next_ctx] = transform_with_partial expr, 'arg', ctx
+  add_arg args_id, arg, arg_id, expr, next_ctx
+
+
+
+transform_spread_arg = fn expr, args_id, ctx:
+  [arg, arg_id, next_ctx] = transform expr.right, 'sprd', ctx
+  spread_arg args_id, arg, arg_id, expr, next_ctx
+
+
+
+transform_partial_arg = fn expr, args_id, ctx:
+  [arg, arg_id, next_ctx] = transform expr, 'parg', ctx
+  add_arg args_id, arg, arg_id, expr, next_ctx
+
+
+
+transform_all_args = fn [expr=false, ...exprs], args_id, ctx, out=[]:
+  match expr:
+    false:
+      [out, args_id, ctx]
+
+    {type: 'spread'}:
+      [arg, next_args_id, next_ctx] = transform_spread_arg expr, args_id, ctx
+      transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
+
+    {type: 'partial'}:
+      [arg, next_args_id, next_ctx] = transform_partial_arg expr, args_id, ctx
+      transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
+
+    {type: 'empty'}:
+      # TODO: have a transform for empty
+      [arg, next_args_id, next_ctx] = add_arg args_id, [], {i: '_', loc: expr.loc}, expr, ctx
+      transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
+
+    else:
+      [arg, next_args_id, next_ctx] = transform_arg expr, args_id, ctx
+      transform_all_args exprs, next_args_id, next_ctx, [...out, ...arg]
+
+
+
+transform_args = fn expr, ctx:
+  args = match expr.args:
+    # TODO should this be done in larix ?
+    [{type: 'empty'}, ...(is_empty ?)]: []
+    else: expr.args
+
+  [empty_args, empty_args_id, args_ctx] = lst 'cargs', expr, ctx
+  [out, args_id, next_ctx] = transform_all_args args, empty_args_id, args_ctx
+  [[...empty_args, ...out], args_id, next_ctx]
+
+
+
+transform_call = fn node, result, ctx:
+  {partial_ident: outer_prtl=false} = ctx
+
+  [callee, c_id, args_ctx] = transform node.callee, 'callee', ctx
+  [args, args_id, next_ctx] = transform_args node, args_ctx
+
+  {partial_ident: call_prtl=false} = next_ctx
+
+  match [outer_prtl, call_prtl]:
+    [false, ? != false]:
+      [appl_fn, res_id, fn_ctx] = af c_id, args_id, 'pfn', node, next_ctx
+      call = [...callee, ...args, ...appl_fn]
+      [fun, , end_ctx] = prtl_func call_prtl, call, res_id, result, node, fn_ctx
+      [fun, {...end_ctx, partial_ident: outer_prtl}]
+    else:
+      [appl_fn, , end_ctx] = af c_id, args_id, result, node, next_ctx
+      call = [...callee, ...args, ...appl_fn]
+      [call, {...end_ctx, partial_ident: outer_prtl}]
+
+

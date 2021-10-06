@@ -1,0 +1,58 @@
+{ir_fn} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+{bind} = import '../identifier/init.fnk'
+{str} = import '../literals/string.fnk'
+
+
+
+impd = fn uri_id, res_id, {loc}, ctx:
+  ir_fn 'impd', [uri_id], res_id, {loc}, ctx
+
+
+
+imp = fn uri_id, key_id, res_id, {loc}, ctx:
+  match key_id:
+    false: ir_fn 'imp', [uri_id], res_id, {loc}, ctx
+    else: ir_fn 'imp', [uri_id, key_id], res_id, {loc}, ctx
+
+
+
+
+get_key_val = fn expr, ctx:
+  [val_id, key_ctx] = match expr:
+    {right: false}: bind expr.left, ctx
+    {right.type: 'ident'}: bind expr.right, ctx
+
+  [key, key_id, next_ctx] = str expr.left.value, 'key', expr.left, key_ctx
+  [key, key_id, val_id, next_ctx]
+
+
+
+transform_imp_rec = fn [expr=false, ...exprs], uri_id, ctx, out=[]:
+  match expr:
+    false:
+      [out, ctx]
+
+    {type: 'rec:kv'}:
+      [key, key_id, val_id, imp_ctx] = get_key_val expr, ctx
+      [imps, , next_ctx] = imp uri_id, key_id, val_id, expr, imp_ctx
+      transform_imp_rec exprs, uri_id, next_ctx, [...out, ...key, ...imps]
+
+
+
+transform_imp = fn node, uri_id, ctx:
+  match node:
+    {type: 'rec'}:
+      transform_imp_rec node.exprs, uri_id, ctx
+
+    {type: 'ident'}:
+      [val_id, imp_ctx] = bind node, ctx
+      [imps, , next_ctx] = imp uri_id, false, val_id, node, imp_ctx
+      [imps, next_ctx]
+
+
+
+transform_import = fn node, res_id, ctx:
+  [loc, loc_id, next_ctx] = transform node.right, 'src', ctx
+  [imps, , end_ctx] = impd loc_id, res_id, node, next_ctx
+  [[...loc, ...imps], end_ctx]

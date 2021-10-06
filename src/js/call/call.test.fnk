@@ -1,43 +1,104 @@
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 {fink2js} = import '../../testing/generate.fnk'
-{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
 describe 'call', fn:
+
   it 'compiles', fn:
     expect
       fink2js '
-        call1 = a ni, x=123, ...x
+        call1 = a ni, x
         call2 = a ni
         call3 = a _
         call4 = a fn x: x * 2
         call5 = a foo, , bar
+        call6 = a foo, ...bar
+        call7 = a ...foo
       '
       to_match_snapshot
 
 
-  it 'compiles as partial', fn:
+  it 'compiles with partial arg', fn:
     expect
       fink2js '
-        foo ?
-        foo ?, 123
-        foo ...?
-        foo ...?.bar
-        ? 123
-        ? bar, spam
-        ?.bar spam
+        p1 = foo ?
+        p2 = foo ?, 123, ?
       '
       to_match_snapshot
 
 
-  it 'compiles with partial args', fn:
+  it 'compiles with partial spread arg', fn:
     expect
       fink2js '
-        filter ? == 1
-        filter ? or foo ?
-        filter not ?
-        map ?.foo
-        map ? % 2 == 0
+        p1 = foo ...?
+        p2 = foo ...?.bar
+        p3 = foo ...?.bar.spam
+        # TODO p4 = foo ...bar ?
+        p4 = fn prtl: foo ...bar prtl
+        p7 = ? 123
+        p8 = ? bar, spam
+        p9 = ?.bar spam
       '
+      to_match_snapshot
+
+
+  it 'compiles with partial callee', fn:
+    expect
+      fink2js '
+        p1 = ? 123
+        p2 = ? bar, spam
+        p3 = ?.bar spam
+      '
+      to_match_snapshot
+
+
+  it 'compiles with partial exprs as args', fn:
+    expect
+      fink2js '
+        pa1 = filter ? == 1
+        pa2 = filter ? or foo ?
+        pa3 = filter not ?
+        pa4 = map ?.foo
+        pa5 = map ? % 2 == 0
+        pa6 = foo bar, spam == ?
+      '
+      to_match_snapshot
+
+
+
+
+describe 'recursive functions', fn:
+  it 'compiles with self reference', fn:
+    expect
+      fink2js '
+        foo = fn cntr:
+          match cntr:
+            0: [cntr]
+            1: [...foo cntr - 1]
+            else: [cntr, ...foo cntr - 1]
+      '
+      to_match_snapshot
+
+
+  it 'compiles to while loop', fn:
+    expect
+      fink2js '
+        gcd = fn x, y:
+          match y:
+            0: x
+            else: gcd y, x % y
+      '
+      to_match_snapshot
+
+
+  skip.it 'compiles spread', fn:
+    expect
+      fink2js '
+        fun = fn a, b, ...args:
+          match a:
+            b: fun ...args
+            else: b
+        '
       to_match_snapshot
 
 

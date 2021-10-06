@@ -1,0 +1,10 @@
+{transform_binary} = import '../transform.fnk'
+
+
+
+transform_in = fn node, res_id, ctx:
+  transform_binary 'in', node.left, node.right, res_id, node, ctx
+
+
+
+

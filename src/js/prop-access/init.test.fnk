@@ -1,5 +1,5 @@
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 {fink2js} = import '../../testing/generate.fnk'
-{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
 describe 'member', fn:
@@ -11,12 +11,12 @@ describe 'member', fn:
         computed_member2 = item.(get_key foo)
         reserved_prop = item.arguments
         js_safe_unicode = [item.π, item.ƒ]
-        js_unsfae = item.foo-bar
+        js_unsafe = item.foo-bar
       "
       to_match_snapshot
 
 
-  it 'compiles partial', fn:
+  skip.it 'compiles partial', fn:
     expect
       fink2js "
         ?.foo

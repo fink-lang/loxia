@@ -1,9 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`logical compiles 1`] = `
-"export const foo = a || b || c;
-export const bar = a && b && c;
-export const spam = !a;"
+"const foo_0 = a || b || c;
+const bar_0 = a && b && c;
+const spam_0 = !a;
+export const foo = foo_0,
+      bar = bar_0,
+      spam = spam_0;"
 `;
 
 exports[`logical compiles as partial 1`] = `

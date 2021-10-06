@@ -1,8 +1,8 @@
-{describe, it, expect, to_equal, to_match_snapshot} = import '@fink/jest/test.fnk'
+{skip, describe, it, expect, to_equal, to_match_snapshot} = import '@fink/jest/test.fnk'
 {slice} = import '@fink/std-lib/str.fnk'
 
 {generate} = import './generate.fnk'
-{fink2js} = import './testing/generate.fnk'
+{fink2js, fink2js_sm} = import './testing/generate.fnk'
 
 
 
@@ -20,6 +20,7 @@ describe 'module types', fn:
     case = ni
 
     default = shrub
+    out = [dflt, if, spam, ni, foo]
     "
 
   it 'compiles to mjs', fn:
@@ -31,6 +32,33 @@ describe 'module types', fn:
   it 'compiles to cjs', fn:
     expect
       fink2js code, {module_type: 'cjs'}
+      to_match_snapshot
+
+
+
+describe 'source maps', fn:
+  code = "
+    nanu = 345
+    foo = {bar: 12345, 'spam ni': nanu, nanu}
+    bar = 'foo'
+    ham = 'foo: \${foo} bar:\${bar}'
+    el = <Foo>bar {123} <div foo=134 bar spam=nanu></div></Foo>
+    ni = spam + foo-bar
+    a = [1, 'ni']
+    [b, c] = a
+    out = [a, b, c]
+    func = fn x, y:
+      x + y + b
+    y = func bar, a, b
+    spam ham
+    r1 = {foo, bar, spam: 123}
+  "
+
+
+  it 'compiles to mjs', fn:
+    js = fink2js_sm code
+    expect
+      js
       to_match_snapshot
 
 
@@ -50,7 +78,7 @@ describe 'errors', fn:
         Expected `,` or indented(>=1) new line or `]`.
         '
 
-  it 'errors with code snippet', fn:
+  skip.it 'errors with code snippet', fn:
     {errors: [{message}]} = fink2js '
       foo = bar
       123 = foo

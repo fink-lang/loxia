@@ -1,0 +1,89 @@
+{starts_with} = import '@fink/std-lib/str.fnk'
+{add, any, ir_fn} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+{str} = import '../literals/string.fnk'
+{rec_e, rec_s} = import '../literals/record.fnk'
+{lst, lst_a} = import '../literals/list.fnk'
+{transform_import, transform_imp, imp} = import './import.fnk'
+
+
+
+mod = fn exp_id, dirs_id, res_id, {loc}, ctx:
+  ir_fn 'mod', [exp_id, dirs_id], res_id, {loc}, ctx
+
+
+
+ident_to_key = fn {value: name, loc}, ctx:
+  str name, 'key', {loc}, ctx
+
+
+
+add_export = fn exp_id, expr, ctx:
+  [val, , key_ctx] = transform expr, 'ares', ctx
+  [..., [ , [val_id]]] = val
+
+  [key, key_id, exp_ctx] = ident_to_key expr.left, key_ctx
+  [rec_exprs, next_exp_id, next_ctx] = rec_s exp_id, key_id, val_id, 'exports', expr, exp_ctx
+
+  [[...val, ...key, ...rec_exprs], next_exp_id, next_ctx]
+
+
+
+transform_exprs = fn [expr=false, ...rest], exp_id, ctx, out:
+  match expr:
+    false:
+      [out, exp_id, ctx]
+
+    {right.op: 'import'}:
+      [uri, uri_id, next_ctx] = transform expr.right.right, 'uri', ctx
+      [imps, end_ctx] = transform_imp expr.left, uri_id, next_ctx
+      transform_exprs rest, exp_id, end_ctx, [...out, ...uri, ...imps]
+
+    {op: 'import'}:
+      [uri, uri_id, imp_ctx] = transform expr.right, 'uri', ctx
+      [imps, , next_ctx] = imp uri_id, false, 'sidefx', expr, imp_ctx
+      transform_exprs rest, exp_id, next_ctx, [...out, ...uri, ...imps]
+
+    {op: '=', left.type: 'ident'}:
+      [exprs, next_exp_id, next_ctx] = add_export exp_id, expr, ctx
+      transform_exprs rest, next_exp_id, next_ctx, [...out, ...exprs]
+
+    else:
+      [foo, , next_ctx] = transform expr, 'mex', ctx
+      transform_exprs rest, exp_id, next_ctx, [...out, ...foo]
+
+
+
+transform_directives = fn expr, ctx:
+  # TODO: directives should be handled as separate AST node in larix
+  [drctvs, dirs_id, next_ctx] = lst 'drctvs', expr, ctx
+
+  {exprs: [{comments}]} = expr
+
+  match comments:
+    {leading: [{op: '#', loc: {start: {line: 1}}, value: starts_with ?, '!'}]}:
+      [{value: shbang}] = comments.leading
+
+      [shb, sh_id, d_ctx] = str '#${shbang}', 'shbng', expr, next_ctx
+      [next_drctvs, lst_id, end_ctx] = lst_a dirs_id, sh_id, 'drctvs', expr, d_ctx
+      [[...drctvs, ...shb, ...next_drctvs], lst_id, end_ctx]
+    else:
+      [drctvs, dirs_id, next_ctx]
+
+
+
+transform_module = fn expr, result, ctx:
+  [exp_rec, exp_id, dirs_ctx] = rec_e 'exports', expr, ctx
+  [directives, dirs_id, exprs_ctx] = transform_directives expr, dirs_ctx
+  [block, last_exp_id, mod_ctx] = transform_exprs expr.exprs, exp_id, exprs_ctx, []
+  [mod_exprs, , next_ctx] = mod last_exp_id, dirs_id, result, expr, mod_ctx
+  out = [...exp_rec, ...block, ...directives, ...mod_exprs]
+  [out, next_ctx]
+
+
+
+add_module = fn ctx:
+  pipe ctx:
+    add 'module', any, transform_module
+    add 'import', any, transform_import
+

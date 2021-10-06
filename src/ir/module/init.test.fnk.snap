@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`module handles comments 1`] = `
+"
+rec_e fn exports_0:
+  int '1234', fn foo_0:
+    str 'foo', fn key_0:
+      rec_s exports_0, key_0, foo_0, fn exports_1:
+        lst_e fn drctvs_0:
+          str '#!/usr/bin/env node', fn shbng_0:
+            lst_a drctvs_0, shbng_0, fn drctvs_1:
+              mod exports_1, drctvs_1, fn mod_0:"
+`;
+
+exports[`module handles exports 1`] = `
+"
+rec_e fn exports_0:
+  id (fn args_0, ret_0: #fn
+    id true, fn result_0:
+      cc ret_0, result_0
+  ), fn delete_0:
+    str 'delete', fn key_0:
+      rec_s exports_0, key_0, delete_0, fn exports_1:
+        id (fn args_1, ret_1: #fn
+          id true, fn result_1:
+            cc ret_1, result_1
+        ), fn π_0:
+          str 'π', fn key_1:
+            rec_s exports_1, key_1, π_0, fn exports_2:
+              int '1234', fn foo_bar_0:
+                str 'foo_bar', fn key_2:
+                  rec_s exports_2, key_2, foo_bar_0, fn exports_3:
+                    int '1234', fn foo-bar_0:
+                      str 'foo-bar', fn key_3:
+                        rec_s exports_3, key_3, foo-bar_0, fn exports_4:
+                          lst_e fn drctvs_0:
+                            mod exports_4, drctvs_0, fn mod_0:"
+`;

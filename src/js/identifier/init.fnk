@@ -1,18 +1,108 @@
-babel_types = import '@babel/types'
-{identifier} = babel_types
+types = import '@babel/types'
+{identifier} = types
 
-{escape_ident} = import '../../js/identifier.fnk'
-{add, any} = import '../context.fnk'
-
-
-
-transform_ident = fn {value}, ctx:
-  name = escape_ident value, ctx
-  js = identifier name
-  [js, ctx]
+{rx , matches, replace} = import '@fink/std-lib/regex.fnk'
 
 
 
-add_ident = fn ctx:
-  pipe ctx:
-    add 'ident', any, transform_ident
+acceptable_idents = rx'
+  ^(?!(?:
+    do|if|in|for|let|new|try|var|case|enum|void|with|break|catch|class|
+    const|super|while|yield|delete|export|import|public|return|static|switch|
+    typeof|default|extends|finally|package|private|continue|function|
+    arguments|interface|protected|implements|instanceof|null|undefined
+  )$)
+  [_$\p{L}][_$\p{L}\p{N}]*$'
+
+
+# valid hyphen replacements for js idents [ˉ, ـ, ᅳ, ￚ, ᐨ, ᜭ]
+hyphen_replacement = 'ᜭ'
+
+
+escape_hyphen = fn name:
+  replace name, rx'-', hyphen_replacement
+
+
+is_js_ident = fn ident:
+  matches ident, acceptable_idents
+
+
+escape_ident = fn ident:
+  name = escape_hyphen ident
+
+  match name:
+    matches ?, acceptable_idents:
+      name
+    else:
+      'ˆ${name}'
+
+
+
+replace_refs = fn [id=false, ...ids], renames, out=[]:
+  match id:
+    false:
+      out
+    else:
+      {(id.i): new_id=escape_ident id.i} = renames
+      replace_refs ids, renames, [...out, {...id, i: new_id}]
+
+
+
+rename = fn [id=false, ...ids], renames, out=[]:
+  match id:
+    false:
+      [out, renames]
+    else:
+      new_id = escape_ident id.i
+      nrs = {...renames, (id.i): new_id}
+      rename ids, nrs, [...out, {...id, i: new_id}]
+
+
+
+
+safe_names = fn [curr=false, ...exprs], renames={}, out=[]:
+  match curr:
+    false: [out, renames]
+
+    [{f: ? in ['int', 'float', 'str']}]:
+      [expr, res] = curr
+      [nres, next_ren] = rename res, renames
+      safe_names exprs, next_ren, [...out, [expr, nres]]
+
+    [{f: ? in ['tpl_i', 'tpl_s']}]:
+      [expr, res] = curr
+      {args: [tpl_id, ...rest_args]} = expr
+      nargs = replace_refs [tpl_id], renames
+      nexpr = {...expr, args: [...nargs, ...rest_args]}
+      [nres, next_ren] = rename res, renames
+      safe_names exprs, next_ren, [...out, [nexpr, nres]]
+
+    [{f: ? in ['fn', 'cn']}]:
+      [expr, res] = curr
+      {args: [args, body]} = expr
+      [nargs, bod_ren] = rename args, renames
+      [nbody, res_ren] = safe_names body, bod_ren
+      nexpr = {...expr, args: [nargs, nbody]}
+      [nres, next_ren] = rename res, res_ren
+      safe_names exprs, next_ren, [...out, [nexpr, nres]]
+
+    else:
+      [expr, res] = curr
+      {args} = expr
+      nargs = replace_refs args, renames
+      nexpr = {...expr, args: nargs}
+      [nres, next_ren] = rename res, renames
+      safe_names exprs, next_ren, [...out, [nexpr, nres]]
+
+
+
+replace_idents = fn exprs:
+  [out] = safe_names exprs
+  out
+
+
+ident = fn {i, loc}:
+  rec:
+    ...identifier i
+    loc
+

@@ -1,101 +1,213 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`func compiles defaults 1`] = `
-"export const fun = (a, b = 12, c) => {
-  shrub(...a);
-  return bar();
-};"
+"const fun_0 = (a_0, hdm_0) => {
+  const b_0 = undefined === hdm_0 ? 12 : hdm_0;
+  const ni_0 = shrub(a_0, b_0);
+  const result_1 = bar(b_0, ni_0);
+  return result_1;
+};
+
+export const fun = fun_0;"
 `;
 
-exports[`func compiles empty arg 1`] = `"export const fun = (a, ˆ_1, ˆ_2, b) => b;"`;
+exports[`func compiles destructuring args 1`] = `
+"const fun_0 = (dlst_0, dlst_2) => {
+  return [dlst_0[0] + dlst_0[1][0], dlst_2[0], dlst_2.slice(1)];
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`func compiles destructuring args 2`] = `
+"const fun_0 = (drec_0, dlst_0) => {
+  return [drec_0.a + drec_0.b, dlst_0[0]];
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`func compiles destructuring args in body 1`] = `
+"const fun_0 = (a_0, b_0, ...args_0) => {
+  return [a_0 + b_0, args_0, args_0[0], args_0[1]];
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`func compiles empty arg 1`] = `
+"const fun_0 = (a_0, _1, _2, b_0) => {
+  return a_0 + b_0;
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`func compiles empty arg 2`] = `
+"const fun_0 = (_0, _1, _2, b_0) => {
+  return b_0;
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`func compiles empty arg 3`] = `
+"const fun_0 = (_0, a_0) => {
+  return a_0;
+};
+
+export const fun = fun_0;"
+`;
 
 exports[`func compiles func of func 1`] = `
-"export const fun5 = c => (d, e) => {
-  const ˆvalue_1 = [d, e];
+"const fun5_0 = c_0 => {
+  return (d_0, e_0) => {
+    const value_0 = [d_0, e_0];
+
+    /* istanbul ignore else */
+    if (null != value_0) {
+      /* istanbul ignore else */
+      if (d_0 === 1) {
+        /* istanbul ignore else */
+        if (e_0 === 2) {
+          return c_0;
+        }
+      }
+    }
+
+    /* istanbul ignore else */
+    if (null != value_0) {
+      /* istanbul ignore else */
+      if (d_0 === 2) {
+        /* istanbul ignore else */
+        if (e_0 === 1) {
+          return 1 / c_0;
+        }
+      }
+    }
+
+    /* istanbul ignore next */
+    return;
+  };
+};
+
+export const fun5 = fun5_0;"
+`;
+
+exports[`func compiles middle spread 1`] = `
+"const fun_0 = (a_0, b_0, ...args_0) => {
+  return [a_0 + b_0, args_0.slice(0, -1), args_0.at(-1)];
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`func compiles no args 1`] = `
+"const fun_0 = () => {
+  return \`shrub\`;
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`func compiles simple 1`] = `
+"const fun_0 = (a_0, b_0, c_0) => {
+  return a_0 + b_0 + c_0;
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`func compiles spread 1`] = `
+"const fun_0 = (a_0, b_0, ...args_0) => {
+  return [a_0 + b_0, args_0];
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`func compiles spread 2`] = `
+"const fun_0 = (a_0, ...args_0) => {
+  return [a_0, args_0];
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`func compiles spread 3`] = `
+"const fun_0 = (...args_0) => {
+  return [args_0];
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`func compiles spread 4`] = `
+"const fun_0 = (a_0, b_0, c_0, d_0) => {
+  /* istanbul ignore else */
+  if (a_0 === b_0) {
+    return [a_0, c_0, d_0];
+  }
+
+  return b_0;
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`recursive functions compiles spread 1`] = `
+"const fun_0 = (...args_0) => {
+  fun_0: do {
+    const b_0 = args_0[1];
+
+    /* istanbul ignore else */
+    if (args_0[0] === b_0) {
+      args_0 = [...args_0.slice(2)];
+      continue fun_0;
+    }
+
+    return b_0;
+  } while (true);
+};
+
+export const fun = fun_0;"
+`;
+
+exports[`recursive functions compiles to while loop 1`] = `
+"const gcd_0 = (...args_0) => {
+  gcd_0: do {
+    const x_0 = args_0[0];
+    const y_0 = args_0[1];
+
+    /* istanbul ignore else */
+    if (y_0 === 0) {
+      return x_0;
+    }
+
+    args_0 = [y_0, x_0 % y_0];
+    continue gcd_0;
+  } while (true);
+};
+
+export const gcd = gcd_0;"
+`;
+
+exports[`recursive functions compiles with self reference 1`] = `
+"const foo_0 = cntr_0 => {
+  /* istanbul ignore else */
+  if (cntr_0 === 0) {
+    return [cntr_0];
+  }
 
   /* istanbul ignore else */
-  if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-    const [ˆa_3, ˆa_4] = ˆvalue_1;
-
-    /* istanbul ignore else */
-    if (ˆa_3 === 1)
-      /* istanbul ignore else */
-      if (ˆa_4 === 2) {
-        return c;
-      }
+  if (cntr_0 === 1) {
+    const items_1 = foo_0(cntr_0 - 1);
+    return [...items_1];
   }
 
-  /* istanbul ignore else */
-  if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-    const [ˆa_5, ˆa_6] = ˆvalue_1;
+  const items_0 = foo_0(cntr_0 - 1);
+  return [cntr_0, ...items_0];
+};
 
-    /* istanbul ignore else */
-    if (ˆa_5 === 2)
-      /* istanbul ignore else */
-      if (ˆa_6 === 1) {
-        return 1 / c;
-      }
-  }
-};"
-`;
-
-exports[`func compiles other 1`] = `
-"export const fun = (c, d) => {
-  const x = 123;
-  {
-    const ˆvalue_1 = ni;
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 === c + x) {
-      return d;
-    }
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 === c + 1) {
-      return d + 1;
-    }
-  }
-};"
-`;
-
-exports[`func compiles single line 1`] = `"export const fun = () => \`shrub\`;"`;
-
-exports[`func compiles spread 1`] = `"export const fun = (a, b = 12, ...d) => a + b + c;"`;
-
-exports[`func eliminates tail calls 1`] = `
-"export const fun = (..._args) => {
-  while (true) {
-    const [a, b = 1] = _args;
-    const ˆvalue_1 = a;
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 === b) {
-      return a;
-    }
-
-    {
-      _args = [a - 1];
-      continue;
-    }
-  }
-};"
-`;
-
-exports[`func eliminates tail calls 2`] = `
-"export const fun = (..._args) => {
-  while (true) {
-    const [...args] = _args;
-    const ˆvalue_1 = a;
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 === b) {
-      _args = [...args];
-      continue;
-    }
-
-    {
-      return b;
-    }
-  }
-};"
+export const foo = foo_0;"
 `;

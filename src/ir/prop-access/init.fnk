@@ -1,0 +1,24 @@
+{add, any} = import '../context.fnk'
+{transform} = import '../transform.fnk'
+{str} = import '../literals/string.fnk'
+{rec_g} = import '../assignment/init.fnk'
+
+
+
+transform_member = fn {left, right, loc}, result, ctx:
+  [left_exprs, left_id, key_ctx] = transform left, 'left', ctx
+
+  [key, key_id, rec_ctx] = match right:
+    {type: 'ident'}:
+      str right.value, 'key', right, key_ctx
+    else:
+      transform right, 'key', key_ctx
+
+  [val, , next_ctx] = rec_g left_id, key_id, result, {loc}, rec_ctx
+  [[...left_exprs, ...key, ...val], next_ctx]
+
+
+
+add_member = fn ctx:
+  pipe ctx:
+    add any, '.', transform_member

@@ -1,0 +1,140 @@
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{fink2lir} = import '../../testing/generate.fnk'
+
+
+describe 'func', fn:
+  it 'compiles', fn:
+    expect
+      fink2lir '
+        fun = fn a, b, d:
+          a + b + c
+
+        f2 = fn foo: fn bar: foo bar
+        '
+      to_match_snapshot
+
+
+  it 'compiles func of func', fn:
+    expect
+      fink2lir '
+        fun5 = fn c: fn d, e:
+          match [d, e]:
+            [1, 2]: c
+            [2, 1]: 1 / c
+        '
+      to_match_snapshot
+
+
+  it 'compiles other', fn:
+    expect
+      fink2lir '
+        fun = fn c, d:
+          x = 123
+          match ni:
+            c + x: d
+            c + 1: d + 1
+        '
+      to_match_snapshot
+
+
+  it 'compiles defaults', fn:
+    expect
+      fink2lir '
+        fun = fn a, b=12, c:
+          shrub ...a
+          bar _
+        '
+      to_match_snapshot
+
+
+  it 'compiles empty arg', fn:
+    expect
+      fink2lir '
+        fun = fn a, , , b:
+          b
+        '
+      to_match_snapshot
+
+    expect
+      fink2lir '
+        fun = fn _, b:
+          b
+        '
+      to_match_snapshot
+
+
+  it 'compiles spread', fn:
+    expect
+      fink2lir '
+        fun = fn a, b, ...c:
+          [a + b, c]
+        '
+      to_match_snapshot
+
+    expect
+      fink2lir '
+        fun = fn a, ...b, c:
+          [a, b, c]
+        '
+      to_match_snapshot
+
+    expect
+      fink2lir '
+        fun = fn ...a:
+          a
+        '
+      to_match_snapshot
+
+  it 'compiles destructuring args', fn:
+    expect
+      fink2lir '
+        fun = fn [a, [b]], [c, ...d]:
+          [a + b, c]
+        '
+      to_match_snapshot
+
+
+  it 'compiles destructuring recs', fn:
+    expect
+      fink2lir '
+        fun = fn {a, b}, [c, ...d]:
+          [a + b, c]
+        '
+      to_match_snapshot
+
+
+  it 'handles self-ref scoping', fn:
+    expect
+      fink2lir "
+        undefined = foo
+        bar = fn: fn: undefined
+      "
+      to_match_snapshot
+
+
+
+describe 'recursive funcs', fn:
+  it 'compiles recursive calls', fn:
+    expect
+      fink2lir '
+        fun = fn a, b:
+          match a:
+            b: a
+            else: fun a - 1
+        '
+      to_match_snapshot
+
+
+  skip.it 'handles mutually recursive calls', fn:
+    expect
+      fink2lir '
+        foo = fn a:
+          bar a
+
+        bar = fn b:
+          foo b
+        '
+      to_match_snapshot
+
+
+

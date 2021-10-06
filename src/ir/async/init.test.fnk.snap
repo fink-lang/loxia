@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`await compiles 1`] = `
+"
+rec_e fn exports_0:
+  id (fn args_0, ret_0: #fn
+    lst_h args_0, fn foo_0:
+      lst_t args_0, fn tail_0:
+        id foo_0, fn futr_0:
+          wt futr_0, fn right_0:
+            sub right_0, fn result_0:
+              cc ret_0, result_0
+  ), fn task1_0:
+    str 'task1', fn key_0:
+      rec_s exports_0, key_0, task1_0, fn exports_1:
+        id (fn args_1, ret_1: #fn
+          lst_h args_1, fn foo_1:
+            lst_t args_1, fn tail_1:
+              id foo_1, fn left_0:
+                int '4', fn right_1:
+                  add left_0, right_1, fn futr_1:
+                    wt futr_1, fn result_1:
+                      cc ret_1, result_1
+        ), fn task2_0:
+          str 'task2', fn key_1:
+            rec_s exports_1, key_1, task2_0, fn exports_2:
+              id (fn args_2, ret_2: #fn
+                lst_h args_2, fn foo_2:
+                  lst_t args_2, fn tail_2:
+                    id foo_2, fn callee_0:
+                      lst_e fn cargs_0:
+                        af callee_0, cargs_0, fn futr_2:
+                          wt futr_2, fn spam_0:
+                            id bar, fn left_1:
+                              int '123', fn right_2:
+                                add left_1, right_2, fn result_3:
+                                  cc ret_2, result_3
+              ), fn task3_0:
+                str 'task3', fn key_2:
+                  rec_s exports_2, key_2, task3_0, fn exports_3:
+                    id unfold, fn callee_1:
+                      lst_e fn cargs_1:
+                        id (fn args_3, ret_4: #fn
+                          int '0', fn flbk_0:
+                            lst_h args_3, fn hdm_0:
+                              ifv hdm_0, hdm_0, flbk_0, fn curr_0:
+                                lst_t args_3, fn tail_3:
+                                  id shrub, fn value_0:
+                                    id (fn ret_3: #cn
+                                      id (fn: #cn
+                                        id curr_0, fn left_2:
+                                          int '1', fn right_3:
+                                            add left_2, right_3, fn result_5:
+                                              cc ret_3, result_5
+                                      ), fn else_0:
+                                        id spam, fn val_0:
+                                          eq value_0, val_0, fn cond_0:
+                                            id (fn: #cn
+                                              id ni, fn callee_2:
+                                                lst_e fn cargs_2:
+                                                  id curr_0, fn arg_1:
+                                                    lst_a cargs_2, arg_1, fn cargs_3:
+                                                      af callee_2, cargs_3, fn futr_3:
+                                                        wt futr_3, fn result_6:
+                                                          cc ret_3, result_6
+                                            ), fn match_res_0:
+                                              cif cond_0, match_res_0, else_0
+                                    ), fn match_0:
+                                      ac match_0, fn result_4:
+                                        cc ret_4, result_4
+                        ), fn arg_0:
+                          lst_a cargs_1, arg_0, fn cargs_4:
+                            af callee_1, cargs_4, fn a_gen_0:
+                              str 'a_gen', fn key_3:
+                                rec_s exports_3, key_3, a_gen_0, fn exports_4:
+                                  id ni, fn futr_4:
+                                    wt futr_4, fn mex_0:
+                                      lst_e fn drctvs_0:
+                                        mod exports_4, drctvs_0, fn mod_0:"
+`;

@@ -1,23 +1,26 @@
-babel_types = import '@babel/types'
-{identifier, callExpression} = babel_types
+types = import '@babel/types'
+{identifier, callExpression} = types
 
-{use_runtime_fn} = import '../runtime.fnk'
-{transform_with_partial_lr} = import '../partial/init.fnk'
-
+{add, get_js, set_js2, add_runtime_requirement} = import '../context.fnk'
 
 
-transform_in = fn node, ctx:
-  runtime_fn = '_${node.op}_'
-  expr_ctx = use_runtime_fn runtime_fn, ctx
 
-  [left, right, next_ctx, wrap_partial] = transform_with_partial_lr node.left, node.right, expr_ctx
+transform_in = fn expr, ctx:
+  [{args: [left_id, right_id]}] = expr
 
   js = callExpression
-    identifier runtime_fn
-    [left, right]
+    identifier '_in_'
+    list:
+      get_js left_id, ctx
+      get_js right_id, ctx
 
-  wrap_partial js, next_ctx
+  pipe ctx:
+    set_js2 expr, js, ?
+    add_runtime_requirement 'in', ?
 
 
 
+add_in = fn ctx:
+  pipe ctx:
+    add 'in', transform_in
 

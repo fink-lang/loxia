@@ -1,78 +1,124 @@
-{is_str} = import '@fink/std-lib/str.fnk'
-{fold_ac, map_ac, filter} = import '@fink/std-lib/iter.fnk'
-{try_catch, throw_err} = import '@fink/js-interop/errors.fnk'
+types = import '@babel/types'
+{
+  binaryExpression, unaryExpression, expressionStatement
+  variableDeclaration, variableDeclarator
+} = types
 
-{add_loc} = import '../js/types.fnk'
+# {throw_err} = import '@fink/js-interop/errors.fnk'
+# {transform_error} = import '../ir/errors.fnk'
 
-{transform_error} = import './errors.fnk'
-{get_transformer} = import './context.fnk'
-
-{wrap_with_comment_loc} = import './comments/init.fnk'
-
-
---- istanbul ignore next ---
-add_ignorable_import = fn uri: fn ctx:
-  {...ctx, ignoreable_imports: [...ctx.ignoreable_imports, uri]}
+{get_transformer, get_js, get_js_literal, set_js2, with_loc} = import './context.fnk'
+{get_value} = import '../ir/context.fnk'
+{ident} = import './identifier/init.fnk'
 
 
 
-is_ignorable_import = fn expr, ctx:
+ops_to_js = rec:
+  '^': '**'
+  '==': '==='
+  '!=': '!=='
+  'not': '!'
+
+
+
+transform_binary = fn expr, ctx:
+  [{f: op, args: [left_id, right_id]}] = expr
+  left = get_js left_id, ctx
+  right = get_js right_id, ctx
+  {(op): jsop=op} = ops_to_js
+  js = binaryExpression jsop, left, right
+  set_js2 expr, js, ctx
+
+
+
+transform_unary = fn expr, ctx:
+  [{f: op, args: [right_id]}] = expr
+  right = get_js right_id, ctx
+  {(op): jsop=op} = ops_to_js
+  js = unaryExpression jsop, right
+  set_js2 expr, js, ctx
+
+
+
+transform_binary_or_unary = fn expr, ctx:
   match expr:
-    {op: 'import', right: {exprs: [{value: is_str ?}]}}:
-      [{value: uri}] = expr.right.exprs
-      uri in ctx.ignoreable_imports
+    [{args: [, ?]}]: transform_binary expr, ctx
+    else: transform_unary expr, ctx
+
+
+
+transform = fn expr, ctx:
+  transform_expr = get_transformer expr, ctx
+  # match transform_expr:
+  #   ?:
+  #     transform_expr expr, ctx
+  #   else:
+  #     [, , , fnk_expr] = expr
+  #     throw_err transform_error 'Unknown expression.', fnk_expr, ctx
+  transform_expr expr, ctx
+
+
+
+transform_body_expr = fn expr, ctx:
+  [{f: op}, [res_id]] = expr
+  next_ctx = transform expr, ctx
+  res_val = get_value res_id, next_ctx
+
+  match [op, res_val]:
+    [, {inline: false, refs: ? > 0}]:
+      id = ident res_id
+      js = with_loc res_id, variableDeclaration 'const', list:
+        with_loc res_id, variableDeclarator id, res_val.js
+
+      [[js], next_ctx]
+
+    [, {inline: ? != true, refs: ? > 1}]:
+      val = get_js_literal res_id, next_ctx
+      js = match val:
+        {type: 'VariableDeclaration'}:
+          # TODO: use loc from res_id, val or expr?
+          with_loc res_id, val
+        else:
+          # TODO: use loc from res_id, val or expr?
+          # id = with_loc {loc: todo}, ident res_id
+          id = ident res_id
+          with_loc res_id, variableDeclaration 'const', list:
+            with_loc res_id, variableDeclarator id, val
+
+      [[js], next_ctx]
+
+    # unused calls assumed to have side effects
+    ['af', {refs: ? == 0}]:
+      val = get_js_literal res_id, next_ctx
+      js = with_loc res_id, expressionStatement val
+      [[js], next_ctx]
+
     else:
-      false
-
-
-wrap_node = fn ctx, js_node, node:
-  match ctx:
-    {wrap: 'loc'}:
-      add_loc node, js_node
-    else:
-      wrap_with_comment_loc js_node, node
-
-
-map_with_ctx = fn fnc:
-  map_ac fn item, , ctx:
-    [value, next_ctx] = fnc item, ctx
-    [value, , next_ctx]
-
-
-# TODO: std-lib
-drop_if = fn cond: filter fn item, , ctx:
-  not cond item, ctx
+      [[], next_ctx]
 
 
 
-collect_with_ctx = fn ctx: fn items:
-  items | fold_ac [], ctx, fn item, items, , curr_ctx:
-    [[...items, item], , curr_ctx]
+transform_exprs = fn [expr=false, ...exprs], ctx, body=[]:
+  match expr:
+    false: [body, ctx]
+
+    [{f: ? in ['cf', 'cc', 'cif', 'ac', 'imp']}]:
+      [body_exprs, next_ctx] = transform expr, ctx
+      transform_exprs exprs, next_ctx, [...body, ...body_exprs]
+
+    [{f: 'cn'}]:
+      next_ctx = transform expr, ctx
+      transform_exprs exprs, next_ctx, body
+
+    [{f: 'mod'}]:
+      [body_exprs, next_ctx] = transform expr, ctx
+      transform_exprs exprs, next_ctx, [...body, ...body_exprs]
+
+    [ , [?]]:
+      [body_exprs, next_ctx] = transform_body_expr expr, ctx
+      transform_exprs exprs, next_ctx, [...body, ...body_exprs]
 
 
 
-transform_with_comments = fn transform_expr, node, ctx:
-  [err, result] = try_catch fn:
-    transform_expr node, ctx
 
-  match err:
-    false:
-      [js_node, next_ctx] = result
-      js = wrap_node next_ctx, js_node, node
-      [js, next_ctx]
-    {transform_error: {}}:
-      throw_err err
-    else:
-      throw_err transform_error err, node, ctx
-
-
-
-transform = fn node, ctx:
-  transform_expr = get_transformer node, ctx
-
-  match transform_expr:
-    false:
-      throw_err transform_error 'Unknown expression.', node, ctx
-    else:
-      transform_with_comments transform_expr, node, ctx
 

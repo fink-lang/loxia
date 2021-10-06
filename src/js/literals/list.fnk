@@ -1,33 +1,113 @@
-babel_types = import '@babel/types'
-{arrayExpression} = babel_types
+types = import '@babel/types'
+{
+  arrayExpression, spreadElement, memberExpression, numericLiteral
+  callExpression, identifier
+} = types
+
 {null} = import '@fink/js-interop/nullish.fnk'
-{map, filter, zip} = import '@fink/std-lib/iter.fnk'
 
-{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
-{partial_wrapper, no_wrapper} = import '../partial/init.fnk'
+{add, get_js, set_js2, with_loc} = import '../context.fnk'
 
 
 
-transform_list = fn node, ctx:
-  [elems, next_ctx] = pipe node.exprs:
-    map_with_ctx fn elem, elem_ctx:
-      match elem:
-        {type: 'empty'}:
-          [null, elem_ctx]
-        else:
-          transform elem, elem_ctx
-    collect_with_ctx ctx
+ids_to_js = fn [id=false, ...rest], ctx, out=[]:
+  match id:
+    false:
+      out
+    {i: '_'}:
+      ids_to_js rest, ctx, [...out, null]
+    else:
+      item = get_js id, ctx
+      # console.log id, arg
+      ids_to_js rest, ctx, [...out, item]
 
-  # TODO: same as in call.fnk
-  [wrap_partial=no_wrapper] = pipe zip node.exprs, elems:
-    filter fn [arg, js_arg]: match arg:
-      {type: 'partial'}: true
-      {type: 'spread', right.type: 'partial'}: true
-      {type: 'spread'}: js_arg.is_partial
-      else: false
-    map fn:
-      partial_wrapper
 
-  js = arrayExpression elems
 
-  wrap_partial js, next_ctx
+transform_tpl = fn expr, ctx:
+  [{args: items_ids}] = expr
+  js = arrayExpression
+    ids_to_js items_ids, ctx
+  set_js2 expr, js, ctx
+
+
+
+transform_tpl_i = fn expr, ctx:
+  [{args: [tpl_id, idx]}] = expr
+  js = match idx:
+    ? < 0:
+      callExpression
+        memberExpression
+          get_js tpl_id, ctx
+          identifier 'at'
+        [numericLiteral idx]
+    else:
+      memberExpression
+        get_js tpl_id, ctx
+        numericLiteral idx
+        true
+
+  set_js2 expr, js, ctx
+
+
+
+transform_tpl_s = fn expr, ctx:
+  [{args: [items_id, start_idx, end_idx]}] = expr
+  items = get_js items_id, ctx
+
+  start = numericLiteral start_idx
+
+  args = match end_idx:
+    ? >= 0: [start]
+    else: [start, numericLiteral end_idx]
+
+  js = callExpression
+    memberExpression items, identifier 'slice'
+    args
+
+  set_js2 expr, js, ctx
+
+
+
+elems_or_spread = fn expr:
+  match expr:
+    {type: 'ArrayExpression'}:
+      expr.elements
+    else:
+      [with_loc expr, spreadElement expr]
+
+
+
+transform_list_append = fn expr, ctx:
+  [{args: [items_id, val_id]}] = expr
+  elems = elems_or_spread get_js items_id, ctx
+  elem = match val_id:
+    {i: '_'}: null
+    else: get_js val_id, ctx
+
+  js = arrayExpression [...elems, elem]
+  set_js2 expr, js, ctx
+
+
+
+transform_list_chain = fn expr, ctx:
+  [{args: [items1_id, items2_id]}] = expr
+  elems1 = elems_or_spread get_js items1_id, ctx
+  elems2 = elems_or_spread get_js items2_id, ctx
+  js = arrayExpression [...elems1, ...elems2]
+  set_js2 expr, js, ctx
+
+
+
+add_list = fn ctx:
+  pipe ctx:
+    add 'tpl', transform_tpl
+    add 'tpl_i', transform_tpl_i
+    add 'tpl_s', transform_tpl_s
+
+    # add 'lst', transform_empty_list
+    add 'lst_a', transform_list_append
+    add 'lst_c', transform_list_chain
+    # add 'lst_h', transform_list_head
+    # add 'lst_t', transform_list_tail
+    # add 'lst_r', transform_list_reverse
+

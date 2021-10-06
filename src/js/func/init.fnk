@@ -1,36 +1,175 @@
-babel_types = import '@babel/types'
-{arrowFunctionExpression} = babel_types
+types = import '@babel/types'
+{
+  arrowFunctionExpression, blockStatement, returnStatement, restElement
+  labeledStatement, doWhileStatement, booleanLiteral
+} = types
 
-{unique_ident} = import '../../js/types.fnk'
-{transform_left} = import '../../js/left.fnk'
-{add, any} = import '../context.fnk'
-{transform_block} = import '../block/init.fnk'
-{transform, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
+{get_refs, dec_ref, update_value} = import '../../ir/context.fnk'
+{transform_exprs} = import '../transform.fnk'
+{add, set_js, set_js2} = import '../context.fnk'
+{ident} = import '../identifier/init.fnk'
 
 
+clean_args = fn args, body, ctx, out=[]:
+  match args:
+    {c: ? < 0}:
+      [out, body, ctx]
 
-transform_arg = fn arg, ctx:
-  match arg:
-    {type: 'empty'}:
-      unique_ident '', ctx
+    {(args.c): ?}:
+      clean_args {...args, c: args.c - 1}, body, ctx, [args.(args.c), ...out]
+
     else:
-      [t_arg, next_ctx] = transform arg, ctx
-      js_arg = transform_left t_arg
-      [js_arg, next_ctx]
+      # TODO: unique id
+      unused = ident {i: '_${args.c}'}
+      clean_args {...args, c: args.c - 1}, body, ctx, [unused, ...out]
 
 
 
-transform_func = fn node, ctx:
-  [params, next_ctx] = pipe node.args:
-    map_with_ctx transform_arg
-    collect_with_ctx ctx
+# These are mostly ir transformations, should this be done as a prep step
+split_args_body = fn [expr=false, ...exprs], args_id, ctx, args={c: -1}, body=[]:
+  match expr:
+    false:
+      [args, body, ctx]
 
-  [body, end_ctx] = transform_block node, next_ctx
-  js = arrowFunctionExpression params, body
+    [{f: 'tpl_i', args: [{i: args_id.i}]}]:
+      [{args: [tpl_id, idx]}, [arg_id]] = expr
 
-  [js, end_ctx]
+      match idx:
+        ? < 0:
+          split_args_body exprs, args_id, ctx, args, [...body, expr]
+        else: match args:
+          {foo: true}:
+            [foo] = expr
+            nexpr = [{...foo, args: [tpl_id, idx - args.c - 1]}, [arg_id]]
+            split_args_body exprs, args_id, ctx, args, [...body, nexpr]
+          else:
+            arg = ident arg_id
+            nargs = {...args, c: idx, (idx): arg}
+            next_ctx = pipe ctx:
+              set_js2 expr, arg, ?
+              dec_ref args_id, ?
+            split_args_body exprs, args_id, next_ctx, nargs, body
+
+    [{f: 'tpl_s', args: [{i: args_id.i}]}]:
+      [{args: [args_id, start, end], ...rex}, res] = expr
+      [foo, next_ctx] = match [start, end]:
+        [args.c + 1, 0]:
+          slc = ident args_id
+          next_ctx = set_js2 expr, slc, ctx
+          [[], next_ctx]
+        else:
+          [[[{...rex, args: [args_id, start - args.c - 1, end]}, res]], ctx]
+      split_args_body exprs, args_id, next_ctx, {...args, foo: true}, [...body, ...foo]
+
+    [{f: ? in ['fn', 'cn']}]:
+      [foo, bar] = expr
+      {args: [fargs, fbody]} = foo
+      [next_args, next_body, next_ctx] = split_args_body fbody, args_id, ctx, args
+      nexpr = [{...foo, args: [fargs, next_body]}, bar]
+      split_args_body exprs, args_id, next_ctx, next_args, [...body, nexpr]
+
+    else:
+      split_args_body exprs, args_id, ctx, args, [...body, expr]
 
 
-add_func = fn ctx:
+
+transform_normal_fn = fn expr, ctx:
+  [{args: [fn_args, fn_block]}, [res_id]] = expr
+  [args_id, ret_id, self_id=false] = fn_args
+
+  ret = rec:
+    ...returnStatement _
+    leadingComments: [{type: 'CommentBlock', value: ' istanbul ignore next '}]
+
+  self_ctx = set_js ret_id, ret, ctx
+
+  body_ctx = match self_id:
+    false: self_ctx
+    else:
+      pipe self_ctx:
+        # set recursive calls to use res_id
+        # instead of using a Z-combinator and self_id
+        set_js self_id, (ident res_id), ?
+        # make sure calls to self_id always use res_id
+        update_value self_id, {ignore_refs: true}, ?
+
+  [args, block, fn_ctx] = pipe body_ctx:
+    split_args_body fn_block, args_id, ?
+    clean_args ...?
+
+  all_args = match get_refs args_id, fn_ctx:
+    ? > 0: [...args, restElement ident args_id]
+    else: args
+
+  [body, next_ctx] = transform_exprs block, fn_ctx
+
+  js = arrowFunctionExpression all_args, blockStatement body
+
+  set_js2 expr, js, next_ctx
+
+
+
+# TODO merge with transform_normal_fn
+transform_tco_fn = fn expr, ctx:
+  [{args: [fn_args, block]}, [res_id]] = expr
+  [args_id, ret_id, self_id] = fn_args
+
+  ret = rec:
+    ...returnStatement _
+    leadingComments: [{type: 'CommentBlock', value: ' istanbul ignore next '}]
+
+  body_ctx = pipe ctx:
+    # set recursive calls and continue label to use res_id
+    # instead of a Z-combinator and self_id
+    set_js ret_id, ret, ?
+    set_js self_id, (ident res_id), ?
+    # make sure continue statements and calls to self_id always use res_id
+    update_value self_id, {args_id, label_id: res_id, ignore_refs: true}, ?
+
+  [body, next_ctx] = transform_exprs block, body_ctx
+
+  js = arrowFunctionExpression
+    [restElement ident args_id]
+    blockStatement list:
+      labeledStatement
+        ident res_id
+        doWhileStatement
+          booleanLiteral true
+          blockStatement body
+
+  set_js2 expr, js, next_ctx
+
+
+
+transform_fn = fn expr, ctx:
+  match expr:
+    [{tco: true}]:
+      transform_tco_fn expr, ctx
+    else:
+      transform_normal_fn expr, ctx
+
+
+
+transform_cont = fn expr, ctx:
+  [{args: [args, block]}] = expr
+
+  [ret_id=false] = args
+  [body, next_ctx]= transform_exprs block, ctx
+
+  js = match ret_id:
+    false:
+      blockStatement body
+    else:
+      labeledStatement
+        ident ret_id
+        blockStatement body
+
+  set_js2 expr, js, next_ctx
+
+
+
+add_funcs = fn ctx:
   pipe ctx:
-    add any, 'fn', transform_func
+    add 'fn', transform_fn
+    add 'cn', transform_cont
+

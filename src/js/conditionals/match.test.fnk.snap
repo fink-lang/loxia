@@ -1,555 +1,721 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`match compiles nested match 1`] = `
-"export const test = () => {
-  const ˆvalue_1 = foo;
+exports[`match compiles match with ref 1`] = `
+"let ret_0;
+
+ret_0: {
+  /* istanbul ignore else */
+  if (foo === 1) {
+    ret_0 = [1, 123, 123];
+
+    /* istanbul ignore next */
+    break ret_0;
+  }
 
   /* istanbul ignore else */
-  if (ˆvalue_1 === bar) {
-    {
-      {
-        ˆmatch_4: {
-          const ˆvalue_3 = spam;
+  if (foo === 2) {
+    ret_0 = [2, foo];
 
-          /* istanbul ignore else */
-          if (ˆvalue_3 === shrub) {
-            ni;
-            break ˆmatch_4;
-          }
-        }
-      }
-      return bar;
-    }
+    /* istanbul ignore next */
+    break ret_0;
   }
-};"
+
+  ret_0 = [3, foo];
+
+  /* istanbul ignore next */
+  break ret_0;
+}
+
+const spam_0 = ret_0;
+export const spam = spam_0;"
+`;
+
+exports[`match compiles match with ref 2`] = `
+"let ret_0;
+
+ret_0: {
+  /* istanbul ignore else */
+  if (foo === 1) {
+    ret_0 = [1, 123, 123];
+
+    /* istanbul ignore next */
+    break ret_0;
+  }
+
+  /* istanbul ignore else */
+  if (foo === 2) {
+    ret_0 = [2, foo, 45678, 45678];
+
+    /* istanbul ignore next */
+    break ret_0;
+  }
+
+  ret_0 = [3, foo, z];
+
+  /* istanbul ignore next */
+  break ret_0;
+}
+
+const spam_0 = ret_0;
+export const spam = spam_0;"
+`;
+
+exports[`match compiles match with ref 3`] = `
+"let ret_0;
+
+ret_0: {
+  /* istanbul ignore else */
+  if (foo === 1) {
+    ret_0 = [1, 123, 123];
+
+    /* istanbul ignore next */
+    break ret_0;
+  }
+
+  /* istanbul ignore else */
+  if (foo === 2) {
+    ret_0 = [2, foo, 45678, 45678];
+
+    /* istanbul ignore next */
+    break ret_0;
+  }
+
+  ret_0 = [3, foo, 1234, 1234];
+
+  /* istanbul ignore next */
+  break ret_0;
+}
+
+const spam_0 = ret_0;
+export const spam = spam_0;"
+`;
+
+exports[`match compiles match with ref 4`] = `
+"let ret_0;
+
+ret_0: {
+  /* istanbul ignore else */
+  if (foo === 1) {
+    ret_0 = [1, 123, 123];
+
+    /* istanbul ignore next */
+    break ret_0;
+  }
+
+  /* istanbul ignore else */
+  if (foo === 2) {
+    ret_0 = [2, foo, 45678];
+
+    /* istanbul ignore next */
+    break ret_0;
+  }
+
+  ret_0 = [3, foo, 1234, 1234];
+
+  /* istanbul ignore next */
+  break ret_0;
+}
+
+const spam_0 = ret_0;
+export const spam = spam_0;"
+`;
+
+exports[`match compiles nested match 1`] = `
+"const test_0 = () => {
+  /* istanbul ignore else */
+  if (foo === bar) {
+    let ret_1;
+
+    ret_1: {
+      /* istanbul ignore else */
+      if (spam === shrub) {
+        ret_1 = ni;
+
+        /* istanbul ignore next */
+        break ret_1;
+      }
+    }
+
+    const result_1 = ret_1;
+    return bar;
+  }
+
+  /* istanbul ignore next */
+  return;
+};
+
+export const test = test_0;"
 `;
 
 exports[`match compiles without else 1`] = `
-"{
-  ˆmatch_2: {
-    const ˆvalue_1 = shrub;
+"let ret_0;
 
+ret_0: {
+  /* istanbul ignore else */
+  if (shrub === 123) {
+    ret_0 = spam;
+
+    /* istanbul ignore next */
+    break ret_0;
+  }
+}
+
+const mex_0 = ret_0;"
+`;
+
+exports[`match handles scoping 1`] = `
+"const test_0 = (foo_1, bar_0) => {
+  /* istanbul ignore else */
+  if (foo_1 === bar_0) {
+    return foo_1;
+  }
+
+  /* istanbul ignore else */
+  if (foo_1 === spam) {
+    const foo_2 = bar_0 * 2;
+    return [foo_2, bar_0, foo_2];
+  }
+
+  /* istanbul ignore next */
+  return;
+};
+
+export const foo = nanu,
+      test = test_0;"
+`;
+
+exports[`match iterables handles non iterables 1`] = `
+"import { _in_ } from \\"@fink/js-interop/runtime.js\\";
+const hdm_0 = args[0];
+const expr_0 = undefined === hdm_0 ? false : hdm_0;
+const tail_0 = args.slice(1);
+let ret_0;
+
+ret_0: {
+  /* istanbul ignore else */
+  if (expr_0 === false) {
+    ret_0 = [out, ctx];
+
+    /* istanbul ignore next */
+    break ret_0;
+  }
+
+  /* istanbul ignore else */
+  if (null != expr_0) {
     /* istanbul ignore else */
-    if (ˆvalue_1 === 123) {
-      spam;
-      break ˆmatch_2;
+    if (true === _in_(expr_0[0], [1, 2])) {
+      const result_1 = foo(tail_0, expr_0);
+      ret_0 = result_1;
+
+      /* istanbul ignore next */
+      break ret_0;
     }
   }
-}"
+
+  /* istanbul ignore else */
+  if (null != expr_0) {
+    const itm_0 = expr_0[2];
+
+    /* istanbul ignore else */
+    if (null != itm_0) {
+      const val_0 = foo(itm_0[0], ctx);
+
+      /* istanbul ignore else */
+      if (true === val_0) {
+        const result_0 = foo(expr_0, tail_0);
+        ret_0 = result_0;
+
+        /* istanbul ignore next */
+        break ret_0;
+      }
+    }
+  }
+}
+
+const mex_1 = ret_0;"
 `;
 
 exports[`match iterables matches spread 1`] = `
-"// spread and ignored elems
-{
-  ˆmatch_2: {
-    const ˆvalue_1 = shrub;
+"let ret_0;
 
+ret_0: {
+  /* istanbul ignore else */
+  if (null != shrub) {
     /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_3,, ˆa_5] = ˆvalue_1;
-
+    if (shrub[0] === 1) {
       /* istanbul ignore else */
-      if (ˆa_3 === 1)
-        /* istanbul ignore else */
-        if (ˆa_5 === 2) {
-          foo;
-          break ˆmatch_2;
-        }
-    }
+      if (shrub.at(-1) === 3) {
+        ret_0 = foo;
 
-    /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      let _do_result;
-
-      {
-        const [...ˆitems_9] = ˆvalue_1;
-        _do_result = [ˆitems_9, ˆitems_9.slice(1, -1), ˆitems_9.slice(-1)];
+        /* istanbul ignore next */
+        break ret_0;
       }
-      const [[ˆa_6],, [ˆa_8]] = _do_result;
-      _do_result = undefined;
-
-      /* istanbul ignore else */
-      if (ˆa_6 === 1)
-        /* istanbul ignore else */
-        if (ˆa_8 === 3) {
-          foo;
-          break ˆmatch_2;
-        }
-    }
-
-    /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      let _do_result2;
-
-      {
-        const [...ˆitems_12] = ˆvalue_1;
-        _do_result2 = [ˆitems_12.slice(0, -1), ˆitems_12.slice(-1)];
-      }
-      const [, [ˆa_11]] = _do_result2;
-      _do_result2 = undefined;
-
-      /* istanbul ignore else */
-      if (ˆa_11 === 2) {
-        foo;
-        break ˆmatch_2;
-      }
-    }
-
-    /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      let _do_result3;
-
-      {
-        const [...ˆitems_16] = ˆvalue_1;
-        _do_result3 = [ˆitems_16, ˆitems_16.slice(1, -1), ˆitems_16.slice(-1)];
-      }
-      const [[ˆa_13], ˆa_14, [ˆa_15]] = _do_result3;
-      _do_result3 = undefined;
-
-      /* istanbul ignore else */
-      if (ˆa_13 === 1)
-        /* istanbul ignore else */
-        if (typeof ˆa_14?.[Symbol.iterator] === \\"function\\") {
-          const [ˆa_17, ˆa_18] = ˆa_14;
-
-          /* istanbul ignore else */
-          if (ˆa_17 === 2)
-            /* istanbul ignore else */
-            if (ˆa_18 === 3)
-              /* istanbul ignore else */
-              if (ˆa_15 === 4) {
-                foo;
-                break ˆmatch_2;
-              }
-        }
     }
   }
-}"
+
+  /* istanbul ignore else */
+  if (null != shrub) {
+    /* istanbul ignore else */
+    if (shrub.at(-1) === 4) {
+      ret_0 = foo;
+
+      /* istanbul ignore next */
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != shrub) {
+    /* istanbul ignore else */
+    if (shrub[0] === 5) {
+      /* istanbul ignore else */
+      if (null != shrub.slice(1)) {
+        /* istanbul ignore else */
+        if (shrub[1] === 6) {
+          /* istanbul ignore else */
+          if (shrub[2] === 7) {
+            ret_0 = foo;
+
+            /* istanbul ignore next */
+            break ret_0;
+          }
+        }
+      }
+    }
+  }
+}
+
+const mex_0 = ret_0;"
 `;
 
 exports[`match iterables matches value assertions 1`] = `
-"{
-  ˆmatch_2: {
-    const ˆvalue_1 = foo;
+"let ret_0;
 
-    // nested unary
-
+ret_0: {
+  /* istanbul ignore else */
+  if (null != foo) {
     /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_3] = ˆvalue_1;
+    if (true === !foo[0]) {
+      ret_0 = ni;
 
-      // nested unary
-
-      /* istanbul ignore else */
-      if (!ˆa_3) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    // any value
-
-    /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_4] = ˆvalue_1;
-
-      // any value
-
-      /* istanbul ignore else */
-      if (ˆa_4 !== undefined) {
-        true;
-        break ˆmatch_2;
-      }
-    }
-
-    // nested binary
-
-    /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_5] = ˆvalue_1;
-
-      // nested binary
-
-      /* istanbul ignore else */
-      if (ˆa_5 > 123) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    // nested call
-
-    /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_6] = ˆvalue_1;
-
-      // nested call
-
-      /* istanbul ignore else */
-      if (ˆa_6()) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    // nested member call
-
-    /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_7] = ˆvalue_1;
-
-      // nested member call
-
-      /* istanbul ignore else */
-      if (ˆa_7.is_foo()) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    // nested as call arg
-
-    /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_8] = ˆvalue_1;
-
-      // nested as call arg
-
-      /* istanbul ignore else */
-      if (is_foo(ˆa_8)) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_9, ...ˆa_10] = ˆvalue_1;
-
-      /* istanbul ignore else */
-      if (ˆa_9 === 1)
-        /* istanbul ignore else */
-        if (is_empty(ˆa_10)) {
-          ni;
-          break ˆmatch_2;
-        }
-    }
-
-    /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_11, ...ˆa_12] = ˆvalue_1;
-
-      /* istanbul ignore else */
-      if (ˆa_11 === 1)
-        /* istanbul ignore else */
-        if (1 < length(ˆa_12)) {
-          ni;
-          break ˆmatch_2;
-        }
+      /* istanbul ignore next */
+      break ret_0;
     }
   }
-}"
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (undefined !== foo[0]) {
+      ret_0 = true;
+
+      /* istanbul ignore next */
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (true === foo[0] > 123) {
+      ret_0 = ni;
+
+      /* istanbul ignore next */
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    const val_7 = foo[0]();
+
+    /* istanbul ignore else */
+    if (true === val_7) {
+      ret_0 = ni;
+
+      /* istanbul ignore next */
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    const val_6 = foo[0].is_foo();
+
+    /* istanbul ignore else */
+    if (true === val_6) {
+      ret_0 = ni;
+
+      /* istanbul ignore next */
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    const val_5 = is_foo(foo[0]);
+
+    /* istanbul ignore else */
+    if (true === val_5) {
+      ret_0 = ni;
+
+      /* istanbul ignore next */
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    const val_4 = is_foo(foo[0], bar);
+
+    /* istanbul ignore else */
+    if (true === val_4) {
+      ret_0 = ni;
+
+      /* istanbul ignore next */
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (foo[0] === 1) {
+      const val_3 = is_empty(foo.slice(1));
+
+      /* istanbul ignore else */
+      if (true === val_3) {
+        ret_0 = ni;
+
+        /* istanbul ignore next */
+        break ret_0;
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (foo[0] === 1) {
+      const right_0 = length(foo.slice(1));
+
+      /* istanbul ignore else */
+      if (true === 1 < right_0) {
+        ret_0 = ni;
+
+        /* istanbul ignore next */
+        break ret_0;
+      }
+    }
+  }
+}
+
+const mex_0 = ret_0;"
 `;
 
 exports[`match iterables matches values 1`] = `
-"{
-  ˆmatch_2: {
-    const ˆvalue_1 = shrub;
+"let ret_0;
 
-    // deep iterable comparison
-
+ret_0: {
+  /* istanbul ignore else */
+  if (null != shrub) {
     /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_3, ˆa_4, ˆa_5] = ˆvalue_1;
-      // deep iterable comparison
-
+    if (shrub[0] === 1) {
       /* istanbul ignore else */
-      if (ˆa_3 === 1) // deep iterable comparison
+      if (shrub[1] === 2) {
+        const itm_17 = shrub[2];
 
         /* istanbul ignore else */
-        if (ˆa_4 === 2) // deep iterable comparison
-
+        if (null != itm_17) {
           /* istanbul ignore else */
-          if (typeof ˆa_5?.[Symbol.iterator] === \\"function\\") {
-            const [ˆa_6] = ˆa_5;
+          if (itm_17[0] === ni) {
+            ret_0 = ni;
 
-            // deep iterable comparison
-
-            /* istanbul ignore else */
-            if (ˆa_6 === ni) {
-              ni;
-              break ˆmatch_2;
-            }
+            /* istanbul ignore next */
+            break ret_0;
           }
-    }
-
-    // TODO: fix semantics for matching [], {}
-
-    /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_7, ˆa_8, ˆa_9, ˆa_10] = ˆvalue_1;
-      // TODO: fix semantics for matching [], {}
-
-      /* istanbul ignore else */
-      if (ˆa_7 === 1) // TODO: fix semantics for matching [], {}
-
-        /* istanbul ignore else */
-        if (ˆa_8 === 2) // TODO: fix semantics for matching [], {}
-
-          /* istanbul ignore else */
-          if (typeof ˆa_9?.[Symbol.iterator] === \\"function\\") // TODO: fix semantics for matching [], {}
-
-            /* istanbul ignore else */
-            if (ˆa_10 != null) {
-              foo;
-              break ˆmatch_2;
-            }
-    }
-
-    /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_11, ˆa_12, ˆa_13] = ˆvalue_1;
-
-      /* istanbul ignore else */
-      if (ˆa_11 === 1)
-        /* istanbul ignore else */
-        if (typeof ˆa_12?.[Symbol.iterator] === \\"function\\") {
-          const [ˆa_14, ˆa_15] = ˆa_12;
-
-          /* istanbul ignore else */
-          if (ˆa_14 === 2)
-            /* istanbul ignore else */
-            if (ˆa_15 === 3)
-              /* istanbul ignore else */
-              if (ˆa_13 === 4) {
-                bar;
-                break ˆmatch_2;
-              }
         }
-    }
-
-    /* istanbul ignore else */
-    if (typeof ˆvalue_1?.[Symbol.iterator] === \\"function\\") {
-      const [ˆa_16, ˆa_17, ˆa_18, ˆa_19] = ˆvalue_1;
-
-      /* istanbul ignore else */
-      if (ˆa_16 === 1)
-        /* istanbul ignore else */
-        if (typeof ˆa_17?.[Symbol.iterator] === \\"function\\") {
-          const [ˆa_20, ˆa_21] = ˆa_17;
-
-          /* istanbul ignore else */
-          if (ˆa_20 === 2)
-            /* istanbul ignore else */
-            if (typeof ˆa_21?.[Symbol.iterator] === \\"function\\") {
-              const [ˆa_22, ˆa_23] = ˆa_21;
-
-              /* istanbul ignore else */
-              if (ˆa_22 === 3)
-                /* istanbul ignore else */
-                if (ˆa_23 === 4)
-                  /* istanbul ignore else */
-                  if (typeof ˆa_18?.[Symbol.iterator] === \\"function\\") {
-                    const [ˆa_24, ˆa_25] = ˆa_18;
-
-                    /* istanbul ignore else */
-                    if (ˆa_24 === 5)
-                      /* istanbul ignore else */
-                      if (ˆa_25 === 6)
-                        /* istanbul ignore else */
-                        if (ˆa_19 === 7) {
-                          spam;
-                          break ˆmatch_2;
-                        }
-                  }
-            }
-        }
+      }
     }
   }
-}"
+
+  /* istanbul ignore else */
+  if (null != shrub) {
+    /* istanbul ignore else */
+    if (shrub[0] === 1) {
+      const itm_11 = shrub[1];
+
+      /* istanbul ignore else */
+      if (null != itm_11) {
+        /* istanbul ignore else */
+        if (itm_11[0] === 2) {
+          /* istanbul ignore else */
+          if (itm_11[1] === 3) {
+            /* istanbul ignore else */
+            if (shrub[2] === 4) {
+              ret_0 = bar;
+
+              /* istanbul ignore next */
+              break ret_0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != shrub) {
+    /* istanbul ignore else */
+    if (shrub[0] === 1) {
+      const itm_1 = shrub[1];
+
+      /* istanbul ignore else */
+      if (null != itm_1) {
+        /* istanbul ignore else */
+        if (itm_1[0] === 2) {
+          const itm_3 = itm_1[1];
+
+          /* istanbul ignore else */
+          if (null != itm_3) {
+            /* istanbul ignore else */
+            if (itm_3[0] === 3) {
+              /* istanbul ignore else */
+              if (itm_3[1] === 4) {
+                const itm_6 = shrub[2];
+
+                /* istanbul ignore else */
+                if (null != itm_6) {
+                  /* istanbul ignore else */
+                  if (itm_6[0] === 5) {
+                    /* istanbul ignore else */
+                    if (itm_6[1] === 6) {
+                      /* istanbul ignore else */
+                      if (shrub[3] === 7) {
+                        ret_0 = spam;
+
+                        /* istanbul ignore next */
+                        break ret_0;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+const mex_0 = ret_0;"
+`;
+
+exports[`match iterables matches with ignored items 1`] = `
+"let ret_0;
+
+ret_0: {
+  /* istanbul ignore else */
+  if (null != shrub) {
+    /* istanbul ignore else */
+    if (shrub[0] === 1) {
+      /* istanbul ignore else */
+      if (shrub[2] === 2) {
+        ret_0 = foo;
+
+        /* istanbul ignore next */
+        break ret_0;
+      }
+    }
+  }
+}
+
+const mex_0 = ret_0;"
 `;
 
 exports[`match matches simple values 1`] = `
-"{
-  ˆmatch_2: {
-    const ˆvalue_1 = shrub;
+"let ret_0;
 
-    // simple value
+ret_0: {
+  /* istanbul ignore else */
+  if (shrub === 123) {
+    ret_0 = spam;
 
-    /* istanbul ignore else */
-    if (ˆvalue_1 === 123) {
-      spam;
-      break ˆmatch_2;
-    }
-
-    // fallback if none of above match
-    {
-      shrub;
-      break ˆmatch_2;
-    }
+    /* istanbul ignore next */
+    break ret_0;
   }
-}"
+
+  ret_0 = shrub;
+
+  /* istanbul ignore next */
+  break ret_0;
+}
+
+const mex_0 = ret_0;"
 `;
 
 exports[`match matches value assertions 1`] = `
-"{
-  ˆmatch_2: {
-    const ˆvalue_1 = 123;
+"let ret_0;
 
-    // simple unary
+ret_0: {
+  /* istanbul ignore else */
+  if (true === !123) {
+    ret_0 = ni;
 
-    /* istanbul ignore else */
-    if (!ˆvalue_1) {
-      ni;
-      break ˆmatch_2;
-    }
-
-    // simple binary
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 > 123) {
-      ni;
-      break ˆmatch_2;
-    }
-
-    // simple call
-
-    /* istanbul ignore else */
-    if (ˆvalue_1()) {
-      ni;
-      break ˆmatch_2;
-    }
-
-    // simple as call arg
-
-    /* istanbul ignore else */
-    if (shrub(ˆvalue_1)) {
-      ni;
-      break ˆmatch_2;
-    }
-
-    // any value
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 !== undefined) {
-      true;
-      break ˆmatch_2;
-    }
+    /* istanbul ignore next */
+    break ret_0;
   }
-}"
+
+  /* istanbul ignore else */
+  if (true === 123 > 123) {
+    ret_0 = ni;
+
+    /* istanbul ignore next */
+    break ret_0;
+  }
+
+  const val_1 = 123();
+
+  /* istanbul ignore else */
+  if (true === val_1) {
+    ret_0 = ni;
+
+    /* istanbul ignore next */
+    break ret_0;
+  }
+
+  const val_0 = shrub(123);
+
+  /* istanbul ignore else */
+  if (true === val_0) {
+    ret_0 = ni;
+
+    /* istanbul ignore next */
+    break ret_0;
+  }
+
+  /* istanbul ignore else */
+  if (undefined !== 123) {
+    ret_0 = true;
+
+    /* istanbul ignore next */
+    break ret_0;
+  }
+}
+
+const mex_0 = ret_0;"
 `;
 
 exports[`match records matches calculated props 1`] = `
-"{
-  ˆmatch_2: {
-    const ˆvalue_1 = shrub;
+"let ret_0;
 
-    // calculated props
+ret_0: {
+  /* istanbul ignore else */
+  if (null != shrub) {
+    const itm_0 = shrub[a];
 
     /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        [a]: ˆp_3
-      } = ˆvalue_1;
-
-      // calculated props
-
+    if (null != itm_0) {
       /* istanbul ignore else */
-      if (ˆp_3 != null) {
-        const {
-          b: ˆp_4,
-          c: ˆp_5
-        } = ˆp_3;
-        // calculated props
-
+      if (itm_0.b === b) {
         /* istanbul ignore else */
-        if (ˆp_4 === b) // calculated props
+        if (itm_0.c === c) {
+          ret_0 = ni;
 
-          /* istanbul ignore else */
-          if (ˆp_5 === c) {
-            ni;
-            break ˆmatch_2;
-          }
+          /* istanbul ignore next */
+          break ret_0;
+        }
       }
     }
   }
-}"
+}
+
+const mex_0 = ret_0;"
 `;
 
 exports[`match records matches member expr keys 1`] = `
-"{
-  ˆmatch_2: {
-    const ˆvalue_1 = foo;
+"let ret_0;
+
+ret_0: {
+  /* istanbul ignore else */
+  if (null != shrub) {
+    const itm_11 = shrub.foo;
 
     /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        foo: ˆp_3
-      } = ˆvalue_1;
+    if (null != itm_11) {
+      const itm_12 = itm_11.bar;
 
       /* istanbul ignore else */
-      if (ˆp_3 != null) {
-        const {
-          bar: ˆp_4
-        } = ˆp_3;
+      if (null != itm_12) {
+        /* istanbul ignore else */
+        if (itm_12.spam === ham) {
+          ret_0 = spam;
+
+          /* istanbul ignore next */
+          break ret_0;
+        }
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != shrub) {
+    const itm_6 = shrub.foo;
+
+    /* istanbul ignore else */
+    if (null != itm_6) {
+      const itm_7 = itm_6.bar;
+
+      /* istanbul ignore else */
+      if (null != itm_7) {
+        const itm_8 = itm_7.spam;
 
         /* istanbul ignore else */
-        if (ˆp_4 != null) {
-          const {
-            spam: ˆp_5
-          } = ˆp_4;
+        if (null != itm_8) {
+          const itm_9 = itm_8.ham;
 
           /* istanbul ignore else */
-          if (ˆp_5 === ham) {
-            spam;
-            break ˆmatch_2;
+          if (null != itm_9) {
+            /* istanbul ignore else */
+            if (itm_9.ni === nu) {
+              ret_0 = ham;
+
+              /* istanbul ignore next */
+              break ret_0;
+            }
           }
         }
       }
     }
   }
-}"
-`;
 
-exports[`match records matches member expr keys 2`] = `
-"{
-  ˆmatch_2: {
-    const ˆvalue_1 = foo;
+  /* istanbul ignore else */
+  if (null != shrub) {
+    const itm_0 = shrub.foo;
 
     /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        foo: ˆp_3
-      } = ˆvalue_1;
+    if (null != itm_0) {
+      const itm_1 = itm_0.bar;
 
       /* istanbul ignore else */
-      if (ˆp_3 != null) {
-        const {
-          bar: ˆp_4
-        } = ˆp_3;
+      if (null != itm_1) {
+        const itm_2 = itm_1.spam;
 
         /* istanbul ignore else */
-        if (ˆp_4 != null) {
-          const {
-            spam: ˆp_5
-          } = ˆp_4;
+        if (null != itm_2) {
+          const itm_3 = itm_2.ham;
 
           /* istanbul ignore else */
-          if (ˆp_5 != null) {
-            const {
-              ham: ˆp_6
-            } = ˆp_5;
-
+          if (null != itm_3) {
             /* istanbul ignore else */
-            if (ˆp_6 != null) {
-              const {
-                ni: ˆp_7
-              } = ˆp_6;
-
+            if (itm_3.ni === nu) {
               /* istanbul ignore else */
-              if (ˆp_7 === nu) {
-                spam;
-                break ˆmatch_2;
+              if (itm_0.spam === spam) {
+                ret_0 = ham;
+
+                /* istanbul ignore next */
+                break ret_0;
               }
             }
           }
@@ -557,348 +723,278 @@ exports[`match records matches member expr keys 2`] = `
       }
     }
   }
-}"
+}
+
+const mex_0 = ret_0;"
 `;
 
 exports[`match records matches props 1`] = `
-"{
-  ˆmatch_2: {
-    const ˆvalue_1 = shrub;
+"let ret_0;
 
-    // TODO: fix semantics for matching {}
-
+ret_0: {
+  /* istanbul ignore else */
+  if (null != shrub) {
     /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        foo: ˆp_3
-      } = ˆvalue_1;
-
-      // TODO: fix semantics for matching {}
-
+    if (shrub.foo === foo) {
       /* istanbul ignore else */
-      if (ˆp_3 != null) {
-        spam + ni;
-        break ˆmatch_2;
-      }
-    }
+      if (shrub.bar === bar) {
+        ret_0 = ni;
 
-    // TODO: fix semantics for matching []
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        foo: ˆp_4
-      } = ˆvalue_1;
-
-      // TODO: fix semantics for matching []
-
-      /* istanbul ignore else */
-      if (typeof ˆp_4?.[Symbol.iterator] === \\"function\\") {
-        spam + ni;
-        break ˆmatch_2;
-      }
-    }
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        foo: ˆp_5,
-        ni: ˆp_6
-      } = ˆvalue_1;
-
-      /* istanbul ignore else */
-      if (ˆp_5 === 4)
-        /* istanbul ignore else */
-        if (ˆp_6 != null) {
-          const {
-            na: ˆp_7,
-            nu: ˆp_8
-          } = ˆp_6;
-
-          /* istanbul ignore else */
-          if (ˆp_7 === na)
-            /* istanbul ignore else */
-            if (ˆp_8 === nu) {
-              spam + ni;
-              break ˆmatch_2;
-            }
-        }
-    }
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        foo: ˆp_9,
-        foo: ˆp_10,
-        shrub: ˆp_11
-      } = ˆvalue_1;
-
-      /* istanbul ignore else */
-      if (ˆp_9 === 1)
-        /* istanbul ignore else */
-        if (ˆp_10 != null) {
-          const {
-            bar: ˆp_12
-          } = ˆp_10;
-
-          /* istanbul ignore else */
-          if (ˆp_12 === \`spam\`)
-            /* istanbul ignore else */
-            if (ˆp_11 != null) {
-              const {
-                na: ˆp_13
-              } = ˆp_11;
-
-              /* istanbul ignore else */
-              if (ˆp_13 === \`nu\`) {
-                ni;
-                break ˆmatch_2;
-              }
-            }
-        }
-    }
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        ni: ˆp_14,
-        na: ˆp_15
-      } = ˆvalue_1;
-
-      /* istanbul ignore else */
-      if (ˆp_14 != null) {
-        const {
-          len: ˆp_16
-        } = ˆp_14;
-
-        /* istanbul ignore else */
-        if (ˆp_16 === 1)
-          /* istanbul ignore else */
-          if (ˆp_15 != null) {
-            const {
-              len: ˆp_17
-            } = ˆp_15;
-
-            /* istanbul ignore else */
-            if (ˆp_17 === 1) {
-              na;
-              break ˆmatch_2;
-            }
-          }
+        /* istanbul ignore next */
+        break ret_0;
       }
     }
   }
-}"
+
+  /* istanbul ignore else */
+  if (null != shrub) {
+    /* istanbul ignore else */
+    if (shrub.foo === 4) {
+      const itm_13 = shrub.ni;
+
+      /* istanbul ignore else */
+      if (null != itm_13) {
+        /* istanbul ignore else */
+        if (itm_13.na === na) {
+          /* istanbul ignore else */
+          if (itm_13.nu === nu) {
+            ret_0 = spam + ni;
+
+            /* istanbul ignore next */
+            break ret_0;
+          }
+        }
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != shrub) {
+    /* istanbul ignore else */
+    if (shrub.foo === 1) {
+      const itm_8 = shrub.foo;
+
+      /* istanbul ignore else */
+      if (null != itm_8) {
+        /* istanbul ignore else */
+        if (itm_8.bar === \`spam\`) {
+          const itm_10 = shrub.shrub;
+
+          /* istanbul ignore else */
+          if (null != itm_10) {
+            /* istanbul ignore else */
+            if (itm_10.na === \`nu\`) {
+              ret_0 = ni;
+
+              /* istanbul ignore next */
+              break ret_0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != shrub) {
+    const itm_3 = shrub.ni;
+
+    /* istanbul ignore else */
+    if (null != itm_3) {
+      /* istanbul ignore else */
+      if (itm_3.len === 1) {
+        const itm_5 = shrub.na;
+
+        /* istanbul ignore else */
+        if (null != itm_5) {
+          /* istanbul ignore else */
+          if (itm_5.len === 1) {
+            ret_0 = na;
+
+            /* istanbul ignore next */
+            break ret_0;
+          }
+        }
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != shrub) {
+    const itm_0 = shrub.ni;
+
+    /* istanbul ignore else */
+    if (null != itm_0) {
+      /* istanbul ignore else */
+      if (itm_0[0] === foo) {
+        /* istanbul ignore else */
+        if (itm_0[1] === 1234) {
+          ret_0 = na;
+
+          /* istanbul ignore next */
+          break ret_0;
+        }
+      }
+    }
+  }
+}
+
+const mex_0 = ret_0;"
 `;
 
 exports[`match records matches spread 1`] = `
-"{
-  ˆmatch_2: {
-    const ˆvalue_1 = shrub;
+"let ret_0;
 
-    // spread
-
+ret_0: {
+  /* istanbul ignore else */
+  if (null != shrub) {
     /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
+    if (undefined !== shrub[foo]) {
       const {
-        [foo]: ˆp_3,
-        ...ˆp_4
-      } = ˆvalue_1;
-      // spread
+        [foo]: _foo,
+        ...spread_0
+      } = shrub;
 
       /* istanbul ignore else */
-      if (ˆp_3 != null) // spread
-        // spread
-
+      if (null != spread_0) {
         /* istanbul ignore else */
-        if (ˆp_4 != null) {
-          const {
-            bar: ˆp_5,
-            spam: ˆp_6
-          } = ˆp_4;
-          // spread
-
+        if (spread_0.bar === bar) {
           /* istanbul ignore else */
-          if (ˆp_5 === bar) // spread
+          if (spread_0.spam === spam) {
+            ret_0 = ni;
 
-            /* istanbul ignore else */
-            if (ˆp_6 === spam) {
-              ni;
-              break ˆmatch_2;
-            }
+            /* istanbul ignore next */
+            break ret_0;
+          }
         }
+      }
     }
   }
-}"
+}
+
+const mex_0 = ret_0;"
 `;
 
 exports[`match records matches value assertions 1`] = `
 "import { _in_ } from \\"@fink/js-interop/runtime.js\\";
-{
-  ˆmatch_2: {
-    const ˆvalue_1 = foo;
+let ret_0;
 
-    // nested unary
-
+ret_0: {
+  /* istanbul ignore else */
+  if (null != foo) {
     /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        spam: ˆp_3
-      } = ˆvalue_1;
+    if (true === !foo.spam) {
+      ret_0 = ni;
 
-      // nested unary
-
-      /* istanbul ignore else */
-      if (!ˆp_3) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    // nested binary
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        spam: ˆp_4
-      } = ˆvalue_1;
-
-      // nested binary
-
-      /* istanbul ignore else */
-      if (ˆp_4 > 123) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    // nested call
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        spam: ˆp_5
-      } = ˆvalue_1;
-
-      // nested call
-
-      /* istanbul ignore else */
-      if (ˆp_5()) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    // nested member call
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        spam: ˆp_6
-      } = ˆvalue_1;
-
-      // nested member call
-
-      /* istanbul ignore else */
-      if (ˆp_6.is_foo()) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    // nested as call arg
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        spam: ˆp_7
-      } = ˆvalue_1;
-
-      // nested as call arg
-
-      /* istanbul ignore else */
-      if (is_foo(ˆp_7)) {
-        ni;
-        break ˆmatch_2;
-      }
-    }
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        spam: ˆp_8,
-        ...ˆp_9
-      } = ˆvalue_1;
-
-      /* istanbul ignore else */
-      if (ˆp_8 === spam)
-        /* istanbul ignore else */
-        if (is_empty(ˆp_9)) {
-          ni;
-          break ˆmatch_2;
-        }
-    }
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        spam: ˆp_10,
-        ...ˆp_11
-      } = ˆvalue_1;
-
-      /* istanbul ignore else */
-      if (ˆp_10 === spam)
-        /* istanbul ignore else */
-        if (_in_(\`foo\`, ˆp_11)) {
-          ni;
-          break ˆmatch_2;
-        }
-    }
-
-    // any value
-
-    /* istanbul ignore else */
-    if (ˆvalue_1 != null) {
-      const {
-        spam: ˆp_12
-      } = ˆvalue_1;
-
-      // any value
-
-      /* istanbul ignore else */
-      if (ˆp_12 !== undefined) {
-        true;
-        break ˆmatch_2;
-      }
+      /* istanbul ignore next */
+      break ret_0;
     }
   }
-}"
-`;
-
-exports[`match value assertions compiles do-expr 1`] = `
-"let _do_result;
-
-ˆmatch_2: {
-  const ˆvalue_1 = bar;
 
   /* istanbul ignore else */
-  if (ˆvalue_1 === spam) {
-    {
-      ni;
-      _do_result = shrub(foobar);
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (true === foo.spam > 123) {
+      ret_0 = ni;
+
+      /* istanbul ignore next */
+      break ret_0;
     }
-    break ˆmatch_2;
   }
 
-  {
-    {
-      shrub;
-      _do_result = spam(ni);
+  /* istanbul ignore else */
+  if (null != foo) {
+    const val_6 = foo.spam();
+
+    /* istanbul ignore else */
+    if (true === val_6) {
+      ret_0 = ni;
+
+      /* istanbul ignore next */
+      break ret_0;
     }
-    break ˆmatch_2;
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    const val_5 = foo.spam.is_foo();
+
+    /* istanbul ignore else */
+    if (true === val_5) {
+      ret_0 = ni;
+
+      /* istanbul ignore next */
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    const val_4 = is_foo(foo.spam);
+
+    /* istanbul ignore else */
+    if (true === val_4) {
+      ret_0 = ni;
+
+      /* istanbul ignore next */
+      break ret_0;
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    const key_2 = \`spam\`;
+
+    /* istanbul ignore else */
+    if (foo.spam === spam) {
+      const {
+        spam: _key_2,
+        ...spread_1
+      } = foo;
+      const val_3 = is_empty(spread_1);
+
+      /* istanbul ignore else */
+      if (true === val_3) {
+        ret_0 = ni;
+
+        /* istanbul ignore next */
+        break ret_0;
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    const key_1 = \`spam\`;
+
+    /* istanbul ignore else */
+    if (foo.spam === spam) {
+      const {
+        spam: _key_1,
+        ...spread_0
+      } = foo;
+
+      /* istanbul ignore else */
+      if (true === _in_(\`foo\`, spread_0)) {
+        ret_0 = ni;
+
+        /* istanbul ignore next */
+        break ret_0;
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo) {
+    /* istanbul ignore else */
+    if (undefined !== foo.spam) {
+      ret_0 = true;
+
+      /* istanbul ignore next */
+      break ret_0;
+    }
   }
 }
 
-export const foo = _do_result;
-_do_result = undefined;"
+const mex_0 = ret_0;"
 `;

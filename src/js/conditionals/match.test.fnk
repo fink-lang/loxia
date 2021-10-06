@@ -1,5 +1,5 @@
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 {fink2js} = import '../../testing/generate.fnk'
-{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
 describe 'match', fn:
@@ -15,6 +15,64 @@ describe 'match', fn:
           # fallback if none of above match
           else:
             shrub
+      '
+      to_match_snapshot
+
+  it 'compiles match with ref', fn:
+    expect
+      fink2js '
+        spam = match foo:
+          1:
+            x = 123
+            [1, x, x]
+          2:
+            [2, foo]
+          else:
+            [3, foo]
+      '
+      to_match_snapshot
+
+    expect
+      fink2js '
+        spam = match foo:
+          1:
+            x = 123
+            [1, x, x]
+          2:
+            y = 45678
+            [2, foo, y, y]
+          else:
+            [3, foo, z]
+      '
+      to_match_snapshot
+
+    expect
+      fink2js '
+        spam = match foo:
+          1:
+            x = 123
+            [1, x, x]
+          2:
+            y = 45678
+            [2, foo, y, y]
+          else:
+            z = 1234
+            [3, foo, z, z]
+      '
+      to_match_snapshot
+
+    expect
+      fink2js '
+        spam = match foo:
+          1:
+            x = 123
+            [1, x, x]
+          2:
+            y = 45678
+            [2, foo, y]
+          else:
+            z = 1234
+            [3, foo, z, z]
       '
       to_match_snapshot
 
@@ -63,18 +121,65 @@ describe 'match', fn:
       to_match_snapshot
 
 
+  it 'handles scoping', fn:
+    expect
+      fink2js '
+        foo = nanu
+
+        test = fn foo, bar:
+          match foo:
+            bar:
+              foo
+            spam:
+              foo = bar * 2
+              [foo, bar, foo]
+      '
+      to_match_snapshot
 
 describe 'match iterables', fn:
   it 'matches values', fn:
     expect
       fink2js '
         match shrub:
-          # deep iterable comparison
           [1, 2, [ni]]: ni
-          # TODO: fix semantics for matching [], {}
-          [1, 2, [], {}]: foo
           [1, [2, 3], 4]: bar
           [1, [2, [3, 4]], [5, 6], 7]: spam
+      '
+      to_match_snapshot
+
+
+  it 'matches with ignored items', fn:
+    expect
+      fink2js '
+        match shrub:
+          [1, ,2]: foo
+      '
+      to_match_snapshot
+
+
+  it 'handles non iterables', fn:
+    expect
+      fink2js "
+        [expr=false, ...exprs] = args
+        match expr:
+          false:
+            [out, ctx]
+
+          [? in [1, 2]]:
+            foo exprs, expr
+
+          [, , [foo ?, ctx]]:
+            foo expr, exprs
+      "
+      to_match_snapshot
+
+
+  skip.it 'matches empty tuples', fn:
+    expect
+      fink2js '
+        match shrub:
+          []: foo
+          [1, 2, []]: foo
       '
       to_match_snapshot
 
@@ -82,12 +187,10 @@ describe 'match iterables', fn:
   it 'matches spread', fn:
     expect
       fink2js '
-        # spread and ignored elems
         match shrub:
-          [1, ,2]: foo
           [1, ..., 3]: foo
-          [..., 2]: foo
-          [1, ...[2, 3], 4]: foo
+          [..., 4]: foo
+          [5, ...[6, 7], 9]: foo
       '
       to_match_snapshot
 
@@ -113,6 +216,7 @@ describe 'match iterables', fn:
 
           # nested as call arg
           [is_foo ?]: ni
+          [is_foo ?, bar]: ni
 
           [1, ...is_empty ?]: ni
           [1, ...(1 < length ?)]: ni
@@ -126,13 +230,15 @@ describe 'match records', fn:
     expect
       fink2js "
         match shrub:
+          {foo, bar}: ni
           # TODO: fix semantics for matching {}
-          {foo: {}}: spam + ni
+          # TODO: {foo: {}}: spam + ni
           # TODO: fix semantics for matching []
-          {foo: []}: spam + ni
+          # {foo: []}: spam + ni
           {foo: 4, ni: {na, nu}}: spam + ni
           {foo: 1, foo: {bar: 'spam'}, shrub: {na: 'nu'}}: ni
           {ni: {len: 1}, na: {len: 1}}: na
+          {ni: [foo, 1234]}: na
       "
       to_match_snapshot
 
@@ -141,7 +247,6 @@ describe 'match records', fn:
     expect
       fink2js '
         match shrub:
-          # calculated props
           {(a): {b, c}}: ni
       '
       to_match_snapshot
@@ -152,7 +257,7 @@ describe 'match records', fn:
       fink2js '
         match shrub:
           # spread
-          {(foo): {}, ...{bar, spam}}: ni
+          {(foo): ?, ...{bar, spam}}: ni
       '
       to_match_snapshot
 
@@ -160,17 +265,13 @@ describe 'match records', fn:
   it 'matches member expr keys', fn:
     expect
       fink2js '
-        match foo:
+        match shrub:
           {foo.bar.spam: ham}: spam
+          {foo.bar.spam: {ham.ni: nu}}: ham
+          {foo: {bar.spam: {ham.ni: nu}, spam}}: ham
       '
       to_match_snapshot
 
-    expect
-      fink2js '
-        match foo:
-          {foo.bar.spam: {ham.ni: nu}}: spam
-      '
-      to_match_snapshot
 
 
   it 'matches value assertions', fn:
@@ -200,19 +301,4 @@ describe 'match records', fn:
       '
       to_match_snapshot
 
-
-
-describe 'match value assertions', fn:
-  it 'compiles do-expr', fn:
-    expect
-      fink2js '
-        foo = match bar:
-          spam:
-            ni
-            shrub foobar
-          else:
-            shrub
-            spam ni
-      '
-      to_match_snapshot
 

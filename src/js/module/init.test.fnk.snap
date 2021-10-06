@@ -1,15 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`module handles comments 1`] = `
+exports[`module handles directives 1`] = `
 "#!/usr/bin/env node
-// leading comment
-// expr comment
 export const foo = 1234;"
 `;
 
 exports[`module handles exports 1`] = `
-"export const ˆdelete = () => true;
-export const π = () => true;
-export const foo_bar = 1234;
-export const fooᜭbar = 1234;"
+"const delete_0 = () => {
+  return true;
+};
+
+const π_0 = () => {
+  return true;
+};
+
+export const ˆdelete = delete_0,
+      π = π_0,
+      foo_bar = 1234,
+      fooᜭbar = 1234,
+      ˆdefault = 456;
+export default 456;"
+`;
+
+exports[`module handles exports 2`] = `
+"const delete_0 = () => {
+  return true;
+};
+
+const π_0 = () => {
+  return true;
+};
+
+module.exports = 456;
+exports.ˆdelete = delete_0;
+exports.π = π_0;
+exports.foo_bar = 1234;
+exports.fooᜭbar = 1234;
+exports.ˆdefault = 456;"
+`;
+
+exports[`module handles side effects 1`] = `
+"foo(bar);
+shrub.ni(foo);
+export const spam = ni;"
 `;

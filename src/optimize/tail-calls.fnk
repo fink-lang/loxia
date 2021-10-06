@@ -1,0 +1,74 @@
+{get_value, update_value} = import '../ir/context.fnk'
+
+
+set_curr_fn = fn curr_fn, ctx:
+  {...ctx, curr_fn}
+
+
+get_curr_fn = fn ctx:
+  {curr_fn=[]} = ctx
+  curr_fn
+
+
+
+optimize_body = fn [expr, res], ctx, optimize_tails:
+  {args: [args, body]} = expr
+  [o_body, next_ctx] = optimize_tails body, ctx, []
+  [[[{...expr, args: [args, o_body]}, res]], next_ctx]
+
+
+
+optimize_fn = fn [expr, res], ctx, optimize_tails:
+  {args: [args, body]} = expr
+  [ , ret_id, fn_id] = args
+  prev_curr_fn = get_curr_fn ctx
+  body_ctx = set_curr_fn [fn_id, ret_id], ctx
+
+  [o_body, next_ctx] = optimize_tails body, body_ctx, []
+
+  opt = match get_value fn_id, next_ctx:
+    {tco: true}:
+      {...expr, f: 'fn', args: [args, o_body], tco: true}
+    else:
+      {...expr, args: [args, o_body]}
+
+  end_ctx = set_curr_fn prev_curr_fn, next_ctx
+  [[[opt, res]], end_ctx]
+
+
+
+optimize_af = fn [expr, res], exprs, ctx:
+  {args: [callee_id, ...args]} = expr
+  [next_expr, ...rest_exprs] = exprs
+  [curr_fn_id={}, ret_id] = get_curr_fn ctx
+
+  match [callee_id.i, next_expr]:
+    [curr_fn_id.i, [{f: 'cc', args: [{i: ret_id.i}]}]]:
+      opt_expr = {...expr, f: 'cf', args: [callee_id, ...args]}
+      next_ctx = update_value curr_fn_id, {tco: true}, ctx
+      [[[opt_expr, []]], rest_exprs, next_ctx]
+
+    else:
+      [[[expr, res]], exprs, ctx]
+
+
+
+optimize_tails = fn [expr=false, ...exprs], ctx, out=[]:
+  match expr:
+    false:
+      [out, ctx]
+
+    [{f: 'fn', args: [[?, ?, ?]]}]:
+      [opt, next_ctx] = optimize_fn expr, ctx, optimize_tails
+      optimize_tails exprs, next_ctx, [...out, ...opt]
+
+    [{f: ? in ['cn', 'fn']}]:
+      [opt, next_ctx] = optimize_body expr, ctx, optimize_tails
+      optimize_tails exprs, next_ctx, [...out, ...opt]
+
+    [{f: 'af'}]:
+      [opt, rest_exprs, next_ctx] = optimize_af expr, exprs, ctx
+      optimize_tails rest_exprs, next_ctx, [...out, ...opt]
+
+    else:
+      optimize_tails exprs, ctx, [...out, expr]

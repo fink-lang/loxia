@@ -1,0 +1,37 @@
+{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{raw} = import '@fink/std-lib/str.fnk'
+
+{fink2lir} = import '../../testing/generate.fnk'
+
+
+
+describe 'regex', fn:
+  it 'compiles single line', fn:
+    expect
+      fink2lir raw"
+        regex = rx'(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})'
+      "
+      to_match_snapshot
+
+
+  it 'compiles multiline', fn:
+    # TODO: loxia should handle this instead of runtime std-lib
+    expect
+      fink2lir raw"
+        regex = rx'
+          (?<year>\d{4})-    # year part of a date
+          (?<month>\d{2})-   # month part of a date
+          (?<day>\d{2})      # day part of a date
+        '
+      "
+      to_match_snapshot
+
+
+  it 'compiles escape char', fn:
+    expect
+      fink2lir raw"
+        regex = rx'.+/\#.+\\'
+      "
+      to_match_snapshot
+
+

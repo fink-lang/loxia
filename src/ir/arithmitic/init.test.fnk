@@ -1,0 +1,44 @@
+{fink2lir} = import '../../testing/generate.fnk'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+describe 'binary', fn:
+  it 'compiles simple', fn:
+    expect
+      fink2lir '
+        r = foo + bar
+      '
+      to_match_snapshot
+
+
+  it 'compiles precedence', fn:
+    expect
+      fink2lir '
+        r = (1 + 2) * ni
+      '
+      to_match_snapshot
+
+
+  it 'compiles nested', fn:
+    expect
+      fink2lir '
+        foo * bar + ni
+      '
+      to_match_snapshot
+
+
+
+describe 'unary', fn:
+  it 'compiles simple', fn:
+    expect
+      fink2lir '
+        -foo
+      '
+      to_match_snapshot
+
+  it 'compiles nested', fn:
+    expect
+      fink2lir '
+        foo * -bar
+      '
+      to_match_snapshot

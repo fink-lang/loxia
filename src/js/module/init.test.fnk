@@ -1,20 +1,14 @@
-{fink2js} = import '../../testing/generate.fnk'
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{fink2js} = import '../../testing/generate.fnk'
 
 
 describe 'module', fn:
-  it 'handles comments', fn:
-
+  it 'handles directives', fn:
     expect
       fink2js "
         #!/usr/bin/env node
 
-        # leading comment
-
-        # expr comment
         foo = 1234
-
-        # trailing comment
       "
       to_match_snapshot
 
@@ -26,5 +20,27 @@ describe 'module', fn:
         π = fn: true
         foo_bar = 1234
         foo-bar = 1234
+        default = 456
+      "
+      to_match_snapshot
+
+    expect
+      fink2js "
+        delete = fn: true
+        π = fn: true
+        foo_bar = 1234
+        foo-bar = 1234
+        default = 456
+      ", {module_type: 'cjs'}
+      to_match_snapshot
+
+
+
+  it 'handles side effects', fn:
+    expect
+      fink2js "
+        foo bar
+        shrub.ni foo
+        spam = ni
       "
       to_match_snapshot

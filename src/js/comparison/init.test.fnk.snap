@@ -11,19 +11,31 @@ exports[`comparison compiles as partials 1`] = `
 `;
 
 exports[`comparison compiles combined 1`] = `
-"export const lt = a < b && b < c;
-export const gt = a > b && b > c;
-export const eq = a === b && b === c;
-export const neq = a !== b && b !== c;
-export const gteq = a >= b && b >= c;
-export const lteq = a <= b && b <= c;"
+"const lt_0 = a < b && b < c;
+const gt_0 = a > b && b > c;
+const eq_0 = a === b && b === c;
+const neq_0 = a !== b && b !== c;
+const gteq_0 = a >= b && b >= c;
+const lteq_0 = a <= b && b <= c;
+export const lt = lt_0,
+      gt = gt_0,
+      eq = eq_0,
+      neq = neq_0,
+      gteq = gteq_0,
+      lteq = lteq_0;"
 `;
 
 exports[`comparison compiles simple 1`] = `
-"export const lt = a < b;
-export const gt = a > b;
-export const eq = a === b;
-export const neq = a !== b;
-export const gteq = a >= b;
-export const lteq = a <= b;"
+"const lt_0 = a < b;
+const gt_0 = a > b;
+const eq_0 = a === b;
+const neq_0 = a !== b;
+const gteq_0 = a >= b;
+const lteq_0 = a <= b;
+export const lt = lt_0,
+      gt = gt_0,
+      eq = eq_0,
+      neq = neq_0,
+      gteq = gteq_0,
+      lteq = lteq_0;"
 `;

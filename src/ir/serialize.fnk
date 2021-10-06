@@ -1,0 +1,93 @@
+{replace_all, rx} = import '@fink/std-lib/regex.fnk'
+{join} = import '@fink/std-lib/iter.fnk'
+
+
+
+a2s = fn [arg=false, ...args], out=[]:
+  match arg:
+    false: match out:
+      [?]: ' ${out | join ', '}'
+      else: ''
+    {i: ?}:
+      a2s args, [...out, arg.i]
+    else:
+      a2s args, [...out, arg]
+
+
+
+raw = fn s:
+  replace_all s, rx'(\n)', '\\n'
+
+
+ops = rec:
+  '==': 'eq'
+  '!=': 'neq'
+  '>': 'gt'
+  '<': 'lt'
+  '>=': 'gte'
+  '<=': 'lte'
+  '+': 'add'
+  '-': 'sub'
+  '*': 'mul'
+  '^': 'pow'
+  '/': 'div'
+  '%': 'rem'
+
+
+serialize = fn [curr=false, ...rest], out='', indent='':
+  match curr:
+    false:
+      out
+
+    [{f: '='}]:
+      [{args: [val]}, ids] = curr
+      serialize
+        rest
+        '${out}\n${indent}id ${val.i}, fn${a2s ids}:'
+        '  ${indent}'
+
+    [{f: ? in ['str', 'int', 'float']}]:
+      [{f, args: [val]}, ids] = curr
+      serialize
+        rest
+        '${out}\n${indent}${f} \'${raw val}\', fn${a2s ids}:'
+        '  ${indent}'
+
+    [{f: ? in ['lst', 'rec']}]:
+      [{f}, ids] = curr
+      serialize
+        rest
+        '${out}\n${indent}${f}_e fn${a2s ids}:'
+        '  ${indent}'
+
+    [{f: 'fn', args: [[?, ?, ?]]}]:
+      [{f: op, args: [args, body]}, ids] = curr
+      serialize
+        rest
+        '${out}\n${indent}z (fn${a2s args}: #${op}${serialize body, '', '  ${indent}'}
+          ${indent}), fn${a2s ids}:'
+        '  ${indent}'
+
+    [{f: ? in ['cn', 'fn']}]:
+      [{f: op, args: [args, body]}, ids] = curr
+      serialize
+        rest
+        '${out}\n${indent}id (fn${a2s args}: #${op}${serialize body, '', '  ${indent}'}
+          ${indent}), fn${a2s ids}:'
+        '  ${indent}'
+
+    [{f: ? in ['cc', 'cif', 'cf']}]:
+      [{f: op, args}] = curr
+      serialize
+        rest
+        '${out}\n${indent}${op}${a2s args}'
+        '  ${indent}'
+
+    [, [?]]:
+      [{f, args}, ids] = curr
+      {(f): opf=f} = ops
+      serialize
+        rest
+        '${out}\n${indent}${opf}${a2s args}, fn${a2s ids}:'
+        '  ${indent}'
+

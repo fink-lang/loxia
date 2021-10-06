@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`binary compiles nested 1`] = `
+"
+rec_e fn exports_0:
+  id foo, fn left_1:
+    id bar, fn right_0:
+      mul left_1, right_0, fn left_0:
+        id ni, fn right_1:
+          add left_0, right_1, fn mex_0:
+            lst_e fn drctvs_0:
+              mod exports_0, drctvs_0, fn mod_0:"
+`;
+
+exports[`binary compiles precedence 1`] = `
+"
+rec_e fn exports_0:
+  int '1', fn left_1:
+    int '2', fn right_0:
+      add left_1, right_0, fn left_0:
+        id ni, fn right_1:
+          mul left_0, right_1, fn r_0:
+            str 'r', fn key_0:
+              rec_s exports_0, key_0, r_0, fn exports_1:
+                lst_e fn drctvs_0:
+                  mod exports_1, drctvs_0, fn mod_0:"
+`;
+
+exports[`binary compiles simple 1`] = `
+"
+rec_e fn exports_0:
+  id foo, fn left_0:
+    id bar, fn right_0:
+      add left_0, right_0, fn r_0:
+        str 'r', fn key_0:
+          rec_s exports_0, key_0, r_0, fn exports_1:
+            lst_e fn drctvs_0:
+              mod exports_1, drctvs_0, fn mod_0:"
+`;
+
+exports[`unary compiles nested 1`] = `
+"
+rec_e fn exports_0:
+  id foo, fn left_0:
+    id bar, fn right_1:
+      sub right_1, fn right_0:
+        mul left_0, right_0, fn mex_0:
+          lst_e fn drctvs_0:
+            mod exports_0, drctvs_0, fn mod_0:"
+`;
+
+exports[`unary compiles simple 1`] = `
+"
+rec_e fn exports_0:
+  id foo, fn right_0:
+    sub right_0, fn mex_0:
+      lst_e fn drctvs_0:
+        mod exports_0, drctvs_0, fn mod_0:"
+`;

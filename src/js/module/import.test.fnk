@@ -1,5 +1,5 @@
-{fink2js} = import '../../testing/generate.fnk'
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{fink2js} = import '../../testing/generate.fnk'
 
 
 describe 'import', fn:
@@ -10,6 +10,8 @@ describe 'import', fn:
         {foo: spam} = import './shrub.fnk'
         {π, delete} = import './ni.fnk'
         {foo-bar} = import './ham.fnk'
+        shrub = import './shrub.fnk'
+        out = [bar, spam, π, delete, foo-bar, shrub]
       "
       to_match_snapshot
 
@@ -17,7 +19,7 @@ describe 'import', fn:
   it 'imports dynamically with static URL', fn:
     expect
       fink2js "
-        ni = await import './shrub.fnk'
+        ni = fn: import './shrub.fnk'
       "
       to_match_snapshot
 
@@ -25,10 +27,9 @@ describe 'import', fn:
   it 'imports with dynamic URLs', fn:
     expect
       fink2js "
-        foo = bar + spam
-        shrub = await import foo
-        ni = await import '\${foo}'
-        na = await import './\${foo}.fnk'
+        shrub = fn: import foo
+        ni = fn: import '\${foo}'
+        na = fn: import './\${foo}.fnk'
       "
       to_match_snapshot
 
@@ -40,10 +41,11 @@ describe 'import', fn:
           #
           {is_str} = import '@fink/std-lib/str.fnk'
           {bar} = import './spam.fnk'
-          {foo: spam} = await import './shrub.fnk'
-          na = await import './\${foo}.fnk'
+          {foo: spam} = fn: import './shrub.fnk'
+          na = fn: import './\${foo}.fnk'
           import './foo.fnk'
           ni = import '../ni.fnk'
+          out = [is_str, bar, ni]
         "
         {import: {ext: {rel: '.fnk', abs: '.js'}}}
       to_match_snapshot
@@ -63,6 +65,7 @@ describe 'import', fn:
     expect
       fink2js "
         foo = import './foo.fnk'
+        out = [foo]
       "
       to_match_snapshot
 

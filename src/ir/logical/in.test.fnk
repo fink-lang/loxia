@@ -1,0 +1,25 @@
+{fink2lir} = import '../../testing/generate.fnk'
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+describe 'in', fn:
+  it 'compiles with default runtime', fn:
+    expect
+      fink2lir "
+        foo = 1 in [1, 2, 3]
+        bar = '2' in '1234'
+        spam = key in {foo: bar}
+        shrub = item in ni
+      "
+      to_match_snapshot
+
+
+  skip.it 'compiles as partial', fn:
+    expect
+      fink2lir "
+        ? in [1, 2, 3]
+        foo in ?
+      "
+      to_match_snapshot
+
+

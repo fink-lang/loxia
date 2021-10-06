@@ -1,0 +1,272 @@
+
+{reverse} = import '@fink/std-lib/iter.fnk'
+
+{transform} = import '../transform.fnk'
+{unique_or_id, ir_fn, get_refs} = import '../context.fnk'
+{transform_key, members_as_rec} = import '../literals/record.fnk'
+{cc} = import '../func/init.fnk'
+
+{lst_h, lst_t, lst_r, rec_g, rec_d} = import '../assignment/init.fnk'
+
+
+
+ac = fn cont_id, name_or_id, {loc}, ctx:
+  ir_fn 'ac', [cont_id], name_or_id, {loc}, ctx
+
+
+cn = fn args, body, name_or_id, {loc}, ctx:
+  ir_fn 'cn', [args, [...body]], name_or_id, {loc}, ctx
+
+
+cif = fn cond_id, true_id, else_id, name_or_id, {loc}, ctx:
+  ir_fn 'cif', [cond_id, true_id, else_id], name_or_id, {loc}, ctx
+
+
+is_val = fn val_id, name, {loc}, ctx:
+  ir_fn 'isv', [val_id], name, {loc}, ctx
+
+
+is_l = fn val_id, name_or_id, {loc}, ctx:
+  ir_fn 'is_l', [val_id], name_or_id, {loc}, ctx
+
+
+is_r = fn val_id, name_or_id, {loc}, ctx:
+  ir_fn 'is_r', [val_id], name_or_id, {loc}, ctx
+
+
+is_eq = fn left_id, right_id, name_or_id, {loc}, ctx:
+  ir_fn '==', [left_id, right_id], name_or_id, {loc}, ctx
+
+
+
+
+transform_exprs = fn [expr=false, ...rest], ctx, out, last_id:
+  match expr:
+    false:
+      [out, last_id, ctx]
+    else:
+      [foo, id, next_ctx] = transform expr, 'result', ctx
+      transform_exprs rest, next_ctx, [...out, ...foo], id
+
+
+
+ht = fn [items_id, items], expr, ctx:
+  [head, head_id, tail_ctx] = lst_h items_id, 'itm', expr, ctx
+  [tail, tail_id, next_ctx] = lst_t items_id, expr, tail_ctx
+
+  list:
+    [head_id, [...items, ...head]]
+    [tail_id, [...tail]]
+    next_ctx
+
+
+
+transform_with_partial = fn expr, name, val_id, {partial_ident, ...ctx}:
+  [out, id, next_ctx] = transform expr, name, {...ctx, partial_ident: val_id}
+  [out, id, {...next_ctx, partial_ident}]
+
+
+
+match_any = fn [val_id, val], expr, gen_true, else_id, ctx:
+  [val_cond, cond_id, true_ctx] = is_val val_id, 'cond', expr, ctx
+  [true_cont, true_id, cif_ctx] = gen_true true_ctx
+  [if_exp, , cn_ctx] = cif cond_id, true_id, else_id, , expr, cif_ctx
+
+  body = list:
+    ...val
+    ...val_cond
+    ...true_cont
+    ...if_exp
+
+  cn [], body, 'match', expr, cn_ctx
+
+
+
+match_eq = fn [val_id, val], expr, gen_true, else_id, ctx:
+  [right, right_id, cond_ctx] = transform_with_partial expr, 'val', val_id, ctx
+
+  left_id = match get_refs val_id, cond_ctx:
+    ? > 0: {i: 'true'}
+    else: val_id
+
+  [eq_cond, cond_id, true_ctx] = is_eq left_id, right_id, 'cond', expr, cond_ctx
+  [true_cont, true_id, cif_ctx] = gen_true true_ctx
+
+  [if_exp, , cn_ctx] = cif cond_id, true_id, else_id, , expr, cif_ctx
+
+
+  body = list:
+    ...val
+    ...right
+    ...eq_cond
+    ...true_cont
+    ...if_exp
+
+  cn [], body, 'match', expr, cn_ctx
+
+
+
+match_items = fn items, [expr, ...rest], gen_true, else_id, ctx, match_expr:
+  match expr:
+    {type: 'empty'}:
+      # [tail_id, next_ctx] = unique_or_id 'tail', expr, ctx
+      [items_id, foo] = items
+      [lst, tail_id, next_ctx] = lst_t items_id, expr, ctx
+      tail = [tail_id, [...foo, ...lst]]
+      match_items tail, rest, gen_true, else_id, next_ctx, match_expr
+
+
+    {type: 'spread', right: false}:
+      [items_id, foo] = items
+      [lst, tail_id, next_ctx] = lst_r items_id, 'rtail', expr, ctx
+      tail = [tail_id, [...foo, ...lst]]
+      rev_rest = reverse rest
+      match_items tail, rev_rest, gen_true, else_id, next_ctx, match_expr
+
+
+    {type: 'spread'}:
+      # TODO: add support for middle spread
+      match_expr items, expr.right, gen_true, else_id, ctx
+
+    else:
+      [item, tail, next_ctx] = ht items, expr, ctx
+
+      match_rest = match rest:
+        [?]: fn ctx:
+          match_items tail, rest, gen_true, else_id, ctx, match_expr
+        else:
+          gen_true
+
+      match_expr item, expr, match_rest, else_id, next_ctx
+
+
+
+match_list = fn [val_id, val_prereq], expr, gen_true, else_id, ctx, match_expr:
+  [lst_check, is_lst_id, items_ctx] = is_l val_id, 'is_lst', expr, ctx
+
+  [items_match, match_id, cif_ctx] = match_items
+    [val_id, []], expr.exprs, gen_true, else_id, items_ctx, match_expr
+
+  [if_exp, , cn_ctx] = cif is_lst_id, match_id, else_id, , expr, cif_ctx
+
+  body = list:
+    ...val_prereq
+    ...lst_check
+    ...items_match
+    ...if_exp
+
+  cn [], body, 'match_lst', expr, cn_ctx
+
+
+
+match_props = fn rec_val, [expr, ...rest], gen_true, else_id, ctx, match_expr, keys=[]:
+  match expr:
+    {type: 'spread'}:
+      [rec_id, val] = rec_val
+      [sprd, val_id, next_ctx] = rec_d rec_id, keys, 'spread', expr, ctx
+      match_expr [val_id, [...val, ...sprd]], expr.right, gen_true, else_id, next_ctx
+
+
+    {type: 'rec:kv', left.type: 'member'}:
+      {exprs} = members_as_rec expr.left, expr.right
+      match_props rec_val, [...exprs, ...rest], gen_true, else_id, ctx, match_expr, keys
+
+
+    {type: 'rec:kv'}:
+      [rec_id, val] = rec_val
+      [key, key_id, rec_ctx] = transform_key expr.left, ctx
+      [item, item_id, next_ctx] = rec_g rec_id, key_id, 'itm', expr, rec_ctx
+
+      val_expr = match expr:
+        {right: false}: expr.left
+        else: expr.right
+
+      match_rest = match rest:
+        [?]: fn ctx:
+          match_props [rec_id, []], rest, gen_true, else_id, ctx, match_expr, [...keys, key_id]
+        else:
+          gen_true
+
+      match_expr [item_id, [...val, ...key, ...item]], val_expr, match_rest, else_id, next_ctx
+
+
+
+match_rec = fn [val_id, val_prereq], expr, gen_true, else_id, ctx, match_expr:
+  [rec_check, is_rec_id, match_ctx] = is_r val_id, 'is_rec', expr, ctx
+
+  [props_match, match_id, cif_ctx] = match_props
+    [val_id, []], expr.exprs, gen_true, else_id, match_ctx, match_expr
+
+  [if_exp, , cn_ctx] = cif is_rec_id, match_id, else_id, , expr, cif_ctx
+
+  body = list:
+    ...val_prereq
+    ...rec_check
+    ...props_match
+    ...if_exp
+
+  cn [], body, 'match_rec', expr, cn_ctx
+
+
+
+match_expr = fn val, expr, gen_true, else_id, ctx:
+  mx = match_expr
+  match expr:
+    {type: 'list'}:
+      match_list val, expr, gen_true, else_id, ctx, mx
+
+    {type: 'rec'}:
+      match_rec val, expr, gen_true, else_id, ctx, mx
+
+    {type: 'partial'}:
+      match_any val, expr, gen_true, else_id, ctx
+
+    else:
+      match_eq val, expr, gen_true, else_id, ctx
+
+
+
+match_res_exprs = fn exprs, name, ret_id, {loc}, ctx:
+  {scopes} = ctx
+  cond_ctx = {...ctx, scopes: [{}, ...scopes]}
+  [block, res_id, ret_ctx] = transform_exprs exprs, cond_ctx, []
+  [ret, , next_ctx] = cc ret_id, res_id, , {loc}, ret_ctx
+  [a, b, todo] = cn [], [...block, ...ret], name, {loc}, next_ctx
+  [a, b, {...todo, scopes}]
+
+
+
+match_conditions = fn [expr=false, ...else_exprs], [val_id, val], ret_id, ctx:
+  match expr:
+    false:
+      match_res_exprs [], 'else', ret_id, {todo: 'loc'}, ctx
+
+    {op: 'else'}:
+      match_res_exprs expr.exprs, 'else', ret_id, {loc: expr.loc}, ctx
+
+    else:
+      {left, right: true_expr} = expr
+
+      gen_true = fn ctx:
+        match_res_exprs true_expr.exprs, 'match_res', ret_id, true_expr, ctx
+
+      [el, else_id, next_ctx] = match_conditions else_exprs, [val_id, []], ret_id, ctx
+
+      match_expr [val_id, [...val, ...el]], left, gen_true, else_id, next_ctx
+
+
+
+transform_match = fn node, result, ctx:
+  [ret_id, v_ctx] = unique_or_id 'ret', node, ctx
+
+  [input] = node.args
+  [value, val_id, cond_ctx] = transform input, 'value', v_ctx
+  exprs = node.exprs
+  [[[{args: [, conds]}]], match_id, next_ctx] = match_conditions exprs, [val_id, []], ret_id, cond_ctx
+
+  [cont, , ac_ctx] = cn [ret_id], conds, match_id, node, next_ctx
+  [acont, , end_ctx] = ac match_id, result, node, ac_ctx
+
+  out = [...value, ...cont, ...acont]
+  [out, end_ctx]
+

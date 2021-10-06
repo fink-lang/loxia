@@ -1,0 +1,48 @@
+{transform} = import '../transform.fnk'
+{lst, lst_a} = import '../literals/list.fnk'
+{let} = import '../identifier/init.fnk'
+{transform_with_partial, af} = import './call.fnk'
+
+
+
+apply_step = fn callee_id, arg_id, {loc}, ctx:
+  [emp, empty_id, args_ctx] = lst 'args', {loc}, ctx
+
+  [args, args_id, ppr_ctx] = match arg_id:
+    false:
+      [emp, empty_id, args_ctx]
+    else:
+      [with_arg, args_id, next_ctx] = lst_a empty_id, arg_id, 'args', {loc}, args_ctx
+      [[...emp, ...with_arg], args_id, next_ctx]
+
+  [call, res_id, next_ctx] = af callee_id, args_id, 'ppr', {loc}, ppr_ctx
+  [[...args, ...call], res_id, next_ctx]
+
+
+
+pipe_all =  fn [expr=false, ...exprs], prev_res_id, ctx, out=[]:
+  match expr:
+    false:
+      [out, prev_res_id, ctx]
+
+    else:
+      [callee, callee_id, step_ctx] = transform_with_partial expr, 'pfn', ctx
+      {partial_ident: _, ...next_ctx} = step_ctx
+      [call, res_id, end_ctx] = apply_step callee_id, prev_res_id, expr, next_ctx
+      pipe_all exprs, res_id, end_ctx, [...out, ...callee, ...call]
+
+
+
+transform_pipe = fn expr, result, ctx:
+  [val, val_id, pipe_ctx] = match expr.args:
+    [?]:
+      [start_val] = expr.args
+      transform start_val, 'pps', ctx
+    else:
+      [[], false, ctx]
+
+  [calls, res_id, next_ctx] = pipe_all expr.exprs, val_id, pipe_ctx
+  [res, , end_ctx] = let res_id, result, expr, next_ctx
+  [[...val, ...calls, ...res], end_ctx]
+
+

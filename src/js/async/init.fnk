@@ -1,20 +1,33 @@
-babel_types = import '@babel/types'
-{awaitExpression} = babel_types
+types = import '@babel/types'
+{awaitExpression, isArrowFunctionExpression} = types
+{set_props} = import '@fink/js-interop/reflect.fnk'
 
-{add, any} = import '../context.fnk'
-{transform} = import '../transform.fnk'
+{add, get_js, set_js2} = import '../context.fnk'
+
+
+[no_result] = []
+
+
+transform_async = fn path:
+  match path:
+    isArrowFunctionExpression ?:
+      set_props path.node, {async: true}
+
+    {parentPath: ?}:
+      transform_async path.parentPath
+
+  no_result
 
 
 
-transform_await = fn node, ctx:
-  [right, next_ctx] = transform node.right, ctx
-  js = awaitExpression right
-
-  [js, next_ctx]
+transform_wt = fn expr, ctx:
+  [{args: [right_id]}] = expr
+  js = awaitExpression get_js right_id, ctx
+  set_js2 expr, js, ctx
 
 
 
 add_async = fn ctx:
   pipe ctx:
-    add 'await', any, transform_await
+    add 'wt', transform_wt
 

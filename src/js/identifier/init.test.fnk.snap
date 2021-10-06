@@ -1,67 +1,62 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`identifiers does not escape true, false 1`] = `"export const foo = [true, false];"`;
-
-exports[`identifiers does not escapes unicode names 1`] = `
-"export const ƒ = shrub;
-export const π = ni;
-export const ಠ_ಠ = 1234;"
+exports[`identifiers does not escape true, false 1`] = `
+"const foo_0 = [true, false];
+export const foo = foo_0;"
 `;
 
-exports[`identifiers escapes hyphenated idents 1`] = `"export const fooᜭbar = spamᜭni;"`;
+exports[`identifiers does not escapes unicode names 1`] = `
+"export const ƒ = shrub,
+      π = ni,
+      ಠ_ಠ = 1234;"
+`;
+
+exports[`identifiers escapes hyphenated idents 1`] = `
+"const fooᜭbar_0 = spam + niᜭni;
+export const fooᜭbar = fooᜭbar_0;"
+`;
 
 exports[`identifiers escapes reserved JS identifiers 1`] = `
-"const {
-  \\"do\\": ˆdo,
-  \\"if\\": ˆif,
-  \\"in\\": ˆin,
-  \\"for\\": ˆfor,
-  \\"let\\": ˆlet,
-  \\"new\\": ˆnew,
-  \\"try\\": ˆtry,
-  \\"var\\": ˆvar,
-  \\"case\\": ˆcase,
-  \\"enum\\": ˆenum,
-  \\"void\\": ˆvoid
-} = foobar;
-const {
-  \\"with\\": ˆwith,
-  \\"break\\": ˆbreak,
-  \\"catch\\": ˆcatch,
-  \\"class\\": ˆclass,
-  \\"const\\": ˆconst,
-  \\"super\\": ˆsuper,
-  \\"while\\": ˆwhile,
-  \\"yield\\": ˆyield,
-  \\"delete\\": ˆdelete
-} = spam;
-const {
-  \\"export\\": ˆexport,
-  \\"import\\": ˆimport,
-  \\"public\\": ˆpublic,
-  \\"return\\": ˆreturn,
-  \\"static\\": ˆstatic,
-  \\"switch\\": ˆswitch,
-  \\"typeof\\": ˆtypeof,
-  \\"default\\": ˆdefault
-} = ham;
-const {
-  \\"extends\\": ˆextends,
-  \\"finally\\": ˆfinally,
-  \\"package\\": ˆpackage,
-  \\"private\\": ˆprivate,
-  \\"continue\\": ˆcontinue,
-  \\"function\\": ˆfunction
-} = ni;
-const {
-  \\"arguments\\": ˆarguments,
-  \\"interface\\": ˆinterface,
-  \\"protected\\": ˆprotected,
-  \\"implements\\": ˆimplements,
-  \\"instanceof\\": ˆinstanceof
-} = nu;
-const {
-  \\"undefined\\": ˆundefined,
-  \\"null\\": ˆnull
-} = nu;"
+"export const ˆdo = 1,
+      ˆif = 1,
+      ˆin = 1,
+      ˆfor = 1,
+      ˆlet = 1,
+      ˆnew = 1,
+      ˆtry = 1,
+      ˆvar = 1,
+      ˆcase = 1,
+      ˆenum = 1,
+      ˆvoid = 1,
+      ˆwith = 1,
+      ˆbreak = 1,
+      ˆcatch = 1,
+      ˆclass = 1,
+      ˆconst = 1,
+      ˆsuper = 1,
+      ˆwhile = 1,
+      ˆyield = 1,
+      ˆdelete = 1,
+      ˆexport = 1,
+      ˆimport = 1,
+      ˆpublic = 1,
+      ˆreturn = 1,
+      ˆstatic = 1,
+      ˆswitch = 1,
+      ˆtypeof = 1,
+      ˆdefault = 1,
+      ˆextends = 1,
+      ˆfinally = 1,
+      ˆpackage = 1,
+      ˆprivate = 1,
+      ˆcontinue = 1,
+      ˆfunction = 1,
+      ˆarguments = 1,
+      ˆinterface = 1,
+      ˆprotected = 1,
+      ˆimplements = 1,
+      ˆinstanceof = 1,
+      ˆundefined = 1,
+      ˆnull = 1;
+export default 1;"
 `;

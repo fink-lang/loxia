@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`keywords transforms literals 1`] = `
+"
+rec_e fn exports_0:
+  id false, fn x_0:
+    str 'x', fn key_0:
+      rec_s exports_0, key_0, x_0, fn exports_1:
+        id true, fn y_0:
+          str 'y', fn key_1:
+            rec_s exports_1, key_1, y_0, fn exports_2:
+              lst_e fn drctvs_0:
+                mod exports_2, drctvs_0, fn mod_0:"
+`;

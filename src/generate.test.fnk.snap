@@ -3,35 +3,108 @@
 exports[`module types compiles to cjs 1`] = `
 "require(\\"foobar\\");
 
-const foo = require(\\"shrub\\");
+const foo_0 = require(\\"shrub\\");
 
 const {
-  bar: spam,
-  ni
+  bar: spam_0
 } = require(\\"ni\\");
 
-// reserved words import
 const {
-  default: dflt,
-  ˆif
+  ni: ni_0
+} = require(\\"ni\\");
+
+const {
+  ˆdefault: dflt_0
 } = require(\\"es6-module\\");
 
-const shrub = ni;
-exports.shrub = shrub;
-// reserved export
-const ˆcase = ni;
-exports.ˆcase = ˆcase;
-exports.default = shrub;"
+const {
+  ˆif: if_0
+} = require(\\"es6-module\\");
+
+const out_0 = [dflt_0, if_0, spam_0, ni_0, foo_0];
+module.exports = ni_0;
+exports.shrub = ni_0;
+exports.ˆcase = ni_0;
+exports.ˆdefault = ni_0;
+exports.out = out_0;"
 `;
 
 exports[`module types compiles to mjs 1`] = `
 "import \\"foobar\\";
-import foo from \\"shrub\\";
-import { bar as spam, ni } from \\"ni\\";
-// reserved words import
-import { default as dflt, ˆif } from \\"es6-module\\";
-export const shrub = ni;
-// reserved export
-export const ˆcase = ni;
-export default shrub;"
+import foo_0 from \\"shrub\\";
+import { bar as spam_0 } from \\"ni\\";
+import { ni as ni_0 } from \\"ni\\";
+import { ˆdefault as dflt_0 } from \\"es6-module\\";
+import { ˆif as if_0 } from \\"es6-module\\";
+const out_0 = [dflt_0, if_0, spam_0, ni_0, foo_0];
+export const shrub = ni_0,
+      ˆcase = ni_0,
+      ˆdefault = ni_0,
+      out = out_0;
+export default ni_0;"
+`;
+
+exports[`source maps compiles to mjs 1`] = `
+"const foo_0 = {
+  bar: 12345,
+  \\"spam ni\\": 345,
+  nanu: 345
+};
+const bar_0 = \`foo\`;
+const ham_0 = \`foo: \${foo_0} bar:\${bar_0}\`;
+const el_0 = <Foo>bar {123} <div foo={134} bar={bar_0} spam={345} /></Foo>;
+const ni_0 = spam + fooᜭbar;
+const item_0 = \`ni\`;
+const a_0 = [1, item_0];
+const out_0 = [a_0, 1, item_0];
+
+const func_0 = (x_0, y_0) => {
+  return x_0 + y_0 + 1;
+};
+
+const y_1 = func_0(bar_0, a_0, 1);
+spam(ham_0);
+const r1_0 = {
+  foo: foo_0,
+  bar: bar_0,
+  spam: 123
+};
+export const nanu = 345,
+      foo = foo_0,
+      bar = bar_0,
+      ham = ham_0,
+      el = el_0,
+      ni = ni_0,
+      a = a_0,
+      out = out_0,
+      func = func_0,
+      y = y_1,
+      r1 = r1_0;
+{
+  \\"version\\": 3,
+  \\"sources\\": [
+    \\"test.fnk\\"
+  ],
+  \\"names\\": [
+    \\"foo\\",
+    \\"bar\\",
+    \\"nanu\\",
+    \\"ham\\",
+    \\"el\\",
+    \\"div\\",
+    \\"spam\\",
+    \\"ni\\",
+    \\"foo-bar\\",
+    \\"a\\",
+    \\"out\\",
+    \\"c\\",
+    \\"b\\",
+    \\"func\\",
+    \\"x\\",
+    \\"y\\",
+    \\"r1\\"
+  ],
+  \\"mappings\\": \\"AACAA,MAAAA,KAAG,GAAiC;AAA7BC,EAAAA,GAA6B,EAAxB,KAAwB;AAAjB,WAAiB,EAANC,GAAM;AAAAA,EAAAA,IAAI,EAAJA;AAAA,CAApCF;AACAC,MAAAA,KAAG,GAAI,KAAPA;AACAE,MAAAA,KAAG,GAAI,QAAOH,KAAI,QAAOC,KAAG,EAA5BE;AACAC,MAAAA,IAAE,GAAG,KAAK,IAAI,KAAK,CAAC,CAACC,GAAD,CAAKL,GAAL,CAAS,KAAT,CAAaC,GAAb,CAAaA,CAAAA,KAAG,CAAhB,CAAiBK,IAAjB,CAAsBJ,KAAtB,GAAf,MAALE;AACAG,MAAAA,IAAE,GAAGD,IAAI,GAAGE,OAAZD;AACQ,MAAA,MAAI,GAAH,IAAD;AAARE,MAAAA,GAAC,GAAO,CAAH,CAAG,EAAA,MAAI,CAAZA;AAEAC,MAAAA,KAAG,GAAUC,CAANF,GAAME,EAAHC,CAAGD,EAAAA,MAAC,CAAdD;;AACAG,MAAAA,MAAI,GAAG,CAAGC,GAAH,EAAMC,GAAN;AACL,SAAAD,GAAC,GAAGC,GAAJ,GAAQH,CAAR;AADK,CAAPC;;AAEAE,MAAAA,GAAC,GAAGF,MAAI,CAACZ,KAAD,EAAMQ,GAAN,EAASG,CAAT,CAARG;AACAT,IAAI,CAACH,KAAD,CAAJ;AACAa,MAAAA,IAAE,GAAc;AAAVhB,EAAAA,GAAU,EAAVA,KAAU;AAALC,EAAAA,GAAK,EAALA,KAAK;AAAAK,EAAAA,IAAI,EAAE;AAAN,CAAhBU;aAbAd,IAAI,GAAJA,G;MACAF,GAAG,GAAHA,K;MACAC,GAAG,GAAHA,K;MACAE,GAAG,GAAHA,K;MACAC,EAAE,GAAFA,I;MACAG,EAAE,GAAFA,I;MACAE,CAAC,GAADA,G;MAEAC,GAAG,GAAHA,K;MACAG,IAAI,GAAJA,M;MAEAE,CAAC,GAADA,G;MAEAC,EAAE,GAAFA,I\\"
+}
+"
 `;

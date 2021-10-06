@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`member compiles 1`] = `
+"
+rec_e fn exports_0:
+  id spam, fn left_0:
+    str 'shrub', fn key_0:
+      rec_g left_0, key_0, fn foo_0:
+        str 'foo', fn key_1:
+          rec_s exports_0, key_1, foo_0, fn exports_1:
+            id item, fn left_1:
+              str 'bar spam', fn str_0:
+                strt str_0, fn key_2:
+                  rec_g left_1, key_2, fn computed_member_0:
+                    str 'computed_member', fn key_3:
+                      rec_s exports_1, key_3, computed_member_0, fn exports_2:
+                        id item, fn left_2:
+                          id get_key, fn callee_0:
+                            lst_e fn cargs_0:
+                              id foo_0, fn arg_0:
+                                lst_a cargs_0, arg_0, fn cargs_1:
+                                  af callee_0, cargs_1, fn key_4:
+                                    rec_g left_2, key_4, fn computed_member2_0:
+                                      str 'computed_member2', fn key_5:
+                                        rec_s exports_2, key_5, computed_member2_0, fn exports_3:
+                                          id item, fn left_3:
+                                            str 'arguments', fn key_6:
+                                              rec_g left_3, key_6, fn reserved_prop_0:
+                                                str 'reserved_prop', fn key_7:
+                                                  rec_s exports_3, key_7, reserved_prop_0, fn exports_4:
+                                                    lst_e fn lst_1:
+                                                      id item, fn left_5:
+                                                        str 'π', fn key_9:
+                                                          rec_g left_5, key_9, fn item_1:
+                                                            lst_a lst_1, item_1, fn lst_0:
+                                                              id item, fn left_4:
+                                                                str 'ƒ', fn key_8:
+                                                                  rec_g left_4, key_8, fn item_0:
+                                                                    lst_a lst_0, item_0, fn js_safe_unicode_0:
+                                                                      str 'js_safe_unicode', fn key_10:
+                                                                        rec_s exports_4, key_10, js_safe_unicode_0, fn exports_5:
+                                                                          id item, fn left_6:
+                                                                            str 'foo-bar', fn key_11:
+                                                                              rec_g left_6, key_11, fn js_unsfae_0:
+                                                                                str 'js_unsfae', fn key_12:
+                                                                                  rec_s exports_5, key_12, js_unsfae_0, fn exports_6:
+                                                                                    lst_e fn drctvs_0:
+                                                                                      mod exports_6, drctvs_0, fn mod_0:"
+`;
+
+exports[`member compiles partial 1`] = `
+"ˆpartial => ˆpartial.foo;
+
+ˆpartial => ˆpartial.foo.bar;
+
+ˆpartial => ˆpartial.foo === bar;"
+`;

@@ -1,0 +1,234 @@
+{fink2lir} = import '../../testing/generate.fnk'
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+describe 'match', fn:
+  it 'matches simple values', fn:
+    expect
+      fink2lir '
+        match shrub:
+          123: spam
+          456: ni
+          else: shrub
+      '
+      to_match_snapshot
+
+  it 'compiles without else', fn:
+    expect
+      fink2lir '
+        match shrub:
+          123: spam
+      '
+      to_match_snapshot
+
+
+  it 'matches value assertions', fn:
+    expect
+      fink2lir '
+        match 123:
+          # simple unary
+          not ?: ni
+
+          # simple binary
+          ? > 123: ni
+
+          # simple call
+          ? _: ni
+
+          # simple as call arg
+          shrub ?: ni
+
+          # any value
+          ?: true
+      '
+      to_match_snapshot
+
+
+  it 'compiles nested match', fn:
+    expect
+      fink2lir '
+        match foo:
+          bar:
+            match spam:
+              shrub: ni
+      '
+      to_match_snapshot
+
+
+
+describe 'match iterables', fn:
+  it 'matches values', fn:
+    expect
+      fink2lir '
+        match foo:
+          [1, 2]: ni
+          [3, 4, ni]: ni
+          else: foo
+      '
+      to_match_snapshot
+
+  it 'matches nested tuples', fn:
+    expect
+      fink2lir '
+        match shrub:
+          [3, 4, [ni]]: ni
+          [1, [2, 3]]: [ni, ni]
+      '
+      to_match_snapshot
+
+
+  skip.it 'matches empty tuples', fn:
+    expect
+      fink2lir '
+        match shrub:
+          []: foo
+          [1, 2, []]: foo
+      '
+      to_match_snapshot
+
+
+  it 'matches ignored items', fn:
+    expect
+      fink2lir '
+        match foo:
+          [1, , 2]: ni
+          else: foo
+      '
+      to_match_snapshot
+
+
+  it 'matches complex values', fn:
+    expect
+      fink2lir '
+        match shrub:
+          # deep iterable comparison
+          [3, 4, [ni]]: ni
+          # TODO: fix semantics for matching [], {}
+          # [5, 6, [], {}]: foo
+          [1, [2, 3], 4]: bar
+          [1, [2, [3, 4]], [5, 6], 7]: spam
+      '
+      to_match_snapshot
+
+
+  it 'matches spread', fn:
+    expect
+      fink2lir '
+        match shrub:
+          [1, ..., 3]: foo
+          [..., 4]: foo
+      '
+      to_match_snapshot
+
+
+  it 'matches value assertions', fn:
+     expect
+      fink2lir '
+        match foo:
+          # nested unary
+          [not ?]: ni
+
+          # any value
+          [?]: true
+
+          # nested binary
+          [? > 123]: ni
+
+          # nested call
+          [? _]: ni
+
+          # nested member call
+          [?.is_foo _]: ni
+
+          # nested as call arg
+          [is_foo ?, bar]: ni
+
+          [1, ...is_empty ?]: ni
+          [1, ...(1 < length ?)]: ni
+      '
+      to_match_snapshot
+
+
+
+describe 'match records', fn:
+  it 'matches props', fn:
+    expect
+      fink2lir "
+        match shrub:
+          {foo, bar}: ni
+          # TODO: fix semantics for matching {}
+          # {foo: {}}: spam + ni
+          # TODO: fix semantics for matching []
+          # {foo: []}: spam + ni
+          {foo: 4, ni: {na, nu}}: spam + ni
+          {foo: 1, foo: {bar: 'spam'}, shrub: {na: 'nu'}}: ni
+          {ni: {len: 1}, na: {len: 1}}: na
+          {ni: [na, 123]}: na
+      "
+      to_match_snapshot
+
+
+  it 'matches calculated props', fn:
+    expect
+      fink2lir '
+        match shrub:
+          # calculated props
+          {(a): {b, c}}: ni
+      '
+      to_match_snapshot
+
+
+  it 'matches spread', fn:
+    expect
+      fink2lir '
+        match shrub:
+          # spread
+          {(foo): {x}, ...{bar, spam}}: ni
+      '
+      to_match_snapshot
+
+
+  it 'matches member expr keys', fn:
+    expect
+      fink2lir '
+        match foo:
+          {foo.bar.spam: ham}: spam
+      '
+      to_match_snapshot
+
+    expect
+      fink2lir '
+        match foo:
+          {foo.bar.spam: {ham.ni: nu}}: spam
+      '
+      to_match_snapshot
+
+
+  it 'matches value assertions', fn:
+     expect
+      fink2lir '
+        match foo:
+          # nested unary
+          {spam: not ?}: ni
+
+          # nested binary
+          {spam: ? > 123}: ni
+
+          # nested call
+          {spam: ? _}: ni
+
+          # nested member call
+          {spam: ?.is_foo _}: ni
+
+          # nested as call arg
+          {spam: is_foo ?}: ni
+
+          {spam, ...is_empty ?}: ni
+          {spam, ...("foo" in ?)}: ni
+
+          # any value
+          {spam: ?}: true
+      '
+      to_match_snapshot
+
+

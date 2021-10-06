@@ -1,10 +1,9 @@
-{fink2js} = import '../../testing/generate.fnk'
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{fink2js} = import '../../testing/generate.fnk'
 
 
 describe 'await', fn:
   it 'compiles', fn:
-
     expect
       fink2js '
         task1 = fn foo: -await foo
@@ -13,7 +12,7 @@ describe 'await', fn:
 
         task3 = fn foo:
           spam = await foo _
-          bar + 123
+          bar + 123 + spam
 
         a_gen = unfold fn curr=0:
           match shrub:
@@ -25,13 +24,12 @@ describe 'await', fn:
       to_match_snapshot
 
 
-  it 'handles awaiting async iterables', fn:
-
+  it 'does not inline into func body', fn:
     expect
       fink2js '
-        [await foo, bar] = pipe:
-          unfold fn cntr=0:
-            await cntr + 1
+        task1 = fn foo:
+          bar = await foo
+          shrub fn ni:
+            ni + bar
       '
       to_match_snapshot
-

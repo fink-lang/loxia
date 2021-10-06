@@ -1,0 +1,99 @@
+{fink2lir} = import '../testing/generate.fnk'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+
+describe 'optimize', fn:
+  it 'foo', fn:
+    expect
+      fink2lir '
+        a = 1
+        b = 2
+        c = [a, b]
+        [d, e] = c
+        f = d + e
+      ', {optimize: {refs: true, tails: true, unused: true}}
+      to_match_snapshot
+
+
+  it 'optimizes values', fn:
+    expect
+      fink2lir '
+        y = [1, 2]
+        x = 3
+        [foo, [bar, ni], shrub] = [4, [x, 5], y]
+        [..., spam] = y
+        [...sp, spam] = [1, 2, 3]
+        [x] = sp
+        [...spl] = lala
+        log foo, bar, ni, shrub, spam, sp, x, spl
+      ', {optimize: {refs: true, tails: true, unused: true}}
+      to_match_snapshot
+
+
+  it 'optimizes functions', fn:
+    expect
+      fink2lir '
+        ni = 123
+
+        spam = fn foo, bar:
+          [a, b] = [bar, foo]
+          a + b + ni
+
+        spam foo, bar
+      ', {optimize: {refs: true, tails: true, unused: true}}
+      to_match_snapshot
+
+
+  it 'optimizes conts', fn:
+    expect
+      fink2lir '
+        ni = 123
+
+        spam = fn foo, bar:
+          [spam, ham] = match foo:
+            bar: [1, ni]
+            else: [2, ni * 2]
+
+          spam + ni + ham
+
+        spam foo, bar
+      ', {optimize: {refs: true, tails: true, unused: true}}
+      to_match_snapshot
+
+
+  it 'optimizes ac ...>> res: cc ..., res', fn:
+    expect
+      fink2lir '
+        gcd = fn x, y:
+          match y:
+            0: x
+            else: gcd y, x % y
+      ', {optimize: {refs: true, tails: true, unused: true}}
+      to_match_snapshot
+
+
+  it 'optimizes using short names', fn:
+    expect
+      fink2lir '
+        ham = 3
+
+        foobar = spam + ham
+
+        shrurb = fn spam, ham:
+          spam + ham
+
+        nanu = fn foo, bar:
+          foo + bar + ham
+
+        ni = fn foo, bar, spam, ham, ni:
+          [foo, bar, spam, ham, ni]
+
+        na = fn foo, bar, spam, ham, ni:
+          [foo, bar, spam, ham, ni]
+
+        nu = fn foo, bar, spam, ham, ni:
+          [foo, bar, spam, ham, ni]
+
+      ', {optimize: {refs: true, tails: true, unused: true, names: true}}
+      to_match_snapshot

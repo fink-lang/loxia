@@ -1,0 +1,26 @@
+{fink2lir} = import '../../testing/generate.fnk'
+{describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+describe 'await', fn:
+  it 'compiles', fn:
+
+    expect
+      fink2lir '
+        task1 = fn foo: -await foo
+
+        task2 = fn foo: await (foo + 4)
+
+        task3 = fn foo:
+          spam = await foo _
+          bar + 123
+
+        a_gen = unfold fn curr=0:
+          match shrub:
+            spam: await ni curr
+            else: curr + 1
+
+        await ni
+      '
+      to_match_snapshot
+

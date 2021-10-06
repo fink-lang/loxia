@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`group compiles 1`] = `
+"
+rec_e fn exports_0:
+  id bar, fn a_0:
+    id spam, fn callee_0:
+      lst_e fn cargs_0:
+        id a_0, fn arg_0:
+          lst_a cargs_0, arg_0, fn cargs_1:
+            af callee_0, cargs_1, fn foo_0:
+              str 'foo', fn key_0:
+                rec_s exports_0, key_0, foo_0, fn exports_1:
+                  lst_e fn drctvs_0:
+                    mod exports_1, drctvs_0, fn mod_0:"
+`;

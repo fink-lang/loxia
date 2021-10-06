@@ -1,37 +1,66 @@
-babel_types = import '@babel/types'
-{templateElement, templateLiteral, taggedTemplateExpression} = babel_types
+types = import '@babel/types'
+{templateLiteral, taggedTemplateExpression, templateElement} = types
+
 {rx, replace_all} = import '@fink/std-lib/regex.fnk'
-{map, filter} = import '@fink/std-lib/iter.fnk'
 
-{transform, drop_if, map_with_ctx, collect_with_ctx} = import '../transform.fnk'
-
+{add, get_js, set_js2} = import '../context.fnk'
 
 
-transform_string = fn node, ctx:
-  {exprs: parts, tag} = node
 
-  quasies = pipe parts:
-    filter ?.type == 'string:text'
 
-    map fn part:
-      templateElement rec:
-        raw: replace_all
-          part.value
-          rx'\\([\s\S])|(`)'
-          '\\$1$2'
+transform_str = fn expr, ctx:
+  [{args: [value], loc}] = expr
+  raw = replace_all
+    value
+    rx'\\([\s\S])|([`])'
+    '\\$1$2'
 
-  [expressions, next_ctx] = pipe parts:
-    drop_if ?.type == 'string:text'
-    map_with_ctx transform
-    collect_with_ctx ctx
+  js = templateLiteral
+    list:
+      rec:
+        ...templateElement {raw}
+        loc
+    []
+  set_js2 expr, js, ctx
 
-  templ_str = templateLiteral [...quasies], expressions
 
-  match tag:
-    false:
-      [templ_str, next_ctx]
+
+split_exprs = fn [part=false, ...parts], ctx, isq=true, quasis=[], exprs=[]:
+  match part:
+    false: [quasis, exprs]
     else:
-      [tag, end_ctx] = transform node.tag, next_ctx
-      tagged_str = taggedTemplateExpression tag, templ_str
-      [tagged_str, end_ctx]
+      js = get_js part, ctx
+      match true:
+       isq:
+          [elem] = js.quasis
+          split_exprs parts, ctx, false, [...quasis, elem], exprs
+        else:
+          split_exprs parts, ctx, true, quasis, [...exprs, js]
+
+
+
+transform_template = fn expr, ctx:
+  [{args: parts}] = expr
+  [quasis, exprs] = split_exprs parts, ctx
+  js = templateLiteral quasis, exprs
+  set_js2 expr, js, ctx
+
+
+
+transform_tagged_template = fn expr, ctx:
+  [{args: [tag_id, ...parts]}] = expr
+  tag = get_js tag_id, ctx
+  [quasis, exprs] = split_exprs parts, ctx
+  tl = templateLiteral quasis, exprs
+  js = taggedTemplateExpression tag, tl
+  set_js2 expr, js, ctx
+
+
+
+
+add_string = fn ctx:
+  pipe ctx:
+    add 'str', transform_str
+    add 'strt', transform_template
+    add 'strtt', transform_tagged_template
 

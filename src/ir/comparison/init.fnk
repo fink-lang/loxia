@@ -1,0 +1,21 @@
+
+{add, any} = import '../context.fnk'
+{transform_binary} = import '../transform.fnk'
+
+
+
+transform_comp = fn node, res_id, ctx:
+  match node:
+    {left.type: 'comp'}:
+      {left} = node
+      right = {...node, left: left.right}
+      transform_binary 'and', left, right, res_id, node, ctx
+
+    else:
+      transform_binary node.op, node.left, node.right, res_id, node, ctx
+
+
+add_comparison = fn ctx:
+  pipe ctx:
+    add 'comp', any, transform_comp
+

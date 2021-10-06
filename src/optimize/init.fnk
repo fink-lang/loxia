@@ -1,0 +1,55 @@
+{init_ctx} = import '../ir/context.fnk'
+{optimize_unused} = import './unused.fnk'
+{optimize_refs} = import './refs.fnk'
+{optimize_tails} = import './tail-calls.fnk'
+{optimize_names} = import './short-ids.fnk'
+
+
+
+maybe_opt_refs = fn ir, ctx:
+  match ctx:
+    {optimize.refs: true}:
+      [nir] = optimize_refs ir, ctx
+      [nir, init_ctx nir, ctx]
+    else:
+      [ir, ctx]
+
+
+
+maybe_opt_tails = fn ir, ctx:
+  match ctx:
+    {optimize.tails: true}:
+      [nir] = optimize_tails ir, ctx
+      [nir, init_ctx nir, ctx]
+    else:
+      [ir, ctx]
+
+
+
+maybe_opt_unused = fn ir, ctx:
+  match ctx:
+    {optimize.unused: true}:
+      [nir] = optimize_unused ir, ctx
+      [nir, init_ctx nir, ctx]
+    else:
+      [ir, ctx]
+
+
+
+maybe_opt_names = fn ir, ctx:
+  match ctx:
+    {optimize.names: true}:
+      optimize_names ir, ctx
+    else:
+      [ir, ctx]
+
+
+
+optimize = fn exprs, options:
+  pipe [exprs, init_ctx exprs, options]:
+    maybe_opt_refs ...?
+    maybe_opt_tails ...?
+    maybe_opt_unused ...?
+    maybe_opt_names ...?
+
+

@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`comparison compiles as partials 1`] = `
+"ˆpartial => 1 === len(ˆpartial);
+
+ˆpartial => ˆpartial !== 123;
+
+ˆpartial => ˆpartial > 3;
+
+ˆpartial => 1 < ˆpartial && ˆpartial <= 3;"
+`;
+
+exports[`comparison compiles combined 1`] = `
+"
+rec_e fn exports_0:
+  id a, fn left_1:
+    id b, fn right_0:
+      lt left_1, right_0, fn left_0:
+        id b, fn left_2:
+          id c, fn right_2:
+            lt left_2, right_2, fn right_1:
+              and left_0, right_1, fn lt_0:
+                str 'lt', fn key_0:
+                  rec_s exports_0, key_0, lt_0, fn exports_1:
+                    id a, fn left_4:
+                      id b, fn right_3:
+                        gt left_4, right_3, fn left_3:
+                          id b, fn left_5:
+                            id c, fn right_5:
+                              gt left_5, right_5, fn right_4:
+                                and left_3, right_4, fn gt_0:
+                                  str 'gt', fn key_1:
+                                    rec_s exports_1, key_1, gt_0, fn exports_2:
+                                      id a, fn left_7:
+                                        id b, fn right_6:
+                                          eq left_7, right_6, fn left_6:
+                                            id b, fn left_8:
+                                              id c, fn right_8:
+                                                eq left_8, right_8, fn right_7:
+                                                  and left_6, right_7, fn eq_0:
+                                                    str 'eq', fn key_2:
+                                                      rec_s exports_2, key_2, eq_0, fn exports_3:
+                                                        id a, fn left_10:
+                                                          id b, fn right_9:
+                                                            neq left_10, right_9, fn left_9:
+                                                              id b, fn left_11:
+                                                                id c, fn right_11:
+                                                                  neq left_11, right_11, fn right_10:
+                                                                    and left_9, right_10, fn neq_0:
+                                                                      str 'neq', fn key_3:
+                                                                        rec_s exports_3, key_3, neq_0, fn exports_4:
+                                                                          id a, fn left_13:
+                                                                            id b, fn right_12:
+                                                                              gte left_13, right_12, fn left_12:
+                                                                                id b, fn left_14:
+                                                                                  id c, fn right_14:
+                                                                                    gte left_14, right_14, fn right_13:
+                                                                                      and left_12, right_13, fn gteq_0:
+                                                                                        str 'gteq', fn key_4:
+                                                                                          rec_s exports_4, key_4, gteq_0, fn exports_5:
+                                                                                            id a, fn left_16:
+                                                                                              id b, fn right_15:
+                                                                                                lte left_16, right_15, fn left_15:
+                                                                                                  id b, fn left_17:
+                                                                                                    id c, fn right_17:
+                                                                                                      lte left_17, right_17, fn right_16:
+                                                                                                        and left_15, right_16, fn lteq_0:
+                                                                                                          str 'lteq', fn key_5:
+                                                                                                            rec_s exports_5, key_5, lteq_0, fn exports_6:
+                                                                                                              lst_e fn drctvs_0:
+                                                                                                                mod exports_6, drctvs_0, fn mod_0:"
+`;
+
+exports[`comparison compiles simple 1`] = `
+"
+rec_e fn exports_0:
+  id a, fn left_0:
+    id b, fn right_0:
+      lt left_0, right_0, fn lt_0:
+        str 'lt', fn key_0:
+          rec_s exports_0, key_0, lt_0, fn exports_1:
+            id a, fn left_1:
+              id b, fn right_1:
+                gt left_1, right_1, fn gt_0:
+                  str 'gt', fn key_1:
+                    rec_s exports_1, key_1, gt_0, fn exports_2:
+                      id a, fn left_2:
+                        id b, fn right_2:
+                          eq left_2, right_2, fn eq_0:
+                            str 'eq', fn key_2:
+                              rec_s exports_2, key_2, eq_0, fn exports_3:
+                                id a, fn left_3:
+                                  id b, fn right_3:
+                                    neq left_3, right_3, fn neq_0:
+                                      str 'neq', fn key_3:
+                                        rec_s exports_3, key_3, neq_0, fn exports_4:
+                                          id a, fn left_4:
+                                            id b, fn right_4:
+                                              gte left_4, right_4, fn gteq_0:
+                                                str 'gteq', fn key_4:
+                                                  rec_s exports_4, key_4, gteq_0, fn exports_5:
+                                                    id a, fn left_5:
+                                                      id b, fn right_5:
+                                                        lte left_5, right_5, fn lteq_0:
+                                                          str 'lteq', fn key_5:
+                                                            rec_s exports_5, key_5, lteq_0, fn exports_6:
+                                                              lst_e fn drctvs_0:
+                                                                mod exports_6, drctvs_0, fn mod_0:"
+`;

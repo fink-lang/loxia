@@ -1,0 +1,145 @@
+{is_fn} = import '@fink/std-lib/fn.fnk'
+hamt = import 'hamt'
+{set, tryGet, empty} = hamt
+
+any = false
+
+
+add = fn type, op, transformer: fn ctx:
+  next_transformers = rec:
+    ...ctx.transformers
+    (type or op): transformer
+
+  {...ctx, transformers: next_transformers}
+
+
+
+get_transformer = fn {op, type}, {transformers}:
+  match transformers:
+    {(op): is_fn ?}:
+      {(op): transform} = transformers
+      transform
+
+    {(type): is_fn ?}:
+      {(type): transform} = transformers
+      transform
+
+
+
+unique_name = fn prefix, {loc}, ctx:
+  {unique_ids} = ctx
+  {(prefix): cntr=0} = unique_ids
+  id = {i: '${prefix}_${cntr}', loc}
+  [id, {...ctx, unique_ids: {...unique_ids, (prefix): cntr + 1}}]
+
+
+
+unique_or_id = fn prefix_or_id, {loc}, ctx:
+  match prefix_or_id:
+    {i: ?}:
+      [prefix_or_id, ctx]
+    false:
+      [prefix_or_id, ctx]
+    else:
+      unique_name prefix_or_id, {loc}, ctx
+
+
+
+ir_fn = fn fn_name, args, name_or_id=false, {loc}, ctx:
+  [res_id, next_ctx] = unique_or_id name_or_id, {loc}, ctx
+  expr = {f: fn_name, args, loc}
+  match name_or_id:
+    false:
+      [[[expr, []]], , next_ctx]
+    else:
+      [[[expr, [res_id]]], res_id, next_ctx]
+
+
+
+get_value = fn {i: id}, {values}:
+  tryGet {}, id, values
+
+
+update_value = fn id, updates, ctx:
+  curr = get_value id, ctx
+  values = set id.i, {...curr, ...updates}, ctx.values
+  {...ctx, values}
+
+
+
+get_refs = fn id, ctx:
+  {refs=0} = get_value id, ctx
+  refs
+
+
+
+inc_ref = fn id, ctx:
+  {refs=0} = get_value id, ctx
+  update_value id, {refs: refs + 1}, ctx
+
+
+
+inc_refs = fn [id=false, ...rest], ctx:
+  match id:
+    false: ctx
+    else: inc_refs rest, inc_ref id, ctx
+
+
+
+dec_ref = fn id, ctx:
+  {refs=0} = get_value id, ctx
+  update_value id, {refs: refs - 1}, ctx
+
+
+
+dec_refs = fn [id=false, ...exprs], ctx:
+  match id:
+    false: ctx
+    else:  dec_refs exprs, dec_ref id, ctx
+
+
+
+init_refs = fn [id=false, ...rest], ctx:
+  match id:
+    false: ctx
+    else: init_refs rest, update_value id, {refs: 0}, ctx
+
+
+
+is_unused = fn id, ctx:
+  0 == get_refs id, ctx
+
+
+
+init_ref_counts = fn [expr=false, ...rest], ctx:
+  match expr:
+    false: ctx
+    else:
+      [{f: op, args}, res] = expr
+      rest_ctx = match op:
+        ? in ['fn', 'cn']:
+          [fn_args, body] = args
+          init_ref_counts body, init_refs [...fn_args, ...res], ctx
+
+        ? in ['int', 'float', 'str']:
+          init_refs res, ctx
+
+        else:
+          init_refs res, inc_refs args, ctx
+
+      init_ref_counts rest, rest_ctx
+
+
+
+init_ctx = fn exprs, options={}:
+  ctx = rec:
+    ...options
+    transformers: {}
+    runtime: {}
+    unique_ids: {}
+    values: empty
+
+
+  pipe ctx:
+    init_ref_counts exprs, ?
+

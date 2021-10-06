@@ -1,0 +1,40 @@
+{fink2lir} = import '../../testing/generate.fnk'
+{skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+
+
+describe 'comparison', fn:
+  it 'compiles simple', fn:
+    expect
+      fink2lir "
+        lt = a < b
+        gt = a > b
+        eq = a == b
+        neq = a != b
+        gteq = a >= b
+        lteq = a <= b
+      "
+      to_match_snapshot
+
+
+  it 'compiles combined', fn:
+    expect
+      fink2lir "
+        lt = a < b < c
+        gt = a > b > c
+        eq = a == b == c
+        neq = a != b != c
+        gteq = a >= b >= c
+        lteq = a <= b <= c
+      "
+      to_match_snapshot
+
+
+  skip.it 'compiles as partials', fn:
+    expect
+      fink2lir "
+        1 == len ?
+        ? != 123
+        ? > 3
+        1 < ? <= 3
+      "
+      to_match_snapshot

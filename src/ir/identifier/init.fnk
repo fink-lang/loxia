@@ -1,0 +1,66 @@
+{add, any, unique_or_id, ir_fn, inc_ref} = import '../context.fnk'
+
+
+
+bind = fn {value, loc}, ctx:
+  {scopes: [scope, ...scopes]} = ctx
+  [id, next_ctx] = unique_or_id value, {loc}, ctx
+
+  end_ctx = rec:
+    ...next_ctx
+    scopes: list:
+      {...scope, (value): id}
+      ...scopes
+
+  [id, end_ctx]
+
+
+# TODO rename
+bind_x = fn {value}, id, ctx:
+  {scopes: [scope, ...scopes]} = ctx
+
+  end_ctx = rec:
+    ...ctx
+    scopes: list:
+      # TODO: loc from value or id?
+      {...scope, (value): id}
+      ...scopes
+
+  end_ctx
+
+
+
+get_ident = fn name, [scope, ...scopes], {loc}, ctx:
+  match scope:
+    {(name): ?}:
+      # TODO should we use loc from args or not?
+      id = {...scope.(name), loc}
+      next_ctx = inc_ref id, ctx
+      [id, next_ctx]
+    ?:
+      get_ident name, scopes, {loc}, ctx
+    else:
+      # TODO should we use loc from args or not?
+      [{i: name, loc}, ctx]
+
+
+
+let = fn id, res_id, {loc}, ctx:
+  ir_fn '=', [id], res_id, {loc}, ctx
+
+
+
+transform_ident = fn {value, loc}, res_id, ctx:
+  [id, let_ctx] = get_ident value, ctx.scopes, {loc}, ctx
+  [epxr, , next_ctx] = let id, res_id, {loc}, let_ctx
+  [epxr, next_ctx]
+
+
+
+add_ident = fn ctx:
+  pipe ctx:
+    add 'ident', any, transform_ident
+
+
+
+

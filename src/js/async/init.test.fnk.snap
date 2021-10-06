@@ -1,44 +1,48 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`await compiles 1`] = `
-"export const task1 = async foo => -(await foo);
-export const task2 = async foo => await (foo + 4);
-export const task3 = async foo => {
-  const spam = await foo();
-  return bar + 123;
+"const task1_0 = async foo_0 => {
+  const right_0 = await foo_0;
+  return -right_0;
 };
-export const a_gen = unfold(async (curr = 0) => {
-  const ˆvalue_1 = shrub;
+
+const task2_0 = async foo_1 => {
+  const result_1 = await (foo_1 + 4);
+  return result_1;
+};
+
+const task3_0 = async foo_2 => {
+  const futr_2 = foo_2();
+  const spam_0 = await futr_2;
+  return bar + 123 + spam_0;
+};
+
+const a_gen_0 = unfold(async hdm_0 => {
+  const curr_0 = undefined === hdm_0 ? 0 : hdm_0;
 
   /* istanbul ignore else */
-  if (ˆvalue_1 === spam) {
-    return await ni(curr);
+  if (shrub === spam) {
+    const futr_3 = ni(curr_0);
+    const result_6 = await futr_3;
+    return result_6;
   }
 
-  {
-    return curr + 1;
-  }
+  return curr_0 + 1;
 });
-await ni;"
+export const task1 = task1_0,
+      task2 = task2_0,
+      task3 = task3_0,
+      a_gen = a_gen_0;"
 `;
 
-exports[`await handles awaiting async iterables 1`] = `
-"let _do_result;
+exports[`await does not inline into func body 1`] = `
+"const task1_0 = async foo_0 => {
+  const bar_0 = await foo_0;
+  const result_1 = shrub(ni_0 => {
+    return ni_0 + bar_0;
+  });
+  return result_1;
+};
 
-{
-  let _do_result2;
-
-  {
-    let ˆpipe_result_3 = undefined;
-    _do_result2 = ˆpipe_result_3 = unfold(async (cntr = 0) => (await cntr) + 1)(ˆpipe_result_3);
-  }
-  const ˆitems_1 = _do_result2;
-  _do_result2 = undefined;
-  const ˆiter_2 = (
-  /*istanbul ignore next*/
-  ˆitems_1[Symbol.asyncIterator] || ˆitems_1[Symbol.iterator]).call(ˆitems_1);
-  _do_result = [(await ˆiter_2.next()).value, (await ˆiter_2.next()).value];
-}
-const [foo, bar] = _do_result;
-_do_result = undefined;"
+export const task1 = task1_0;"
 `;

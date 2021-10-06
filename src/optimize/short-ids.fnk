@@ -1,0 +1,81 @@
+{length} = import '@fink/std-lib/iter.fnk'
+{floor} = import '@fink/std-lib/math.fnk'
+
+
+alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+base = length alphabet
+
+
+to_id = fn idx, out='':
+  div = floor idx / base
+  rem = idx % base
+  match div:
+    0:
+      '${alphabet.(rem)}${out}'
+    else:
+      to_id div - 1, '${alphabet.(rem)}${out}'
+
+
+
+get_new_id = fn id, renames:
+  {id_cntr=0} = renames
+  new_id = to_id id_cntr
+  nrs = {...renames, id_cntr: id_cntr + 1, (id.i): new_id}
+  [{...id, i: new_id}, nrs]
+
+
+
+replace_refs = fn [id=false, ...ids], renames, out=[]:
+  match id:
+    false: out
+    else:
+      {(id.i): new_id=id.i} = renames
+      replace_refs ids, renames, [...out, {...id, i: new_id}]
+
+
+
+rename = fn [id=false, ...ids], renames, out=[]:
+  match id:
+    false: [out, renames]
+    else:
+      [new_id, next_renames] = get_new_id id, renames
+      rename ids, next_renames, [...out, new_id]
+
+
+
+shorten_names = fn [curr=false, ...rest], renames={}, out=[]:
+  match curr:
+    false: [out, renames]
+
+    [{f: ? in ['int', 'float', 'str']}]:
+      [expr, res] = curr
+      [nres, next_ren] = rename res, renames
+      shorten_names rest, next_ren, [...out, [expr, nres]]
+
+    [{f: ? in ['tpl_i', 'tpl_s']}]:
+      [expr, res] = curr
+      {args: [tpl_id, ...args]} = expr
+      [ntpl_id] = replace_refs [tpl_id], renames
+      [nres, next_ren] = rename res, renames
+      shorten_names rest, next_ren, [...out, [{...expr, args: [ntpl_id, ...args]}, nres]]
+
+    [{f: ? in ['fn', 'cn']}]:
+      [expr, res] = curr
+      [args, body] = expr.args
+      [nargs, bod_ren] = rename args, renames
+      [nbody, res_ren] = shorten_names body, bod_ren
+      [nres, next_ren] = rename res, res_ren
+      shorten_names rest, next_ren, [...out, [{...expr, args: [nargs, nbody]}, nres]]
+
+    else:
+      [expr, res] = curr
+      nargs = replace_refs expr.args, renames
+      [nres, next_ren] = rename res, renames
+      shorten_names rest, next_ren, [...out, [{...expr, args: nargs}, nres]]
+
+
+
+optimize_names = fn exprs, ctx:
+  [ir] = shorten_names exprs
+  [ir, ctx]
+

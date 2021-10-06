@@ -1,0 +1,7 @@
+{let} = import '../identifier/init.fnk'
+
+
+transform_keyword = fn {value, loc}, result, ctx:
+  # transform {type: 'ident', value, loc}, result, ctx, false
+  [exprs, , next_ctx] = let {i: value, loc}, result, {loc}, ctx
+  [exprs, next_ctx]

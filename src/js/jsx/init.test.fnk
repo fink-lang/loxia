@@ -1,11 +1,11 @@
-{fink2js} = import '../../testing/generate.fnk'
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{fink2js} = import '../../testing/generate.fnk'
 
 
 describe 'jsx', fn:
   it 'compiles shorthand', fn:
     expect
-      fink2js 'elem = <a/>'
+      fink2js 'elem = <a />'
       to_match_snapshot
 
 
@@ -41,7 +41,7 @@ describe 'jsx', fn:
     expect
       fink2js 'elem =
         <a>
-          foo {ni}
+          foo {ni + 1} {na}
           <b /> ham
           spam
           <c />
@@ -66,41 +66,70 @@ describe 'jsx', fn:
       to_match_snapshot
 
 
+  it 'compiles elem from rec', fn:
+    expect
+      fink2js '
+        Shrub = fn {...props}:
+           {Foobar} = spam
+           <Foobar ...props />
+      '
+      to_match_snapshot
+
+  it 'handles ident clashes for lowercaae elems', fn:
+    expect
+      fink2js '
+        Foo = fn {label}:
+          <label>{label}</label>
+      '
+      to_match_snapshot
+
 
 describe 'JSX extensions',  fn:
   it 'compiles shothand props', fn:
     expect
-      fink2js '<Foobar spam ham-ni />'
+      fink2js 'elem = <Foobar spam ham-ni />'
       to_match_snapshot
 
 
   it 'compiles spread', fn:
     expect
-      fink2js '<Foobar spam ...ham shrub />'
+      fink2js 'elem = <Foobar spam ...ham shrub />'
       to_match_snapshot
 
 
   it "compiles template str attr", fn:
     expect
-      fink2js "<Foobar spam='ni: \${1 + 2}' />"
+      fink2js "elem = <Foobar spam='ni: \${1 + 2}' />"
       to_match_snapshot
 
 
   it "compiles fink expr as attr values", fn:
     expect
-      fink2js "<Foobar spam=ham shrub=1234 ni=-123> foo </Foobar>"
+      fink2js "elem = <Foobar spam=ham shrub=1234 ni=-123> foo </Foobar>"
       to_match_snapshot
 
 
   it "compiles fink expr with gt comparison", fn:
     expect
-      fink2js "<Foobar spam={foo > 123} shrub=1234> ni </Foobar>"
+      fink2js "elem = <Foobar spam={foo > 123} shrub=1234> ni </Foobar>"
       to_match_snapshot
 
 
   it "compiles expr group with call for attr value", fn:
     expect
-      fink2js "<Foobar spam=(ham ni) shrub=1234 />"
+      fink2js "elem = <Foobar spam=(ham ni) shrub=1234 />"
       to_match_snapshot
 
+
+  it "compiles block", fn:
+    expect
+      fink2js '
+        elem = <Foobar>
+          {
+            foo = spam _
+            bar spam, foo, foo
+          }
+        </Foobar>
+      '
+      to_match_snapshot
 

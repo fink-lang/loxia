@@ -1,0 +1,21 @@
+{add, any} = import '../context.fnk'
+{transform_binary, transform_unary} = import '../transform.fnk'
+
+
+
+transform_arithmitic = fn node, res_id, ctx:
+  transform_binary node.op, node.left, node.right, res_id, {loc: node.loc}, ctx
+
+
+
+transform_prefix = fn node, res_id, ctx:
+  transform_unary node.op, node.right, res_id, {loc: node.loc}, ctx
+
+
+
+add_arithmitic = fn ctx:
+  pipe ctx:
+    add 'arithm', any, transform_arithmitic
+    add 'arithm:right', any, transform_arithmitic
+    add 'arithm:prefix', any, transform_prefix
+

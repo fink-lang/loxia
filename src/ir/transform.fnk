@@ -1,0 +1,36 @@
+{throw_err} = import '@fink/js-interop/errors.fnk'
+{transform_error} = import './errors.fnk'
+
+{get_transformer, unique_or_id, ir_fn} = import './context.fnk'
+
+
+
+transform = fn expr, name_or_id, ctx:
+  [id, next_ctx] = unique_or_id name_or_id, expr, ctx
+
+  transform_expr = get_transformer expr, next_ctx
+
+  [out, end_ctx] = match transform_expr:
+    ?: transform_expr expr, id, next_ctx
+    else: throw_err transform_error 'Unknown expression.', expr, next_ctx
+
+  [out, id, end_ctx]
+
+
+
+transform_binary = fn op, left, right, res_id, {loc}, ctx:
+  [l, l_id, r_ctx] = transform left, 'left', ctx
+  [r, r_id, next_ctx] = transform right, 'right', r_ctx
+
+  [exp, , end_ctx] = ir_fn op, [l_id, r_id], res_id, {loc}, next_ctx
+  [[...l, ...r, ...exp], end_ctx]
+
+
+
+transform_unary = fn op, right, res_id, {loc}, ctx:
+  [r, r_id, next_ctx] = transform right, 'right', ctx
+
+  [exp, , end_ctx] = ir_fn op, [r_id], res_id, {loc}, next_ctx
+  [[...r, ...exp], end_ctx]
+
+
