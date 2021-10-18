@@ -410,3 +410,102 @@ rec_e fn exports_0:
         lst_e fn drctvs_0:
           mod exports_1, drctvs_0, fn mod_0:"
 `;
+
+exports[`types infers fn ret type 1`] = `
+"
+rec_e fn exports_0(rec):
+  id (fn args_0(tpl), ret_0(cn): #fn
+    int '1', fn left_0(int):
+      int '2', fn right_0(int):
+        add left_0, right_0, fn result_0(int):
+          cc ret_0, result_0
+  ), fn foo_0(fn: int):
+    str 'foo', fn key_0(str):
+      rec_s exports_0, key_0, foo_0, fn exports_1(rec{foo: fn: int}):
+        lst_e fn drctvs_0(tpl):
+          mod exports_1, drctvs_0, fn mod_0(mod):"
+`;
+
+exports[`types infers fn ret type 2`] = `
+"
+rec_e fn exports_0(rec):
+  id (fn args_0(tpl), ret_0(cn): #fn
+    lst_h args_0, fn a_0:
+      lst_t args_0, fn tail_0(tpl):
+        lst_h tail_0, fn b_0:
+          lst_t tail_0, fn tail_1(tpl):
+            id a_0, fn left_0(???):
+              id b_0, fn right_0(???):
+                add left_0, right_0, fn result_0(int|float):
+                  cc ret_0, result_0
+  ), fn foo_0(fn: int|float):
+    str 'foo', fn key_0(str):
+      rec_s exports_0, key_0, foo_0, fn exports_1(rec{foo: fn: int|float}):
+        lst_e fn drctvs_0(tpl):
+          mod exports_1, drctvs_0, fn mod_0(mod):"
+`;
+
+exports[`types infers fn ret type 3`] = `
+"
+rec_e fn exports_0(rec):
+  id (fn args_0(tpl), ret_0(cn): #fn
+    lst_h args_0, fn a_0:
+      lst_t args_0, fn tail_0(tpl):
+        lst_h tail_0, fn b_0:
+          lst_t tail_0, fn tail_1(tpl):
+            id a_0, fn left_0(???):
+              id b_0, fn left_1(???):
+                float '1.2', fn right_1(float):
+                  mul left_1, right_1, fn right_0(float):
+                    add left_0, right_0, fn result_0(float):
+                      cc ret_0, result_0
+  ), fn foo_0(fn: float):
+    str 'foo', fn key_0(str):
+      rec_s exports_0, key_0, foo_0, fn exports_1(rec{foo: fn: float}):
+        lst_e fn drctvs_0(tpl):
+          mod exports_1, drctvs_0, fn mod_0(mod):"
+`;
+
+exports[`types infers fn ret type 4`] = `
+"
+rec_e fn exports_0(rec):
+  id (fn args_0(tpl), ret_0(cn): #fn
+    lst_h args_0, fn a_0:
+      lst_t args_0, fn tail_0(tpl):
+        lst_h tail_0, fn b_0:
+          lst_t tail_0, fn tail_1(tpl):
+            rec_e fn rec_1(rec):
+              str 'a', fn key_1(str):
+                id a_0, fn val_1(???):
+                  rec_s rec_1, key_1, val_1, fn rec_0(rec{a: ???}):
+                    str 'b', fn key_0(str):
+                      id b_0, fn val_0(???):
+                        rec_s rec_0, key_0, val_0, fn result_0(rec{a: ???, b: ???}):
+                          cc ret_0, result_0
+  ), fn foo_0(fn: rec{a: ???, b: ???}):
+    str 'foo', fn key_2(str):
+      rec_s exports_0, key_2, foo_0, fn exports_1(rec{foo: fn: rec{a: ???, b: ???}}):
+        lst_e fn drctvs_0(tpl):
+          mod exports_1, drctvs_0, fn mod_0(mod):"
+`;
+
+exports[`types infers fn ret type 5`] = `
+"
+rec_e fn exports_0(rec):
+  id (fn args_0(tpl), ret_0(cn): #fn
+    lst_h args_0, fn a_0:
+      lst_t args_0, fn tail_0(tpl):
+        lst_h tail_0, fn b_0:
+          lst_t tail_0, fn tail_1(tpl):
+            lst_e fn lst_1(tpl):
+              id a_0, fn item_1(???):
+                lst_a lst_1, item_1, fn lst_0(tpl[???]):
+                  id b_0, fn item_0(???):
+                    lst_a lst_0, item_0, fn result_0(tpl[???, ???]):
+                      cc ret_0, result_0
+  ), fn foo_0(fn: tpl[???, ???]):
+    str 'foo', fn key_0(str):
+      rec_s exports_0, key_0, foo_0, fn exports_1(rec{foo: fn: tpl[???, ???]}):
+        lst_e fn drctvs_0(tpl):
+          mod exports_1, drctvs_0, fn mod_0(mod):"
+`;

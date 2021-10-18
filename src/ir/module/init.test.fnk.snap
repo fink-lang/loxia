@@ -16,13 +16,13 @@ exports[`module handles exports 1`] = `
 "
 rec_e fn exports_0:
   id (fn args_0, ret_0: #fn
-    id true, fn result_0:
+    bool true, fn result_0:
       cc ret_0, result_0
   ), fn delete_0:
     str 'delete', fn key_0:
       rec_s exports_0, key_0, delete_0, fn exports_1:
         id (fn args_1, ret_1: #fn
-          id true, fn result_1:
+          bool true, fn result_1:
             cc ret_1, result_1
         ), fn π_0:
           str 'π', fn key_1:

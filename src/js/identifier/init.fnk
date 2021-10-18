@@ -1,8 +1,9 @@
 types = import '@babel/types'
 {identifier} = types
 
-{rx , matches, replace} = import '@fink/std-lib/regex.fnk'
-
+{rx, matches, replace} = import '@fink/std-lib/regex.fnk'
+hamt = import 'hamt'
+{set, tryGet, empty} = hamt
 
 
 acceptable_idents = rx'
@@ -43,7 +44,10 @@ replace_refs = fn [id=false, ...ids], renames, out=[]:
     false:
       out
     else:
-      {(id.i): new_id=escape_ident id.i} = renames
+      nid = tryGet false, id.i, renames
+      new_id = match nid:
+        false: escape_ident id.i
+        else: nid
       replace_refs ids, renames, [...out, {...id, i: new_id}]
 
 
@@ -54,17 +58,17 @@ rename = fn [id=false, ...ids], renames, out=[]:
       [out, renames]
     else:
       new_id = escape_ident id.i
-      nrs = {...renames, (id.i): new_id}
+      nrs = set id.i, new_id, renames
       rename ids, nrs, [...out, {...id, i: new_id}]
 
 
 
 
-safe_names = fn [curr=false, ...exprs], renames={}, out=[]:
+safe_names = fn [curr=false, ...exprs], renames=empty, out=[]:
   match curr:
     false: [out, renames]
 
-    [{f: ? in ['int', 'float', 'str']}]:
+    [{f: ? in ['int', 'float', 'str', 'bool']}]:
       [expr, res] = curr
       [nres, next_ren] = rename res, renames
       safe_names exprs, next_ren, [...out, [expr, nres]]

@@ -1,5 +1,5 @@
-{fink2lir} = import '../../testing/generate.fnk'
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{fink2lir, fink2types} = import '../../testing/generate.fnk'
 
 
 describe 'call', fn:
@@ -41,5 +41,18 @@ describe 'call', fn:
         filter not ?
         map ?.foo
         map ? % 2 == 0
+      '
+      to_match_snapshot
+
+
+
+describe 'types', fn:
+  it 'infers from fn ret type', fn:
+    expect
+      fink2types '
+        foo = fn ni:
+          [1, 2, ni]
+
+        bar = foo 3
       '
       to_match_snapshot

@@ -19,4 +19,5 @@ add_logical = fn ctx:
     add any, 'and', transform_logical
     add any, 'or', transform_logical
     add any, 'not', transform_not
+    # TODO: should that live in comparison?
     add any, 'in', transform_in

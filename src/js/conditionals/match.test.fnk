@@ -302,3 +302,14 @@ describe 'match records', fn:
       to_match_snapshot
 
 
+
+describe 'optimizations', fn:
+  it 'uses destructured tuples', fn:
+    expect
+      fink2js '
+        foo = [1, 2]
+        shrub = match foo:
+          [1, 1]: bar
+          [1, 2]: spam
+      '
+      to_match_snapshot

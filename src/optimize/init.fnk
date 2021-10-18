@@ -9,8 +9,7 @@
 maybe_opt_refs = fn ir, ctx:
   match ctx:
     {optimize.refs: true}:
-      [nir] = optimize_refs ir, ctx
-      [nir, init_ctx nir, ctx]
+      optimize_refs ir, ctx
     else:
       [ir, ctx]
 
@@ -19,8 +18,7 @@ maybe_opt_refs = fn ir, ctx:
 maybe_opt_tails = fn ir, ctx:
   match ctx:
     {optimize.tails: true}:
-      [nir] = optimize_tails ir, ctx
-      [nir, init_ctx nir, ctx]
+      optimize_tails ir, ctx
     else:
       [ir, ctx]
 
@@ -29,8 +27,9 @@ maybe_opt_tails = fn ir, ctx:
 maybe_opt_unused = fn ir, ctx:
   match ctx:
     {optimize.unused: true}:
-      [nir] = optimize_unused ir, ctx
-      [nir, init_ctx nir, ctx]
+      pipe ctx:
+        init_ctx ir, ?
+        optimize_unused ir, ?
     else:
       [ir, ctx]
 
@@ -46,7 +45,8 @@ maybe_opt_names = fn ir, ctx:
 
 
 optimize = fn exprs, options:
-  pipe [exprs, init_ctx exprs, options]:
+  ctx = init_ctx exprs, options
+  pipe [exprs, ctx]:
     maybe_opt_refs ...?
     maybe_opt_tails ...?
     maybe_opt_unused ...?

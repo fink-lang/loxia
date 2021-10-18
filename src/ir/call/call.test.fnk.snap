@@ -218,3 +218,31 @@ rec_e fn exports_0:
                                                     lst_e fn drctvs_0:
                                                       mod exports_0, drctvs_0, fn mod_0:"
 `;
+
+exports[`types infers from fn ret type 1`] = `
+"
+rec_e fn exports_0(rec):
+  id (fn args_0(tpl), ret_0(cn): #fn
+    lst_h args_0, fn ni_0:
+      lst_t args_0, fn tail_0(tpl):
+        lst_e fn lst_2(tpl):
+          int '1', fn item_2(int):
+            lst_a lst_2, item_2, fn lst_1(tpl[int]):
+              int '2', fn item_1(int):
+                lst_a lst_1, item_1, fn lst_0(tpl[int, int]):
+                  id ni_0, fn item_0(???):
+                    lst_a lst_0, item_0, fn result_0(tpl[int, int, ???]):
+                      cc ret_0, result_0
+  ), fn foo_0(fn: tpl[int, int, ???]):
+    str 'foo', fn key_0(str):
+      rec_s exports_0, key_0, foo_0, fn exports_1(rec{foo: fn: tpl[int, int, ???]}):
+        id foo_0, fn callee_0(fn: tpl[int, int, ???]):
+          lst_e fn cargs_0(tpl):
+            int '3', fn arg_0(int):
+              lst_a cargs_0, arg_0, fn cargs_1(tpl[int]):
+                af callee_0, cargs_1, fn bar_0(tpl[int, int, ???]):
+                  str 'bar', fn key_1(str):
+                    rec_s exports_1, key_1, bar_0, fn exports_2(rec{foo: fn: tpl[int, int, ???], bar: tpl[int, int, ???]}):
+                      lst_e fn drctvs_0(tpl):
+                        mod exports_2, drctvs_0, fn mod_0(mod):"
+`;

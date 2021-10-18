@@ -998,3 +998,42 @@ ret_0: {
 
 const mex_0 = ret_0;"
 `;
+
+exports[`optimizations uses destructured tuples 1`] = `
+"const foo_0 = [1, 2];
+let ret_0;
+
+ret_0: {
+  /* istanbul ignore else */
+  if (null != foo_0) {
+    /* istanbul ignore else */
+    if (1 === 1) {
+      /* istanbul ignore else */
+      if (2 === 1) {
+        ret_0 = bar;
+
+        /* istanbul ignore next */
+        break ret_0;
+      }
+    }
+  }
+
+  /* istanbul ignore else */
+  if (null != foo_0) {
+    /* istanbul ignore else */
+    if (1 === 1) {
+      /* istanbul ignore else */
+      if (2 === 2) {
+        ret_0 = spam;
+
+        /* istanbul ignore next */
+        break ret_0;
+      }
+    }
+  }
+}
+
+const shrub_0 = ret_0;
+export const foo = foo_0,
+      shrub = shrub_0;"
+`;

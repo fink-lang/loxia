@@ -1,5 +1,5 @@
-{fink2lir} = import '../../testing/generate.fnk'
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
+{fink2lir, fink2types} = import '../../testing/generate.fnk'
 
 
 describe 'numbers', fn:
@@ -34,3 +34,13 @@ describe 'numbers', fn:
       to_match_snapshot
 
 
+
+describe 'types', fn:
+  it 'infers int and float', fn:
+    expect
+      fink2types '
+        a = 1
+        b = 2.3
+        c = 0xff
+      '
+      to_match_snapshot

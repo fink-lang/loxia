@@ -1,5 +1,3 @@
-{is_empty} = import '@fink/std-lib/iter.fnk'
-
 {unique_or_id, ir_fn} = import '../context.fnk'
 {transform} = import '../transform.fnk'
 {lst, lst_a, lst_c} = import '../literals/list.fnk'
@@ -95,13 +93,8 @@ transform_all_args = fn [expr=false, ...exprs], args_id, ctx, out=[]:
 
 
 transform_args = fn expr, ctx:
-  args = match expr.args:
-    # TODO should this be done in larix ?
-    [{type: 'empty'}, ...(is_empty ?)]: []
-    else: expr.args
-
   [empty_args, empty_args_id, args_ctx] = lst 'cargs', expr, ctx
-  [out, args_id, next_ctx] = transform_all_args args, empty_args_id, args_ctx
+  [out, args_id, next_ctx] = transform_all_args expr.args, empty_args_id, args_ctx
   [[...empty_args, ...out], args_id, next_ctx]
 
 

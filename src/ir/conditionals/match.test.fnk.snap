@@ -511,7 +511,7 @@ rec_e fn exports_0:
               lst_h value_0, fn itm_6:
                 isv itm_6, fn cond_8:
                   id (fn: #cn
-                    id true, fn result_6:
+                    bool true, fn result_6:
                       cc ret_0, result_6
                   ), fn match_res_6:
                     cif cond_8, match_res_6, match_lst_5
@@ -644,7 +644,7 @@ rec_e fn exports_0:
               ), fn else_0:
                 isv value_0, fn cond_0:
                   id (fn: #cn
-                    id true, fn result_0:
+                    bool true, fn result_0:
                       cc ret_0, result_0
                   ), fn match_res_0:
                     cif cond_0, match_res_0, else_0
@@ -1073,7 +1073,7 @@ rec_e fn exports_0:
                             rec_g value_0, key_0, fn itm_0:
                               isv itm_0, fn cond_0:
                                 id (fn: #cn
-                                  id true, fn result_0:
+                                  bool true, fn result_0:
                                     cc ret_0, result_0
                                 ), fn match_res_0:
                                   cif cond_0, match_res_0, else_0

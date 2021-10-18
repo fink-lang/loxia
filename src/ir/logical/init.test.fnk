@@ -1,4 +1,4 @@
-{fink2lir} = import '../../testing/generate.fnk'
+{fink2lir, fink2types} = import '../../testing/generate.fnk'
 {skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
@@ -22,3 +22,15 @@ describe 'logical', fn:
       "
       to_match_snapshot
 
+
+
+describe 'types', fn:
+  it 'infers bool', fn:
+    expect
+      fink2types '
+        a = foo and bar
+        b = foo or bar
+        c = not foo
+        d = foo in [1, 2, 3]
+      '
+      to_match_snapshot
