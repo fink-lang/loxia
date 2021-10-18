@@ -1,7 +1,7 @@
-{let} = import '../identifier/init.fnk'
+{ir_fn} = import '../context.fnk'
 
 
-transform_keyword = fn {value, loc}, result, ctx:
-  # transform {type: 'ident', value, loc}, result, ctx, false
-  [exprs, , next_ctx] = let {i: value, loc}, result, {loc}, ctx
+
+transform_keyword = fn {value, loc}, res_id, ctx:
+  [exprs, , next_ctx] = ir_fn 'bool', [value], res_id, {loc}, ctx
   [exprs, next_ctx]

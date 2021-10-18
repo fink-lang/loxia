@@ -50,3 +50,19 @@ rec_e fn exports_0:
                     lst_e fn drctvs_0:
                       mod exports_3, drctvs_0, fn mod_0:"
 `;
+
+exports[`types infers int and float 1`] = `
+"
+rec_e fn exports_0(rec):
+  int '1', fn a_0(int):
+    str 'a', fn key_0(str):
+      rec_s exports_0, key_0, a_0, fn exports_1(rec{a: int}):
+        float '2.3', fn b_0(float):
+          str 'b', fn key_1(str):
+            rec_s exports_1, key_1, b_0, fn exports_2(rec{a: int, b: float}):
+              int '0xff', fn c_0(int):
+                str 'c', fn key_2(str):
+                  rec_s exports_2, key_2, c_0, fn exports_3(rec{a: int, b: float, c: int}):
+                    lst_e fn drctvs_0(tpl):
+                      mod exports_3, drctvs_0, fn mod_0(mod):"
+`;

@@ -1,5 +1,5 @@
 {skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
-{fink2lir, fink2js} = import '../../testing/generate.fnk'
+{fink2lir, fink2js, fink2types} = import '../../testing/generate.fnk'
 
 
 describe 'list', fn:
@@ -134,3 +134,43 @@ describe 'optimizations', fn:
       ', {optimize: {refs: true, tails: true, unused: true}}
       to_match_snapshot
 
+
+
+describe 'types', fn:
+  it 'infers tpl and lst', fn:
+    expect
+      fink2types '
+        a = []
+        b = [1, 2]
+        c = [...b, 3, 4]
+        d = [...foo, ...b]
+        e = [...d, ...d]
+        f = [...foo, 5]
+      '
+      to_match_snapshot
+
+
+  it 'captures tpl items types', fn:
+    expect
+      fink2types '
+        a = [1, 2]
+        b = ["bar", true, false]
+        c = [...b, 3, 4]
+      '
+      to_match_snapshot
+
+
+  it 'infers destructured', fn:
+    expect
+      fink2types '
+        [a, b, c] = [1, true, "foo"]
+      '
+      to_match_snapshot
+
+
+  it 'infers destructured list', fn:
+    expect
+      fink2types '
+        [a, b, c] = foo
+      '
+      to_match_snapshot

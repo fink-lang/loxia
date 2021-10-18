@@ -3,12 +3,31 @@
 exports[`keywords transforms literals 1`] = `
 "
 rec_e fn exports_0:
-  id false, fn x_0:
+  bool false, fn x_0:
     str 'x', fn key_0:
       rec_s exports_0, key_0, x_0, fn exports_1:
-        id true, fn y_0:
+        bool true, fn y_0:
           str 'y', fn key_1:
             rec_s exports_1, key_1, y_0, fn exports_2:
               lst_e fn drctvs_0:
                 mod exports_2, drctvs_0, fn mod_0:"
+`;
+
+exports[`types infers bool 1`] = `
+"
+rec_e fn exports_0(rec):
+  bool true, fn a_0(bool):
+    str 'a', fn key_0(str):
+      rec_s exports_0, key_0, a_0, fn exports_1(rec{a: bool}):
+        bool false, fn b_0(bool):
+          str 'b', fn key_1(str):
+            rec_s exports_1, key_1, b_0, fn exports_2(rec{a: bool, b: bool}):
+              id a_0, fn c_0(bool):
+                str 'c', fn key_2(str):
+                  rec_s exports_2, key_2, c_0, fn exports_3(rec{a: bool, b: bool, c: bool}):
+                    id b_0, fn d_0(bool):
+                      str 'd', fn key_3(str):
+                        rec_s exports_3, key_3, d_0, fn exports_4(rec{a: bool, b: bool, c: bool, d: bool}):
+                          lst_e fn drctvs_0(tpl):
+                            mod exports_4, drctvs_0, fn mod_0(mod):"
 `;

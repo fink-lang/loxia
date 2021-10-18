@@ -1,5 +1,5 @@
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
-{fink2lir} = import '../../testing/generate.fnk'
+{fink2lir, fink2types} = import '../../testing/generate.fnk'
 
 
 describe 'record', fn:
@@ -127,3 +127,43 @@ describe 'rec optimizations', fn:
         {optimize: {refs: true, tails: true, unused: true}}
       to_match_snapshot
 
+
+
+
+describe 'types', fn:
+  it 'infers rec', fn:
+    expect
+      fink2types '
+        a = {}
+        b = {foo: bar}
+        c = {spam, ...b}
+      '
+      to_match_snapshot
+
+
+  it 'infers hmap', fn:
+    expect
+      fink2types '
+        a = {spam: true}
+        b = {(shrub _): 123}
+        c = {...a, ...b, foo: false}
+      '
+      to_match_snapshot
+
+
+  it 'captures kv types', fn:
+    expect
+      fink2types '
+        foo = 123
+        bar = {foo, bar: true}
+        ni = {spam: "ham", ...bar}
+      '
+      to_match_snapshot
+
+
+  it 'infers destructured types', fn:
+    expect
+      fink2types '
+        {foo, bar, spam: {ham}} = {foo: 123, bar: true, spam: {ham: "ni"}}
+      '
+      to_match_snapshot

@@ -7,6 +7,7 @@
 {add_module, transfrom_module} = import './module/init.fnk'
 {add_import} = import './module/import.fnk'
 
+{add_bool} = import './literals/keyword.fnk'
 {add_number} = import './literals/number.fnk'
 {add_string} = import './literals/string.fnk'
 {add_list} = import './literals/list.fnk'
@@ -33,6 +34,7 @@ add_transformers = fn ctx:
   pipe ctx:
     add_module
     add_import
+    add_bool
     add_number
     add_string
     add_list
@@ -99,7 +101,7 @@ prepare_imports = fn [expr=false, ...exprs], ctx:
 
 
 
-prepare_non_inlinable = fn [expr=false, ...exprs], ctx:
+prepare_inlinable = fn [expr=false, ...exprs], ctx:
   match expr:
     false:
       ctx
@@ -107,17 +109,17 @@ prepare_non_inlinable = fn [expr=false, ...exprs], ctx:
     [{f: 'af'}]:
       [, [res_id]] = expr
       next_ctx = update_value res_id, {inline: false}, ctx
-      prepare_non_inlinable exprs, next_ctx
+      prepare_inlinable exprs, next_ctx
 
     [{f: 'wt'}]:
       [, [res_id]] = expr
       next_ctx = update_value res_id, {inline: false}, ctx
-      prepare_non_inlinable exprs, next_ctx
+      prepare_inlinable exprs, next_ctx
 
     [{f: 'str'}]:
       [, [res_id]] = expr
       next_ctx = update_value res_id, {tp: 'str'}, ctx
-      prepare_non_inlinable exprs, next_ctx
+      prepare_inlinable exprs, next_ctx
 
     [{f: 'jxe'}]:
       [{args: [elem_id]}] = expr
@@ -126,19 +128,19 @@ prepare_non_inlinable = fn [expr=false, ...exprs], ctx:
         {tp: 'str'}: ctx
         else: update_value elem_id, {inline: false}, ctx
 
-      prepare_non_inlinable exprs, next_ctx
+      prepare_inlinable exprs, next_ctx
 
-    [{f: ? in ['int', 'float']}]:
+    [{f: ? in ['int', 'float', 'bool']}]:
       [, [res_id]] = expr
       next_ctx = update_value res_id, {inline: true}, ctx
-      prepare_non_inlinable exprs, next_ctx
+      prepare_inlinable exprs, next_ctx
 
     [{f: ? in ['fn', 'cn']}]:
       [{args: [, body]}] = expr
-      prepare_non_inlinable [...body, ...exprs], ctx
+      prepare_inlinable [...body, ...exprs], ctx
 
     else:
-      prepare_non_inlinable exprs, ctx
+      prepare_inlinable exprs, ctx
 
 
 
@@ -151,7 +153,7 @@ transform_ir = fn input_exprs, options:
     prepare_rets rev_expr, ?
     prepare_imports rev_expr, ?
     prepare_exports rev_expr, ?
-    prepare_non_inlinable exprs, ?
+    prepare_inlinable exprs, ?
     add_transformers ?
 
   transfrom_module exprs, ctx

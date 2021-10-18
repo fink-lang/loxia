@@ -107,3 +107,51 @@ rec_e fn exports_0:
                                                               lst_e fn drctvs_0:
                                                                 mod exports_6, drctvs_0, fn mod_0:"
 `;
+
+exports[`types infers bool 1`] = `
+"
+rec_e fn exports_0(rec):
+  int '1', fn left_0(int):
+    int '2', fn right_0(int):
+      gt left_0, right_0, fn a_0(bool):
+        str 'a', fn key_0(str):
+          rec_s exports_0, key_0, a_0, fn exports_1(rec{a: bool}):
+            int '1', fn left_1(int):
+              int '2', fn right_1(int):
+                lt left_1, right_1, fn b_0(bool):
+                  str 'b', fn key_1(str):
+                    rec_s exports_1, key_1, b_0, fn exports_2(rec{a: bool, b: bool}):
+                      int '1', fn left_2(int):
+                        int '2', fn right_2(int):
+                          neq left_2, right_2, fn c_0(bool):
+                            str 'c', fn key_2(str):
+                              rec_s exports_2, key_2, c_0, fn exports_3(rec{a: bool, b: bool, c: bool}):
+                                int '1', fn left_3(int):
+                                  int '1', fn right_3(int):
+                                    eq left_3, right_3, fn d_0(bool):
+                                      str 'd', fn key_3(str):
+                                        rec_s exports_3, key_3, d_0, fn exports_4(rec{a: bool, b: bool, c: bool, d: bool}):
+                                          int '1', fn left_4(int):
+                                            int '1', fn right_4(int):
+                                              gte left_4, right_4, fn e_0(bool):
+                                                str 'e', fn key_4(str):
+                                                  rec_s exports_4, key_4, e_0, fn exports_5(rec{a: bool, b: bool, c: bool, d: bool, e: bool}):
+                                                    int '1', fn left_5(int):
+                                                      int '1', fn right_5(int):
+                                                        lte left_5, right_5, fn f_0(bool):
+                                                          str 'f', fn key_5(str):
+                                                            rec_s exports_5, key_5, f_0, fn exports_6(rec{a: bool, b: bool, c: bool, d: bool, e: bool, f: bool}):
+                                                              int '1', fn left_6(int):
+                                                                lst_e fn lst_2(tpl):
+                                                                  int '1', fn item_2(int):
+                                                                    lst_a lst_2, item_2, fn lst_1(tpl[int]):
+                                                                      int '2', fn item_1(int):
+                                                                        lst_a lst_1, item_1, fn lst_0(tpl[int, int]):
+                                                                          int '3', fn item_0(int):
+                                                                            lst_a lst_0, item_0, fn right_6(tpl[int, int, int]):
+                                                                              in left_6, right_6, fn g_0(bool):
+                                                                                str 'g', fn key_6(str):
+                                                                                  rec_s exports_6, key_6, g_0, fn exports_7(rec{a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool}):
+                                                                                    lst_e fn drctvs_0(tpl):
+                                                                                      mod exports_7, drctvs_0, fn mod_0(mod):"
+`;

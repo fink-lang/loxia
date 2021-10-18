@@ -8,6 +8,7 @@
 {serialize} = import '../ir/serialize.fnk'
 {transform} = import '../ir/transform.fnk'
 {optimize} = import '../optimize/init.fnk'
+{infer_types} = import '../types/init.fnk'
 
 
 
@@ -18,6 +19,7 @@ fink2lir = fn source, options:
   [exprs] = transform ast, 'mod', ctx
   [out] = optimize exprs, options
   serialize out
+
 
 
 fink2js = fn source, options:
@@ -34,6 +36,16 @@ fink2js = fn source, options:
           {errors}
     else:
       {errors: ast.errors}
+
+
+
+fink2types = fn source, options:
+  filename = 'test.fnk'
+  ast = parse source, filename
+  ctx = init_ctx source, filename, options
+  [exprs] = transform ast, 'mod', ctx
+  [out] = infer_types exprs, options
+  serialize out
 
 
 

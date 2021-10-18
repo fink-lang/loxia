@@ -1,4 +1,4 @@
-{fink2lir} = import '../../testing/generate.fnk'
+{fink2lir, fink2types} = import '../../testing/generate.fnk'
 {describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
 
 
@@ -40,5 +40,24 @@ describe 'unary', fn:
     expect
       fink2lir '
         foo * -bar
+      '
+      to_match_snapshot
+
+
+
+describe 'types', fn:
+  it 'infers numbers', fn:
+    # TODO support -1
+    expect
+      fink2types '
+        a = 1 + 2
+        b = 1.0 + 2
+        c = 1 * 2
+        d = 1.5 * 2
+        e = 1 / 2
+        f = a * e
+        g = c ^ 1
+        h = c ^ 2.1
+        i = c % 2
       '
       to_match_snapshot

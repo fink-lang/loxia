@@ -73,3 +73,48 @@ rec_e fn exports_0:
                             lst_e fn drctvs_0:
                               mod exports_1, drctvs_0, fn mod_0:"
 `;
+
+exports[`types infers str 1`] = `
+"
+rec_e fn exports_0(rec):
+  str 'foo', fn str_0(str):
+    strt str_0, fn a_0(str):
+      str 'a', fn key_0(str):
+        rec_s exports_0, key_0, a_0, fn exports_1(rec{a: str}):
+          str 'bar ', fn str_1(str):
+            id spam, fn sx_0(???):
+              str ' ham', fn str_2(str):
+                strt str_1, sx_0, str_2, fn b_0(str):
+                  str 'b', fn key_1(str):
+                    rec_s exports_1, key_1, b_0, fn exports_2(rec{a: str, b: str}):
+                      lst_e fn drctvs_0(tpl):
+                        mod exports_2, drctvs_0, fn mod_0(mod):"
+`;
+
+exports[`types infers tagged str 1`] = `
+"
+rec_e fn exports_0(rec):
+  id (fn args_0(tpl), ret_0(cn): #fn
+    lst_h args_0, fn strs_0:
+      lst_t args_0, fn tail_0(tpl):
+        lst_h tail_0, fn ni_0:
+          lst_t tail_0, fn tail_1(tpl):
+            lst_e fn lst_1(tpl):
+              id strs_0, fn item_1(???):
+                lst_a lst_1, item_1, fn lst_0(tpl[???]):
+                  id ni_0, fn item_0(???):
+                    lst_a lst_0, item_0, fn result_0(tpl[???, ???]):
+                      cc ret_0, result_0
+  ), fn foo_0(fn: tpl[???, ???]):
+    str 'foo', fn key_0(str):
+      rec_s exports_0, key_0, foo_0, fn exports_1(rec{foo: fn: tpl[???, ???]}):
+        id foo_0, fn tag_0(fn: tpl[???, ???]):
+          str 'ni ', fn str_0(str):
+            id ni, fn sx_0(???):
+              str '', fn str_1(str):
+                strtt tag_0, str_0, sx_0, str_1, fn bar_0(tpl[???, ???]):
+                  str 'bar', fn key_1(str):
+                    rec_s exports_1, key_1, bar_0, fn exports_2(rec{foo: fn: tpl[???, ???], bar: tpl[???, ???]}):
+                      lst_e fn drctvs_0(tpl):
+                        mod exports_2, drctvs_0, fn mod_0(mod):"
+`;

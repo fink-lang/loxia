@@ -74,9 +74,10 @@ get_refs = fn id, ctx:
 
 
 inc_ref = fn id, ctx:
-  {refs=0} = get_value id, ctx
-  update_value id, {refs: refs + 1}, ctx
-
+  val = get_value id, ctx
+  {refs=0} = val
+  values = set id.i, {...val, refs: refs + 1}, ctx.values
+  {...ctx, values}
 
 
 inc_refs = fn [id=false, ...rest], ctx:
@@ -87,22 +88,30 @@ inc_refs = fn [id=false, ...rest], ctx:
 
 
 dec_ref = fn id, ctx:
-  {refs=0} = get_value id, ctx
-  update_value id, {refs: refs - 1}, ctx
-
+  val = get_value id, ctx
+  {refs=0} = val
+  values = set id.i, {...val, refs: refs - 1}, ctx.values
+  {...ctx, values}
 
 
 dec_refs = fn [id=false, ...exprs], ctx:
   match id:
     false: ctx
-    else:  dec_refs exprs, dec_ref id, ctx
+    else: dec_refs exprs, dec_ref id, ctx
+
+
+
+init_ref = fn id, ctx:
+  val = get_value id, ctx
+  values = set id.i, {...val, refs: 0}, ctx.values
+  {...ctx, values}
 
 
 
 init_refs = fn [id=false, ...rest], ctx:
   match id:
     false: ctx
-    else: init_refs rest, update_value id, {refs: 0}, ctx
+    else: init_refs rest, init_ref id, ctx
 
 
 
@@ -113,7 +122,8 @@ is_unused = fn id, ctx:
 
 init_ref_counts = fn [expr=false, ...rest], ctx:
   match expr:
-    false: ctx
+    false:
+      ctx
     else:
       [{f: op, args}, res] = expr
       rest_ctx = match op:

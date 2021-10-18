@@ -226,6 +226,118 @@ rec_e fn exports_0:
                           mod exports_1, drctvs_0, fn mod_0:"
 `;
 
+exports[`types captures kv types 1`] = `
+"
+rec_e fn exports_0(rec):
+  int '123', fn foo_0(int):
+    str 'foo', fn key_0(str):
+      rec_s exports_0, key_0, foo_0, fn exports_1(rec{foo: int}):
+        rec_e fn rec_1(rec):
+          str 'foo', fn key_2(str):
+            id foo_0, fn val_1(int):
+              rec_s rec_1, key_2, val_1, fn rec_0(rec{foo: int}):
+                str 'bar', fn key_1(str):
+                  bool true, fn val_0(bool):
+                    rec_s rec_0, key_1, val_0, fn bar_0(rec{foo: int, bar: bool}):
+                      str 'bar', fn key_3(str):
+                        rec_s exports_1, key_3, bar_0, fn exports_2(rec{foo: int, bar: rec{foo: int, bar: bool}}):
+                          rec_e fn rec_3(rec):
+                            str 'spam', fn key_4(str):
+                              str 'ham', fn str_0(str):
+                                strt str_0, fn val_2(str):
+                                  rec_s rec_3, key_4, val_2, fn rec_2(rec{spam: str}):
+                                    id bar_0, fn sprd_0(rec{foo: int, bar: bool}):
+                                      rec_m rec_2, sprd_0, fn ni_0(rec{spam: str, foo: int, bar: bool}):
+                                        str 'ni', fn key_5(str):
+                                          rec_s exports_2, key_5, ni_0, fn exports_3(rec{foo: int, bar: rec{foo: int, bar: bool}, ni: rec{spam: str, foo: int, bar: bool}}):
+                                            lst_e fn drctvs_0(tpl):
+                                              mod exports_3, drctvs_0, fn mod_0(mod):"
+`;
+
+exports[`types infers destructured types 1`] = `
+"
+rec_e fn exports_0(rec):
+  rec_e fn rec_3(rec):
+    str 'foo', fn key_3(str):
+      int '123', fn val_3(int):
+        rec_s rec_3, key_3, val_3, fn rec_2(rec{foo: int}):
+          str 'bar', fn key_2(str):
+            bool true, fn val_2(bool):
+              rec_s rec_2, key_2, val_2, fn rec_0(rec{foo: int, bar: bool}):
+                str 'spam', fn key_0(str):
+                  rec_e fn rec_1(rec):
+                    str 'ham', fn key_1(str):
+                      str 'ni', fn str_0(str):
+                        strt str_0, fn val_1(str):
+                          rec_s rec_1, key_1, val_1, fn val_0(rec{ham: str}):
+                            rec_s rec_0, key_0, val_0, fn drec_0(rec{foo: int, bar: bool, spam: rec{ham: str}}):
+                              str 'foo', fn key_4(str):
+                                rec_g drec_0, key_4, fn foo_0(int):
+                                  str 'bar', fn key_5(str):
+                                    rec_g drec_0, key_5, fn bar_0(bool):
+                                      str 'spam', fn key_6(str):
+                                        rec_g drec_0, key_6, fn val_4(rec{ham: str}):
+                                          str 'ham', fn key_7(str):
+                                            rec_g val_4, key_7, fn ham_0(str):
+                                              lst_e fn drctvs_0(tpl):
+                                                mod exports_0, drctvs_0, fn mod_0(mod):"
+`;
+
+exports[`types infers hmap 1`] = `
+"
+rec_e fn exports_0(rec):
+  rec_e fn rec_0(rec):
+    str 'spam', fn key_0(str):
+      bool true, fn val_0(bool):
+        rec_s rec_0, key_0, val_0, fn a_0(rec{spam: bool}):
+          str 'a', fn key_1(str):
+            rec_s exports_0, key_1, a_0, fn exports_1(rec{a: rec{spam: bool}}):
+              rec_e fn rec_1(rec):
+                id shrub, fn callee_0(???):
+                  lst_e fn cargs_0(tpl):
+                    af callee_0, cargs_0, fn key_2:
+                      int '123', fn val_1(int):
+                        rec_s rec_1, key_2, val_1, fn b_0(hmap):
+                          str 'b', fn key_3(str):
+                            rec_s exports_1, key_3, b_0, fn exports_2(rec{a: rec{spam: bool}, b: hmap}):
+                              rec_e fn rec_4(rec):
+                                id a_0, fn sprd_1(rec{spam: bool}):
+                                  rec_m rec_4, sprd_1, fn rec_3(rec{spam: bool}):
+                                    id b_0, fn sprd_0(hmap):
+                                      rec_m rec_3, sprd_0, fn rec_2(hmap):
+                                        str 'foo', fn key_4(str):
+                                          bool false, fn val_2(bool):
+                                            rec_s rec_2, key_4, val_2, fn c_0(hmap):
+                                              str 'c', fn key_5(str):
+                                                rec_s exports_2, key_5, c_0, fn exports_3(rec{a: rec{spam: bool}, b: hmap, c: hmap}):
+                                                  lst_e fn drctvs_0(tpl):
+                                                    mod exports_3, drctvs_0, fn mod_0(mod):"
+`;
+
+exports[`types infers rec 1`] = `
+"
+rec_e fn exports_0(rec):
+  rec_e fn a_0(rec):
+    str 'a', fn key_0(str):
+      rec_s exports_0, key_0, a_0, fn exports_1(rec{a: rec}):
+        rec_e fn rec_0(rec):
+          str 'foo', fn key_1(str):
+            id bar, fn val_0(???):
+              rec_s rec_0, key_1, val_0, fn b_0(rec{foo: ???}):
+                str 'b', fn key_2(str):
+                  rec_s exports_1, key_2, b_0, fn exports_2(rec{a: rec, b: rec{foo: ???}}):
+                    rec_e fn rec_2(rec):
+                      str 'spam', fn key_3(str):
+                        id spam, fn val_1(???):
+                          rec_s rec_2, key_3, val_1, fn rec_1(rec{spam: ???}):
+                            id b_0, fn sprd_0(rec{foo: ???}):
+                              rec_m rec_1, sprd_0, fn c_0(rec{spam: ???, foo: ???}):
+                                str 'c', fn key_4(str):
+                                  rec_s exports_2, key_4, c_0, fn exports_3(rec{a: rec, b: rec{foo: ???}, c: rec{spam: ???, foo: ???}}):
+                                    lst_e fn drctvs_0(tpl):
+                                      mod exports_3, drctvs_0, fn mod_0(mod):"
+`;
+
 exports[`unpacking record compiles defaults 1`] = `
 "
 rec_e fn exports_0:

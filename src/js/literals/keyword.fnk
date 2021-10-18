@@ -1,0 +1,20 @@
+types = import '@babel/types'
+{booleanLiteral} = types
+{add, set_js2} = import '../context.fnk'
+
+
+
+transform_bool = fn expr, ctx:
+  [{args: [value]}] = expr
+  bv = match value:
+    'true': true
+    'false': false
+  js = booleanLiteral bv
+  set_js2 expr, js, ctx
+
+
+
+add_bool = fn ctx:
+  pipe ctx:
+    add 'bool', transform_bool
+

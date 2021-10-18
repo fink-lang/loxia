@@ -1,5 +1,32 @@
 {replace_all, rx} = import '@fink/std-lib/regex.fnk'
-{join} = import '@fink/std-lib/iter.fnk'
+{join, map} = import '@fink/std-lib/iter.fnk'
+
+
+
+t2s = fn tpe:
+  match tpe:
+    {r: ?}:
+      '${tpe.t}: ${t2s tpe.r}'
+
+    {i: [?]}:
+      its = pipe tpe.i:
+        map t2s
+        join ', '
+      '${tpe.t}[${its}]'
+
+    {e: ?}:
+      pipe tpe.e:
+        map fn [k, v]:
+          '${k}: ${t2s v}'
+        join ', '
+        fn kvs: match kvs:
+          '':
+            tpe.t
+          else:
+            '${tpe.t}{${kvs}}'
+
+    {t: ?}:
+      tpe.t
 
 
 
@@ -8,6 +35,8 @@ a2s = fn [arg=false, ...args], out=[]:
     false: match out:
       [?]: ' ${out | join ', '}'
       else: ''
+    {t: ?, i: ?}:
+      a2s args, [...out, '${arg.i}(${t2s arg.t})']
     {i: ?}:
       a2s args, [...out, arg.i]
     else:

@@ -141,6 +141,121 @@ rec_e fn exports_0:
                           mod exports_1, drctvs_0, fn mod_0:"
 `;
 
+exports[`types captures tpl items types 1`] = `
+"
+rec_e fn exports_0(rec):
+  lst_e fn lst_1(tpl):
+    int '1', fn item_1(int):
+      lst_a lst_1, item_1, fn lst_0(tpl[int]):
+        int '2', fn item_0(int):
+          lst_a lst_0, item_0, fn a_0(tpl[int, int]):
+            str 'a', fn key_0(str):
+              rec_s exports_0, key_0, a_0, fn exports_1(rec{a: tpl[int, int]}):
+                lst_e fn lst_4(tpl):
+                  str 'bar', fn str_0(str):
+                    strt str_0, fn item_4(str):
+                      lst_a lst_4, item_4, fn lst_3(tpl[str]):
+                        bool true, fn item_3(bool):
+                          lst_a lst_3, item_3, fn lst_2(tpl[str, bool]):
+                            bool false, fn item_2(bool):
+                              lst_a lst_2, item_2, fn b_0(tpl[str, bool, bool]):
+                                str 'b', fn key_1(str):
+                                  rec_s exports_1, key_1, b_0, fn exports_2(rec{a: tpl[int, int], b: tpl[str, bool, bool]}):
+                                    lst_e fn lst_7(tpl):
+                                      id b_0, fn items_0(tpl[str, bool, bool]):
+                                        lst_c lst_7, items_0, fn lst_6(tpl[str, bool, bool]):
+                                          int '3', fn item_6(int):
+                                            lst_a lst_6, item_6, fn lst_5(tpl[str, bool, bool, int]):
+                                              int '4', fn item_5(int):
+                                                lst_a lst_5, item_5, fn c_0(tpl[str, bool, bool, int, int]):
+                                                  str 'c', fn key_2(str):
+                                                    rec_s exports_2, key_2, c_0, fn exports_3(rec{a: tpl[int, int], b: tpl[str, bool, bool], c: tpl[str, bool, bool, int, int]}):
+                                                      lst_e fn drctvs_0(tpl):
+                                                        mod exports_3, drctvs_0, fn mod_0(mod):"
+`;
+
+exports[`types infers destructured 1`] = `
+"
+rec_e fn exports_0(rec):
+  lst_e fn lst_2(tpl):
+    int '1', fn item_2(int):
+      lst_a lst_2, item_2, fn lst_1(tpl[int]):
+        bool true, fn item_1(bool):
+          lst_a lst_1, item_1, fn lst_0(tpl[int, bool]):
+            str 'foo', fn str_0(str):
+              strt str_0, fn item_0(str):
+                lst_a lst_0, item_0, fn dlst_0(tpl[int, bool, str]):
+                  lst_h dlst_0, fn a_0(int):
+                    lst_t dlst_0, fn tail_0(tpl[bool, str]):
+                      lst_h tail_0, fn b_0(bool):
+                        lst_t tail_0, fn tail_1(tpl[str]):
+                          lst_h tail_1, fn c_0(str):
+                            lst_t tail_1, fn tail_2(tpl):
+                              lst_e fn drctvs_0(tpl):
+                                mod exports_0, drctvs_0, fn mod_0(mod):"
+`;
+
+exports[`types infers destructured list 1`] = `
+"
+rec_e fn exports_0(rec):
+  id foo, fn dlst_0(???):
+    lst_h dlst_0, fn a_0(???):
+      lst_t dlst_0, fn tail_0(lst):
+        lst_h tail_0, fn b_0(???):
+          lst_t tail_0, fn tail_1(lst):
+            lst_h tail_1, fn c_0(???):
+              lst_t tail_1, fn tail_2(lst):
+                lst_e fn drctvs_0(tpl):
+                  mod exports_0, drctvs_0, fn mod_0(mod):"
+`;
+
+exports[`types infers tpl and lst 1`] = `
+"
+rec_e fn exports_0(rec):
+  lst_e fn a_0(tpl):
+    str 'a', fn key_0(str):
+      rec_s exports_0, key_0, a_0, fn exports_1(rec{a: tpl}):
+        lst_e fn lst_1(tpl):
+          int '1', fn item_1(int):
+            lst_a lst_1, item_1, fn lst_0(tpl[int]):
+              int '2', fn item_0(int):
+                lst_a lst_0, item_0, fn b_0(tpl[int, int]):
+                  str 'b', fn key_1(str):
+                    rec_s exports_1, key_1, b_0, fn exports_2(rec{a: tpl, b: tpl[int, int]}):
+                      lst_e fn lst_4(tpl):
+                        id b_0, fn items_0(tpl[int, int]):
+                          lst_c lst_4, items_0, fn lst_3(tpl[int, int]):
+                            int '3', fn item_3(int):
+                              lst_a lst_3, item_3, fn lst_2(tpl[int, int, int]):
+                                int '4', fn item_2(int):
+                                  lst_a lst_2, item_2, fn c_0(tpl[int, int, int, int]):
+                                    str 'c', fn key_2(str):
+                                      rec_s exports_2, key_2, c_0, fn exports_3(rec{a: tpl, b: tpl[int, int], c: tpl[int, int, int, int]}):
+                                        lst_e fn lst_6(tpl):
+                                          id foo, fn items_2(???):
+                                            lst_c lst_6, items_2, fn lst_5(lst[...]):
+                                              id b_0, fn items_1(tpl[int, int]):
+                                                lst_c lst_5, items_1, fn d_0(lst[..., int, int]):
+                                                  str 'd', fn key_3(str):
+                                                    rec_s exports_3, key_3, d_0, fn exports_4(rec{a: tpl, b: tpl[int, int], c: tpl[int, int, int, int], d: lst[..., int, int]}):
+                                                      lst_e fn lst_8(tpl):
+                                                        id d_0, fn items_4(lst[..., int, int]):
+                                                          lst_c lst_8, items_4, fn lst_7(lst[...]):
+                                                            id d_0, fn items_3(lst[..., int, int]):
+                                                              lst_c lst_7, items_3, fn e_0(lst[...]):
+                                                                str 'e', fn key_4(str):
+                                                                  rec_s exports_4, key_4, e_0, fn exports_5(rec{a: tpl, b: tpl[int, int], c: tpl[int, int, int, int], d: lst[..., int, int], e: lst[...]}):
+                                                                    lst_e fn lst_10(tpl):
+                                                                      id foo, fn items_5(???):
+                                                                        lst_c lst_10, items_5, fn lst_9(lst[...]):
+                                                                          int '5', fn item_4(int):
+                                                                            lst_a lst_9, item_4, fn f_0(lst[..., int]):
+                                                                              str 'f', fn key_5(str):
+                                                                                rec_s exports_5, key_5, f_0, fn exports_6(rec{a: tpl, b: tpl[int, int], c: tpl[int, int, int, int], d: lst[..., int, int], e: lst[...], f: lst[..., int]}):
+                                                                                  lst_e fn drctvs_0(tpl):
+                                                                                    mod exports_6, drctvs_0, fn mod_0(mod):"
+`;
+
 exports[`unpacking list destructures recs 1`] = `
 "
 rec_e fn exports_0:

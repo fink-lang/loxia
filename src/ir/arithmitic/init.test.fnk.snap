@@ -38,6 +38,58 @@ rec_e fn exports_0:
               mod exports_1, drctvs_0, fn mod_0:"
 `;
 
+exports[`types infers numbers 1`] = `
+"
+rec_e fn exports_0(rec):
+  int '1', fn left_0(int):
+    int '2', fn right_0(int):
+      add left_0, right_0, fn a_0(int):
+        str 'a', fn key_0(str):
+          rec_s exports_0, key_0, a_0, fn exports_1(rec{a: int}):
+            float '1.0', fn left_1(float):
+              int '2', fn right_1(int):
+                add left_1, right_1, fn b_0(float):
+                  str 'b', fn key_1(str):
+                    rec_s exports_1, key_1, b_0, fn exports_2(rec{a: int, b: float}):
+                      int '1', fn left_2(int):
+                        int '2', fn right_2(int):
+                          mul left_2, right_2, fn c_0(int):
+                            str 'c', fn key_2(str):
+                              rec_s exports_2, key_2, c_0, fn exports_3(rec{a: int, b: float, c: int}):
+                                float '1.5', fn left_3(float):
+                                  int '2', fn right_3(int):
+                                    mul left_3, right_3, fn d_0(float):
+                                      str 'd', fn key_3(str):
+                                        rec_s exports_3, key_3, d_0, fn exports_4(rec{a: int, b: float, c: int, d: float}):
+                                          int '1', fn left_4(int):
+                                            int '2', fn right_4(int):
+                                              div left_4, right_4, fn e_0(float):
+                                                str 'e', fn key_4(str):
+                                                  rec_s exports_4, key_4, e_0, fn exports_5(rec{a: int, b: float, c: int, d: float, e: float}):
+                                                    id a_0, fn left_5(int):
+                                                      id e_0, fn right_5(float):
+                                                        mul left_5, right_5, fn f_0(float):
+                                                          str 'f', fn key_5(str):
+                                                            rec_s exports_5, key_5, f_0, fn exports_6(rec{a: int, b: float, c: int, d: float, e: float, f: float}):
+                                                              id c_0, fn left_6(int):
+                                                                int '1', fn right_6(int):
+                                                                  pow left_6, right_6, fn g_0(int):
+                                                                    str 'g', fn key_6(str):
+                                                                      rec_s exports_6, key_6, g_0, fn exports_7(rec{a: int, b: float, c: int, d: float, e: float, f: float, g: int}):
+                                                                        id c_0, fn left_7(int):
+                                                                          float '2.1', fn right_7(float):
+                                                                            pow left_7, right_7, fn h_0(float):
+                                                                              str 'h', fn key_7(str):
+                                                                                rec_s exports_7, key_7, h_0, fn exports_8(rec{a: int, b: float, c: int, d: float, e: float, f: float, g: int, h: float}):
+                                                                                  id c_0, fn left_8(int):
+                                                                                    int '2', fn right_8(int):
+                                                                                      rem left_8, right_8, fn i_0(int):
+                                                                                        str 'i', fn key_8(str):
+                                                                                          rec_s exports_8, key_8, i_0, fn exports_9(rec{a: int, b: float, c: int, d: float, e: float, f: float, g: int, h: float, i: int}):
+                                                                                            lst_e fn drctvs_0(tpl):
+                                                                                              mod exports_9, drctvs_0, fn mod_0(mod):"
+`;
+
 exports[`unary compiles nested 1`] = `
 "
 rec_e fn exports_0:

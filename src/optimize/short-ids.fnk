@@ -47,7 +47,7 @@ shorten_names = fn [curr=false, ...rest], renames={}, out=[]:
   match curr:
     false: [out, renames]
 
-    [{f: ? in ['int', 'float', 'str']}]:
+    [{f: ? in ['int', 'float', 'str', 'bool']}]:
       [expr, res] = curr
       [nres, next_ren] = rename res, renames
       shorten_names rest, next_ren, [...out, [expr, nres]]

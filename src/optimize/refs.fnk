@@ -266,7 +266,7 @@ optimize_refs = fn [expr=false, ...exprs], ctx, out=[]:
       next_ctx = add_alias res_id, target, ctx
       optimize_refs exprs, next_ctx, out
 
-    [{f: ? in ['int', 'float', 'str']}]:
+    [{f: ? in ['int', 'float', 'str', 'bool']}]:
       optimize_refs exprs, ctx, [...out, expr]
 
     [{f: 'cn'}]:

@@ -1,5 +1,5 @@
 {skip, describe, it, expect, to_match_snapshot} = import '@fink/jest/test.fnk'
-{fink2lir} = import '../../testing/generate.fnk'
+{fink2lir, fink2types} = import '../../testing/generate.fnk'
 
 
 describe 'func', fn:
@@ -137,4 +137,41 @@ describe 'recursive funcs', fn:
       to_match_snapshot
 
 
+
+describe 'types', fn:
+  it 'infers fn ret type', fn:
+    expect
+      fink2types '
+        foo = fn:
+          1 + 2
+      '
+      to_match_snapshot
+
+    expect
+      fink2types '
+        foo = fn a, b:
+          a + b
+      '
+      to_match_snapshot
+
+    expect
+      fink2types '
+        foo = fn a, b:
+          a + b * 1.2
+      '
+      to_match_snapshot
+
+    expect
+      fink2types '
+        foo = fn a, b:
+          {a, b}
+      '
+      to_match_snapshot
+
+    expect
+      fink2types '
+        foo = fn a, b:
+          [a, b]
+      '
+      to_match_snapshot
 

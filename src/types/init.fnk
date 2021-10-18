@@ -1,0 +1,321 @@
+
+
+{update_value, init_ctx, get_value} = import '../ir/context.fnk'
+
+
+get_type = fn id, ctx:
+  {t={t: '???'}} = get_value id, ctx
+  t
+
+set_type = fn id, t, ctx:
+  update_value id, {t}, ctx
+
+
+get_ret_type = fn id, ctx:
+  {r} = get_type id, ctx
+  r
+
+
+get_items_types = fn id, ctx:
+  {i} = get_type id, ctx
+  i
+
+
+get_kv_types = fn id, ctx:
+  {e} = get_type id, ctx
+  e
+
+# set_items_types = fn id, it, ctx:
+#   update_value id, {it}, ctx
+
+
+
+t_bool = fn v:
+  {t: 'bool', v}
+
+t_float = fn v:
+  {t: 'float', v}
+
+t_int = fn v:
+  {t: 'int', v}
+
+
+t_num = fn l_t, r_t:
+  match [l_t.t, r_t.t]:
+    ['int', 'int']: t_int _
+    [, 'float']: t_float _
+    ['float']: t_float _
+    else: {t: 'int|float'}
+
+
+t_str = fn v:
+  {t: 'str', v}
+
+t_strt = fn:
+  {t: 'str'}
+
+t_tpl = fn i:
+  {t: 'tpl', i}
+
+t_lst = fn i:
+  {t: 'lst', i}
+
+t_spread_iter = fn:
+  {t: '...'}
+
+t_rec = fn e:
+  {t: 'rec', e}
+
+t_hmap = fn e:
+  {t: 'hmap', e}
+
+t_fn = fn r:
+  {t: 'fn', r}
+
+
+
+infer_all_types = fn [curr=false, ...exprs], ctx, out=[]:
+  match curr:
+    false:
+      [out, ctx]
+
+    [{f: '='}]:
+      [expr, [res_id]] = curr
+      {args: [id]} = expr
+      t = get_type id, ctx
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: ? in ['bool', 'int', 'float']}]:
+      [expr, [res_id]] = curr
+      t = {t: expr.f}
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+    [{f: 'str'}]:
+      [expr, [res_id]] = curr
+      {args: [v]} = expr
+      t = t_str v
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: 'strt'}]:
+      [expr, [res_id]] = curr
+      t = t_strt _
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: 'strtt'}]:
+      [expr, [res_id]] = curr
+      {args: [fn_id]} = expr
+      t = get_ret_type fn_id, ctx
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: ? in ['+', '-', '*', '^', '%']}]:
+      [expr, [res_id]] = curr
+      {args: [l_id, r_id]} = expr
+      lt = get_type l_id, ctx
+      rt = get_type r_id, ctx
+      t = t_num lt, rt
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: ? in '/'}]:
+      [expr, [res_id]] = curr
+      t = t_float _
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: ? in ['==', '>', '<', '!=', '>=', '<=', 'in', 'and', 'or', 'not']}]:
+      [expr, [res_id]] = curr
+      t = t_bool _
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: 'lst'}]:
+      [expr, [res_id]] = curr
+      t = t_tpl []
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: 'lst_a'}]:
+      [expr, [res_id]] = curr
+      {args: [lst_id, item_id]} = expr
+      lst_t = get_type lst_id, ctx
+      item_t = get_type item_id, ctx
+      items_ts = get_items_types lst_id, ctx
+
+      t = match lst_t:
+        {t: 'tpl'}: t_tpl [...items_ts, item_t]
+        else: t_lst [...items_ts, item_t]
+
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: 'lst_t'}]:
+      [expr, [res_id]] = curr
+      {args: [lst_id]} = expr
+      lst_t = get_type lst_id, ctx
+
+      t = match lst_t:
+        {t: 'tpl'}:
+          [, ...items_ts] = get_items_types lst_id, ctx
+          t_tpl items_ts
+        else:
+          t_lst []
+
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: 'lst_h'}]:
+      [expr, [res_id]] = curr
+      {args: [lst_id]} = expr
+      lst_t = get_type lst_id, ctx
+
+      t = match lst_t:
+        {t: 'tpl'}:
+          [t] = get_items_types lst_id, ctx
+          t
+        else:
+          {t: '???'}
+
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: 'lst_c'}]:
+      [expr, [res_id]] = curr
+      {args: [l1_id, l2_id]} = expr
+      l1_t = get_type l1_id, ctx
+      l2_t = get_type l2_id, ctx
+      l1_it = get_items_types l1_id, ctx
+      l2_it = get_items_types l2_id, ctx
+
+      t = match [l1_t.t, l2_t.t]:
+        ['tpl', 'tpl']:
+          t_tpl [...l1_it, ...l2_it]
+        ['tpl']:
+          t_lst [...l1_it, t_spread_iter _]
+        [? , 'tpl']:
+          t_lst [(t_spread_iter _), ...l2_it]
+        else:
+          t_lst [t_spread_iter _]
+
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: 'rec'}]:
+      [expr, [res_id]] = curr
+      t = t_rec {}
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: 'rec_s'}]:
+      [expr, [res_id]] = curr
+      {args: [rec_id, key_id, val_id]} = expr
+      rec_t = get_type rec_id, ctx
+      key_t = get_type key_id, ctx
+      val_t = get_type val_id, ctx
+      kv_ts = get_kv_types rec_id, ctx
+
+      t = match [rec_t, key_t]:
+        [{t: 'rec'}, {v: ?}]:
+          t_rec {...kv_ts, (key_t.v): val_t}
+        else:
+          t_hmap {}
+
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: 'rec_m'}]:
+      [expr, [res_id]] = curr
+      {args: [rec1_id, rec2_id]} = expr
+      rec1_t = get_type rec1_id, ctx
+      rec2_t = get_type rec2_id, ctx
+      kv1_ts = get_kv_types rec1_id, ctx
+      kv2_ts = get_kv_types rec2_id, ctx
+
+      t = match [rec1_t.t, rec2_t.t]:
+        ['rec', 'rec']:
+          t_rec {...kv1_ts, ...kv2_ts}
+        else:
+          t_hmap {}
+
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: 'rec_g'}]:
+      [expr, [res_id]] = curr
+      {args: [rec_id, key_id]} = expr
+      key_t = get_type key_id, ctx
+      {(key_t.v): t} = get_kv_types rec_id, ctx
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: 'fn'}]:
+      [expr, [res_id]] = curr
+      {args: [[args_id, ret_id], body]} = expr
+      ret_t = {t: 'cn'}
+      args_t = t_tpl []
+
+      body_ctx = pipe ctx:
+        set_type args_id, args_t, ?
+        set_type ret_id, ret_t, ?
+        set_type res_id, (t_fn _), ?
+
+      [tbody, fn_ctx] = infer_all_types body, body_ctx
+      texpr = {...expr, args: [[{...args_id, t: args_t}, {...ret_id, t: ret_t}], tbody]}
+
+      t = t_fn get_type ret_id, fn_ctx
+      next_ctx = set_type res_id, t, fn_ctx
+
+      infer_all_types exprs, next_ctx, [...out, [texpr, [{...res_id, t}]]]
+
+
+    [{f: 'cc'}]:
+      [expr, res] = curr
+      {args: [ret_id, ret_res_id]} = expr
+      t = get_type ret_res_id, ctx
+      next_ctx = set_type ret_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, res]]
+
+
+    [{f: 'af'}]:
+      [expr, [res_id]] = curr
+      {args: [fn_id]} = expr
+      t = get_ret_type fn_id, ctx
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+
+    [{f: 'mod'}]:
+      [expr, [res_id]] = curr
+      t = {t: 'mod'}
+      next_ctx = set_type res_id, t, ctx
+      infer_all_types exprs, next_ctx, [...out, [expr, [{...res_id, t}]]]
+
+    else:
+      infer_all_types exprs, ctx, [...out, curr]
+
+
+
+infer_types = fn exprs, options:
+  pipe exprs:
+    init_ctx ?, options
+    infer_all_types exprs, ?
