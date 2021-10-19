@@ -355,6 +355,79 @@ rec_e fn exports_0:
           mod exports_1, drctvs_0, fn mod_0:"
 `;
 
+exports[`func handles self ref 1`] = `
+"
+rec_e fn exports_0:
+  id (fn args_0, ret_2: #fn
+    z (fn args_1, ret_1, count_0_0: #fn
+      lst_h args_1, fn start_0:
+        lst_t args_1, fn tail_0:
+          id _iterable_, fn callee_0:
+            lst_e fn cargs_0:
+              id (fn args_2, ret_0: #fn
+                lst_e fn lst_1:
+                  id start_0, fn left_1:
+                    int '1', fn right_1:
+                      add left_1, right_1, fn item_1:
+                        lst_a lst_1, item_1, fn lst_0:
+                          id count_0_0, fn callee_1:
+                            lst_e fn cargs_1:
+                              id start_0, fn left_0:
+                                int '1', fn right_0:
+                                  add left_0, right_0, fn arg_1:
+                                    lst_a cargs_1, arg_1, fn cargs_2:
+                                      af callee_1, cargs_2, fn item_0:
+                                        lst_a lst_0, item_0, fn result_2:
+                                          cc ret_0, result_2
+              ), fn arg_0:
+                lst_a cargs_0, arg_0, fn cargs_3:
+                  af callee_0, cargs_3, fn result_1:
+                    cc ret_1, result_1
+    ), fn count_0:
+      id count_0, fn callee_2:
+        lst_e fn cargs_4:
+          int '0', fn arg_2:
+            lst_a cargs_4, arg_2, fn cargs_5:
+              af callee_2, cargs_5, fn result_3:
+                cc ret_2, result_3
+  ), fn foo_0:
+    str 'foo', fn key_0:
+      rec_s exports_0, key_0, foo_0, fn exports_1:
+        lst_e fn drctvs_0:
+          mod exports_1, drctvs_0, fn mod_0:"
+`;
+
+exports[`func handles self ref 2`] = `
+"
+rec_e fn exports_0:
+  id (fn args_0, ret_2: #fn
+    z (fn args_1, ret_1, count_0_0: #fn
+      tpl_i args_1, 0, fn start_0:
+        id (fn args_2, ret_0: #fn
+          int '1', fn right_1:
+            add start_0, right_1, fn item_1:
+              int '1', fn right_0:
+                add start_0, right_0, fn arg_1:
+                  tpl arg_1, fn cargs_2:
+                    af count_0_0, cargs_2, fn item_0:
+                      tpl item_1, item_0, fn result_2:
+                        cc ret_0, result_2
+        ), fn arg_0:
+          tpl arg_0, fn cargs_3:
+            af _iterable_, cargs_3, fn result_1:
+              cc ret_1, result_1
+    ), fn count_0:
+      int '0', fn arg_2:
+        tpl arg_2, fn cargs_5:
+          af count_0, cargs_5, fn result_3:
+            cc ret_2, result_3
+  ), fn foo_0:
+    str 'foo', fn key_0:
+      rec_s exports_0, key_0, foo_0, fn exports_1:
+        tpl, fn drctvs_0:
+          mod exports_1, drctvs_0, fn mod_0:"
+`;
+
 exports[`func handles self-ref scoping 1`] = `
 "
 rec_e fn exports_0:

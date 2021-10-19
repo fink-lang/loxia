@@ -211,3 +211,21 @@ exports[`recursive functions compiles with self reference 1`] = `
 
 export const foo = foo_0;"
 `;
+
+exports[`recursive functions compiles with self reference 2`] = `
+"const foo_0 = () => {
+  const count_0 = start_0 => {
+    const result_1 = _iterable_(() => {
+      const item_0 = count_0(start_0 + 1);
+      return [start_0 + 1, item_0];
+    });
+
+    return result_1;
+  };
+
+  const result_3 = count_0(0);
+  return result_3;
+};
+
+export const foo = foo_0;"
+`;

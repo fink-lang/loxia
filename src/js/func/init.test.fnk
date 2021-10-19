@@ -145,6 +145,17 @@ describe 'recursive functions', fn:
       '
       to_match_snapshot
 
+    expect
+      fink2js '
+        foo = fn:
+          count = fn start:
+            _iterable_ fn:
+              [start + 1, count start + 1]
+
+          count 0
+      '
+      to_match_snapshot
+
 
   it 'compiles to while loop', fn:
     expect
