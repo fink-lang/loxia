@@ -84,7 +84,8 @@ transform_normal_fn = fn expr, ctx:
   self_ctx = set_js ret_id, ret, ctx
 
   body_ctx = match self_id:
-    false: self_ctx
+    false:
+      self_ctx
     else:
       pipe self_ctx:
         # set recursive calls to use res_id
@@ -92,6 +93,7 @@ transform_normal_fn = fn expr, ctx:
         set_js self_id, (ident res_id), ?
         # make sure calls to self_id always use res_id
         update_value self_id, {ignore_refs: true}, ?
+        update_value res_id, {inline: false}, ?
 
   [args, block, fn_ctx] = pipe body_ctx:
     split_args_body fn_block, args_id, ?

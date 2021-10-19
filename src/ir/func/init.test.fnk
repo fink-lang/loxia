@@ -112,6 +112,29 @@ describe 'func', fn:
       to_match_snapshot
 
 
+  it 'handles self ref', fn:
+    expect
+      fink2lir '
+        foo = fn:
+          count = fn start:
+            _iterable_ fn:
+              [start + 1, count start + 1]
+
+          count 0
+      '
+      to_match_snapshot
+
+    expect
+      fink2lir '
+        foo = fn:
+          count = fn start:
+            _iterable_ fn:
+              [start + 1, count start + 1]
+
+          count 0
+      ', {optimize: {refs: true, tails: true, unused: true}}
+      to_match_snapshot
+
 
 describe 'recursive funcs', fn:
   it 'compiles recursive calls', fn:
