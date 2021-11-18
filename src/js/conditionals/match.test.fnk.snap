@@ -137,6 +137,8 @@ exports[`match compiles nested match 1`] = `
     }
 
     const result_1 = ret_1;
+
+    /* istanbul ignore next */
     return bar;
   }
 
@@ -173,6 +175,8 @@ exports[`match handles scoping 1`] = `
   /* istanbul ignore else */
   if (foo_1 === spam) {
     const foo_2 = bar_0 * 2;
+
+    /* istanbul ignore next */
     return [foo_2, bar_0, foo_2];
   }
 

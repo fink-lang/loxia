@@ -5,6 +5,8 @@ exports[`func compiles defaults 1`] = `
   const b_0 = undefined === hdm_0 ? 12 : hdm_0;
   const ni_0 = shrub(a_0, b_0);
   const result_1 = bar(b_0, ni_0);
+
+  /* istanbul ignore next */
   return result_1;
 };
 
@@ -149,6 +151,7 @@ exports[`func compiles spread 4`] = `
     return [a_0, c_0, d_0];
   }
 
+  /* istanbul ignore next */
   return b_0;
 };
 
@@ -166,6 +169,7 @@ exports[`recursive functions compiles spread 1`] = `
       continue fun_0;
     }
 
+    /* istanbul ignore next */
     return b_0;
   } while (true);
 };
@@ -202,10 +206,14 @@ exports[`recursive functions compiles with self reference 1`] = `
   /* istanbul ignore else */
   if (cntr_0 === 1) {
     const items_1 = foo_0(cntr_0 - 1);
+
+    /* istanbul ignore next */
     return [...items_1];
   }
 
   const items_0 = foo_0(cntr_0 - 1);
+
+  /* istanbul ignore next */
   return [cntr_0, ...items_0];
 };
 
@@ -217,13 +225,18 @@ exports[`recursive functions compiles with self reference 2`] = `
   const count_0 = start_0 => {
     const result_1 = _iterable_(() => {
       const item_0 = count_0(start_0 + 1);
+
+      /* istanbul ignore next */
       return [start_0 + 1, item_0];
     });
 
+    /* istanbul ignore next */
     return result_1;
   };
 
   const result_3 = count_0(0);
+
+  /* istanbul ignore next */
   return result_3;
 };
 

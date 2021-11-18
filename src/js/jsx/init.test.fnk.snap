@@ -45,6 +45,8 @@ exports[`jsx compiles elem from rec 1`] = `
   const { ...props_0
   } = drec_0;
   const Foobar_0 = spam.Foobar;
+
+  /* istanbul ignore next */
   return <Foobar_0 {...props_0} />;
 };
 
