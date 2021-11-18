@@ -94,7 +94,9 @@ transform_continue_with_cont = fn expr, ctx:
       res = get_js res_id, ctx
       match ret:
         {type: 'ReturnStatement'}:
-          js = with_loc res, returnStatement res
+          js = with_loc res, rec:
+            ...returnStatement res
+            leadingComments: [{type: 'CommentBlock', value: ' istanbul ignore next '}]
           [[js], ctx]
         else:
           exprs = list:
