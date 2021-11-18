@@ -5,6 +5,8 @@ exports[`pipe compiles 1`] = `
 
 const ppr_1 = (prtl_0 => {
   const pfn_2 = bar(prtl_0, 123);
+
+  /* istanbul ignore next */
   return pfn_2;
 })(ppr_0);
 
@@ -12,6 +14,8 @@ const ppr_2 = spam(ppr_1);
 
 const ppr_3 = (prtl_1 => {
   const pfn_5 = prtl_1.spam(456);
+
+  /* istanbul ignore next */
   return pfn_5;
 })(ppr_2);
 
@@ -42,9 +46,12 @@ exports[`pipe compiles 2`] = `
 
   const ppr_1 = (prtl_0 => {
     const pfn_2 = prtl_0.shrub(123);
+
+    /* istanbul ignore next */
     return pfn_2;
   })(ppr_0);
 
+  /* istanbul ignore next */
   return ppr_1;
 });
 export const foo = foo_0;"

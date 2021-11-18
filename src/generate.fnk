@@ -2,7 +2,9 @@ babel_traverse = import '@babel/traverse'
 {default: traverse} = babel_traverse
 
 {transformFromAstSync} = import '@babel/core'
-{try_catch} = import '@fink/js-interop/errors.fnk'
+{try_catch} = import '@fink/js-interop/errors.js'
+{set_props} = import '@fink/js-interop/reflect.js'
+{undefined} = import '@fink/js-interop/nullish.js'
 
 {transform} = import './ir/transform.fnk'
 {init_ctx} = import './ir/init.fnk'
@@ -33,6 +35,13 @@ transform_file = fn fink_ast, code, filename, {optimize: optim, ...options}:
   match error:
     false:
       traverse js_ast, rec:
+        ReturnStatement: fn path:
+          match path:
+            {key: ? > 0}:
+              set_props path.node, rec:
+                leadingComments: [{type: 'CommentBlock', value: ' istanbul ignore next '}]
+              undefined
+
         AwaitExpression: {enter: transform_async}
         ...extras
 
