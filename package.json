@@ -46,7 +46,7 @@
     "@fink/jest": "^7.2.0",
     "@fink/larix": "^20.0.0",
     "@fink/loxia": "^24.0.0",
-    "commitizen": "^4.1.2",
+    "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.1.0",
     "jest-cli": "^27.0.0",
     "npx-run": "^2.1.2",
